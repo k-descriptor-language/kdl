@@ -116,18 +116,6 @@ def createConfigElement(config):
             configElt.append(childEntry)
     return configElt
 
-def addConfigToTemplateModel(model, config):
-    configkey = list(config.keys())[0]
-    configvalues = config(configkey)
-    for value in configvalues:
-        if value['type'] == 'config':
-            print('do something')
-        else:
-            entrykey = list(value.keys())[0]
-            entryvalue = value[entrykey]
-            entrytype = value['type']
-            entry = ET.Element('entry', key=entrykey, type=entrytype, value=entryvalue)
-
 def saveNodeXML(tree, outputpath):
     if not os.path.exists(outputpath):
         os.makedirs(outputpath)
