@@ -15,12 +15,45 @@ def unzipWorkflow(inputfile):
     return os.path.splitext(inputfile)[0]
 
 def extractFromInputXML(inputfile):
-    modelAttribs = {}
     baseTree = ET.parse(inputfile)
     root = baseTree.getroot()
+    node = {}
+    node['name'] = root.find("./knime:entry[@key='name']",ns).attrib['value']
+    model = {}
     for child in root.findall("./knime:config[@key='model']/knime:entry", ns):
-        modelAttribs[child.attrib['key']] = child.attrib['value']
-    return modelAttribs
+        model[child.attrib['key']] = child.attrib['value']
+    node['model'] = model
+    return node
+
+def extractNodes(inputfile):
+    nodeList = []
+    baseTree = ET.parse(inputfile)
+    root = baseTree.getroot()
+    for child in root.findall("./knime:config[@key='nodes']/knime:config",ns):
+        node = {}
+        nodeId = child.find("./knime:entry[@key='id']",ns).attrib['value']
+        node['id'] = nodeId
+        settingsFile = child.find("./knime:entry[@key='node_settings_file']",ns).attrib['value']
+        node['filename'] = settingsFile
+        nodeList.append(node)
+    return nodeList
+
+def extractConnections(inputfile):
+    connectionList = []
+    baseTree = ET.parse(inputfile)
+    root = baseTree.getroot()
+    for child in root.findall("./knime:config[@key='connections']/knime:config",ns):
+        connection = {}
+        sourceID = child.find("./knime:entry[@key='sourceID']",ns).attrib['value']
+        connection['sourceID'] = sourceID
+        destID = child.find("./knime:entry[@key='destID']",ns).attrib['value']
+        connection['destID'] = destID
+        sourcePort = child.find("./knime:entry[@key='sourcePort']",ns).attrib['value']
+        connection['sourcePort'] = sourcePort
+        destPort = child.find("./knime:entry[@key='destPort']",ns).attrib['value']
+        connection['destPort'] = destPort
+        connectionList.append(connection)
+    return connectionList
 
 def updateTemplateModel(template, modelAttribs):
     templateTree = ET.parse(template)

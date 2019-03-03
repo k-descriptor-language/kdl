@@ -21,13 +21,17 @@ def main(argv):
             sys.exit()
 
     workflowName = unzipWorkflow(inputfile)
+    workflowPath = f'{inputpath}/{workflowName}'
 
+    nodeList = extractNodes(f'{workflowPath}/workflow.knime')
+    connectionList = extractConnections(f'{workflowPath}/workflow.knime')
+  
     infile = f'{inputpath}/{workflowName}/CSV Reader (#1)/settings.xml'
-    modelAttribs = extractFromInputXML(infile)
+    node1 = extractFromInputXML(infile)
 
-    template = f'{templatepath}/CSVReader/settings.xml'
-    templateTree = updateTemplateModel(template, modelAttribs)
-    
+    template = f'{templatepath}/{node1["name"]}/settings.xml'
+    templateTree = updateTemplateModel(template, node1['model'])
+
     workflowOutputPath = f'{outputpath}/{workflowName}'
     if not os.path.exists(workflowOutputPath):
         os.makedirs(workflowOutputPath)
