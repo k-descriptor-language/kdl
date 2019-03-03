@@ -26,7 +26,7 @@ def main(argv):
     nodeList = extractNodes(f'{workflowPath}/workflow.knime')
     connectionList = extractConnections(f'{workflowPath}/workflow.knime')
   
-    infile = f'{inputpath}/{workflowName}/CSV Reader (#1)/settings.xml'
+    infile = f'{workflowPath}/CSV Reader (#1)/settings.xml'
     node1 = extractFromInputXML(infile)
 
     template = f'{templatepath}/{node1["name"]}/settings.xml'
@@ -37,9 +37,9 @@ def main(argv):
         os.makedirs(workflowOutputPath)
 
     saveNodeXML(templateTree, f'{workflowOutputPath}/CSV Reader (#1)')
-    copyfile(f'{inputpath}/{workflowName}/workflow.knime',f'{workflowOutputPath}/workflow.knime')
+    copyfile(f'{workflowPath}/workflow.knime',f'{workflowOutputPath}/workflow.knime')
     createOutputWorkflow(workflowName)
-    rmtree(f'{inputpath}/{workflowName}')
+    rmtree(f'{workflowPath}')
     rmtree(f'{outputpath}/{workflowName}')
 
 if __name__ == "__main__":
