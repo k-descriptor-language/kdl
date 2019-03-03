@@ -6,6 +6,8 @@ inputpath = 'input'
 outputpath = 'output'
 templatepath = 'templates'
 ns = {'knime': 'http://www.knime.org/2008/09/XMLConfig'}
+entrytag = f'{{{ns["knime"]}}}entry'
+configtag = f'{{{ns["knime"]}}}config'
 
 # assumes workflow filename == workflow name
 def unzipWorkflow(inputfile):
@@ -19,11 +21,34 @@ def extractFromInputXML(inputfile):
     root = baseTree.getroot()
     node = {}
     node['name'] = root.find("./knime:entry[@key='name']",ns).attrib['value']
-    model = {}
-    for child in root.findall("./knime:config[@key='model']/knime:entry", ns):
-        model[child.attrib['key']] = child.attrib['value']
+    model = []
+    for child in root.findall("./knime:config[@key='model']/*",ns):
+        if child.tag == entrytag:
+            entry = extractEntryTag(child)
+            model.append(entry)
+        elif child.tag == configtag:
+            config = extractConfigTag(child)
+            model.append(config)
+
     node['model'] = model
     return node
+
+def extractEntryTag(tree):
+    entry = {tree.attrib['key']: tree.attrib['value'],
+             'type': tree.attrib['type']}
+    return entry
+
+def extractConfigTag(tree):
+    configValue = []
+    for child in tree.findall("./*",ns):
+        if child.tag == entrytag:
+            entry = extractEntryTag(child)
+            configValue.append(entry)
+        elif child.tag == configtag:
+            config = extractConfigTag(child)
+            configValue.append(config)
+    config = {tree.attrib['key']: configValue, 'type': 'config'}
+    return config
 
 def extractNodes(inputfile):
     nodeList = []
@@ -55,13 +80,53 @@ def extractConnections(inputfile):
         connectionList.append(connection)
     return connectionList
 
-def updateTemplateModel(template, modelAttribs):
+def createNodeXMLFromTemplate(node):
+    template = f'{templatepath}/{node["name"]}/settings_no_model.xml'
     templateTree = ET.parse(template)
     templateRoot = templateTree.getroot()
-
-    for child in templateRoot.findall("./knime:config[@key='model']/knime:entry", ns):
-        child.set('value', modelAttribs[child.attrib['key']])
+    model = templateRoot.find("./knime:config[@key='model']", ns)
+    #ET.dump(model)
+    for curr in node['model']:
+        if curr['type'] == 'config':
+            config = createConfigElement(curr)
+            model.append(config)
+        else:
+            entry = createEntryElement(curr)
+            model.append(entry)
+    #ET.dump(model)
     return templateTree
+
+def createEntryElement(entry):
+    entrykey = list(entry.keys())[0]
+    entryvalue = entry[entrykey]
+    entrytype = entry['type']
+    entryElt = ET.Element('entry', key=entrykey, type=entrytype, value=entryvalue)
+    return entryElt
+
+def createConfigElement(config):
+    configkey = list(config.keys())[0]
+    configvalues = config[configkey]
+    configElt = ET.Element('config', key=configkey)
+    for value in configvalues:
+        if value['type'] == 'config':
+            childConfig = createConfigElement(value)
+            configElt.append(childConfig)
+        else:
+            childEntry = createEntryElement(value)
+            configElt.append(childEntry)
+    return configElt
+
+def addConfigToTemplateModel(model, config):
+    configkey = list(config.keys())[0]
+    configvalues = config(configkey)
+    for value in configvalues:
+        if value['type'] == 'config':
+            print('do something')
+        else:
+            entrykey = list(value.keys())[0]
+            entryvalue = value[entrykey]
+            entrytype = value['type']
+            entry = ET.Element('entry', key=entrykey, type=entrytype, value=entryvalue)
 
 def saveNodeXML(tree, outputpath):
     if not os.path.exists(outputpath):

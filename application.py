@@ -26,17 +26,27 @@ def main(argv):
     nodeList = extractNodes(f'{workflowPath}/workflow.knime')
     connectionList = extractConnections(f'{workflowPath}/workflow.knime')
   
-    infile = f'{workflowPath}/CSV Reader (#1)/settings.xml'
-    node1 = extractFromInputXML(infile)
+    infile1 = f'{workflowPath}/CSV Reader (#1)/settings.xml'
+    node1 = extractFromInputXML(infile1)
+    #print(node1)
 
-    template = f'{templatepath}/{node1["name"]}/settings.xml'
-    templateTree = updateTemplateModel(template, node1['model'])
+    infile2 = f'{workflowPath}/Table To JSON (#2)/settings.xml'
+    node2 = extractFromInputXML(infile2)
+    #print(node2)
+
+    #sys.exit()
 
     workflowOutputPath = f'{outputpath}/{workflowName}'
     if not os.path.exists(workflowOutputPath):
         os.makedirs(workflowOutputPath)
+    
+    templateTree1 = createNodeXMLFromTemplate(node1)
+    saveNodeXML(templateTree1, f'{workflowOutputPath}/CSV Reader (#1)')
 
-    saveNodeXML(templateTree, f'{workflowOutputPath}/CSV Reader (#1)')
+    templateTree2 = createNodeXMLFromTemplate(node2)
+    saveNodeXML(templateTree2, f'{workflowOutputPath}/Table To JSON (#2)')
+    #sys.exit()
+
     copyfile(f'{workflowPath}/workflow.knime',f'{workflowOutputPath}/workflow.knime')
     createOutputWorkflow(workflowName)
     rmtree(f'{workflowPath}')
