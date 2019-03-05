@@ -24,8 +24,12 @@ def main(argv):
     workflowPath = f'{inputpath}/{workflowName}'
 
     nodeList = extractNodes(f'{workflowPath}/workflow.knime')
+    #print(nodeList)
+
     connectionList = extractConnections(f'{workflowPath}/workflow.knime')
-  
+    #print(connectionList)
+    #sys.exit()
+    
     infile1 = f'{workflowPath}/CSV Reader (#1)/settings.xml'
     node1 = extractFromInputXML(infile1)
     #print(node1)
@@ -39,7 +43,7 @@ def main(argv):
     workflowOutputPath = f'{outputpath}/{workflowName}'
     if not os.path.exists(workflowOutputPath):
         os.makedirs(workflowOutputPath)
-    
+
     templateTree1 = createNodeXMLFromTemplate(node1)
     saveNodeXML(templateTree1, f'{workflowOutputPath}/CSV Reader (#1)')
 
