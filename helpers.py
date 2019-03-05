@@ -2,128 +2,139 @@ import os, zipfile
 from shutil import make_archive
 import xml.etree.ElementTree as ET
 
-inputpath = 'input'
-outputpath = 'output'
-templatepath = 'templates'
-ns = {'knime': 'http://www.knime.org/2008/09/XMLConfig'}
-entrytag = f'{{{ns["knime"]}}}entry'
-configtag = f'{{{ns["knime"]}}}config'
+INPUT_PATH = 'input'
+OUTPUT_PATH = 'output'
+TEMPLATE_PATH = 'templates'
+NS = {'knime': 'http://www.knime.org/2008/09/XMLConfig'}
+ENTRY_TAG = f'{{{NS["knime"]}}}entry'
+CONFIG_TAG = f'{{{NS["knime"]}}}config'
+
 
 # assumes workflow filename == workflow name
-def unzipWorkflow(inputfile):
+def unzip_workflow(inputfile):
     zip_ref = zipfile.ZipFile(inputfile, 'r')
-    zip_ref.extractall(inputpath)
+    zip_ref.extractall(INPUT_PATH)
     zip_ref.close()
     return os.path.splitext(inputfile)[0]
 
-def extractFromInputXML(inputfile):
-    baseTree = ET.parse(inputfile)
-    root = baseTree.getroot()
+
+def extract_from_input_xml(input_file):
+    base_tree = ET.parse(input_file)
+    root = base_tree.getroot()
     node = {}
-    node['name'] = root.find("./knime:entry[@key='name']",ns).attrib['value']
+    node['name'] = root.find("./knime:entry[@key='name']", NS).attrib['value']
     model = []
-    for child in root.findall("./knime:config[@key='model']/*",ns):
-        if child.tag == entrytag:
-            entry = extractEntryTag(child)
+    for child in root.findall("./knime:config[@key='model']/*", NS):
+        if child.tag == ENTRY_TAG:
+            entry = extract_entry_tag(child)
             model.append(entry)
-        elif child.tag == configtag:
-            config = extractConfigTag(child)
+        elif child.tag == CONFIG_TAG:
+            config = extract_config_tag(child)
             model.append(config)
 
     node['model'] = model
     return node
 
-def extractEntryTag(tree):
+
+def extract_entry_tag(tree):
     entry = {tree.attrib['key']: tree.attrib['value'],
              'type': tree.attrib['type']}
     return entry
 
-def extractConfigTag(tree):
-    configValue = []
-    for child in tree.findall("./*",ns):
-        if child.tag == entrytag:
-            entry = extractEntryTag(child)
-            configValue.append(entry)
-        elif child.tag == configtag:
-            config = extractConfigTag(child)
-            configValue.append(config)
-    config = {tree.attrib['key']: configValue, 'type': 'config'}
+
+def extract_config_tag(tree):
+    config_value = []
+    for child in tree.findall("./*", NS):
+        if child.tag == ENTRY_TAG:
+            entry = extract_entry_tag(child)
+            config_value.append(entry)
+        elif child.tag == CONFIG_TAG:
+            config = extract_config_tag(child)
+            config_value.append(config)
+    config = {tree.attrib['key']: config_value, 'type': 'config'}
     return config
 
-def extractNodes(inputfile):
-    nodeList = []
-    baseTree = ET.parse(inputfile)
-    root = baseTree.getroot()
-    for child in root.findall("./knime:config[@key='nodes']/knime:config",ns):
+
+def extract_nodes(input_file):
+    node_list = []
+    base_tree = ET.parse(input_file)
+    root = base_tree.getroot()
+    for child in root.findall("./knime:config[@key='nodes']/knime:config", NS):
         node = {}
-        nodeId = child.find("./knime:entry[@key='id']",ns).attrib['value']
-        node['id'] = nodeId
-        settingsFile = child.find("./knime:entry[@key='node_settings_file']",ns).attrib['value']
-        node['filename'] = settingsFile
-        nodeList.append(node)
-    return nodeList
+        node_id = child.find("./knime:entry[@key='id']", NS).attrib['value']
+        node['id'] = node_id
+        settings_file = child.find("./knime:entry[@key='node_settings_file']", NS).attrib['value']
+        node['filename'] = settings_file
+        node_list.append(node)
+    return node_list
 
-def extractConnections(inputfile):
-    connectionList = []
-    baseTree = ET.parse(inputfile)
-    root = baseTree.getroot()
-    for child in root.findall("./knime:config[@key='connections']/knime:config",ns):
+
+def extract_connections(input_file):
+    connection_list = []
+    base_tree = ET.parse(input_file)
+    root = base_tree.getroot()
+    for child in root.findall("./knime:config[@key='connections']/knime:config", NS):
         connection = {}
-        sourceID = child.find("./knime:entry[@key='sourceID']",ns).attrib['value']
-        connection['sourceID'] = sourceID
-        destID = child.find("./knime:entry[@key='destID']",ns).attrib['value']
-        connection['destID'] = destID
-        sourcePort = child.find("./knime:entry[@key='sourcePort']",ns).attrib['value']
-        connection['sourcePort'] = sourcePort
-        destPort = child.find("./knime:entry[@key='destPort']",ns).attrib['value']
-        connection['destPort'] = destPort
-        connectionList.append(connection)
-    return connectionList
+        source_id = child.find("./knime:entry[@key='sourceID']", NS).attrib['value']
+        connection['source_id'] = source_id
+        dest_id = child.find("./knime:entry[@key='destID']", NS).attrib['value']
+        connection['dest_id'] = dest_id
+        source_port = child.find("./knime:entry[@key='sourcePort']", NS).attrib['value']
+        connection['source_port'] = source_port
+        dest_port = child.find("./knime:entry[@key='destPort']", NS).attrib['value']
+        connection['dest_port'] = dest_port
+        connection_list.append(connection)
+    return connection_list
 
-def createNodeXMLFromTemplate(node):
-    template = f'{templatepath}/{node["name"]}/settings_no_model.xml'
-    templateTree = ET.parse(template)
-    templateRoot = templateTree.getroot()
-    model = templateRoot.find("./knime:config[@key='model']", ns)
-    #ET.dump(model)
+
+def create_node_xml_from_template(node):
+    template = f'{TEMPLATE_PATH}/{node["name"]}/settings_no_model.xml'
+    template_tree = ET.parse(template)
+    template_root = template_tree.getroot()
+    model = template_root.find("./knime:config[@key='model']", NS)
+    # ET.dump(model)
     for curr in node['model']:
         if curr['type'] == 'config':
-            config = createConfigElement(curr)
+            config = create_config_element(curr)
             model.append(config)
         else:
-            entry = createEntryElement(curr)
+            entry = create_entry_element(curr)
             model.append(entry)
-    #ET.dump(model)
-    return templateTree
+    # ET.dump(model)
+    return template_tree
 
-def createEntryElement(entry):
-    entrykey = list(entry.keys())[0]
-    entryvalue = entry[entrykey]
-    entrytype = entry['type']
-    entryElt = ET.Element('entry', key=entrykey, type=entrytype, value=entryvalue)
-    return entryElt
 
-def createConfigElement(config):
-    configkey = list(config.keys())[0]
-    configvalues = config[configkey]
-    configElt = ET.Element('config', key=configkey)
-    for value in configvalues:
+def create_entry_element(entry):
+    entry_key = list(entry.keys())[0]
+    entry_value = entry[entry_key]
+    entry_type = entry['type']
+    entry_elt = ET.Element('entry', key=entry_key, type=entry_type, value=entry_value)
+    return entry_elt
+
+
+def create_config_element(config):
+    config_key = list(config.keys())[0]
+    config_values = config[config_key]
+    config_elt = ET.Element('config', key=config_key)
+    for value in config_values:
         if value['type'] == 'config':
-            childConfig = createConfigElement(value)
-            configElt.append(childConfig)
+            child_config = create_config_element(value)
+            config_elt.append(child_config)
         else:
-            childEntry = createEntryElement(value)
-            configElt.append(childEntry)
-    return configElt
+            child_entry = create_entry_element(value)
+            config_elt.append(child_entry)
+    return config_elt
 
-def saveNodeXML(tree, outputpath):
+
+def save_node_xml(tree, outputpath):
     if not os.path.exists(outputpath):
         os.makedirs(outputpath)
 
-    ET.register_namespace('', ns['knime'])
+    ET.register_namespace('', NS['knime'])
     tree.write(f'{outputpath}/settings.xml', xml_declaration=True, encoding='UTF-8')
 
-def createOutputWorkflow(workflowName):
-    make_archive(f'{workflowName}_new', 'zip', outputpath)
-    base = os.path.splitext(f'{workflowName}_new.zip')[0]
-    os.rename(f'{workflowName}_new.zip', base + '.knwf')
+
+def create_output_workflow(workflow_name):
+    make_archive(f'{workflow_name}_new', 'zip', OUTPUT_PATH)
+    base = os.path.splitext(f'{workflow_name}_new.zip')[0]
+    os.rename(f'{workflow_name}_new.zip', base + '.knwf')
