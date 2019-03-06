@@ -26,19 +26,19 @@ def main(argv):
     workflow_path = f'{INPUT_PATH}/{workflow_name}'
 
     node_list = extract_nodes(f'{workflow_path}/workflow.knime')
-    # print(nodeList)
+    print(node_list)
 
     connection_list = extract_connections(f'{workflow_path}/workflow.knime')
-    # print(connectionList)
+    print(connection_list)
     # sys.exit()
     
     infile1 = f'{workflow_path}/CSV Reader (#1)/settings.xml'
     node1 = extract_from_input_xml(infile1)
-    # print(node1)
+    print(node1)
 
     infile2 = f'{workflow_path}/Table To JSON (#2)/settings.xml'
     node2 = extract_from_input_xml(infile2)
-    # print(node2)
+    print(node2)
 
     # sys.exit()
 
