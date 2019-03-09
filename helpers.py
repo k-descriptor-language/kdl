@@ -23,7 +23,7 @@ def extract_from_input_xml(input_file):
     root = base_tree.getroot()
     node = dict()
     node['name'] = root.find("./knime:entry[@key='name']", NS).attrib['value']
-    model = []
+    model = list()
     for child in root.findall("./knime:config[@key='model']/*", NS):
         if child.tag == ENTRY_TAG:
             entry = extract_entry_tag(child)
@@ -45,7 +45,7 @@ def extract_entry_tag(tree):
 
 
 def extract_config_tag(tree):
-    config_value = []
+    config_value = list()
     for child in tree.findall("./*", NS):
         if child.tag == ENTRY_TAG:
             entry = extract_entry_tag(child)
@@ -58,11 +58,11 @@ def extract_config_tag(tree):
 
 
 def extract_nodes(input_file):
-    node_list = []
+    node_list = list()
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()
     for child in root.findall("./knime:config[@key='nodes']/knime:config", NS):
-        node = {}
+        node = dict()
         node_id = child.find("./knime:entry[@key='id']", NS).attrib['value']
         node['id'] = node_id
         settings_file = child.find("./knime:entry[@key='node_settings_file']", NS).attrib['value']
@@ -72,14 +72,12 @@ def extract_nodes(input_file):
 
 
 def extract_connections(input_file):
-    connection_list = []
+    connection_list = list()
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()
-    count = 0
-    for child in root.findall("./knime:config[@key='connections']/knime:config", NS):
+    for i, child in enumerate(root.findall("./knime:config[@key='connections']/knime:config", NS)):
         connection = dict()
-        connection['id'] = count
-        count += 1
+        connection['id'] = i
         source_id = child.find("./knime:entry[@key='sourceID']", NS).attrib['value']
         connection['source_id'] = source_id
         dest_id = child.find("./knime:entry[@key='destID']", NS).attrib['value']
@@ -97,7 +95,6 @@ def create_node_xml_from_template(node):
     template_tree = ET.parse(template)
     template_root = template_tree.getroot()
     model = template_root.find("./knime:config[@key='model']", NS)
-    # ET.dump(model)
     for curr in node['settings']['model']:
         if curr['type'] == 'config':
             config = create_config_element(curr)
@@ -105,7 +102,6 @@ def create_node_xml_from_template(node):
         else:
             entry = create_entry_element(curr)
             model.append(entry)
-    # ET.dump(model)
     return template_tree
 
 
