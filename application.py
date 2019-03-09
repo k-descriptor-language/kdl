@@ -4,11 +4,10 @@ from helpers import *
 
 
 def main(argv):
-
     input_file = ''
 
     try:
-        opts, args = getopt.getopt(argv,'hi:')
+        opts, args = getopt.getopt(argv, 'hi:')
     except getopt.GetoptError:
         print('application.py -i <input_file>')
         sys.exit(2)
@@ -22,41 +21,44 @@ def main(argv):
             print('application.py -i <input_file>')
             sys.exit()
 
+    # Extract workflow
     workflow_name = unzip_workflow(input_file)
     workflow_path = f'{INPUT_PATH}/{workflow_name}'
 
-    node_list = extract_nodes(f'{workflow_path}/workflow.knime')
-    print(node_list)
+    # Parse connections from workflow.knime
+    input_connection_list = extract_connections(f'{workflow_path}/workflow.knime')
+    # print(input_connection_list)
 
-    connection_list = extract_connections(f'{workflow_path}/workflow.knime')
-    print(connection_list)
-    # sys.exit()
-    
-    infile1 = f'{workflow_path}/CSV Reader (#1)/settings.xml'
-    node1 = extract_from_input_xml(infile1)
-    print(node1)
+    # Parse nodes from workflow.knime
+    input_node_list = extract_nodes(f'{workflow_path}/workflow.knime')
 
-    infile2 = f'{workflow_path}/Table To JSON (#2)/settings.xml'
-    node2 = extract_from_input_xml(infile2)
-    print(node2)
+    # Parse settings.xml for each node in workflow.knime and add to node
+    for node in input_node_list:
+        infile = f'{workflow_path}/{node["filename"]}'
+        node['settings'] = extract_from_input_xml(infile)
+    # print(input_node_list)
 
-    # sys.exit()
-
+    # Create output workflow directory
     workflow_output_path = f'{OUTPUT_PATH}/{workflow_name}'
     if not os.path.exists(workflow_output_path):
         os.makedirs(workflow_output_path)
 
-    template_tree1 = create_node_xml_from_template(node1)
-    save_node_xml(template_tree1, f'{workflow_output_path}/CSV Reader (#1)')
+    # Generate and save XML for nodes in output directory
+    for node in input_node_list:
+        tree = create_node_xml_from_template(node)
+        save_node_xml(tree, f'{workflow_output_path}/{node["filename"]}')
 
-    template_tree2 = create_node_xml_from_template(node2)
-    save_node_xml(template_tree2, f'{workflow_output_path}/Table To JSON (#2)')
-    # sys.exit()
+    # Generate and save workflow.knime in output directory
+    new_workflow_knime = create_workflow_knime_from_template(input_node_list, input_connection_list)
+    save_workflow_knime(new_workflow_knime, workflow_output_path)
 
-    copyfile(f'{workflow_path}/workflow.knime',f'{workflow_output_path}/workflow.knime')
+    # Zip output workflow into .knwf archive
     create_output_workflow(workflow_name)
-    rmtree(f'{workflow_path}')
-    rmtree(f'{OUTPUT_PATH}/{workflow_name}')
+
+    # Clean up input and output directories
+    rmtree(workflow_path)
+    rmtree(workflow_output_path)
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
