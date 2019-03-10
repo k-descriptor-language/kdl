@@ -210,3 +210,5 @@ def create_output_workflow(workflow_name):
     make_archive(workflow_name, 'zip', OUTPUT_PATH)
     base = os.path.splitext(f'{workflow_name}.zip')[0]
     os.rename(f'{workflow_name}.zip', base + '.knwf')
+    rmtree(INPUT_PATH)
+    rmtree(OUTPUT_PATH)

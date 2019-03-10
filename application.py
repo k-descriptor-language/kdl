@@ -55,10 +55,6 @@ def main(argv):
     # Zip output workflow into .knwf archive
     kdlc.create_output_workflow(f'{workflow_name}_new')
 
-    # Clean up input and output directories
-    rmtree(kdlc.INPUT_PATH)
-    rmtree(kdlc.OUTPUT_PATH)
-
 
 if __name__ == "__main__":
     main(sys.argv[1:])
