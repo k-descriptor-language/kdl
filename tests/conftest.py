@@ -1,5 +1,6 @@
 import pytest
 from shutil import rmtree
+from contextlib import suppress
 from .context import kdlc
 
 
@@ -9,5 +10,7 @@ def my_setup(request):
 
     def fin():
         print('\nDoing teardown')
-        rmtree(f'{kdlc.INPUT_PATH}/TestWorkflow')
+        with suppress(FileNotFoundError):
+            rmtree(f'{kdlc.INPUT_PATH}/TestWorkflow')
+            rmtree(f'{kdlc.OUTPUT_PATH}/TestWorkflow')
     request.addfinalizer(fin)
