@@ -8,3 +8,7 @@ Takes input KNIME workflow called "TestWorkflow.knwf", extracts values from the 
 ## Run
 
 `python application.py -i TestWorkflow.knwf`
+
+
+## Test
+`pytest -s`

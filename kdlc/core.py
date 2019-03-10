@@ -1,4 +1,5 @@
-import os, zipfile
+import os
+import zipfile
 from shutil import make_archive
 import xml.etree.ElementTree as ET
 
@@ -12,6 +13,8 @@ CONFIG_TAG = f'{{{NS["knime"]}}}config'
 
 # assumes workflow filename == workflow name
 def unzip_workflow(input_file):
+    if not os.path.exists(INPUT_PATH):
+        os.makedirs(INPUT_PATH)
     zip_ref = zipfile.ZipFile(input_file, 'r')
     zip_ref.extractall(INPUT_PATH)
     zip_ref.close()
@@ -91,7 +94,7 @@ def extract_connections(input_file):
 
 
 def create_node_xml_from_template(node):
-    template = f'{TEMPLATE_PATH}/{node["settings"]["name"]}/settings_no_model.xml'
+    template = f'{TEMPLATE_PATH}/{node["settings"]["name"]}/settings.xml'
     template_tree = ET.parse(template)
     template_root = template_tree.getroot()
     model = template_root.find("./knime:config[@key='model']", NS)
