@@ -42,26 +42,22 @@ def main(argv):
         node['settings'] = kdlc.extract_from_input_xml(infile)
     # print(input_node_list)
 
-    # Create output workflow directory
-    workflow_output_path = f'{kdlc.OUTPUT_PATH}/{workflow_name}'
-    if not os.path.exists(workflow_output_path):
-        os.makedirs(workflow_output_path)
+    # Generate and save workflow.knime in output directory
+    workflow_output_path = f'{kdlc.OUTPUT_PATH}/{workflow_name}_new'
+    new_workflow_knime = kdlc.create_workflow_knime_from_template(input_node_list, input_connection_list)
+    kdlc.save_workflow_knime(new_workflow_knime, workflow_output_path)
 
     # Generate and save XML for nodes in output directory
     for node in input_node_list:
         tree = kdlc.create_node_xml_from_template(node)
         kdlc.save_node_xml(tree, f'{workflow_output_path}/{node["filename"]}')
 
-    # Generate and save workflow.knime in output directory
-    new_workflow_knime = kdlc.create_workflow_knime_from_template(input_node_list, input_connection_list)
-    kdlc.save_workflow_knime(new_workflow_knime, workflow_output_path)
-
     # Zip output workflow into .knwf archive
-    kdlc.create_output_workflow(workflow_name)
+    kdlc.create_output_workflow(f'{workflow_name}_new')
 
     # Clean up input and output directories
-    rmtree(workflow_path)
-    rmtree(workflow_output_path)
+    rmtree(kdlc.INPUT_PATH)
+    rmtree(kdlc.OUTPUT_PATH)
 
 
 if __name__ == "__main__":
