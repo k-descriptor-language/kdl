@@ -11,6 +11,6 @@ def my_setup(request):
     def fin():
         print('\nDoing teardown')
         with suppress(FileNotFoundError):
-            rmtree(f'{kdlc.INPUT_PATH}/TestWorkflow')
-            rmtree(f'{kdlc.OUTPUT_PATH}/TestWorkflow')
+            rmtree(f'{kdlc.INPUT_PATH}')
+            rmtree(f'{kdlc.OUTPUT_PATH}')
     request.addfinalizer(fin)
