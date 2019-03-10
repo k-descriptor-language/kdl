@@ -1,6 +1,6 @@
 import os
 import zipfile
-from shutil import make_archive
+from shutil import make_archive, rmtree
 import xml.etree.ElementTree as ET
 
 INPUT_PATH = 'input'
@@ -11,14 +11,17 @@ ENTRY_TAG = f'{{{NS["knime"]}}}entry'
 CONFIG_TAG = f'{{{NS["knime"]}}}config'
 
 
-# assumes workflow filename == workflow name
 def unzip_workflow(input_file):
     if not os.path.exists(INPUT_PATH):
         os.makedirs(INPUT_PATH)
+    else:
+        rmtree(INPUT_PATH)
+        os.makedirs(INPUT_PATH)
+
     zip_ref = zipfile.ZipFile(input_file, 'r')
     zip_ref.extractall(INPUT_PATH)
     zip_ref.close()
-    return os.path.splitext(input_file)[0]
+    return os.listdir(INPUT_PATH).pop()
 
 
 def extract_from_input_xml(input_file):
@@ -196,15 +199,14 @@ def save_node_xml(tree, output_path):
 
 
 def save_workflow_knime(tree, output_path):
-    output_dir = os.path.dirname(output_path)
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
 
     ET.register_namespace('', NS['knime'])
     tree.write(f'{output_path}/workflow.knime', xml_declaration=True, encoding='UTF-8')
 
 
 def create_output_workflow(workflow_name):
-    make_archive(f'{workflow_name}_new', 'zip', OUTPUT_PATH)
-    base = os.path.splitext(f'{workflow_name}_new.zip')[0]
-    os.rename(f'{workflow_name}_new.zip', base + '.knwf')
+    make_archive(workflow_name, 'zip', OUTPUT_PATH)
+    base = os.path.splitext(f'{workflow_name}.zip')[0]
+    os.rename(f'{workflow_name}.zip', base + '.knwf')
