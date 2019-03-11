@@ -17,6 +17,14 @@ CONFIG_TAG = f'{{{NS["knime"]}}}config'
 
 
 def unzip_workflow(input_file):
+    """Unzips the provided workflow archive and returns the folder with the workflow definitions
+
+    Args:
+        input_file (str): Name of the workflow archive
+
+    Returns:
+        str: Name of the workflow folder
+    """
     if not os.path.exists(INPUT_PATH):
         os.makedirs(INPUT_PATH)
     else:
@@ -30,6 +38,14 @@ def unzip_workflow(input_file):
 
 
 def extract_from_input_xml(input_file):
+    """Parses the provided input file and returns a populated dict with associated values
+
+    Args:
+        input_file (str): XML file containing a node definition
+
+    Returns:
+        dict: Dict populated with values extracted from provided input file
+    """
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()
     node = dict()
@@ -55,6 +71,14 @@ def extract_from_input_xml(input_file):
 
 
 def extract_entry_tag(tree):
+    """Extracts the entry tag from the provided tree
+
+    Args:
+        tree (ElementTree): The tree to extract entry tag from
+
+    Returns:
+        dict: Dict containing the entry tag definition        
+    """
     entry = {tree.attrib['key']: tree.attrib['value'],
              'type': tree.attrib['type']}
     if 'isnull' in tree.attrib:
@@ -63,6 +87,14 @@ def extract_entry_tag(tree):
 
 
 def extract_config_tag(tree):
+    """Extracts the config tag from the provided tree
+
+    Args:
+        tree (ElementTree): The tree to extract the config tag from
+
+    Returns:
+        dict: Dict containing the config tag definition
+    """
     config_value = list()
     for child in tree.findall("./*", NS):
         if child.tag == ENTRY_TAG:
@@ -76,6 +108,14 @@ def extract_config_tag(tree):
 
 
 def extract_nodes(input_file):
+    """Extracts the list of nodes from the provided KNIME workflow 
+
+    Args:
+        input_file (str): XML file containing a KNIME workflow 
+
+    Returns:
+        list: The list of nodes within the KNIME workflow
+    """
     node_list = list()
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()
@@ -90,6 +130,14 @@ def extract_nodes(input_file):
 
 
 def extract_connections(input_file):
+    """Extracts a list of connections from the provided KNIME workflow
+
+    Args:
+        input_file (str): XML file containing a KNIME workflow
+
+    Returns:
+        list: The list of connections within the KNIME workflow
+    """
     connection_list = list()
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()
@@ -109,6 +157,14 @@ def extract_connections(input_file):
 
 
 def create_node_xml_from_template(node):
+    """Creates an ElementTree with the provided node definition
+
+    Args:
+        node (dict): Node definition
+
+    Returns:
+        ElementTree: ElementTree populated with the provided node definition
+    """
     template = jinja_env.get_template('settings_template.xml')
     template_root = ET.fromstring(template.render(node=node))
     model = template_root.find("./knime:config[@key='model']", NS)
@@ -123,12 +179,29 @@ def create_node_xml_from_template(node):
 
 
 def create_workflow_knime_from_template(node_list, connection_list):
+    """Creates an ElementTree with the provided node list and connection list
+
+    Args:
+        node_list (list): List of node definitions
+        connection_list (list): List of connections amongst nodes
+
+    Returns:
+        ElementTree: ElementTree populated with nodes and their associated connections
+    """
     template = jinja_env.get_template('workflow_template.xml')
     data = {'nodes': node_list, 'connections': connection_list}
     return ET.ElementTree(ET.fromstring(template.render(data)))
 
 
 def create_entry_element(entry):
+    """Creates an Element based on the provided entry definition
+
+    Args:
+        entry (dict): Entry definition
+
+    Returns:
+        Element: Element populated with the entry definition
+    """
     entry_key = list(entry.keys())[0]
     entry_value = entry[entry_key]
     entry_type = entry['type']
@@ -139,6 +212,14 @@ def create_entry_element(entry):
 
 
 def create_config_element(config):
+    """Create an Element based on the provided config definition
+
+    Args:
+        config (dict): Config definition
+
+    Returns:
+        Element: Element populated with the config definition
+    """
     config_key = list(config.keys())[0]
     config_values = config[config_key]
     config_elt = ET.Element('config', key=config_key)
@@ -153,6 +234,12 @@ def create_config_element(config):
 
 
 def save_node_xml(tree, output_path):
+    """Writes the provided tree to the provided output path
+
+    Args:
+        tree (ElementTree): Populated ElementTree
+        output_path (str): Location to write the tree too
+    """
     output_dir = os.path.dirname(output_path)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -162,6 +249,12 @@ def save_node_xml(tree, output_path):
 
 
 def save_workflow_knime(tree, output_path):
+    """Writes the provided tree containing a KNIME workflow to the provided output path
+
+    Args:
+        tree (ElementTree): Populated ElementTree containing a KNIME workflow
+        output_path (str): Location to write the tree too
+    """
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
@@ -170,6 +263,11 @@ def save_workflow_knime(tree, output_path):
 
 
 def create_output_workflow(workflow_name):
+    """Bundles the provided workflow into a knwf archive
+
+    Args:
+        workflow_name (str): Workflow directory to archive
+    """
     make_archive(workflow_name, 'zip', OUTPUT_PATH)
     base = os.path.splitext(f'{workflow_name}.zip')[0]
     os.rename(f'{workflow_name}.zip', base + '.knwf')
