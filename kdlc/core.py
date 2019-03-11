@@ -125,8 +125,7 @@ def create_node_xml_from_template(node):
 def create_workflow_knime_from_template(node_list, connection_list):
     template = jinja_env.get_template('workflow_template.xml')
     data = {'nodes': node_list, 'connections': connection_list}
-    template_tree = ET.ElementTree(ET.fromstring(template.render(data)))
-    return template_tree
+    return ET.ElementTree(ET.fromstring(template.render(data)))
 
 
 def create_entry_element(entry):
