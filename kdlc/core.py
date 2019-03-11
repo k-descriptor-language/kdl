@@ -2,10 +2,15 @@ import os
 import zipfile
 from shutil import make_archive, rmtree
 import xml.etree.ElementTree as ET
+from jinja2 import Environment, PackageLoader, select_autoescape
+
+jinja_env = Environment(
+    loader=PackageLoader('kdlc', 'templates'),
+    autoescape=select_autoescape(['html', 'xml'])
+)
 
 INPUT_PATH = 'input'
 OUTPUT_PATH = 'output'
-TEMPLATE_PATH = 'templates'
 NS = {'knime': 'http://www.knime.org/2008/09/XMLConfig'}
 ENTRY_TAG = f'{{{NS["knime"]}}}entry'
 CONFIG_TAG = f'{{{NS["knime"]}}}config'
@@ -29,6 +34,13 @@ def extract_from_input_xml(input_file):
     root = base_tree.getroot()
     node = dict()
     node['name'] = root.find("./knime:entry[@key='name']", NS).attrib['value']
+    node['factory'] = root.find("./knime:entry[@key='factory']", NS).attrib['value']
+    node['bundle_name'] = root.find("./knime:entry[@key='node-bundle-name']", NS).attrib['value']
+    node['bundle_symbolic_name'] = root.find("./knime:entry[@key='node-bundle-symbolic-name']", NS).attrib['value']
+    node['bundle_version'] = root.find("./knime:entry[@key='node-bundle-version']", NS).attrib['value']
+    node['feature_name'] = root.find("./knime:entry[@key='node-feature-name']", NS).attrib['value']
+    node['feature_symbolic_name'] = root.find("./knime:entry[@key='node-feature-symbolic-name']", NS).attrib['value']
+    node['feature_version'] = root.find("./knime:entry[@key='node-feature-version']", NS).attrib['value']
     model = list()
     for child in root.findall("./knime:config[@key='model']/*", NS):
         if child.tag == ENTRY_TAG:
@@ -97,9 +109,8 @@ def extract_connections(input_file):
 
 
 def create_node_xml_from_template(node):
-    template = f'{TEMPLATE_PATH}/{node["settings"]["name"]}/settings.xml'
-    template_tree = ET.parse(template)
-    template_root = template_tree.getroot()
+    template = jinja_env.get_template('settings_template.xml')
+    template_root = ET.fromstring(template.render(node=node))
     model = template_root.find("./knime:config[@key='model']", NS)
     for curr in node['settings']['model']:
         if curr['type'] == 'config':
@@ -108,22 +119,13 @@ def create_node_xml_from_template(node):
         else:
             entry = create_entry_element(curr)
             model.append(entry)
-    return template_tree
+    return ET.ElementTree(template_root)
 
 
 def create_workflow_knime_from_template(node_list, connection_list):
-    template = f'{TEMPLATE_PATH}/workflow.knime'
-    template_tree = ET.parse(template)
-    template_root = template_tree.getroot()
-    nodes = template_root.find("./knime:config[@key='nodes']", NS)
-    for node in node_list:
-        node_tree = create_node_element(node)
-        nodes.append(node_tree)
-
-    connections = template_root.find("./knime:config[@key='connections']", NS)
-    for connection in connection_list:
-        connection_tree = create_connection_element(connection)
-        connections.append(connection_tree)
+    template = jinja_env.get_template('workflow_template.xml')
+    data = {'nodes': node_list, 'connections': connection_list}
+    template_tree = ET.ElementTree(ET.fromstring(template.render(data)))
     return template_tree
 
 
@@ -148,44 +150,6 @@ def create_config_element(config):
         else:
             child_entry = create_entry_element(value)
             config_elt.append(child_entry)
-    return config_elt
-
-
-def create_node_element(node):
-    config_elt = ET.Element('config', key=f'node_{node["id"]}')
-    ET.SubElement(config_elt, 'entry', key="id", type="xint", value=node["id"])
-    ET.SubElement(config_elt, 'entry', key="node_settings_file", type="xstring", value=node["filename"])
-    ET.SubElement(config_elt, 'entry', key="node_is_meta", type="xboolean", value="false")
-    ET.SubElement(config_elt, 'entry', key="node_type", type="xstring", value="NativeNode")
-    ET.SubElement(config_elt, 'entry', key="ui_classname", type="xstring",
-                  value="org.knime.core.node.workflow.NodeUIInformation")
-    config_elt.append(create_node_ui_settings())
-    return config_elt
-
-
-def create_node_ui_settings():
-    ui_settings = ET.Element('config', key="ui_settings")
-    bounds = ET.Element('config', key="extrainfo.node.bounds")
-    ET.SubElement(bounds, 'entry', key='array-size', type='xint', value='4')
-    ET.SubElement(bounds, 'entry', key='0', type='xint', value='0')
-    ET.SubElement(bounds, 'entry', key='1', type='xint', value='0')
-    ET.SubElement(bounds, 'entry', key='2', type='xint', value='0')
-    ET.SubElement(bounds, 'entry', key='3', type='xint', value='0')
-    ui_settings.append(bounds)
-    return ui_settings
-
-
-def create_connection_element(connection):
-    config_elt = ET.Element('config', key=f'connection_{connection["id"]}')
-    ET.SubElement(config_elt, 'entry', key='sourceID', type='xint', value=connection['source_id'])
-    ET.SubElement(config_elt, 'entry', key='destID', type='xint', value=connection['dest_id'])
-    ET.SubElement(config_elt, 'entry', key='sourcePort', type='xint', value=connection['source_port'])
-    ET.SubElement(config_elt, 'entry', key='destPort', type='xint', value=connection['dest_port'])
-    ET.SubElement(config_elt, 'entry', key="ui_classname", type="xstring",
-                  value="org.knime.core.node.workflow.ConnectionUIInformation")
-    ui_settings = ET.Element('config', key="ui_settings")
-    ET.SubElement(ui_settings, 'entry', key='extrainfo.conn.bendpoints_size', type='xint', value='0')
-    config_elt.append(ui_settings)
     return config_elt
 
 
