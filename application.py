@@ -1,7 +1,5 @@
 import sys
-import os
 import getopt
-from shutil import rmtree
 
 import kdlc
 
