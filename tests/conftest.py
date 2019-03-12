@@ -10,7 +10,6 @@ def my_setup(request):
 
     def fin():
         print('\nDoing teardown')
-        with suppress(FileNotFoundError):
-            rmtree(f'{kdlc.INPUT_PATH}')
-            rmtree(f'{kdlc.OUTPUT_PATH}')
+        kdlc.TMP_INPUT_DIR.cleanup()
+        kdlc.TMP_OUTPUT_DIR.cleanup()
     request.addfinalizer(fin)
