@@ -11,7 +11,7 @@
 <entry key="lastEdited-when" type="xstring" value="2019-03-02 23:15:32 -0500"/>
 </config>
 <entry key="customDescription" type="xstring" isnull="true" value=""/>
-<entry key="state" type="xstring" value="EXECUTED"/>
+<entry key="state" type="xstring" value="CONFIGURED"/>
 <config key="workflow_credentials"/>
 <config key="nodes">
     {% for node in nodes %}

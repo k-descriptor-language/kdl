@@ -3,14 +3,18 @@ import zipfile
 from shutil import make_archive, rmtree
 import xml.etree.ElementTree as ET
 from jinja2 import Environment, PackageLoader, select_autoescape
+import tempfile
 
 jinja_env = Environment(
     loader=PackageLoader('kdlc', 'templates'),
     autoescape=select_autoescape(['html', 'xml'])
 )
 
-INPUT_PATH = 'input'
-OUTPUT_PATH = 'output'
+TMP_INPUT_DIR = tempfile.TemporaryDirectory()
+INPUT_PATH = TMP_INPUT_DIR.name
+TMP_OUTPUT_DIR = tempfile.TemporaryDirectory()
+OUTPUT_PATH = TMP_OUTPUT_DIR.name
+
 NS = {'knime': 'http://www.knime.org/2008/09/XMLConfig'}
 ENTRY_TAG = f'{{{NS["knime"]}}}entry'
 CONFIG_TAG = f'{{{NS["knime"]}}}config'
@@ -25,11 +29,6 @@ def unzip_workflow(input_file):
     Returns:
         str: Name of the workflow folder
     """
-    if not os.path.exists(INPUT_PATH):
-        os.makedirs(INPUT_PATH)
-    else:
-        rmtree(INPUT_PATH)
-        os.makedirs(INPUT_PATH)
 
     zip_ref = zipfile.ZipFile(input_file, 'r')
     zip_ref.extractall(INPUT_PATH)
@@ -156,7 +155,7 @@ def extract_connections(input_file):
     return connection_list
 
 
-def create_node_xml_from_template(node):
+def create_node_settings_from_template(node):
     """Creates an ElementTree with the provided node definition
 
     Args:
@@ -233,7 +232,7 @@ def create_config_element(config):
     return config_elt
 
 
-def save_node_xml(tree, output_path):
+def save_node_settings_xml(tree, output_path):
     """Writes the provided tree to the provided output path
 
     Args:
@@ -271,5 +270,5 @@ def create_output_workflow(workflow_name):
     make_archive(workflow_name, 'zip', OUTPUT_PATH)
     base = os.path.splitext(f'{workflow_name}.zip')[0]
     os.rename(f'{workflow_name}.zip', base + '.knwf')
-    rmtree(INPUT_PATH)
-    rmtree(OUTPUT_PATH)
+    TMP_INPUT_DIR.cleanup()
+    TMP_OUTPUT_DIR.cleanup()
