@@ -1,6 +1,7 @@
 # kdl-poc
 
 [![Build Status](https://travis-ci.com/knime-dsl/kdl.svg?branch=master)](https://travis-ci.com/knime-dsl/kdl)
+[![codecov](https://codecov.io/gh/knime-dsl/kdl/branch/master/graph/badge.svg)](https://codecov.io/gh/knime-dsl/kdl)
 
 Takes input KNIME workflow called "TestWorkflow.knwf", extracts values from the CSV Reader node and generates new workflow "TestWorkflow_new.knwf" using template file
 
