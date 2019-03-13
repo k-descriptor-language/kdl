@@ -29,7 +29,7 @@ setup(name='kdlc',
       entry_points={
           'console_scripts': ['kdlc=kdlc.application:main'],
       },
-      install_requires=['jinja2', 'pytest', 'pytest-cov', 'codecov'],
+      install_requires=['jinja2', 'pytest', 'pytest-cov', 'codecov', 'flake8'],
       package_data={'kdlc': ['templates/*.xml']},
       include_package_data=True,
      )
