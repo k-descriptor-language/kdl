@@ -1,4 +1,8 @@
 from .core import (
+    TMP_INPUT_DIR,
+    INPUT_PATH,
+    TMP_OUTPUT_DIR,
+    OUTPUT_PATH,
     unzip_workflow,
     extract_from_input_xml,
     extract_entry_tag,
@@ -17,6 +21,10 @@ from .core import (
 from .application import main
 
 __all__ = [
+    "TMP_INPUT_DIR",
+    "INPUT_PATH",
+    "TMP_OUTPUT_DIR",
+    "OUTPUT_PATH",
     "unzip_workflow",
     "extract_from_input_xml",
     "extract_entry_tag",

@@ -1,5 +1,7 @@
 import pytest
-from .context import kdlc
+import kdlc
+
+# from .context import kdlc
 
 
 @pytest.fixture(scope="session")

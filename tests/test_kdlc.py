@@ -1,6 +1,8 @@
 import os
 
-from .context import kdlc
+# from .context import kdlc
+
+import kdlc
 
 
 def test_unzip_workflow(my_setup):
