@@ -1,15 +1,16 @@
 import pytest
-from shutil import rmtree
-from contextlib import suppress
-from .context import kdlc
+import kdlc
+
+# from .context import kdlc
 
 
 @pytest.fixture(scope="session")
 def my_setup(request):
-    print('\nDoing setup')
+    print("\nDoing setup")
 
     def fin():
-        print('\nDoing teardown')
+        print("\nDoing teardown")
         kdlc.TMP_INPUT_DIR.cleanup()
         kdlc.TMP_OUTPUT_DIR.cleanup()
+
     request.addfinalizer(fin)
