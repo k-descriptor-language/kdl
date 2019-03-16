@@ -1,14 +1,14 @@
 dist: xenial
 language: python
 python: 3.7
-
 install:
-  - pip install -r requirements.txt
-
+- pip install -r requirements.txt
 script:
-  - flake8 kdlc/ tests/ setup.py
-  - black --check kdlc tests setup.py
-  - pytest --cov=./
-
+- flake8 kdlc/ tests/ setup.py
+- black --check kdlc tests setup.py
+- pytest --cov=./
 after_success:
-  - codecov
+- codecov
+notifications:
+  slack:
+    secure: I9JUkinhC793xldk38iEgiryfmxU/DXAvNnOvygEMowfN3DXYxApM8QM6QOrAewACYSLo4Keyf9H5epL67QOFatE2q8WLnokhp92NZ2RzGGtCrPTLBnynw42tNZymmenkc63KjC7cNolZnJfYwPkQASrRv/9urZutBKpc+LZxzU/1xrsiFy7zJCaT6E9w5SQzmlK4VtxqXoYZUsDY0P5mBtyfNE7K/WRdxaB2dSJ1PuuYxR6f4DjRP+QBVdvWN/oX+F+Fj8oBm7tsKNz+eaEFHebthCU1vz4iqI5NSnLAjt6+zTQR5NpMhIZ1Vt6FJh7wEe4+c4zM1oknYQmK+dRmnPgrc3Qd7ngO1UflwikJctJUHi1vtdqSljt1/btRVTpnvScJ1GVgTnkM5XzzMlQXoksuOamIy2n4hwNNAkFQ95PFAZocArLnvr3eZCSG+iU78lyVdJA4aNx8Prt5Gcx1cK9lZQklbPoHQiHRqVQXXj6ESlWamQ9k2ouKZJkrXAGZ+zAS6Ky1Lumau0YDcRu3yzb/qWUHKFBxEt71Lzk1zvY0Msr2EZ6rIGKMRkmBNJvEEVjDNRdN446OH9wUwhIaue2gmWcNupetYKeixQW8Jm6Ef8PCVpE0PhK3jqOI+pofMA8Gx9Lz7+SqQlgdDNIw3zOuUTj92yBKfaaSQEx5eM=
