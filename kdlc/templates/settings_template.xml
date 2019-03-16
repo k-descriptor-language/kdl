@@ -5,7 +5,34 @@
 <config key="internal_node_subsettings">
 <entry key="memory_policy" type="xstring" value="CacheSmallInMemory"/>
 </config>
-<config key="model"/>
+<config key="model">
+    {% for item in model recursive %}
+    {% if item.type=="config" %}
+        {% set config_items = {} %}
+        {% for key, value in item.items() %}
+            {% if key=="type" %}
+            {% else %}
+                {% do config_items.update({"key": key}) %}
+                {% do config_items.update({"value": value}) %}
+            {% endif %}
+        {% endfor %}
+        <config key="{{config_items['key']}}">
+        {{ loop (config_items['value']) }}
+        </config>
+    {% else %}
+        {% set entry_items = {} %}
+        {% for key, value in item.items() %}
+            {% if key=="type" %}
+                {% do entry_items.update({"type": value}) %}
+            {% else %}
+                {% do entry_items.update({"key": key}) %}
+                {% do entry_items.update({"value": value}) %}
+            {% endif %}
+        {% endfor %}
+        <entry key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}" />
+    {% endif %}
+    {% endfor %}
+</config>
 <entry key="customDescription" type="xstring" isnull="true" value=""/>
 <entry key="state" type="xstring" value="CONFIGURED"/>
 <entry key="factory" type="xstring" value="{{ node.settings.factory }}"/>
