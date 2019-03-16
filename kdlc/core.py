@@ -8,6 +8,9 @@ import tempfile
 jinja_env = Environment(
     loader=PackageLoader("kdlc", "templates"),
     autoescape=select_autoescape(["html", "xml"]),
+    extensions=["jinja2.ext.do"]
+    # trim_blocks=True,
+    # lstrip_blocks=True
 )
 
 TMP_INPUT_DIR = tempfile.TemporaryDirectory()
@@ -95,7 +98,33 @@ def extract_entry_tag(tree):
     Returns:
         dict: Dict containing the entry tag definition
     """
-    entry = {tree.attrib["key"]: tree.attrib["value"], "type": tree.attrib["type"]}
+    if tree.attrib["type"] == "xstring":
+        entry = {tree.attrib["key"]: tree.attrib["value"]}
+    elif tree.attrib["type"] == "xboolean":
+        if tree.attrib["value"] == "true":
+            entry = {tree.attrib["key"]: True}
+        else:
+            entry = {tree.attrib["key"]: False}
+    elif tree.attrib["type"] == "xint":
+        entry = {tree.attrib["key"]: int(tree.attrib["value"])}
+    elif tree.attrib["type"] in ["xlong", "xshort"]:
+        entry = {
+            tree.attrib["key"]: int(tree.attrib["value"]),
+            "data_type": tree.attrib["type"],
+        }
+    elif tree.attrib["type"] in ["xfloat"]:
+        entry = {tree.attrib["key"]: float(tree.attrib["value"])}
+    elif tree.attrib["type"] in ["xdouble"]:
+        entry = {
+            tree.attrib["key"]: float(tree.attrib["value"]),
+            "data_type": tree.attrib["type"],
+        }
+    elif tree.attrib["type"] in ["xchar", "xbyte"]:
+        entry = {
+            tree.attrib["key"]: tree.attrib["value"],
+            "data_type": tree.attrib["type"],
+        }
+
     if "isnull" in tree.attrib:
         entry["isnull"] = True
     return entry
@@ -119,7 +148,7 @@ def extract_config_tag(tree):
         elif child.tag == CONFIG_TAG:
             config = extract_config_tag(child)
             config_value.append(config)
-    config = {tree.attrib["key"]: config_value, "type": "config"}
+    config = {tree.attrib["key"]: config_value}
     return config
 
 
@@ -188,16 +217,17 @@ def create_node_settings_from_template(node):
     Returns:
         ElementTree: ElementTree populated with the provided node definition
     """
+
     template = jinja_env.get_template("settings_template.xml")
-    template_root = ET.fromstring(template.render(node=node))
-    model = template_root.find("./knime:config[@key='model']", NS)
-    for curr in node["settings"]["model"]:
-        if curr["type"] == "config":
-            config = create_config_element(curr)
-            model.append(config)
+    model = node["settings"]["model"]
+    for value in model:
+        k = list(value.keys())[0]
+        v = value[k]
+        if type(v) is list:
+            set_config_element_type(value)
         else:
-            entry = create_entry_element(curr)
-            model.append(entry)
+            set_entry_element_type(value)
+    template_root = ET.fromstring(template.render(node=node, model=model))
     return ET.ElementTree(template_root)
 
 
@@ -218,51 +248,56 @@ def create_workflow_knime_from_template(node_list, connection_list):
     return ET.ElementTree(ET.fromstring(template.render(data)))
 
 
-def create_entry_element(entry):
+def set_entry_element_type(entry):
     """
-    Creates an Element based on the provided entry definition
+    Sets an entry Element's type and value based on the provided entry definition
 
     Args:
         entry (dict): Entry definition
 
-    Returns:
-        Element: Element populated with the entry definition
     """
     entry_key = list(entry.keys())[0]
-    entry_value = entry[entry_key]
-    entry_type = entry["type"]
-    entry_elt = ET.Element("entry", key=entry_key, type=entry_type, value=entry_value)
+    entry_type = type(entry[entry_key])
+    entry_value = str(entry[entry_key])
+    if "data_type" in entry:
+        entry_type = entry["data_type"]
+    elif entry_type is int:
+        entry_type = "xint"
+    elif entry_type is float:
+        entry_type = "xfloat"
+    elif entry_type is bool:
+        entry_value = entry_value.lower()
+        entry_type = "xboolean"
+    elif entry_type is str:
+        entry_type = "xstring"
+    entry["type"] = entry_type
+    entry[entry_key] = entry_value
     if "isnull" in entry:
-        entry_elt.attrib["isnull"] = "true"
-    return entry_elt
+        entry["isnull"] = "true"
 
 
-def create_config_element(config):
+def set_config_element_type(config):
     """
-    Create an Element based on the provided config definition
+    Sets a config Element's type based on the provided config definition
 
     Args:
         config (dict): Config definition
 
-    Returns:
-        Element: Element populated with the config definition
     """
     config_key = list(config.keys())[0]
     config_values = config[config_key]
-    config_elt = ET.Element("config", key=config_key)
+    config["type"] = "config"
     for value in config_values:
-        if value["type"] == "config":
-            child_config = create_config_element(value)
-            config_elt.append(child_config)
+        k = list(value.keys())[0]
+        v = value[k]
+        if type(v) is list:
+            set_config_element_type(value)
         else:
-            child_entry = create_entry_element(value)
-            config_elt.append(child_entry)
-    return config_elt
+            set_entry_element_type(value)
 
 
 def save_node_settings_xml(tree, output_path):
-    """
-    Writes the provided tree to the provided output path
+    """Writes the provided tree to the provided output path
 
     Args:
         tree (ElementTree): Populated ElementTree
@@ -301,5 +336,13 @@ def create_output_workflow(workflow_name):
     make_archive(workflow_name, "zip", OUTPUT_PATH)
     base = os.path.splitext(f"{workflow_name}.zip")[0]
     os.rename(f"{workflow_name}.zip", base + ".knwf")
+    cleanup()
+
+
+def cleanup():
+    """
+    Cleans up temp directories
+
+    """
     TMP_INPUT_DIR.cleanup()
     TMP_OUTPUT_DIR.cleanup()

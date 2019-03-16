@@ -1,14 +1,15 @@
 import sys
 import os
 import getopt
-
+import json
+import jsonschema
 import kdlc
 
 
 def main():
     argv = sys.argv[1:]
     if len(argv) <= 2:
-        print("kdlc -i <input_file>")
+        print("kdlc -i <input_file> -o <output_file>")
         sys.exit(2)
 
     input_file = ""
@@ -33,7 +34,7 @@ def main():
 
     # Validate input arguments
     if output_file == "" or input_file == "":
-        print("kdlc -i <input_file> -o <output_wf_name>")
+        print("kdlc -i <input_file> -o <output_file>")
         sys.exit()
     if not (
         os.path.isfile(input_file)
@@ -62,10 +63,9 @@ def main():
     for node in input_node_list:
         infile = f'{input_workflow_path}/{node["filename"]}'
         node["settings"] = kdlc.extract_from_input_xml(infile)
-    # print(input_node_list)
 
     # Generate and save workflow.knime in output directory
-    output_workflow_name = f"{input_workflow_name}_new"
+    output_workflow_name = f"{os.path.splitext(output_file)[0]}"
     output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_workflow_name}"
 
     output_workflow_knime = kdlc.create_workflow_knime_from_template(
@@ -75,6 +75,28 @@ def main():
 
     # Generate and save XML for nodes in output directory
     for node in input_node_list:
+        # POC for JSON validation, uncomment below to test diff scenarios
+        if node["settings"]["name"] == "CSV Reader":
+            # empty url
+            # node["settings"]["model"][0]["url"] = ""
+            # no url entry
+            # node["settings"]["model"].pop(0)
+            # update url
+            node["settings"]["model"][0]["url"] = "/path/to/other/file.csv"
+        try:
+            schema = open(
+                f"kdlc/json_schemas/{node['settings']['name']}_schema.json"
+            ).read()
+            jsonschema.validate(instance=node["settings"], schema=json.loads(schema))
+        except jsonschema.ValidationError as e:
+            print(e.message)
+            kdlc.cleanup()
+            sys.exit(1)
+        except jsonschema.SchemaError as e:
+            print(e.message)
+            kdlc.cleanup()
+            sys.exit(1)
+
         tree = kdlc.create_node_settings_from_template(node)
         kdlc.save_node_settings_xml(tree, f'{output_workflow_path}/{node["filename"]}')
 

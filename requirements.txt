@@ -1,4 +1,5 @@
 jinja2
+jsonschema
 pytest
 pytest-cov
 codecov
