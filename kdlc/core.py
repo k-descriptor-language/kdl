@@ -8,6 +8,7 @@ import tempfile
 jinja_env = Environment(
     loader=PackageLoader("kdlc", "templates"),
     autoescape=select_autoescape(["html", "xml"]),
+    extensions=["jinja2.ext.do"],
 )
 
 TMP_INPUT_DIR = tempfile.TemporaryDirectory()
@@ -189,15 +190,8 @@ def create_node_settings_from_template(node):
         ElementTree: ElementTree populated with the provided node definition
     """
     template = jinja_env.get_template("settings_template.xml")
-    template_root = ET.fromstring(template.render(node=node))
-    model = template_root.find("./knime:config[@key='model']", NS)
-    for curr in node["settings"]["model"]:
-        if curr["type"] == "config":
-            config = create_config_element(curr)
-            model.append(config)
-        else:
-            entry = create_entry_element(curr)
-            model.append(entry)
+    model = node["settings"]["model"]
+    template_root = ET.fromstring(template.render(node=node, model=model))
     return ET.ElementTree(template_root)
 
 
@@ -218,51 +212,8 @@ def create_workflow_knime_from_template(node_list, connection_list):
     return ET.ElementTree(ET.fromstring(template.render(data)))
 
 
-def create_entry_element(entry):
-    """
-    Creates an Element based on the provided entry definition
-
-    Args:
-        entry (dict): Entry definition
-
-    Returns:
-        Element: Element populated with the entry definition
-    """
-    entry_key = list(entry.keys())[0]
-    entry_value = entry[entry_key]
-    entry_type = entry["type"]
-    entry_elt = ET.Element("entry", key=entry_key, type=entry_type, value=entry_value)
-    if "isnull" in entry:
-        entry_elt.attrib["isnull"] = "true"
-    return entry_elt
-
-
-def create_config_element(config):
-    """
-    Create an Element based on the provided config definition
-
-    Args:
-        config (dict): Config definition
-
-    Returns:
-        Element: Element populated with the config definition
-    """
-    config_key = list(config.keys())[0]
-    config_values = config[config_key]
-    config_elt = ET.Element("config", key=config_key)
-    for value in config_values:
-        if value["type"] == "config":
-            child_config = create_config_element(value)
-            config_elt.append(child_config)
-        else:
-            child_entry = create_entry_element(value)
-            config_elt.append(child_entry)
-    return config_elt
-
-
 def save_node_settings_xml(tree, output_path):
-    """
-    Writes the provided tree to the provided output path
+    """Writes the provided tree to the provided output path
 
     Args:
         tree (ElementTree): Populated ElementTree
