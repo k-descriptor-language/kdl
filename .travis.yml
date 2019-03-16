@@ -12,3 +12,10 @@ after_success:
 notifications:
   slack:
     secure: vne3Cmz7gA6SPgNArc2jlM2ifKWchTXR7jx/7BE7VifX/ombeYKNG6T0zdR6NOC0F6ofTY5pVDHS2tdkYt2YYA/jAsWdwLbLirjifBsWZ9J8x+NrRqiZYdZgQ42pud0tahh9IsbiUMLrDfJWq+UN8jsbv2eECuONFR/mw2KDauviPm8/8QPoDx137o9bdeAswD/CENomMlJE2Fw/PpMa6R/0n0+ZOzjMoNkllrT6HJ/iBmVbhrYlq8o5iaQ6KXCk7pgTOPjZHju62fmQb5nUcLfuFKg91gM6n9K6m3XQefpl1WBAvw/cVVqpxFaWnMs4PMbqMTTBoUbcyjeWVjPwH0/wUmVvziqHBk+fPx2mPr/QAaz11BOyVZg6qcFtouZiRE5YhBH+O9hOTjnCGDcMqWnB8AfYATFKJ2irwnbhTIUflq4PPQaTMO1FMT6GpXlmHKo1KFXdLoM55t/W0pnZwMF+VAZ5Gz8Y0Jz1orpGwcE2LCmM4FKhoeQP+umlGRkl4sjoE/01XyrQNKGL34GIQkIh/6UDnDbMkKgz3noor9mtb7+OJ1rMJlZUDmaL/tP06nKj4UdHeER5kUDHRJQIR2310fC3Z+9PGT0GkcJK6w/exyf/SqH+rkoa2i61reu9eI01frnDnqI4lkf4RZ4cIvytSEOhxMmRFGCr4n9GdPg=
+    on_success: always
+    on_failure: always
+    template:
+      - "Build (<%{build_url}|#%{build_number}>) *%{result}* on branch `%{branch}` with commit (<%{compare_url}|%{commit}>)."
+      - "Author: %{author}"
+      - "Execution time: *%{duration}*"
+      - "Message: %{message}"
