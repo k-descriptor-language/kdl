@@ -1,6 +1,7 @@
 import os
 import kdlc
 import xml.etree.ElementTree as ET
+import filecmp
 
 test_resources_dir = os.path.dirname(__file__) + "/resources/"
 
@@ -173,3 +174,17 @@ def test_create_workflow_knime_from_template(my_setup):
     result_flattened = [i.tag for i in result.iter()]
 
     assert result_flattened == expected_result_flattened
+
+
+def test_save_node_settings_xml(my_setup):
+    tree = ET.parse(f"{test_resources_dir}/settings.xml")
+    kdlc.save_node_settings_xml(tree, "generated/settings.xml")
+    assert filecmp.cmp(f"{test_resources_dir}/settings.xml", "generated/settings.xml")
+
+
+def test_save_workflow_knime(my_setup):
+    tree = ET.parse(f"{test_resources_dir}/workflow.knime")
+    kdlc.save_workflow_knime(tree, "generated")
+    assert filecmp.cmp(
+        f"{test_resources_dir}/workflow.knime", "generated/workflow.knime"
+    )
