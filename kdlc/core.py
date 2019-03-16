@@ -6,11 +6,9 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
 
 jinja_env = Environment(
-    loader=PackageLoader('kdlc', 'templates'),
-    autoescape=select_autoescape(['html', 'xml']),
-    extensions=['jinja2.ext.do']
-    #trim_blocks=True,
-    #lstrip_blocks=True
+    loader=PackageLoader("kdlc", "templates"),
+    autoescape=select_autoescape(["html", "xml"]),
+    extensions=["jinja2.ext.do"]
 )
 
 TMP_INPUT_DIR = tempfile.TemporaryDirectory()
@@ -191,8 +189,8 @@ def create_node_settings_from_template(node):
     Returns:
         ElementTree: ElementTree populated with the provided node definition
     """
-    template = jinja_env.get_template('settings_template.xml')
-    model = node['settings']['model']
+    template = jinja_env.get_template("settings_template.xml")
+    model = node["settings"]["model"]
     template_root = ET.fromstring(template.render(node=node, model=model))
     return ET.ElementTree(template_root)
 
