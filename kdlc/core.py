@@ -8,7 +8,7 @@ import tempfile
 jinja_env = Environment(
     loader=PackageLoader("kdlc", "templates"),
     autoescape=select_autoescape(["html", "xml"]),
-    extensions=["jinja2.ext.do"]
+    extensions=["jinja2.ext.do"],
 )
 
 TMP_INPUT_DIR = tempfile.TemporaryDirectory()
