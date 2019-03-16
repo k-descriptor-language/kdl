@@ -114,10 +114,10 @@ def extract_config_tag(tree):
     """
     config_value = list()
     for child in tree.findall("./*", NS):
-        if child.tag == ENTRY_TAG:
+        if child.tag == "entry":
             entry = extract_entry_tag(child)
             config_value.append(entry)
-        elif child.tag == CONFIG_TAG:
+        elif child.tag == "config":
             config = extract_config_tag(child)
             config_value.append(config)
     config = {tree.attrib["key"]: config_value, "type": "config"}
