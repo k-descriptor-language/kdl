@@ -15,29 +15,31 @@ def main():
     output_file = ""
 
     try:
-        opts, args = getopt.getopt(argv, "hi:o:")
+        opts, args = getopt.getopt(argv, "hi:o:", ['help', 'input=', 'output='])
     except getopt.GetoptError:
-        print("kdlc -i <input_file> -o <output_wf_name>")
+        print("kdlc -i <input_file> -o <output_file>")
         sys.exit(2)
     for opt, arg in opts:
-        if opt == "-h":
-            print("kdlc -i <input_file> -o <output_wf_name>")
+        if opt in ("-h", "--help"):
+            print("kdlc -i <input_file> -o <output_file>")
             sys.exit()
-        elif opt == "-i" and arg:
+        elif opt in ("-i", "--input") and arg:
             input_file = os.path.abspath(arg)
-        elif opt == "-o" and arg:
+        elif opt in ("-o", "--output") and arg:
             output_file = os.path.abspath(arg)
         else:
-            print("kdlc -i <input_file> -o <output_wf_name>")
+            print("kdlc -i <input_file> -o <output_file>")
             sys.exit()
 
     # Validate input arguments
     if output_file == "" or input_file == "" :
         print("kdlc -i <input_file> -o <output_wf_name>")
         sys.exit()
-    if not (os.path.isfile(input_file) and input_file.endswith(".knwf")):
-        print("Provided input file does not exist or is invalid")
+    if not (os.path.isfile(input_file) and input_file.endswith(".knwf")
+            and output_file.endswith(".knwf")):
+        print("Provided file parameters don't exist or are invalid")
         sys.exit()
+    output_wf_name = output_file.replace('.knwf', '')
 
     # Extract workflow
     input_workflow_name = kdlc.unzip_workflow(input_file)
@@ -74,7 +76,7 @@ def main():
         kdlc.save_node_settings_xml(tree, f'{output_workflow_path}/{node["filename"]}')
 
     # Zip output workflow into .knwf archive
-    kdlc.create_output_workflow(output_file)
+    kdlc.create_output_workflow(output_wf_name)
 
 
 if __name__ == "__main__":
