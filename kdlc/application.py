@@ -15,7 +15,7 @@ def main():
     output_file = ""
 
     try:
-        opts, args = getopt.getopt(argv, "hi:o:", ['help', 'input=', 'output='])
+        opts, args = getopt.getopt(argv, "hi:o:", ["help", "input=", "output="])
     except getopt.GetoptError:
         print("kdlc -i <input_file> -o <output_file>")
         sys.exit(2)
@@ -32,14 +32,17 @@ def main():
             sys.exit()
 
     # Validate input arguments
-    if output_file == "" or input_file == "" :
+    if output_file == "" or input_file == "":
         print("kdlc -i <input_file> -o <output_wf_name>")
         sys.exit()
-    if not (os.path.isfile(input_file) and input_file.endswith(".knwf")
-            and output_file.endswith(".knwf")):
+    if not (
+        os.path.isfile(input_file)
+        and input_file.endswith(".knwf")
+        and output_file.endswith(".knwf")
+    ):
         print("Provided file parameters don't exist or are invalid")
         sys.exit()
-    output_wf_name = output_file.replace('.knwf', '')
+    output_wf_name = output_file.replace(".knwf", "")
 
     # Extract workflow
     input_workflow_name = kdlc.unzip_workflow(input_file)
