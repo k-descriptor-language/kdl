@@ -43,7 +43,7 @@ def main():
     ):
         print("Provided file parameters don't exist or are invalid")
         sys.exit()
-    output_wf_name = output_file.replace(".knwf", "")
+    output_workflow_name = os.path.splitext(os.path.basename(output_file))[0]
 
     # Extract workflow
     input_workflow_name = kdlc.unzip_workflow(input_file)
@@ -65,7 +65,6 @@ def main():
         node["settings"] = kdlc.extract_from_input_xml(infile)
 
     # Generate and save workflow.knime in output directory
-    output_workflow_name = f"{os.path.splitext(output_file)[0]}"
     output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_workflow_name}"
 
     output_workflow_knime = kdlc.create_workflow_knime_from_template(
@@ -76,13 +75,13 @@ def main():
     # Generate and save XML for nodes in output directory
     for node in input_node_list:
         # POC for JSON validation, uncomment below to test diff scenarios
-        if node["settings"]["name"] == "CSV Reader":
-            # empty url
-            # node["settings"]["model"][0]["url"] = ""
-            # no url entry
-            # node["settings"]["model"].pop(0)
-            # update url
-            node["settings"]["model"][0]["url"] = "/path/to/other/file.csv"
+        # if node["settings"]["name"] == "CSV Reader":
+        # empty url
+        # node["settings"]["model"][0]["url"] = ""
+        # no url entry
+        # node["settings"]["model"].pop(0)
+        # update url
+        # node["settings"]["model"][0]["url"] = "/path/to/other/file.csv"
         try:
             schema = open(
                 f"kdlc/json_schemas/{node['settings']['name']}_schema.json"
@@ -101,7 +100,7 @@ def main():
         kdlc.save_node_settings_xml(tree, f'{output_workflow_path}/{node["filename"]}')
 
     # Zip output workflow into .knwf archive
-    kdlc.create_output_workflow(output_wf_name)
+    kdlc.create_output_workflow(output_workflow_name)
 
 
 if __name__ == "__main__":

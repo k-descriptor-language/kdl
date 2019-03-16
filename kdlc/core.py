@@ -268,7 +268,7 @@ def set_entry_element_type(entry):
         entry_type = "xboolean"
     elif entry_type is str:
         entry_type = "xstring"
-    entry["type"] = entry_type
+    entry["data_type"] = entry_type
     entry[entry_key] = entry_value
     if "isnull" in entry:
         entry["isnull"] = "true"
@@ -284,7 +284,7 @@ def set_config_element_type(config):
     """
     config_key = list(config.keys())[0]
     config_values = config[config_key]
-    config["type"] = "config"
+    config["data_type"] = "config"
     for value in config_values:
         k = list(value.keys())[0]
         v = value[k]
