@@ -7,26 +7,37 @@ import kdlc
 
 def main():
     argv = sys.argv[1:]
-    if len(argv) == 0:
+    if len(argv) <= 2:
         print("kdlc -i <input_file>")
         sys.exit(2)
 
     input_file = ""
+    output_file = ""
 
     try:
-        opts, args = getopt.getopt(argv, "hi:")
+        opts, args = getopt.getopt(argv, "hi:o:")
     except getopt.GetoptError:
-        print("kdlc -i <input_file>")
+        print("kdlc -i <input_file> -o <output_wf_name>")
         sys.exit(2)
     for opt, arg in opts:
         if opt == "-h":
-            print("kdlc -i <input_file>")
+            print("kdlc -i <input_file> -o <output_wf_name>")
             sys.exit()
         elif opt == "-i" and arg:
             input_file = os.path.abspath(arg)
+        elif opt == "-o" and arg:
+            output_file = os.path.abspath(arg)
         else:
-            print("kdlc -i <input_file>")
+            print("kdlc -i <input_file> -o <output_wf_name>")
             sys.exit()
+
+    # Validate input arguments
+    if output_file == "" or input_file == "" :
+        print("kdlc -i <input_file> -o <output_wf_name>")
+        sys.exit()
+    if not (os.path.isfile(input_file) and input_file.endswith(".knwf")):
+        print("Provided input file does not exist or is invalid")
+        sys.exit()
 
     # Extract workflow
     input_workflow_name = kdlc.unzip_workflow(input_file)
@@ -63,7 +74,7 @@ def main():
         kdlc.save_node_settings_xml(tree, f'{output_workflow_path}/{node["filename"]}')
 
     # Zip output workflow into .knwf archive
-    kdlc.create_output_workflow(output_workflow_name)
+    kdlc.create_output_workflow(output_file)
 
 
 if __name__ == "__main__":
