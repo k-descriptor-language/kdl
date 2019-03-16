@@ -11,11 +11,13 @@ after_success:
 - codecov
 notifications:
   slack:
-    secure: vne3Cmz7gA6SPgNArc2jlM2ifKWchTXR7jx/7BE7VifX/ombeYKNG6T0zdR6NOC0F6ofTY5pVDHS2tdkYt2YYA/jAsWdwLbLirjifBsWZ9J8x+NrRqiZYdZgQ42pud0tahh9IsbiUMLrDfJWq+UN8jsbv2eECuONFR/mw2KDauviPm8/8QPoDx137o9bdeAswD/CENomMlJE2Fw/PpMa6R/0n0+ZOzjMoNkllrT6HJ/iBmVbhrYlq8o5iaQ6KXCk7pgTOPjZHju62fmQb5nUcLfuFKg91gM6n9K6m3XQefpl1WBAvw/cVVqpxFaWnMs4PMbqMTTBoUbcyjeWVjPwH0/wUmVvziqHBk+fPx2mPr/QAaz11BOyVZg6qcFtouZiRE5YhBH+O9hOTjnCGDcMqWnB8AfYATFKJ2irwnbhTIUflq4PPQaTMO1FMT6GpXlmHKo1KFXdLoM55t/W0pnZwMF+VAZ5Gz8Y0Jz1orpGwcE2LCmM4FKhoeQP+umlGRkl4sjoE/01XyrQNKGL34GIQkIh/6UDnDbMkKgz3noor9mtb7+OJ1rMJlZUDmaL/tP06nKj4UdHeER5kUDHRJQIR2310fC3Z+9PGT0GkcJK6w/exyf/SqH+rkoa2i61reu9eI01frnDnqI4lkf4RZ4cIvytSEOhxMmRFGCr4n9GdPg=
     on_success: always
     on_failure: always
     template:
-      - "Build (<%{build_url}|#%{build_number}>) *%{result}* on branch `%{branch}` with commit (<%{compare_url}|%{commit}>)."
-      - "Author: %{author}"
-      - "Execution time: *%{duration}*"
-      - "Message: %{message}"
+    - Build (<%{build_url}|#%{build_number}>) *%{result}* on branch `%{branch}` with
+      commit (<%{compare_url}|%{commit}>).
+    - 'Author: %{author}'
+    - 'Execution time: *%{duration}*'
+    - 'Message: %{message}'
+    rooms:
+      secure: oZ711pEg58m/oNNNNMP+CcriQDgFdoMs4pd4KiTK/hzihggsFa2FcjWqlGDUylcUxaPpLjBp1o4qtC3ZlXUBD/dtPhVl+vHWkgxQy4q/4n6n+9+HFwKm3Frq+Qii0DkBfjQoAIAxfufLOCz/V3UFPe67Yh3nd3ptYIJQy38TK3r9OLF8bQcHKl2Eol2SlPQufImucO/qrN7xIMpa6wxjRmC10ek4wUsCwDo6ChefaVPK0lwj1msFdYvspp/PnVbdTmqE2XwLGkSdLYqb+Wk5FhQC9whMgTwhRLRw9yntDegSORIyG2dpvIwhYx8nVymoi24fmOinxGzgo5sZGL7fJC2WEejWLLmJYJOaqdgtjlaTIJrLbIZlmHIM0LO8gpkMTWFCrWSFZXts4cPiZAFZIHSKvUK+dAcq2BzYHwF5WA34kUoi5s8PyQ2fFTEmZ2/DqC+UIqZq5SOt3n5kIt32ZE5ke1DmvvBci5WgRi3KWlJBavQho7B3HdRm9bAuLiNSxlT3UUg10IlHGfiMoNoqvpNF+6Tn6j6PDlCIH3kGVt1bMPDaFYtNUYAD221gLbiykT5Ve/q3LQmckVLItji5azsN5QXorxy+gsFdVgKJc55FiIhtGAa2dKYlsdx4IdmJ6/7ep/QY723dAoi4eM/DlChqxUvrr0u/WaXlwO6Rgss=

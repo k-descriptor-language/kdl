@@ -9,8 +9,6 @@ jinja_env = Environment(
     loader=PackageLoader("kdlc", "templates"),
     autoescape=select_autoescape(["html", "xml"]),
     extensions=["jinja2.ext.do"]
-    # trim_blocks=True,
-    # lstrip_blocks=True
 )
 
 TMP_INPUT_DIR = tempfile.TemporaryDirectory()
