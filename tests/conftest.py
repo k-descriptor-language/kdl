@@ -7,13 +7,17 @@ import os
 
 test_generated_dir = os.path.dirname(__file__) + "/generated/"
 
+
 @pytest.fixture(scope="session")
 def my_setup(request):
     print("\nDoing setup")
 
     def fin():
         print("\nDoing teardown")
-        rmtree(test_generated_dir)
+
+        if os.path.exists(test_generated_dir):
+            rmtree(test_generated_dir)
+
         kdlc.TMP_INPUT_DIR.cleanup()
         kdlc.TMP_OUTPUT_DIR.cleanup()
 
