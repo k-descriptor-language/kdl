@@ -215,7 +215,6 @@ def create_node_settings_from_template(node):
     Returns:
         ElementTree: ElementTree populated with the provided node definition
     """
-
     template = jinja_env.get_template("settings_template.xml")
     model = node["settings"]["model"]
     for value in model:
