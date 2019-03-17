@@ -24,15 +24,17 @@
         {% for key, value in item.items() %}
             {% if key=="data_type" %}
                 {% do entry_items.update({"type": value}) %}
-            {% elif key!="isnull" %}
+            {% elif key=="isnull" %}
+                {% do entry_items.update({"isnull": "true"}) %}
+            {% else %}
                 {% do entry_items.update({"key": key}) %}
                 {% do entry_items.update({"value": value}) %}
             {% endif %}
         {% endfor %}
-        {% if item.isnull is defined %}
-        <entry key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}" isnull="true" />
+        {% if entry_items.isnull is defined %}
+            <entry isnull="true" key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}" />
         {% else %}
-        <entry key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}"/>
+            <entry key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}" />
         {% endif %}
     {% endif %}
     {% endfor %}
