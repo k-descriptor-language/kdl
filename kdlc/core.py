@@ -112,9 +112,9 @@ def extract_entry_tag(tree):
             tree.attrib["key"]: int(tree.attrib["value"]),
             "data_type": tree.attrib["type"],
         }
-    elif tree.attrib["type"] in ["xfloat"]:
+    elif tree.attrib["type"] == "xfloat":
         entry = {tree.attrib["key"]: float(tree.attrib["value"])}
-    elif tree.attrib["type"] in ["xdouble"]:
+    elif tree.attrib["type"] == "xdouble":
         entry = {
             tree.attrib["key"]: float(tree.attrib["value"]),
             "data_type": tree.attrib["type"],
