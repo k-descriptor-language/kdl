@@ -339,3 +339,9 @@ def test_save_workflow_knime(my_setup):
     assert filecmp.cmp(
         f"{test_resources_dir}/workflow.knime", f"{test_generated_dir}/workflow.knime"
     )
+
+
+def test_cleanup(my_setup):
+    kdlc.cleanup()
+    assert os.path.exists(kdlc.TMP_INPUT_DIR.name) is False
+    assert os.path.exists(kdlc.TMP_OUTPUT_DIR.name) is False
