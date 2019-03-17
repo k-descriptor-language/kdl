@@ -44,7 +44,9 @@ def test_extract_from_input_xml(my_setup):
             {"limitAnalysisCount": -1},
         ],
     }
-    assert kdlc.extract_from_input_xml(f"{test_resources_dir}/settings.xml") == result
+    assert (
+        kdlc.extract_from_input_xml(f"{test_resources_dir}/csv_settings.xml") == result
+    )
 
 
 def test_extract_entry_tag_string(my_setup):
@@ -169,7 +171,7 @@ def test_extract_connections(my_setup):
     assert kdlc.extract_connections(f"{test_resources_dir}/workflow.knime") == result
 
 
-def test_create_node_settings_from_template(my_setup):
+def test_create_node_settings_from_template_csv(my_setup):
     node = {
         "settings": {
             "name": "CSV Reader",
@@ -201,7 +203,86 @@ def test_create_node_settings_from_template(my_setup):
             ],
         }
     }
-    expected_result = ET.parse(f"{test_resources_dir}/settings.xml")
+    expected_result = ET.parse(f"{test_resources_dir}/csv_settings.xml")
+    expected_result_flattened = [i.tag for i in expected_result.iter()]
+
+    result = kdlc.create_node_settings_from_template(node)
+    result_flattened = [i.tag for i in result.iter()]
+
+    assert result_flattened == expected_result_flattened
+
+
+def test_create_node_settings_from_template_cf(my_setup):
+    node = {
+        "settings": {
+            "name": "Column Filter",
+            "factory": (
+                "org.knime.base.node.preproc.filter."
+                "column.DataColumnSpecFilterNodeFactory"
+            ),
+            "bundle_name": "KNIME Base Nodes",
+            "bundle_symbolic_name": "org.knime.base",
+            "bundle_version": "3.7.1.v201901291053",
+            "feature_name": "KNIME Core",
+            "feature_symbolic_name": "org.knime.features.base.feature.group",
+            "feature_version": "3.7.1.v201901291053",
+            "model": [
+                {
+                    "column-filter": [
+                        {"filter-type": "STANDARD"},
+                        {
+                            "included_names": [
+                                {"array-size": 11},
+                                {"0": "MaritalStatus"},
+                                {"1": "Gender"},
+                                {"2": "EstimatedYearlyIncome"},
+                                {"3": "SentimentRating"},
+                                {"4": "WebActivity"},
+                                {"5": "Age"},
+                                {"6": "Target"},
+                                {"7": "Available401K"},
+                                {"8": "CustomerValueSegment"},
+                                {"9": "ChurnScore"},
+                                {"10": "CallActivity"},
+                            ]
+                        },
+                        {
+                            "excluded_names": [
+                                {"array-size": 1},
+                                {"0": "NumberOfContracts"},
+                            ]
+                        },
+                        {"enforce_option": "EnforceExclusion"},
+                        {
+                            "name_pattern": [
+                                {"pattern": ""},
+                                {"type": "Wildcard"},
+                                {"caseSensitive": True},
+                            ]
+                        },
+                        {
+                            "datatype": [
+                                {
+                                    "typelist": [
+                                        {"org.knime.core.data.StringValue": False},
+                                        {"org.knime.core.data.IntValue": False},
+                                        {"org.knime.core.data.DoubleValue": False},
+                                        {"org.knime.core.data.BooleanValue": False},
+                                        {"org.knime.core.data.LongValue": False},
+                                        {
+                                            "org.knime.core.data."
+                                            "date.DateAndTimeValue": False
+                                        },
+                                    ]
+                                }
+                            ]
+                        },
+                    ]
+                }
+            ],
+        }
+    }
+    expected_result = ET.parse(f"{test_resources_dir}/cf_settings.xml")
     expected_result_flattened = [i.tag for i in expected_result.iter()]
 
     result = kdlc.create_node_settings_from_template(node)
@@ -326,10 +407,10 @@ def test_set_config_element_type(my_setup):
 
 
 def test_save_node_settings_xml(my_setup):
-    tree = ET.parse(f"{test_resources_dir}/settings.xml")
+    tree = ET.parse(f"{test_resources_dir}/csv_settings.xml")
     kdlc.save_node_settings_xml(tree, f"{test_generated_dir}/settings.xml")
     assert filecmp.cmp(
-        f"{test_resources_dir}/settings.xml", f"{test_generated_dir}/settings.xml"
+        f"{test_resources_dir}/csv_settings.xml", f"{test_generated_dir}/settings.xml"
     )
 
 
