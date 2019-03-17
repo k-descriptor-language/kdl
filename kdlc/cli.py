@@ -40,16 +40,14 @@ logger = logging.getLogger("kdlc.cli")
 )
 def prompt(input_file, output_file, modify_file, nodes):
     if modify_file and nodes:
-        raise click.BadParameter(
-            "nodes and modify options cannot be used simultaneously"
-        )
+        raise click.UsageError("nodes and modify options cannot be used simultaneously")
 
     if modify_file:
         if Path(modify_file).suffix != ".knwf":
             raise click.BadParameter("modify file must be of file type *.knwf")
 
         if Path(input_file).suffix != ".kdl":
-            raise click.BadParameter("input file must be of fil type *.kdl")
+            raise click.BadParameter("input file must be of file type *.kdl")
 
         if Path(output_file).suffix != ".knwf":
             raise click.BadParameter("output file must be of file type *.knwf")
@@ -82,11 +80,6 @@ def prompt(input_file, output_file, modify_file, nodes):
                 "Input/output file type mismatch. Either .kdl --> .knwf or "
                 ".knwf --> .kdl"
             )
-
-    else:
-        raise click.UsageError(
-            "Improper usage of kdlc. Use the --help option for assistance."
-        )
 
 
 def update_workflow_with_kdl(input_file, output_file, modify_file):
