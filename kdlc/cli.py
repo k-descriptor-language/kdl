@@ -1,6 +1,10 @@
 import click
 from pathlib import Path
 import kdlc
+import logging
+
+
+logger = logging.getLogger("kdlc.cli")
 
 
 @click.command()
@@ -67,7 +71,9 @@ def prompt(input_file, output_file, modify_file, nodes):
         elif Path(input_file).suffix == ".knwf" and Path(output_file).suffix == ".kdl":
             workflow_to_kdl(input_file, output_file)
         elif Path(input_file).suffix == ".knwf" and Path(output_file).suffix == ".knwf":
-            # TODO: add logging here
+            # This functionality is here for development purposes and not part of
+            # the final solution
+            logger.warning("TEMPORARY! This will be removed before the release.")
             workflow_to_workflow(input_file, output_file)
         else:
             raise click.BadParameter(
