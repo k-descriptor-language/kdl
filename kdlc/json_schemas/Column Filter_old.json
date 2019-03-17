@@ -1,0 +1,267 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "factory": {
+      "type": "string"
+    },
+    "bundle_name": {
+      "type": "string"
+    },
+    "bundle_symbolic_name": {
+      "type": "string"
+    },
+    "bundle_version": {
+      "type": "string"
+    },
+    "feature_name": {
+      "type": "string"
+    },
+    "feature_symbolic_name": {
+      "type": "string"
+    },
+    "feature_version": {
+      "type": "string"
+    },
+    "model": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "column-filter": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "filter-type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "filter-type"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "included_names": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "array-size": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "array-size"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "included_names"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "excluded_names": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "array-size": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "array-size"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "excluded_names"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "enforce_option": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "enforce_option"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "name_pattern": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "pattern": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "pattern"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "caseSensitive": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "caseSensitive"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name_pattern"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "datatype": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "typelist": {
+                              "type": "array",
+                              "items": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "org.knime.core.data.StringValue": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "required": [
+                                    "org.knime.core.data.StringValue"
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "org.knime.core.data.IntValue": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "required": [
+                                    "org.knime.core.data.IntValue"
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "org.knime.core.data.DoubleValue": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "required": [
+                                    "org.knime.core.data.DoubleValue"
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "org.knime.core.data.BooleanValue": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "required": [
+                                    "org.knime.core.data.BooleanValue"
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "org.knime.core.data.LongValue": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "required": [
+                                    "org.knime.core.data.LongValue"
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "org.knime.core.data.date.DateAndTimeValue": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "required": [
+                                    "org.knime.core.data.date.DateAndTimeValue"
+                                  ]
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "typelist"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "datatype"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "column-filter"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "factory",
+    "bundle_name",
+    "bundle_symbolic_name",
+    "bundle_version",
+    "feature_name",
+    "feature_symbolic_name",
+    "feature_version",
+    "model"
+  ]
+}

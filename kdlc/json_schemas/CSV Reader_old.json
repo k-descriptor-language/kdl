@@ -1,0 +1,204 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "factory": {
+      "type": "string"
+    },
+    "bundle_name": {
+      "type": "string"
+    },
+    "bundle_symbolic_name": {
+      "type": "string"
+    },
+    "bundle_version": {
+      "type": "string"
+    },
+    "feature_name": {
+      "type": "string"
+    },
+    "feature_symbolic_name": {
+      "type": "string"
+    },
+    "feature_version": {
+      "type": "string"
+    },
+    "model": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "url"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "colDelimiter": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "colDelimiter"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "rowDelimiter": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "rowDelimiter"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "quote": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "quote"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "commentStart": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "commentStart"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hasRowHeader": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "hasRowHeader"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hasColHeader": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "hasColHeader"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "supportShortLines": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "supportShortLines"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "limitRowsCount": {
+              "type": "integer"
+            },
+            "data_type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "limitRowsCount",
+            "data_type"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "skipFirstLinesCount": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "skipFirstLinesCount"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "characterSetName": {
+              "type": "string"
+            },
+            "isnull": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "characterSetName"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "limitAnalysisCount": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "limitAnalysisCount"
+          ]
+        }
+      ],
+      "required": [
+        "url",
+        "colDelimiter",
+        "rowDelimiter",
+        "quote",
+        "commentStart",
+        "hasRowHeader",
+        "hasColHeader",
+        "supportShortLines",
+        "limitRowsCount",
+        "skipFirstLinesCount",
+        "characterSetName",
+        "limitAnalysisCount"
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "factory",
+    "bundle_name",
+    "bundle_symbolic_name",
+    "bundle_version",
+    "feature_name",
+    "feature_symbolic_name",
+    "feature_version",
+    "model"
+  ]
+}
