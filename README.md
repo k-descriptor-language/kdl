@@ -15,7 +15,29 @@ Takes input KNIME workflow called "TestWorkflow.knwf", extracts values from the 
 `python3 setup.py install`
 
 ## Run
-`kdlc -i TestWorkflow.knwf`
 
-## Test
-`python3 -m pytest -s`
+```bash
+❯ kdlc --help
+Usage: kdlc [OPTIONS]
+
+Options:
+  -o, --output TEXT  The output file, either .knwf or .kdl  [required]
+  -i, --input PATH   The input file, either .knwf or .kdl  [required]
+  -m, --modify PATH  The KNIME workflow file (.knwf) being modified
+  -n, --nodes PATH   The path to the custom node templates
+  --help             Show this message and exit.
+```
+
+### Workflow to Workflow (development only) 
+`kdlc -i TestWorkflow.knwf -o OutputWorkflow.knwf`
+
+## Development
+
+### Run Tests
+`pytest --cov=./`
+
+### Run Quality Checks
+`./scripts/quality-check.sh`
+
+### Run Formatter
+`./scripts/format.sh`

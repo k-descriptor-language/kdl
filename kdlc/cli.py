@@ -136,16 +136,16 @@ def workflow_to_workflow(input_file, output_file):
 
     # Generate and save XML for nodes in output directory
     for node in input_node_list:
-        # POC for JSON validation, uncomment below to test diff scenarios
+        # POC for JSON validation, uncomment below and indent to test diff scenarios
         # if node["settings"]["name"] == "CSV Reader":
-            # empty url
-            # node["settings"]["model"][0]["url"] = ""
-            # no url entry
-            # node["settings"]["model"].pop(0)
-            # update url
-            # node["settings"]["model"][0]["url"] = "/path/to/other/file.csv"
-            # not csv
-            # node["settings"]["model"][0]["url"] = "/path/to/other/file.txt"
+        # empty url
+        # node["settings"]["model"][0]["url"] = ""
+        # no url entry
+        # node["settings"]["model"].pop(0)
+        # update url
+        # node["settings"]["model"][0]["url"] = "/path/to/other/file.csv"
+        # not csv
+        # node["settings"]["model"][0]["url"] = "/path/to/other/file.txt"
         try:
             kdlc.validate_node_from_schema(node)
         except jsonschema.ValidationError as e:
