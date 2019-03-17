@@ -18,7 +18,6 @@ def my_setup(request):
         if os.path.exists(test_generated_dir):
             rmtree(test_generated_dir)
 
-        kdlc.TMP_INPUT_DIR.cleanup()
-        kdlc.TMP_OUTPUT_DIR.cleanup()
+        kdlc.cleanup()
 
     request.addfinalizer(fin)

@@ -1,7 +1,6 @@
 import sys
 import os
 import getopt
-import json
 import jsonschema
 import kdlc
 
@@ -83,10 +82,7 @@ def main():
         # update url
         # node["settings"]["model"][0]["url"] = "/path/to/other/file.csv"
         try:
-            schema = open(
-                f"kdlc/json_schemas/{node['settings']['name']}_schema.json"
-            ).read()
-            jsonschema.validate(instance=node["settings"], schema=json.loads(schema))
+            kdlc.validate_node_from_schema(node)
         except jsonschema.ValidationError as e:
             print(e.message)
             kdlc.cleanup()
@@ -95,7 +91,6 @@ def main():
             print(e.message)
             kdlc.cleanup()
             sys.exit(1)
-
         tree = kdlc.create_node_settings_from_template(node)
         kdlc.save_node_settings_xml(tree, f'{output_workflow_path}/{node["filename"]}')
 

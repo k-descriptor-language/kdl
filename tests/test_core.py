@@ -3,7 +3,8 @@ import kdlc
 import xml.etree.ElementTree as ET
 import filecmp
 
-test_resources_dir = os.path.dirname(__file__) + "/resources/"
+test_generated_dir = os.path.dirname(__file__) + "/generated"
+test_resources_dir = os.path.dirname(__file__) + "/resources"
 
 
 def test_unzip_workflow(my_setup):
@@ -28,29 +29,91 @@ def test_extract_from_input_xml(my_setup):
                 "url": (
                     "/Users/jared/knime-workspace/Example Workflows/"
                     "TheData/Misc/Demographics.csv"
-                ),
-                "type": "xstring",
+                )
             },
-            {"colDelimiter": ",", "type": "xstring"},
-            {"rowDelimiter": "%%00010", "type": "xstring"},
-            {"quote": '"', "type": "xstring"},
-            {"commentStart": "#", "type": "xstring"},
-            {"hasRowHeader": "true", "type": "xboolean"},
-            {"hasColHeader": "true", "type": "xboolean"},
-            {"supportShortLines": "false", "type": "xboolean"},
-            {"limitRowsCount": "-1", "type": "xlong"},
-            {"skipFirstLinesCount": "-1", "type": "xint"},
-            {"characterSetName": "", "isnull": True, "type": "xstring"},
-            {"limitAnalysisCount": "-1", "type": "xint"},
+            {"colDelimiter": ","},
+            {"rowDelimiter": "%%00010"},
+            {"quote": '"'},
+            {"commentStart": "#"},
+            {"hasRowHeader": True},
+            {"hasColHeader": True},
+            {"supportShortLines": False},
+            {"limitRowsCount": -1, "data_type": "xlong"},
+            {"skipFirstLinesCount": -1},
+            {"characterSetName": "", "isnull": True},
+            {"limitAnalysisCount": -1},
         ],
     }
     assert kdlc.extract_from_input_xml(f"{test_resources_dir}/settings.xml") == result
 
 
-def test_extract_entry_tag(my_setup):
+def test_extract_entry_tag_string(my_setup):
     tree = ET.fromstring('<entry key="node-name" type="xstring" value="CSV Reader"/>')
 
-    result = {"node-name": "CSV Reader", "type": "xstring"}
+    result = {"node-name": "CSV Reader"}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
+def test_extract_entry_tag_int(my_setup):
+    tree = ET.fromstring('<entry key="limitAnalysisCount" type="xint" value="-1" />')
+
+    result = {"limitAnalysisCount": -1}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
+def test_extract_entry_tag_long(my_setup):
+    tree = ET.fromstring('<entry key="limitRowsCount" type="xlong" value="-1" />')
+
+    result = {"limitRowsCount": -1, "data_type": "xlong"}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
+def test_extract_entry_tag_short(my_setup):
+    tree = ET.fromstring('<entry key="limitRowsCount" type="xshort" value="-1" />')
+
+    result = {"limitRowsCount": -1, "data_type": "xshort"}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
+def test_extract_entry_tag_float(my_setup):
+    tree = ET.fromstring('<entry key="someFloat" type="xfloat" value="1.1" />')
+
+    result = {"someFloat": 1.1}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
+def test_extract_entry_tag_double(my_setup):
+    tree = ET.fromstring('<entry key="someDouble" type="xdouble" value="1.1" />')
+
+    result = {"someDouble": 1.1, "data_type": "xdouble"}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
+def test_extract_entry_tag_char(my_setup):
+    tree = ET.fromstring('<entry key="someChar" type="xchar" value="A" />')
+
+    result = {"someChar": "A", "data_type": "xchar"}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
+def test_extract_entry_tag_byte(my_setup):
+    tree = ET.fromstring('<entry key="someByte" type="xbyte" value="A" />')
+
+    result = {"someByte": "A", "data_type": "xbyte"}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
+def test_extract_entry_tag_boolean_true(my_setup):
+    tree = ET.fromstring('<entry key="hasRowHeader" type="xboolean" value="true" />')
+
+    result = {"hasRowHeader": True}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
+def test_extract_entry_tag_boolean_false(my_setup):
+    tree = ET.fromstring('<entry key="hasRowHeader" type="xboolean" value="false" />')
+
+    result = {"hasRowHeader": False}
     assert kdlc.extract_entry_tag(tree) == result
 
 
@@ -59,7 +122,7 @@ def test_extract_entry_tag_with_isnull(my_setup):
         '<entry key="node-name" type="xstring" value="CSV Reader" isnull="true" />'
     )
 
-    result = {"node-name": "CSV Reader", "type": "xstring", "isnull": True}
+    result = {"node-name": "CSV Reader", "isnull": True}
     assert kdlc.extract_entry_tag(tree) == result
 
 
@@ -73,15 +136,7 @@ def test_extract_config_tag(my_setup):
         'value="STANDARD" /></config></config>'
     )
 
-    result = {
-        "settings.xml": [
-            {
-                "column-filter": [{"filter-type": "STANDARD", "type": "xstring"}],
-                "type": "config",
-            }
-        ],
-        "type": "config",
-    }
+    result = {"settings.xml": [{"column-filter": [{"filter-type": "STANDARD"}]}]}
     assert kdlc.extract_config_tag(tree) == result
 
 
@@ -130,20 +185,19 @@ def test_create_node_settings_from_template(my_setup):
                     "url": (
                         "/Users/jared/knime-workspace/Example Workflows/"
                         "TheData/Misc/Demographics.csv"
-                    ),
-                    "type": "xstring",
+                    )
                 },
-                {"colDelimiter": ",", "type": "xstring"},
-                {"rowDelimiter": "%%00010", "type": "xstring"},
-                {"quote": '"', "type": "xstring"},
-                {"commentStart": "#", "type": "xstring"},
-                {"hasRowHeader": "true", "type": "xboolean"},
-                {"hasColHeader": "true", "type": "xboolean"},
-                {"supportShortLines": "false", "type": "xboolean"},
-                {"limitRowsCount": "-1", "type": "xlong"},
-                {"skipFirstLinesCount": "-1", "type": "xint"},
-                {"characterSetName": "", "isnull": True, "type": "xstring"},
-                {"limitAnalysisCount": "-1", "type": "xint"},
+                {"colDelimiter": ","},
+                {"rowDelimiter": "%%00010"},
+                {"quote": '"'},
+                {"commentStart": "#"},
+                {"hasRowHeader": True},
+                {"hasColHeader": True},
+                {"supportShortLines": False},
+                {"limitRowsCount": -1, "type": "xlong"},
+                {"skipFirstLinesCount": -1},
+                {"characterSetName": "", "isnull": True},
+                {"limitAnalysisCount": -1},
             ],
         }
     }
@@ -190,13 +244,15 @@ def test_create_workflow_knime_from_template(my_setup):
 
 def test_save_node_settings_xml(my_setup):
     tree = ET.parse(f"{test_resources_dir}/settings.xml")
-    kdlc.save_node_settings_xml(tree, "generated/settings.xml")
-    assert filecmp.cmp(f"{test_resources_dir}/settings.xml", "generated/settings.xml")
+    kdlc.save_node_settings_xml(tree, f"{test_generated_dir}/settings.xml")
+    assert filecmp.cmp(
+        f"{test_resources_dir}/settings.xml", f"{test_generated_dir}/settings.xml"
+    )
 
 
 def test_save_workflow_knime(my_setup):
     tree = ET.parse(f"{test_resources_dir}/workflow.knime")
-    kdlc.save_workflow_knime(tree, "generated")
+    kdlc.save_workflow_knime(tree, test_generated_dir)
     assert filecmp.cmp(
-        f"{test_resources_dir}/workflow.knime", "generated/workflow.knime"
+        f"{test_resources_dir}/workflow.knime", f"{test_generated_dir}/workflow.knime"
     )

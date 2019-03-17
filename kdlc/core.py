@@ -4,6 +4,8 @@ from shutil import make_archive
 import xml.etree.ElementTree as ET
 from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
+import json
+import jsonschema
 
 jinja_env = Environment(
     loader=PackageLoader("kdlc", "templates"),
@@ -205,6 +207,25 @@ def extract_connections(input_file):
     return connection_list
 
 
+def validate_node_from_schema(node):
+    """
+    Validates node settings against JSON Schema
+
+    Args:
+        node (dict): Node definition
+
+    Raises:
+        jsonschema.ValidationError: if node does not follow defined json schema
+
+        jsonschema.SchemaError: if schema definition is invalid
+
+    """
+    schema = open(
+        f"{os.path.dirname(__file__)}/json_schemas/{node['settings']['name']}.json"
+    ).read()
+    jsonschema.validate(instance=node["settings"], schema=json.loads(schema))
+
+
 def create_node_settings_from_template(node):
     """
     Creates an ElementTree with the provided node definition
@@ -269,8 +290,6 @@ def set_entry_element_type(entry):
         entry_type = "xstring"
     entry["data_type"] = entry_type
     entry[entry_key] = entry_value
-    if "isnull" in entry:
-        entry["isnull"] = "true"
 
 
 def set_config_element_type(config):
