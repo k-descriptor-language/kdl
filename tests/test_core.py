@@ -3,7 +3,8 @@ import kdlc
 import xml.etree.ElementTree as ET
 import filecmp
 
-test_resources_dir = os.path.dirname(__file__) + "/resources/"
+test_generated_dir = os.path.dirname(__file__) + "/generated"
+test_resources_dir = os.path.dirname(__file__) + "/resources"
 
 
 def test_unzip_workflow(my_setup):
@@ -190,13 +191,15 @@ def test_create_workflow_knime_from_template(my_setup):
 
 def test_save_node_settings_xml(my_setup):
     tree = ET.parse(f"{test_resources_dir}/settings.xml")
-    kdlc.save_node_settings_xml(tree, "generated/settings.xml")
-    assert filecmp.cmp(f"{test_resources_dir}/settings.xml", "generated/settings.xml")
+    kdlc.save_node_settings_xml(tree, f"{test_generated_dir}/settings.xml")
+    assert filecmp.cmp(
+        f"{test_resources_dir}/settings.xml", f"{test_generated_dir}/settings.xml"
+    )
 
 
 def test_save_workflow_knime(my_setup):
     tree = ET.parse(f"{test_resources_dir}/workflow.knime")
-    kdlc.save_workflow_knime(tree, "generated")
+    kdlc.save_workflow_knime(tree, test_generated_dir)
     assert filecmp.cmp(
-        f"{test_resources_dir}/workflow.knime", "generated/workflow.knime"
+        f"{test_resources_dir}/workflow.knime", f"{test_generated_dir}/workflow.knime"
     )
