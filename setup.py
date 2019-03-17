@@ -36,6 +36,7 @@ setup(
         "jinja2",
         "pytest",
         "pytest-cov",
+        "pytest-mock",
         "codecov",
         "flake8",
         "black",
