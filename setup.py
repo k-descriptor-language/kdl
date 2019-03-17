@@ -32,7 +32,15 @@ setup(
     url="https://github.com/k-descriptor-language/kdl/",
     packages=find_packages(),
     entry_points={"console_scripts": ["kdlc=kdlc.application:main"]},
-    install_requires=["jinja2", "pytest", "pytest-cov", "codecov", "flake8", "black"],
+    install_requires=[
+        "jinja2",
+        "pytest",
+        "pytest-cov",
+        "codecov",
+        "flake8",
+        "black",
+        "click",
+    ],
     package_data={"kdlc": ["templates/*.xml"]},
     include_package_data=True,
 )
