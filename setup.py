@@ -40,6 +40,7 @@ setup(
         "codecov",
         "flake8",
         "black",
+        "click",
     ],
     package_data={"kdlc": ["templates/*.xml", "json_schemas/*.json"]},
     include_package_data=True,

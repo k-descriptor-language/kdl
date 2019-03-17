@@ -1,3 +1,5 @@
+from .cli import prompt
+
 from .core import (
     TMP_INPUT_DIR,
     INPUT_PATH,
@@ -23,6 +25,7 @@ from .core import (
 from .application import main
 
 __all__ = [
+    "prompt",
     "TMP_INPUT_DIR",
     "INPUT_PATH",
     "TMP_OUTPUT_DIR",
