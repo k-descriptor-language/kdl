@@ -242,6 +242,89 @@ def test_create_workflow_knime_from_template(my_setup):
     assert result_flattened == expected_result_flattened
 
 
+def test_set_entry_element_type_string(my_setup):
+    entry = {"url": "/Path/To/TheData/Demographics.csv"}
+    result = {"url": "/Path/To/TheData/Demographics.csv", "data_type": "xstring"}
+    kdlc.set_entry_element_type(entry)
+    assert result == entry
+
+
+def test_set_entry_element_type_int(my_setup):
+    entry = {"skipFirstLinesCount": -1}
+    result = {"skipFirstLinesCount": "-1", "data_type": "xint"}
+    kdlc.set_entry_element_type(entry)
+    assert result == entry
+
+
+def test_set_entry_element_type_long(my_setup):
+    entry = {"limitRowsCount": -1, "data_type": "xlong"}
+    result = {"limitRowsCount": "-1", "data_type": "xlong"}
+    kdlc.set_entry_element_type(entry)
+    assert result == entry
+
+
+def test_set_entry_element_type_short(my_setup):
+    entry = {"limitRowsCount": -1, "data_type": "xshort"}
+    result = {"limitRowsCount": "-1", "data_type": "xshort"}
+    kdlc.set_entry_element_type(entry)
+    assert result == entry
+
+
+def test_set_entry_element_type_float(my_setup):
+    entry = {"someFloat": 1.1}
+    result = {"someFloat": "1.1", "data_type": "xfloat"}
+    kdlc.set_entry_element_type(entry)
+    assert result == entry
+
+
+def test_set_entry_element_type_double(my_setup):
+    entry = {"someDouble": 1.1, "data_type": "xdouble"}
+    result = {"someDouble": "1.1", "data_type": "xdouble"}
+    kdlc.set_entry_element_type(entry)
+    assert result == entry
+
+
+def test_set_entry_element_type_char(my_setup):
+    entry = {"someChar": "A", "data_type": "xchar"}
+    result = {"someChar": "A", "data_type": "xchar"}
+    kdlc.set_entry_element_type(entry)
+    assert result == entry
+
+
+def test_set_entry_element_type_byte(my_setup):
+    entry = {"someByte": "A", "data_type": "xbyte"}
+    result = {"someByte": "A", "data_type": "xbyte"}
+    kdlc.set_entry_element_type(entry)
+    assert result == entry
+
+
+def test_set_entry_element_type_boolean_true(my_setup):
+    entry = {"hasRowHeader": True}
+    result = {"hasRowHeader": "true", "data_type": "xboolean"}
+    kdlc.set_entry_element_type(entry)
+    assert result == entry
+
+
+def test_set_entry_element_type_boolean_false(my_setup):
+    entry = {"hasRowHeader": False}
+    result = {"hasRowHeader": "false", "data_type": "xboolean"}
+    kdlc.set_entry_element_type(entry)
+    assert result == entry
+
+
+def test_set_config_element_type(my_setup):
+    config = {"included_names": [{"array-size": 12}, {"0": "MaritalStatus"}]}
+    result = {
+        "included_names": [
+            {"array-size": "12", "data_type": "xint"},
+            {"0": "MaritalStatus", "data_type": "xstring"},
+        ],
+        "data_type": "config",
+    }
+    kdlc.set_config_element_type(config)
+    assert result == config
+
+
 def test_save_node_settings_xml(my_setup):
     tree = ET.parse(f"{test_resources_dir}/settings.xml")
     kdlc.save_node_settings_xml(tree, f"{test_generated_dir}/settings.xml")
