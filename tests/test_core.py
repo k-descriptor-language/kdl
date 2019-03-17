@@ -65,11 +65,23 @@ def test_extract_entry_tag_with_isnull(my_setup):
 
 def test_extract_config_tag(my_setup):
     tree = ET.fromstring(
-        '<config key="excluded_names"><entry key="array-size" type="xint" value="0" />'
-        "</config>"
+        '<config xmlns="http://www.knime.org/2008/09/XMLConfig" '
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+        'xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig '
+        'http://www.knime.org/XMLConfig_2008_09.xsd" key="settings.xml">'
+        '<config key="column-filter"><entry key="filter-type" type="xstring" '
+        'value="STANDARD" /></config></config>'
     )
 
-    result = {"excluded_names": [{"array-size": "0", "type": "xint"}], "type": "config"}
+    result = {
+        "settings.xml": [
+            {
+                "column-filter": [{"filter-type": "STANDARD", "type": "xstring"}],
+                "type": "config",
+            }
+        ],
+        "type": "config",
+    }
     assert kdlc.extract_config_tag(tree) == result
 
 
