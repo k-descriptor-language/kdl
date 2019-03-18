@@ -296,6 +296,10 @@ def set_entry_element_type(entry):
         entry_type = "xboolean"
     elif entry_type is str:
         entry_type = "xstring"
+    else:
+        ex = ValueError()
+        ex.strerror = "Cannot set element type"
+        raise ex
     entry["data_type"] = entry_type
     entry[entry_key] = entry_value
 

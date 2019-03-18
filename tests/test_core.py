@@ -450,6 +450,12 @@ def test_set_entry_element_type_boolean_false(my_setup):
     assert result == entry
 
 
+def test_set_entry_element_type_fail(my_setup):
+    entry = {"test": None}
+    with pytest.raises(Exception):
+        kdlc.set_entry_element_type(entry)
+
+
 def test_set_config_element_type(my_setup):
     config = {"included_names": [{"array-size": 12}, {"0": "MaritalStatus"}]}
     result = {
