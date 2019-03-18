@@ -83,6 +83,10 @@ def extract_from_input_xml(input_file):
         elif child.tag == CONFIG_TAG:
             config = extract_config_tag(child)
             model.append(config)
+        else:
+            ex = ValueError()
+            ex.strerror = "Invalid settings tag"
+            raise ex
 
     node["model"] = model
     return node

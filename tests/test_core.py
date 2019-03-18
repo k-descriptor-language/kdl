@@ -15,7 +15,7 @@ def test_unzip_workflow(my_setup):
     assert os.path.isdir(f"{kdlc.INPUT_PATH}/TestWorkflow")
 
 
-def test_extract_from_input_xml(my_setup):
+def test_extract_from_input_xml_csv(my_setup):
     result = {
         "name": "CSV Reader",
         "factory": "org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
@@ -48,6 +48,80 @@ def test_extract_from_input_xml(my_setup):
     assert (
         kdlc.extract_from_input_xml(f"{test_resources_dir}/csv_settings.xml") == result
     )
+
+
+def test_extract_from_input_xml_cr(my_setup):
+    result = {
+        "name": "Column Filter",
+        "factory": (
+            "org.knime.base.node.preproc.filter.column.DataColumnSpecFilterNodeFactory"
+        ),
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.1.v201901291053",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.1.v201901291053",
+        "model": [
+            {
+                "column-filter": [
+                    {"filter-type": "STANDARD"},
+                    {
+                        "included_names": [
+                            {"array-size": 11},
+                            {"0": "MaritalStatus"},
+                            {"1": "Gender"},
+                            {"2": "EstimatedYearlyIncome"},
+                            {"3": "SentimentRating"},
+                            {"4": "WebActivity"},
+                            {"5": "Age"},
+                            {"6": "Target"},
+                            {"7": "Available401K"},
+                            {"8": "CustomerValueSegment"},
+                            {"9": "ChurnScore"},
+                            {"10": "CallActivity"},
+                        ]
+                    },
+                    {"excluded_names": [{"array-size": 1}, {"0": "NumberOfContracts"}]},
+                    {"enforce_option": "EnforceExclusion"},
+                    {
+                        "name_pattern": [
+                            {"pattern": ""},
+                            {"type": "Wildcard"},
+                            {"caseSensitive": True},
+                        ]
+                    },
+                    {
+                        "datatype": [
+                            {
+                                "typelist": [
+                                    {"org.knime.core.data.StringValue": False},
+                                    {"org.knime.core.data.IntValue": False},
+                                    {"org.knime.core.data.DoubleValue": False},
+                                    {"org.knime.core.data.BooleanValue": False},
+                                    {"org.knime.core.data.LongValue": False},
+                                    {
+                                        (
+                                            "org.knime.core.data."
+                                            "date.DateAndTimeValue"
+                                        ): False
+                                    },
+                                ]
+                            }
+                        ]
+                    },
+                ]
+            }
+        ],
+    }
+    assert (
+        kdlc.extract_from_input_xml(f"{test_resources_dir}/cf_settings.xml") == result
+    )
+
+
+def test_extract_from_input_xml_fail(my_setup):
+    with pytest.raises(Exception):
+        kdlc.extract_from_input_xml(f"{test_resources_dir}/fail_settings.xml")
 
 
 def test_extract_entry_tag_string(my_setup):
