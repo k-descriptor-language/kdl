@@ -124,6 +124,10 @@ def extract_entry_tag(tree):
             tree.attrib["key"]: tree.attrib["value"],
             "data_type": tree.attrib["type"],
         }
+    else:
+        ex = ValueError()
+        ex.strerror = "Invalid entry type"
+        raise ex
 
     if "isnull" in tree.attrib:
         entry["isnull"] = True
@@ -148,6 +152,10 @@ def extract_config_tag(tree):
         elif child.tag == CONFIG_TAG:
             config = extract_config_tag(child)
             config_value.append(config)
+        else:
+            ex = ValueError()
+            ex.strerror = "Invalid child tag"
+            raise ex
     config = {tree.attrib["key"]: config_value}
     return config
 

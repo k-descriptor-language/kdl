@@ -2,6 +2,7 @@ import os
 import kdlc
 import xml.etree.ElementTree as ET
 import filecmp
+import pytest
 
 test_generated_dir = os.path.dirname(__file__) + "/generated"
 test_resources_dir = os.path.dirname(__file__) + "/resources"
@@ -128,6 +129,14 @@ def test_extract_entry_tag_with_isnull(my_setup):
     assert kdlc.extract_entry_tag(tree) == result
 
 
+def test_extract_entry_tag_error(my_setup):
+    tree = ET.fromstring(
+        '<entry key="node-name" type="invalid" value="CSV Reader" isnull="true" />'
+    )
+    with pytest.raises(Exception):
+        kdlc.extract_entry_tag(tree)
+
+
 def test_extract_config_tag(my_setup):
     tree = ET.fromstring(
         '<config xmlns="http://www.knime.org/2008/09/XMLConfig" '
@@ -140,6 +149,19 @@ def test_extract_config_tag(my_setup):
 
     result = {"settings.xml": [{"column-filter": [{"filter-type": "STANDARD"}]}]}
     assert kdlc.extract_config_tag(tree) == result
+
+
+def test_extract_config_tag_fail(my_setup):
+    tree = ET.fromstring(
+        '<config xmlns="http://www.knime.org/2008/09/XMLConfig" '
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+        'xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig '
+        'http://www.knime.org/XMLConfig_2008_09.xsd" key="settings.xml">'
+        '<fail key="column-filter"><entry key="filter-type" type="xstring" '
+        'value="STANDARD" /></fail></config>'
+    )
+    with pytest.raises(Exception):
+        kdlc.extract_config_tag(tree)
 
 
 def test_extract_nodes(my_setup):
