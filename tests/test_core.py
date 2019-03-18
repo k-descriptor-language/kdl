@@ -171,6 +171,41 @@ def test_extract_connections(my_setup):
     assert kdlc.extract_connections(f"{test_resources_dir}/workflow.knime") == result
 
 
+def test_validate_node_from_schema(my_setup):
+    node = {
+        "settings": {
+            "name": "CSV Reader",
+            "factory": "org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
+            "bundle_name": "KNIME Base Nodes",
+            "bundle_symbolic_name": "org.knime.base",
+            "bundle_version": "3.7.1.v201901291053",
+            "feature_name": "KNIME Core",
+            "feature_symbolic_name": "org.knime.features.base.feature.group",
+            "feature_version": "3.7.1.v201901291053",
+            "model": [
+                {
+                    "url": (
+                        "/Users/jared/knime-workspace/Example Workflows/"
+                        "TheData/Misc/Demographics.csv"
+                    )
+                },
+                {"colDelimiter": ","},
+                {"rowDelimiter": "%%00010"},
+                {"quote": '"'},
+                {"commentStart": "#"},
+                {"hasRowHeader": True},
+                {"hasColHeader": True},
+                {"supportShortLines": False},
+                {"limitRowsCount": -1, "data_type": "xlong"},
+                {"skipFirstLinesCount": -1},
+                {"characterSetName": "", "isnull": True},
+                {"limitAnalysisCount": -1},
+            ],
+        }
+    }
+    kdlc.validate_node_from_schema(node)
+
+
 def test_create_node_settings_from_template_csv(my_setup):
     node = {
         "settings": {
@@ -196,7 +231,7 @@ def test_create_node_settings_from_template_csv(my_setup):
                 {"hasRowHeader": True},
                 {"hasColHeader": True},
                 {"supportShortLines": False},
-                {"limitRowsCount": -1, "type": "xlong"},
+                {"limitRowsCount": -1, "data_type": "xlong"},
                 {"skipFirstLinesCount": -1},
                 {"characterSetName": "", "isnull": True},
                 {"limitAnalysisCount": -1},
