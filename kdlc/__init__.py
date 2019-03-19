@@ -13,11 +13,13 @@ from .core import (
     extract_connections,
     create_node_settings_from_template,
     create_workflow_knime_from_template,
-    # create_entry_element,
-    # create_config_element,
+    validate_node_from_schema,
+    set_entry_element_type,
+    set_config_element_type,
     save_node_settings_xml,
     save_workflow_knime,
     create_output_workflow,
+    cleanup,
 )
 
 from .application import main
@@ -36,10 +38,12 @@ __all__ = [
     "extract_connections",
     "create_node_settings_from_template",
     "create_workflow_knime_from_template",
-    # "create_entry_element",
-    # "create_config_element",
+    "validate_node_from_schema",
+    "set_entry_element_type",
+    "set_config_element_type",
     "save_node_settings_xml",
     "save_workflow_knime",
     "create_output_workflow",
+    "cleanup",
     "main",
 ]

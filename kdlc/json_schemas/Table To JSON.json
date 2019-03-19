@@ -1,0 +1,461 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "name",
+    "factory",
+    "bundle_name",
+    "bundle_symbolic_name",
+    "bundle_version",
+    "feature_name",
+    "feature_symbolic_name",
+    "feature_version",
+    "model"
+  ],
+  "properties": {
+    "name": {
+      "$id": "#/properties/name",
+      "type": "string",
+      "title": "The Name Schema",
+      "default": "",
+      "examples": [
+        "Table to JSON"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "factory": {
+      "$id": "#/properties/factory",
+      "type": "string",
+      "title": "The Factory Schema",
+      "default": "",
+      "examples": [
+        "org.knime.json.node.fromtable.TableToJsonNodeFactory"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "bundle_name": {
+      "$id": "#/properties/bundle_name",
+      "type": "string",
+      "title": "The Bundle_name Schema",
+      "default": "",
+      "examples": [
+        "JSON related functionality for KNIME"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "bundle_symbolic_name": {
+      "$id": "#/properties/bundle_symbolic_name",
+      "type": "string",
+      "title": "The Bundle_symbolic_name Schema",
+      "default": "",
+      "examples": [
+        "org.knime.json"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "bundle_version": {
+      "$id": "#/properties/bundle_version",
+      "type": "string",
+      "title": "The Bundle_version Schema",
+      "default": "",
+      "examples": [
+        "3.7.1.v201901281201"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "feature_name": {
+      "$id": "#/properties/feature_name",
+      "type": "string",
+      "title": "The Feature_name Schema",
+      "default": "",
+      "examples": [
+        "KNIME JSON-Processing"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "feature_symbolic_name": {
+      "$id": "#/properties/feature_symbolic_name",
+      "type": "string",
+      "title": "The Feature_symbolic_name Schema",
+      "default": "",
+      "examples": [
+        "org.knime.features.json.feature.group"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "feature_version": {
+      "$id": "#/properties/feature_version",
+      "type": "string",
+      "title": "The Feature_version Schema",
+      "default": "",
+      "examples": [
+        "3.7.1.v201901281201"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "model": {
+      "$id": "#/properties/model",
+      "type": "array",
+      "title": "The Model Schema",
+      "items": [
+        {
+          "type": "object",
+          "required": [
+            "selectedColumns"
+          ],
+          "properties": {
+            "selectedColumns": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "required": [
+                    "filter-type"
+                  ],
+                  "properties": {
+                    "filter-type": {
+                      "type": "string",
+                      "default": "",
+                      "examples": [
+                        "STANDARD"
+                      ],
+                      "pattern": "^(.*)$"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "included_names"
+                  ],
+                  "properties": {
+                    "included_names": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "array-size"
+                          ],
+                          "properties": {
+                            "array-size": {
+                              "type": "integer",
+                              "default": 0
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "excluded_names"
+                  ],
+                  "properties": {
+                    "excluded_names": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "array-size"
+                          ],
+                          "properties": {
+                            "array-size": {
+                              "type": "integer",
+                              "default": 0
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "enforce_option"
+                  ],
+                  "properties": {
+                    "enforce_option": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "name_pattern"
+                  ],
+                  "properties": {
+                    "name_pattern": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "pattern"
+                          ],
+                          "properties": {
+                            "pattern": {
+                              "type": "string",
+                              "default": ""
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "required": [
+                            "type"
+                          ],
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "default": "Wildcard"
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "required": [
+                            "caseSensitive"
+                          ],
+                          "properties": {
+                            "caseSensitive": {
+                              "type": "boolean",
+                              "default": true
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "datatype"
+                  ],
+                  "properties": {
+                    "datatype": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "typelist"
+                          ],
+                          "properties": {
+                            "typelist": {
+                              "type": "array",
+                              "items": [
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.StringValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.StringValue": {
+                                      "type": "boolean"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.IntValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.IntValue": {
+                                      "type": "boolean"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.DoubleValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.DoubleValue": {
+                                      "type": "boolean"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.BooleanValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.BooleanValue": {
+                                      "type": "boolean"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.LongValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.LongValue": {
+                                      "type": "boolean"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.date.DateAndTimeValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.date.DateAndTimeValue": {
+                                      "type": "boolean"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "rowkey.key"
+          ],
+          "properties": {
+            "rowkey.key": {
+              "type": "string",
+              "default": "key",
+              "examples": [
+                "key"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "direction"
+          ],
+          "properties": {
+            "direction": {
+              "type": "string",
+              "default": "KeepRows",
+              "examples": [
+                "KeepRows"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "column.name.separator"
+          ],
+          "properties": {
+            "column.name.separator": {
+              "type": "string",
+              "default": ".",
+              "examples": [
+                "."
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "output.column.name"
+          ],
+          "properties": {
+            "output.column.name": {
+              "type": "string",
+              "default": "JSON",
+              "examples": [
+                "JSON"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "row.key.option"
+          ],
+          "properties": {
+            "row.key.option": {
+              "type": "string",
+              "default": "omit",
+              "examples": [
+                "omit"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "column.names.as.path"
+          ],
+          "properties": {
+            "column.names.as.path": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "remove.source.columns"
+          ],
+          "properties": {
+            "remove.source.columns": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "output.boolean.asNumbers"
+          ],
+          "properties": {
+            "output.boolean.asNumbers": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "missing.values.are.omitted"
+          ],
+          "properties": {
+            "missing.values.are.omitted": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        }
+      ]
+    }
+  }
+}

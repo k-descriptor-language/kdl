@@ -34,6 +34,7 @@ setup(
     entry_points={"console_scripts": ["kdlc=kdlc.application:main"]},
     install_requires=[
         "jinja2",
+        "jsonschema",
         "pytest",
         "pytest-cov",
         "pytest-mock",
@@ -42,6 +43,6 @@ setup(
         "black",
         "click",
     ],
-    package_data={"kdlc": ["templates/*.xml"]},
+    package_data={"kdlc": ["templates/*.xml", "json_schemas/*.json"]},
     include_package_data=True,
 )

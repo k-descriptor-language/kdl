@@ -1,0 +1,366 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "name",
+    "factory",
+    "bundle_name",
+    "bundle_symbolic_name",
+    "bundle_version",
+    "feature_name",
+    "feature_symbolic_name",
+    "feature_version",
+    "model"
+  ],
+  "properties": {
+    "name": {
+      "$id": "#/properties/name",
+      "type": "string",
+      "title": "The Name Schema",
+      "default": "",
+      "examples": [
+        "Column Filter"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "factory": {
+      "$id": "#/properties/factory",
+      "type": "string",
+      "title": "The Factory Schema",
+      "default": "",
+      "examples": [
+        "org.knime.base.node.preproc.filter.column.DataColumnSpecFilterNodeFactory"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "bundle_name": {
+      "$id": "#/properties/bundle_name",
+      "type": "string",
+      "title": "The Bundle_name Schema",
+      "default": "",
+      "examples": [
+        "KNIME Base Nodes"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "bundle_symbolic_name": {
+      "$id": "#/properties/bundle_symbolic_name",
+      "type": "string",
+      "title": "The Bundle_symbolic_name Schema",
+      "default": "",
+      "examples": [
+        "org.knime.base"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "bundle_version": {
+      "$id": "#/properties/bundle_version",
+      "type": "string",
+      "title": "The Bundle_version Schema",
+      "default": "",
+      "examples": [
+        "3.7.1.v201901291053"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "feature_name": {
+      "$id": "#/properties/feature_name",
+      "type": "string",
+      "title": "The Feature_name Schema",
+      "default": "",
+      "examples": [
+        "KNIME Core"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "feature_symbolic_name": {
+      "$id": "#/properties/feature_symbolic_name",
+      "type": "string",
+      "title": "The Feature_symbolic_name Schema",
+      "default": "",
+      "examples": [
+        "org.knime.features.base.feature.group"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "feature_version": {
+      "$id": "#/properties/feature_version",
+      "type": "string",
+      "title": "The Feature_version Schema",
+      "default": "",
+      "examples": [
+        "3.7.1.v201901291053"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "model": {
+      "$id": "#/properties/model",
+      "type": "array",
+      "title": "The Model Schema",
+      "items": [
+        {
+          "type": "object",
+          "required": [
+            "column-filter"
+          ],
+          "properties": {
+            "column-filter": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "required": [
+                    "filter-type"
+                  ],
+                  "properties": {
+                    "filter-type": {
+                      "type": "string",
+                      "default": "",
+                      "examples": [
+                        "STANDARD"
+                      ],
+                      "pattern": "^(.*)$"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "included_names"
+                  ],
+                  "properties": {
+                    "filter-type": {
+                      "type": "array",
+                      "required": [
+                        "array-size"
+                      ],
+                      "items": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "array-size"
+                          ],
+                          "properties": {
+                            "array-size": {
+                              "type": "integer",
+                              "default": 0
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "excluded_names"
+                  ],
+                  "properties": {
+                    "excluded_names": {
+                      "type": "array",
+                      "required": [
+                        "array-size"
+                      ],
+                      "items": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "array-size"
+                          ],
+                          "properties": {
+                            "array-size": {
+                              "type": "integer",
+                              "default": 0
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "enforce_option"
+                  ],
+                  "properties": {
+                    "enforce_option": {
+                      "type": "string",
+                      "default": "EnforceExclusion"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "name_pattern"
+                  ],
+                  "properties": {
+                    "name_pattern": {
+                      "type": "array",
+                      "required": [
+                        "pattern",
+                        "type",
+                        "caseSensitive"
+                      ],
+                      "items": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "pattern"
+                          ],
+                          "properties": {
+                            "pattern": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "required": [
+                            "type"
+                          ],
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "default": "Wildcard"
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "required": [
+                            "caseSensitive"
+                          ],
+                          "properties": {
+                            "caseSensitive": {
+                              "type": "boolean",
+                              "default": true
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "datatype"
+                  ],
+                  "properties": {
+                    "datatype": {
+                      "type": "array",
+                      "required": [
+                        "typelist"
+                      ],
+                      "items": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "typelist"
+                          ],
+                          "properties": {
+                            "typelist": {
+                              "type": "array",
+                              "required": [
+                                "org.knime.core.data.StringValue",
+                                "org.knime.core.data.IntValue",
+                                "org.knime.core.data.DoubleValue",
+                                "org.knime.core.data.BooleanValue",
+                                "org.knime.core.data.LongValue",
+                                "org.knime.core.data.date.DateAndTimeValue"
+                              ],
+                              "items": [
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.StringValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.StringValue": {
+                                      "type": "boolean",
+                                      "default": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.IntValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.IntValue": {
+                                      "type": "boolean",
+                                      "default": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.DoubleValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.DoubleValue": {
+                                      "type": "boolean",
+                                      "default": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.BooleanValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.BooleanValue": {
+                                      "type": "boolean",
+                                      "default": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.LongValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.LongValue": {
+                                      "type": "boolean",
+                                      "default": false
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "object",
+                                  "required": [
+                                    "org.knime.core.data.date.DateAndTimeValue"
+                                  ],
+                                  "properties": {
+                                    "org.knime.core.data.date.DateAndTimeValue": {
+                                      "type": "boolean",
+                                      "default": false
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

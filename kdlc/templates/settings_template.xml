@@ -7,10 +7,10 @@
 </config>
 <config key="model">
     {% for item in model recursive %}
-    {% if item.type=="config" %}
+    {% if item.data_type=="config" %}
         {% set config_items = {} %}
         {% for key, value in item.items() %}
-            {% if key=="type" %}
+            {% if key=="data_type" %}
             {% else %}
                 {% do config_items.update({"key": key}) %}
                 {% do config_items.update({"value": value}) %}
@@ -22,7 +22,7 @@
     {% else %}
         {% set entry_items = {} %}
         {% for key, value in item.items() %}
-            {% if key=="type" %}
+            {% if key=="data_type" %}
                 {% do entry_items.update({"type": value}) %}
             {% elif key=="isnull" %}
                 {% do entry_items.update({"isnull": "true"}) %}
@@ -31,7 +31,7 @@
                 {% do entry_items.update({"value": value}) %}
             {% endif %}
         {% endfor %}
-        {% if entry_items['isnull'] %}
+        {% if entry_items.isnull is defined %}
             <entry isnull="true" key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}" />
         {% else %}
             <entry key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}" />

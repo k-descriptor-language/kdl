@@ -1,7 +1,9 @@
+import sys
 import click
 from pathlib import Path
 import kdlc
 import logging
+import jsonschema
 
 
 logger = logging.getLogger("kdlc.cli")
@@ -134,6 +136,26 @@ def workflow_to_workflow(input_file, output_file):
 
     # Generate and save XML for nodes in output directory
     for node in input_node_list:
+        # POC for JSON validation, uncomment below and indent to test diff scenarios
+        # if node["settings"]["name"] == "CSV Reader":
+        # empty url
+        # node["settings"]["model"][0]["url"] = ""
+        # no url entry
+        # node["settings"]["model"].pop(0)
+        # update url
+        # node["settings"]["model"][0]["url"] = "/path/to/other/file.csv"
+        # not csv
+        # node["settings"]["model"][0]["url"] = "/path/to/other/file.txt"
+        try:
+            kdlc.validate_node_from_schema(node)
+        except jsonschema.ValidationError as e:
+            print(e.message)
+            kdlc.cleanup()
+            sys.exit(1)
+        except jsonschema.SchemaError as e:
+            print(e.message)
+            kdlc.cleanup()
+            sys.exit(1)
         tree = kdlc.create_node_settings_from_template(node)
         kdlc.save_node_settings_xml(tree, f'{output_workflow_path}/{node["filename"]}')
 
