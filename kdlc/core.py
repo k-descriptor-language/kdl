@@ -371,6 +371,26 @@ def create_output_workflow(workflow_name):
     cleanup()
 
 
+def save_output_kdl_workflow(output_file, connection_list, node_list):
+    """
+    Outputs node connections and node JSON as .kdl file
+
+    Args:
+        output_file (str): Name of output kdl file
+        connection_list (list): list of connection dicts to be written
+        node_list (list): list of node dicts to be written
+    """
+    with open(output_file, "w") as file:
+        for connection in connection_list:
+            file.write(
+                f"(n{connection['source_id']}:{connection['source_port']})-->"
+                f"(n{connection['dest_id']}:{connection['dest_port']})\n"
+            )
+        file.write("\n")
+        for node in node_list:
+            file.write(f"(n{node['id']}): {json.dumps(node['settings'], indent=4)}\n\n")
+
+
 def cleanup():
     """
     Cleans up temp directories

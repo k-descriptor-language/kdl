@@ -19,6 +19,7 @@ from .core import (
     save_node_settings_xml,
     save_workflow_knime,
     create_output_workflow,
+    save_output_kdl_workflow,
     cleanup,
 )
 
@@ -44,6 +45,7 @@ __all__ = [
     "save_node_settings_xml",
     "save_workflow_knime",
     "create_output_workflow",
+    "save_output_kdl_workflow",
     "cleanup",
     "main",
 ]
