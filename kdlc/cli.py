@@ -4,6 +4,9 @@ from pathlib import Path
 import kdlc
 import logging
 import jsonschema
+import json
+from antlr4 import *
+from .parse import *
 
 
 logger = logging.getLogger("kdlc.cli")
@@ -95,7 +98,76 @@ def workflow_to_kdl_custom_template(input_file, output_file, nodes):
 
 
 def kdl_to_workflow(input_file, output_file):
-    pass
+    kdl_input = FileStream(input_file)
+    lexer = KDLLexer(kdl_input)
+    stream = CommonTokenStream(lexer)
+    parser = KDLParser(stream)
+
+    connection_list = []
+    node_list = []
+
+    tree = parser.connection()
+    source_id = tree.node(0).node_id().getText()
+    source_port = tree.node(0).port().port_id().getText()
+    dest_id = tree.node(1).node_id().getText()
+    dest_port = tree.node(1).port().port_id().getText()
+    connection1 = {
+        "id": "0",
+        "source_id": source_id,
+        "source_port": source_port,
+        "dest_id": dest_id,
+        "dest_port": dest_port,
+    }
+    connection_list.append(connection1)
+
+    tree2 = parser.connection()
+    source_id = tree2.node(0).node_id().getText()
+    source_port = tree2.node(0).port().port_id().getText()
+    dest_id = tree2.node(1).node_id().getText()
+    dest_port = tree2.node(1).port().port_id().getText()
+    connection2 = {
+        "id": "1",
+        "source_id": source_id,
+        "source_port": source_port,
+        "dest_id": dest_id,
+        "dest_port": dest_port,
+    }
+    connection_list.append(connection2)
+
+    tree3 = parser.node_settings()
+    node_id = tree3.node().node_id().getText()
+    node_json = tree3.json().getText()
+    node_settings = json.loads(node_json)
+    node1 = {
+        "id": node_id,
+        "filename": f"{node_settings['name']} (#{node_id})/settings.xml",
+        "settings": node_settings,
+    }
+    node_list.append(node1)
+
+    tree4 = parser.node_settings()
+    node_id = tree4.node().node_id().getText()
+    node_json = tree4.json().getText()
+    node_settings = json.loads(node_json)
+    node2 = {
+        "id": node_id,
+        "filename": f"{node_settings['name']} (#{node_id})/settings.xml",
+        "settings": node_settings,
+    }
+    node_list.append(node2)
+
+    tree5 = parser.node_settings()
+    node_id = tree5.node().node_id().getText()
+    node_json = tree5.json().getText()
+    node_settings = json.loads(node_json)
+    node3 = {
+        "id": node_id,
+        "filename": f"{node_settings['name']} (#{node_id})/settings.xml",
+        "settings": node_settings,
+    }
+    node_list.append(node3)
+
+    print(node_list)
 
 
 def workflow_to_kdl(input_file, output_file):

@@ -42,6 +42,7 @@ setup(
         "flake8",
         "black",
         "click",
+        "antlr4-python3-runtime",
     ],
     package_data={"kdlc": ["templates/*.xml", "json_schemas/*.json"]},
     include_package_data=True,

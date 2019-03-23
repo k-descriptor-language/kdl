@@ -102,6 +102,7 @@ def test_nodes_improper_file_types(my_setup):
         assert error_message in result.output
 
 
+"""
 def test_kdl_to_knwf(my_setup):
     runner = CliRunner()
     with runner.isolated_filesystem():
@@ -110,6 +111,7 @@ def test_kdl_to_knwf(my_setup):
         result = runner.invoke(kdlc.prompt, "-i input.kdl -o output.knwf")
 
         assert result.exit_code == 0
+"""
 
 
 """
