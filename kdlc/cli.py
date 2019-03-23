@@ -136,8 +136,7 @@ def kdl_to_workflow(input_file, output_file):
 
     tree3 = parser.node_settings()
     node_id = tree3.node().node_id().getText()
-    node_json = tree3.json().getText()
-    node_settings = json.loads(node_json)
+    node_settings = json.loads(tree3.json().getText())
     node1 = {
         "id": node_id,
         "filename": f"{node_settings['name']} (#{node_id})/settings.xml",
@@ -147,8 +146,7 @@ def kdl_to_workflow(input_file, output_file):
 
     tree4 = parser.node_settings()
     node_id = tree4.node().node_id().getText()
-    node_json = tree4.json().getText()
-    node_settings = json.loads(node_json)
+    node_settings = json.loads(tree4.json().getText())
     node2 = {
         "id": node_id,
         "filename": f"{node_settings['name']} (#{node_id})/settings.xml",
@@ -158,8 +156,7 @@ def kdl_to_workflow(input_file, output_file):
 
     tree5 = parser.node_settings()
     node_id = tree5.node().node_id().getText()
-    node_json = tree5.json().getText()
-    node_settings = json.loads(node_json)
+    node_settings = json.loads(tree5.json().getText())
     node3 = {
         "id": node_id,
         "filename": f"{node_settings['name']} (#{node_id})/settings.xml",
