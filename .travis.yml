@@ -6,7 +6,7 @@ install:
 script:
 - flake8 kdlc/ tests/ setup.py
 - black --check kdlc tests setup.py
-- pytest --cov=./
+- pytest --cov=kdlc
 after_success:
 - codecov
 notifications:

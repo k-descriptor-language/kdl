@@ -5,8 +5,8 @@ import kdlc
 import logging
 import jsonschema
 import json
-from antlr4 import *
-from .parse import *
+from antlr4 import FileStream, CommonTokenStream
+from kdl_parse import KDLLexer, KDLParser
 
 
 logger = logging.getLogger("kdlc.cli")

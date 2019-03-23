@@ -1,10 +1,9 @@
-# Generated from kdlc/parse/KDL.g4 by ANTLR 4.7.1
+# Generated from KDL.g4 by ANTLR 4.7.1
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
 from typing.io import TextIO
 import sys
-
 
 def serializedATN():
     with StringIO() as buf:
@@ -18,12 +17,12 @@ def serializedATN():
         buf.write("\3\13\3\13\3\13\3\13\5\13R\n\13\3\f\3\f\3\f\3\f\3\f\3")
         buf.write("\f\3\f\5\f[\n\f\3\f\2\2\r\2\4\6\b\n\f\16\20\22\24\26\2")
         buf.write("\2\2\\\2\30\3\2\2\2\4\32\3\2\2\2\6\34\3\2\2\2\b\37\3\2")
-        buf.write("\2\2\n'\3\2\2\2\f+\3\2\2\2\16/\3\2\2\2\20>\3\2\2\2\22")
+        buf.write("\2\2\n\'\3\2\2\2\f+\3\2\2\2\16/\3\2\2\2\20>\3\2\2\2\22")
         buf.write("@\3\2\2\2\24Q\3\2\2\2\26Z\3\2\2\2\30\31\7\22\2\2\31\3")
         buf.write("\3\2\2\2\32\33\7\22\2\2\33\5\3\2\2\2\34\35\7\20\2\2\35")
         buf.write("\36\5\4\3\2\36\7\3\2\2\2\37 \7\3\2\2 !\7\17\2\2!#\5\2")
-        buf.write('\2\2"$\5\6\4\2#"\3\2\2\2#$\3\2\2\2$%\3\2\2\2%&\7\4\2')
-        buf.write("\2&\t\3\2\2\2'(\5\b\5\2()\7\16\2\2)*\5\b\5\2*\13\3\2")
+        buf.write("\2\2\"$\5\6\4\2#\"\3\2\2\2#$\3\2\2\2$%\3\2\2\2%&\7\4\2")
+        buf.write("\2&\t\3\2\2\2\'(\5\b\5\2()\7\16\2\2)*\5\b\5\2*\13\3\2")
         buf.write("\2\2+,\5\b\5\2,-\7\20\2\2-.\5\16\b\2.\r\3\2\2\2/\60\5")
         buf.write("\26\f\2\60\17\3\2\2\2\61\62\7\5\2\2\62\67\5\22\n\2\63")
         buf.write("\64\7\6\2\2\64\66\5\22\n\2\65\63\3\2\2\2\669\3\2\2\2\67")
@@ -40,53 +39,24 @@ def serializedATN():
         return buf.getvalue()
 
 
-class KDLParser(Parser):
+class KDLParser ( Parser ):
 
     grammarFileName = "KDL.g4"
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
-    decisionsToDFA = [DFA(ds, i) for i, ds in enumerate(atn.decisionToState)]
+    decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [
-        "<INVALID>",
-        "'('",
-        "')'",
-        "'{'",
-        "','",
-        "'}'",
-        "'['",
-        "']'",
-        "'true'",
-        "'false'",
-        "'null'",
-        "<INVALID>",
-        "'-->'",
-        "'n'",
-        "':'",
-    ]
+    literalNames = [ "<INVALID>", "'('", "')'", "'{'", "','", "'}'", "'['", 
+                     "']'", "'true'", "'false'", "'null'", "<INVALID>", 
+                     "'-->'", "'n'", "':'" ]
 
-    symbolicNames = [
-        "<INVALID>",
-        "<INVALID>",
-        "<INVALID>",
-        "<INVALID>",
-        "<INVALID>",
-        "<INVALID>",
-        "<INVALID>",
-        "<INVALID>",
-        "<INVALID>",
-        "<INVALID>",
-        "<INVALID>",
-        "WS",
-        "ARROW",
-        "NODEPREFIX",
-        "COLON",
-        "STRING",
-        "NUMBER",
-    ]
+    symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                      "<INVALID>", "<INVALID>", "<INVALID>", "WS", "ARROW", 
+                      "NODEPREFIX", "COLON", "STRING", "NUMBER" ]
 
     RULE_node_id = 0
     RULE_port_id = 1
@@ -100,50 +70,38 @@ class KDLParser(Parser):
     RULE_array = 9
     RULE_value = 10
 
-    ruleNames = [
-        "node_id",
-        "port_id",
-        "port",
-        "node",
-        "connection",
-        "node_settings",
-        "json",
-        "obj",
-        "pair",
-        "array",
-        "value",
-    ]
+    ruleNames =  [ "node_id", "port_id", "port", "node", "connection", "node_settings", 
+                   "json", "obj", "pair", "array", "value" ]
 
     EOF = Token.EOF
-    T__0 = 1
-    T__1 = 2
-    T__2 = 3
-    T__3 = 4
-    T__4 = 5
-    T__5 = 6
-    T__6 = 7
-    T__7 = 8
-    T__8 = 9
-    T__9 = 10
-    WS = 11
-    ARROW = 12
-    NODEPREFIX = 13
-    COLON = 14
-    STRING = 15
-    NUMBER = 16
+    T__0=1
+    T__1=2
+    T__2=3
+    T__3=4
+    T__4=5
+    T__5=6
+    T__6=7
+    T__7=8
+    T__8=9
+    T__9=10
+    WS=11
+    ARROW=12
+    NODEPREFIX=13
+    COLON=14
+    STRING=15
+    NUMBER=16
 
-    def __init__(self, input: TokenStream, output: TextIO = sys.stdout):
+    def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
         self.checkVersion("4.7.1")
-        self._interp = ParserATNSimulator(
-            self, self.atn, self.decisionsToDFA, self.sharedContextCache
-        )
+        self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
+
+
     class Node_idContext(ParserRuleContext):
-        def __init__(
-            self, parser, parent: ParserRuleContext = None, invokingState: int = -1
-        ):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -153,13 +111,16 @@ class KDLParser(Parser):
         def getRuleIndex(self):
             return KDLParser.RULE_node_id
 
-        def enterRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "enterNode_id"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterNode_id" ):
                 listener.enterNode_id(self)
 
-        def exitRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "exitNode_id"):
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitNode_id" ):
                 listener.exitNode_id(self)
+
+
+
 
     def node_id(self):
 
@@ -178,9 +139,8 @@ class KDLParser(Parser):
         return localctx
 
     class Port_idContext(ParserRuleContext):
-        def __init__(
-            self, parser, parent: ParserRuleContext = None, invokingState: int = -1
-        ):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -190,13 +150,16 @@ class KDLParser(Parser):
         def getRuleIndex(self):
             return KDLParser.RULE_port_id
 
-        def enterRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "enterPort_id"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterPort_id" ):
                 listener.enterPort_id(self)
 
-        def exitRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "exitPort_id"):
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitPort_id" ):
                 listener.exitPort_id(self)
+
+
+
 
     def port_id(self):
 
@@ -215,9 +178,8 @@ class KDLParser(Parser):
         return localctx
 
     class PortContext(ParserRuleContext):
-        def __init__(
-            self, parser, parent: ParserRuleContext = None, invokingState: int = -1
-        ):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -225,18 +187,22 @@ class KDLParser(Parser):
             return self.getToken(KDLParser.COLON, 0)
 
         def port_id(self):
-            return self.getTypedRuleContext(KDLParser.Port_idContext, 0)
+            return self.getTypedRuleContext(KDLParser.Port_idContext,0)
+
 
         def getRuleIndex(self):
             return KDLParser.RULE_port
 
-        def enterRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "enterPort"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterPort" ):
                 listener.enterPort(self)
 
-        def exitRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "exitPort"):
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitPort" ):
                 listener.exitPort(self)
+
+
+
 
     def port(self):
 
@@ -257,9 +223,8 @@ class KDLParser(Parser):
         return localctx
 
     class NodeContext(ParserRuleContext):
-        def __init__(
-            self, parser, parent: ParserRuleContext = None, invokingState: int = -1
-        ):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -267,27 +232,32 @@ class KDLParser(Parser):
             return self.getToken(KDLParser.NODEPREFIX, 0)
 
         def node_id(self):
-            return self.getTypedRuleContext(KDLParser.Node_idContext, 0)
+            return self.getTypedRuleContext(KDLParser.Node_idContext,0)
+
 
         def port(self):
-            return self.getTypedRuleContext(KDLParser.PortContext, 0)
+            return self.getTypedRuleContext(KDLParser.PortContext,0)
+
 
         def getRuleIndex(self):
             return KDLParser.RULE_node
 
-        def enterRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "enterNode"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterNode" ):
                 listener.enterNode(self)
 
-        def exitRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "exitNode"):
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitNode" ):
                 listener.exitNode(self)
+
+
+
 
     def node(self):
 
         localctx = KDLParser.NodeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_node)
-        self._la = 0  # Token type
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 29
@@ -299,9 +269,10 @@ class KDLParser(Parser):
             self.state = 33
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la == KDLParser.COLON:
+            if _la==KDLParser.COLON:
                 self.state = 32
                 self.port()
+
 
             self.state = 35
             self.match(KDLParser.T__1)
@@ -314,17 +285,17 @@ class KDLParser(Parser):
         return localctx
 
     class ConnectionContext(ParserRuleContext):
-        def __init__(
-            self, parser, parent: ParserRuleContext = None, invokingState: int = -1
-        ):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def node(self, i: int = None):
+        def node(self, i:int=None):
             if i is None:
                 return self.getTypedRuleContexts(KDLParser.NodeContext)
             else:
-                return self.getTypedRuleContext(KDLParser.NodeContext, i)
+                return self.getTypedRuleContext(KDLParser.NodeContext,i)
+
 
         def ARROW(self):
             return self.getToken(KDLParser.ARROW, 0)
@@ -332,13 +303,16 @@ class KDLParser(Parser):
         def getRuleIndex(self):
             return KDLParser.RULE_connection
 
-        def enterRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "enterConnection"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterConnection" ):
                 listener.enterConnection(self)
 
-        def exitRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "exitConnection"):
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitConnection" ):
                 listener.exitConnection(self)
+
+
+
 
     def connection(self):
 
@@ -361,31 +335,35 @@ class KDLParser(Parser):
         return localctx
 
     class Node_settingsContext(ParserRuleContext):
-        def __init__(
-            self, parser, parent: ParserRuleContext = None, invokingState: int = -1
-        ):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def node(self):
-            return self.getTypedRuleContext(KDLParser.NodeContext, 0)
+            return self.getTypedRuleContext(KDLParser.NodeContext,0)
+
 
         def COLON(self):
             return self.getToken(KDLParser.COLON, 0)
 
         def json(self):
-            return self.getTypedRuleContext(KDLParser.JsonContext, 0)
+            return self.getTypedRuleContext(KDLParser.JsonContext,0)
+
 
         def getRuleIndex(self):
             return KDLParser.RULE_node_settings
 
-        def enterRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "enterNode_settings"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterNode_settings" ):
                 listener.enterNode_settings(self)
 
-        def exitRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "exitNode_settings"):
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitNode_settings" ):
                 listener.exitNode_settings(self)
+
+
+
 
     def node_settings(self):
 
@@ -408,25 +386,28 @@ class KDLParser(Parser):
         return localctx
 
     class JsonContext(ParserRuleContext):
-        def __init__(
-            self, parser, parent: ParserRuleContext = None, invokingState: int = -1
-        ):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def value(self):
-            return self.getTypedRuleContext(KDLParser.ValueContext, 0)
+            return self.getTypedRuleContext(KDLParser.ValueContext,0)
+
 
         def getRuleIndex(self):
             return KDLParser.RULE_json
 
-        def enterRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "enterJson"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterJson" ):
                 listener.enterJson(self)
 
-        def exitRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "exitJson"):
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitJson" ):
                 listener.exitJson(self)
+
+
+
 
     def json(self):
 
@@ -445,38 +426,41 @@ class KDLParser(Parser):
         return localctx
 
     class ObjContext(ParserRuleContext):
-        def __init__(
-            self, parser, parent: ParserRuleContext = None, invokingState: int = -1
-        ):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def pair(self, i: int = None):
+        def pair(self, i:int=None):
             if i is None:
                 return self.getTypedRuleContexts(KDLParser.PairContext)
             else:
-                return self.getTypedRuleContext(KDLParser.PairContext, i)
+                return self.getTypedRuleContext(KDLParser.PairContext,i)
+
 
         def getRuleIndex(self):
             return KDLParser.RULE_obj
 
-        def enterRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "enterObj"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterObj" ):
                 listener.enterObj(self)
 
-        def exitRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "exitObj"):
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitObj" ):
                 listener.exitObj(self)
+
+
+
 
     def obj(self):
 
         localctx = KDLParser.ObjContext(self, self._ctx, self.state)
         self.enterRule(localctx, 14, self.RULE_obj)
-        self._la = 0  # Token type
+        self._la = 0 # Token type
         try:
             self.state = 60
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input, 2, self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 47
@@ -486,7 +470,7 @@ class KDLParser(Parser):
                 self.state = 53
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                while _la == KDLParser.T__3:
+                while _la==KDLParser.T__3:
                     self.state = 49
                     self.match(KDLParser.T__3)
                     self.state = 50
@@ -507,6 +491,7 @@ class KDLParser(Parser):
                 self.match(KDLParser.T__4)
                 pass
 
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -516,9 +501,8 @@ class KDLParser(Parser):
         return localctx
 
     class PairContext(ParserRuleContext):
-        def __init__(
-            self, parser, parent: ParserRuleContext = None, invokingState: int = -1
-        ):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -526,18 +510,22 @@ class KDLParser(Parser):
             return self.getToken(KDLParser.STRING, 0)
 
         def value(self):
-            return self.getTypedRuleContext(KDLParser.ValueContext, 0)
+            return self.getTypedRuleContext(KDLParser.ValueContext,0)
+
 
         def getRuleIndex(self):
             return KDLParser.RULE_pair
 
-        def enterRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "enterPair"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterPair" ):
                 listener.enterPair(self)
 
-        def exitRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "exitPair"):
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitPair" ):
                 listener.exitPair(self)
+
+
+
 
     def pair(self):
 
@@ -560,38 +548,41 @@ class KDLParser(Parser):
         return localctx
 
     class ArrayContext(ParserRuleContext):
-        def __init__(
-            self, parser, parent: ParserRuleContext = None, invokingState: int = -1
-        ):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def value(self, i: int = None):
+        def value(self, i:int=None):
             if i is None:
                 return self.getTypedRuleContexts(KDLParser.ValueContext)
             else:
-                return self.getTypedRuleContext(KDLParser.ValueContext, i)
+                return self.getTypedRuleContext(KDLParser.ValueContext,i)
+
 
         def getRuleIndex(self):
             return KDLParser.RULE_array
 
-        def enterRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "enterArray"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterArray" ):
                 listener.enterArray(self)
 
-        def exitRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "exitArray"):
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitArray" ):
                 listener.exitArray(self)
+
+
+
 
     def array(self):
 
         localctx = KDLParser.ArrayContext(self, self._ctx, self.state)
         self.enterRule(localctx, 18, self.RULE_array)
-        self._la = 0  # Token type
+        self._la = 0 # Token type
         try:
             self.state = 79
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input, 4, self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,4,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 66
@@ -601,7 +592,7 @@ class KDLParser(Parser):
                 self.state = 72
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                while _la == KDLParser.T__3:
+                while _la==KDLParser.T__3:
                     self.state = 68
                     self.match(KDLParser.T__3)
                     self.state = 69
@@ -622,6 +613,7 @@ class KDLParser(Parser):
                 self.match(KDLParser.T__6)
                 pass
 
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -631,9 +623,8 @@ class KDLParser(Parser):
         return localctx
 
     class ValueContext(ParserRuleContext):
-        def __init__(
-            self, parser, parent: ParserRuleContext = None, invokingState: int = -1
-        ):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -644,21 +635,26 @@ class KDLParser(Parser):
             return self.getToken(KDLParser.NUMBER, 0)
 
         def obj(self):
-            return self.getTypedRuleContext(KDLParser.ObjContext, 0)
+            return self.getTypedRuleContext(KDLParser.ObjContext,0)
+
 
         def array(self):
-            return self.getTypedRuleContext(KDLParser.ArrayContext, 0)
+            return self.getTypedRuleContext(KDLParser.ArrayContext,0)
+
 
         def getRuleIndex(self):
             return KDLParser.RULE_value
 
-        def enterRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "enterValue"):
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterValue" ):
                 listener.enterValue(self)
 
-        def exitRule(self, listener: ParseTreeListener):
-            if hasattr(listener, "exitValue"):
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitValue" ):
                 listener.exitValue(self)
+
+
+
 
     def value(self):
 
@@ -713,3 +709,8 @@ class KDLParser(Parser):
         finally:
             self.exitRule()
         return localctx
+
+
+
+
+

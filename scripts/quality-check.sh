@@ -9,4 +9,4 @@ flake8 kdlc/ tests/ setup.py && echo "passed 👍"
 echo ""
 
 echo ""
-pytest --cov=./
+pytest --cov=kdlc

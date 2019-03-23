@@ -1,4 +1,4 @@
-# Generated from kdlc/parse/KDL.g4 by ANTLR 4.7.1
+# Generated from KDL.g4 by ANTLR 4.7.1
 from antlr4 import *
 from io import StringIO
 from typing.io import TextIO
@@ -23,7 +23,7 @@ def serializedATN():
         buf.write("\26\f\26\16\26\u008b\13\26\5\26\u008d\n\26\3\27\3\27\5")
         buf.write("\27\u0091\n\27\3\27\3\27\2\2\30\3\3\5\4\7\5\t\6\13\7\r")
         buf.write("\b\17\t\21\n\23\13\25\f\27\r\31\16\33\17\35\20\37\21!")
-        buf.write('\2#\2%\2\'\2)\22+\2-\2\3\2\n\4\2\13\f""\n\2$$\61\61')
+        buf.write("\2#\2%\2\'\2)\22+\2-\2\3\2\n\4\2\13\f\"\"\n\2$$\61\61")
         buf.write("^^ddhhppttvv\5\2\62;CHch\5\2\2!$$^^\3\2\62;\3\2\63;\4")
         buf.write("\2GGgg\4\2--//\2\u0098\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2")
         buf.write("\2\2\2\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2")
@@ -33,7 +33,7 @@ def serializedATN():
         buf.write("\2\2\13\67\3\2\2\2\r9\3\2\2\2\17;\3\2\2\2\21=\3\2\2\2")
         buf.write("\23B\3\2\2\2\25H\3\2\2\2\27N\3\2\2\2\31T\3\2\2\2\33X\3")
         buf.write("\2\2\2\35Z\3\2\2\2\37\\\3\2\2\2!f\3\2\2\2#k\3\2\2\2%q")
-        buf.write("\3\2\2\2's\3\2\2\2)v\3\2\2\2+\u008c\3\2\2\2-\u008e\3")
+        buf.write("\3\2\2\2\'s\3\2\2\2)v\3\2\2\2+\u008c\3\2\2\2-\u008e\3")
         buf.write("\2\2\2/\60\7*\2\2\60\4\3\2\2\2\61\62\7+\2\2\62\6\3\2\2")
         buf.write("\2\63\64\7}\2\2\64\b\3\2\2\2\65\66\7.\2\2\66\n\3\2\2\2")
         buf.write("\678\7\177\2\28\f\3\2\2\29:\7]\2\2:\16\3\2\2\2;<\7_\2")
@@ -43,10 +43,10 @@ def serializedATN():
         buf.write("\2\2\2MO\t\2\2\2NM\3\2\2\2OP\3\2\2\2PN\3\2\2\2PQ\3\2\2")
         buf.write("\2QR\3\2\2\2RS\b\f\2\2S\30\3\2\2\2TU\7/\2\2UV\7/\2\2V")
         buf.write("W\7@\2\2W\32\3\2\2\2XY\7p\2\2Y\34\3\2\2\2Z[\7<\2\2[\36")
-        buf.write("\3\2\2\2\\a\7$\2\2]`\5!\21\2^`\5'\24\2_]\3\2\2\2_^\3")
+        buf.write("\3\2\2\2\\a\7$\2\2]`\5!\21\2^`\5\'\24\2_]\3\2\2\2_^\3")
         buf.write("\2\2\2`c\3\2\2\2a_\3\2\2\2ab\3\2\2\2bd\3\2\2\2ca\3\2\2")
         buf.write("\2de\7$\2\2e \3\2\2\2fi\7^\2\2gj\t\3\2\2hj\5#\22\2ig\3")
-        buf.write('\2\2\2ih\3\2\2\2j"\3\2\2\2kl\7w\2\2lm\5%\23\2mn\5%\23')
+        buf.write("\2\2\2ih\3\2\2\2j\"\3\2\2\2kl\7w\2\2lm\5%\23\2mn\5%\23")
         buf.write("\2no\5%\23\2op\5%\23\2p$\3\2\2\2qr\t\4\2\2r&\3\2\2\2s")
         buf.write("t\n\5\2\2t(\3\2\2\2uw\7/\2\2vu\3\2\2\2vw\3\2\2\2wx\3\2")
         buf.write("\2\2x\177\5+\26\2y{\7\60\2\2z|\t\6\2\2{z\3\2\2\2|}\3\2")
@@ -68,7 +68,7 @@ class KDLLexer(Lexer):
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
-    decisionsToDFA = [DFA(ds, i) for i, ds in enumerate(atn.decisionToState)]
+    decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
 
     T__0 = 1
     T__1 = 2
@@ -87,69 +87,29 @@ class KDLLexer(Lexer):
     STRING = 15
     NUMBER = 16
 
-    channelNames = [u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN"]
+    channelNames = [ u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN" ]
 
-    modeNames = ["DEFAULT_MODE"]
+    modeNames = [ "DEFAULT_MODE" ]
 
-    literalNames = [
-        "<INVALID>",
-        "'('",
-        "')'",
-        "'{'",
-        "','",
-        "'}'",
-        "'['",
-        "']'",
-        "'true'",
-        "'false'",
-        "'null'",
-        "'-->'",
-        "'n'",
-        "':'",
-    ]
+    literalNames = [ "<INVALID>",
+            "'('", "')'", "'{'", "','", "'}'", "'['", "']'", "'true'", "'false'", 
+            "'null'", "'-->'", "'n'", "':'" ]
 
-    symbolicNames = [
-        "<INVALID>",
-        "WS",
-        "ARROW",
-        "NODEPREFIX",
-        "COLON",
-        "STRING",
-        "NUMBER",
-    ]
+    symbolicNames = [ "<INVALID>",
+            "WS", "ARROW", "NODEPREFIX", "COLON", "STRING", "NUMBER" ]
 
-    ruleNames = [
-        "T__0",
-        "T__1",
-        "T__2",
-        "T__3",
-        "T__4",
-        "T__5",
-        "T__6",
-        "T__7",
-        "T__8",
-        "T__9",
-        "WS",
-        "ARROW",
-        "NODEPREFIX",
-        "COLON",
-        "STRING",
-        "ESC",
-        "UNICODE",
-        "HEX",
-        "SAFECODEPOINT",
-        "NUMBER",
-        "INT",
-        "EXP",
-    ]
+    ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", 
+                  "T__7", "T__8", "T__9", "WS", "ARROW", "NODEPREFIX", "COLON", 
+                  "STRING", "ESC", "UNICODE", "HEX", "SAFECODEPOINT", "NUMBER", 
+                  "INT", "EXP" ]
 
     grammarFileName = "KDL.g4"
 
-    def __init__(self, input=None, output: TextIO = sys.stdout):
+    def __init__(self, input=None, output:TextIO = sys.stdout):
         super().__init__(input, output)
         self.checkVersion("4.7.1")
-        self._interp = LexerATNSimulator(
-            self, self.atn, self.decisionsToDFA, PredictionContextCache()
-        )
+        self._interp = LexerATNSimulator(self, self.atn, self.decisionsToDFA, PredictionContextCache())
         self._actions = None
         self._predicates = None
+
+
