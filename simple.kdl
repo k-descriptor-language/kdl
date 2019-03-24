@@ -1,5 +1,18 @@
-(n1): {
-    "name": "CSV Reader"
+Nodes {
+    (n1): {
+        "name": "CSV Reader"
+    }
+
+    (n2): {
+        "name": "Table to JSON"
+    }
+
+    (n3): {
+        "name": "Column Reader"
+    }
 }
 
-(n1:1)-->(n2:1)
+Workflow {
+    (n1:1)-->(n2:1)
+    (n2:1)-->(n3:1)
+}

@@ -44,6 +44,24 @@ class KDLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by KDLParser#node_settings.
+    def enterNode_settings(self, ctx:KDLParser.Node_settingsContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#node_settings.
+    def exitNode_settings(self, ctx:KDLParser.Node_settingsContext):
+        pass
+
+
+    # Enter a parse tree produced by KDLParser#nodes.
+    def enterNodes(self, ctx:KDLParser.NodesContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#nodes.
+    def exitNodes(self, ctx:KDLParser.NodesContext):
+        pass
+
+
     # Enter a parse tree produced by KDLParser#source_node.
     def enterSource_node(self, ctx:KDLParser.Source_nodeContext):
         pass
@@ -62,21 +80,21 @@ class KDLListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by KDLParser#node_settings.
-    def enterNode_settings(self, ctx:KDLParser.Node_settingsContext):
-        pass
-
-    # Exit a parse tree produced by KDLParser#node_settings.
-    def exitNode_settings(self, ctx:KDLParser.Node_settingsContext):
-        pass
-
-
     # Enter a parse tree produced by KDLParser#connection.
     def enterConnection(self, ctx:KDLParser.ConnectionContext):
         pass
 
     # Exit a parse tree produced by KDLParser#connection.
     def exitConnection(self, ctx:KDLParser.ConnectionContext):
+        pass
+
+
+    # Enter a parse tree produced by KDLParser#workflow.
+    def enterWorkflow(self, ctx:KDLParser.WorkflowContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#workflow.
+    def exitWorkflow(self, ctx:KDLParser.WorkflowContext):
         pass
 
 

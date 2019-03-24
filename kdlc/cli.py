@@ -144,11 +144,11 @@ def kdl_to_workflow(input_file, output_file):
     listener = KDLLoader()
     walker = ParseTreeWalker()
 
-    node_settings_tree = parser.node_settings()
-    walker.walk(listener, node_settings_tree)
+    nodes_tree = parser.nodes()
+    walker.walk(listener, nodes_tree)
 
-    connections_tree = parser.connection()
-    walker.walk(listener, connections_tree)
+    workflow_tree = parser.workflow()
+    walker.walk(listener, workflow_tree)
 
     print("======= nodes =======")
     print(listener.nodes)
