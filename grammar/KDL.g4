@@ -1,22 +1,13 @@
 grammar KDL;
-import JSON;
 
 WS          : [ \t\n]+ -> skip ;
 
-ARROW       : '-->' ;
+NUMBER      : '0' | [1-9] [0-9]* ;
 
-NODEPREFIX  : 'n' ;
+ANY         : . ;
 
-COLON       : ':' ;
+node        : '(n' NUMBER ')' ;
 
-node_id     : NUMBER ;
+json        : '{' (.)*? '}' ;
 
-port_id     : NUMBER ;
-
-port        : COLON port_id ;
-
-node        : '(' NODEPREFIX node_id port? ')' ;
-
-connection  : node ARROW node ;
-
-node_settings: node COLON json ;
+node_settings : node ':' json ;

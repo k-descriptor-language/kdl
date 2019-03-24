@@ -5,6 +5,12 @@ import kdlc
 import logging
 import jsonschema
 
+from antlr4 import *
+from kdlc.parser.KDLLexer import KDLLexer
+from kdlc.parser.KDLParser import KDLParser
+from kdlc.parser.KDLListener import KDLListener
+import json
+
 
 logger = logging.getLogger("kdlc.cli")
 
@@ -94,8 +100,34 @@ def workflow_to_kdl_custom_template(input_file, output_file, nodes):
     pass
 
 
+class KDLLoader(KDLListener):
+    def __init__(self):
+        self.nodes = {}
+
+    def exitNode_settings(self, ctx):
+        node_number = ctx.node().NUMBER().getText()
+        # print(f"nodeNumber: {node_number}")
+
+        json_tokens = [i.getText() for i in ctx.json().children]
+        json_string = "".join(json_tokens)
+        node_settings = json.loads(json_string)
+        # print(node_settings)
+
+        self.nodes[node_number] = node_settings
+
+
 def kdl_to_workflow(input_file, output_file):
-    pass
+    input = FileStream(input_file)
+    lexer = KDLLexer(input)
+    stream = CommonTokenStream(lexer)
+    parser = KDLParser(stream)
+    tree = parser.node_settings()
+
+    listener = KDLLoader()
+    walker = ParseTreeWalker()
+    walker.walk(listener, tree)
+
+    print(listener.nodes)
 
 
 def workflow_to_kdl(input_file, output_file):
