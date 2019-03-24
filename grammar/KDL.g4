@@ -1,13 +1,31 @@
+/*
+ * KDL
+ */
+
 grammar KDL;
+import JSON;
 
 WS          : [ \t\n]+ -> skip ;
 
-NUMBER      : '0' | [1-9] [0-9]* ;
+ARROW       : '-->' ;
 
-ANY         : . ;
+NODEPREFIX  : 'n' ;
 
-node        : '(n' NUMBER ')' ;
+COLON       : ':' ;
 
-json        : '{' (.)*? '}' ;
+node_id     : NUMBER ;
 
-node_settings : node ':' json ;
+port_id     : NUMBER ;
+
+port        : COLON port_id ;
+
+node        : '(' NODEPREFIX node_id port? ')' ;
+
+source_node   : node ;
+
+destination_node  : node ;
+
+node_settings: node COLON json ;
+
+connection  : source_node ARROW destination_node ;
+

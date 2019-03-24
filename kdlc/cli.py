@@ -103,9 +103,10 @@ def workflow_to_kdl_custom_template(input_file, output_file, nodes):
 class KDLLoader(KDLListener):
     def __init__(self):
         self.nodes = {}
+        self.connections = []
 
     def exitNode_settings(self, ctx):
-        node_number = ctx.node().NUMBER().getText()
+        node_number = ctx.node().node_id().NUMBER().getText()
         # print(f"nodeNumber: {node_number}")
 
         json_tokens = [i.getText() for i in ctx.json().children]
@@ -115,19 +116,46 @@ class KDLLoader(KDLListener):
 
         self.nodes[node_number] = node_settings
 
+    def exitConnection(self, ctx):
+        source_node = ctx.source_node().node()
+        source_node_id = source_node.node_id().getText()
+        source_node_port = source_node.port().getText()
+
+        destination_node = ctx.destination_node().node()
+        destination_node_id = destination_node.node_id().getText()
+        destination_node_port = destination_node.port().getText()
+
+        connection = {
+            "source_id": source_node_id,
+            "dest_id": destination_node_id,
+            "source_port": source_node_port,
+            "dest_port": destination_node_port,
+        }
+
+        self.connections.append(connection)
+
 
 def kdl_to_workflow(input_file, output_file):
     input = FileStream(input_file)
     lexer = KDLLexer(input)
     stream = CommonTokenStream(lexer)
     parser = KDLParser(stream)
-    tree = parser.node_settings()
 
     listener = KDLLoader()
     walker = ParseTreeWalker()
-    walker.walk(listener, tree)
 
+    node_settings_tree = parser.node_settings()
+    walker.walk(listener, node_settings_tree)
+
+    connections_tree = parser.connection()
+    walker.walk(listener, connections_tree)
+
+    print("======= nodes =======")
     print(listener.nodes)
+    print("")
+
+    print("==== connections ====")
+    print(listener.connections)
 
 
 def workflow_to_kdl(input_file, output_file):
