@@ -121,6 +121,36 @@ def kdl_to_workflow(input_file, output_file):
     print("==== connections ====")
     print(listener.connections)
 
+    # TODO: this should all be abstracted out into a utility function
+    output_wf_name = output_file.replace(".knwf", "")
+
+    # Generate and save workflow.knime in output directory
+    output_workflow_name = f"{output_wf_name}_new"
+    output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_workflow_name}"
+
+    output_workflow_knime = kdlc.create_workflow_knime_from_template(
+        listener.nodes, listener.connections
+    )
+    kdlc.save_workflow_knime(output_workflow_knime, output_workflow_path)
+
+    # Generate and save XML for nodes in output directory
+    for node in listener.nodes:
+        try:
+            kdlc.validate_node_from_schema(node)
+        except jsonschema.ValidationError as e:
+            print(e.message)
+            kdlc.cleanup()
+            sys.exit(1)
+        except jsonschema.SchemaError as e:
+            print(e.message)
+            kdlc.cleanup()
+            sys.exit(1)
+        tree = kdlc.create_node_settings_from_template(node)
+        kdlc.save_node_settings_xml(tree, f'{output_workflow_path}/{node["filename"]}')
+
+    # Zip output workflow into .knwf archive
+    kdlc.create_output_workflow(output_wf_name)
+
 
 def workflow_to_kdl(input_file, output_file):
     pass
