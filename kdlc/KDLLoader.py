@@ -1,6 +1,7 @@
 import json
 from kdlc.parser.KDLListener import KDLListener
 
+
 class KDLLoader(KDLListener):
     def __init__(self):
         self.nodes = []
@@ -16,12 +17,12 @@ class KDLLoader(KDLListener):
         # print(node_settings)
 
         # TODO: does this name even matter? if it does, we need to be defensive here
-        node_name = node_settings['name']
+        node_name = node_settings["name"]
 
         node = {
-            'id': node_number,
-            'filename': f'{node_name} (#{node_number})/settings.xml',
-            'settings': node_settings
+            "id": node_number,
+            "filename": f"{node_name} (#{node_number})/settings.xml",
+            "settings": node_settings,
         }
 
         self.nodes.append(node)
@@ -44,5 +45,3 @@ class KDLLoader(KDLListener):
         }
 
         self.connections.append(connection)
-
-
