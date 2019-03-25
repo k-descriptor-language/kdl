@@ -4,9 +4,11 @@ from pathlib import Path
 import kdlc
 import logging
 import jsonschema
-import json
-from antlr4 import FileStream, CommonTokenStream
-from kdl_parse import KDLLexer, KDLParser
+
+from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
+from kdlc.parser.KDLLexer import KDLLexer
+from kdlc.parser.KDLParser import KDLParser
+from kdlc.KDLLoader import KDLLoader
 
 
 logger = logging.getLogger("kdlc.cli")
@@ -98,73 +100,56 @@ def workflow_to_kdl_custom_template(input_file, output_file, nodes):
 
 
 def kdl_to_workflow(input_file, output_file):
-    kdl_input = FileStream(input_file)
-    lexer = KDLLexer(kdl_input)
+    input = FileStream(input_file)
+    lexer = KDLLexer(input)
     stream = CommonTokenStream(lexer)
     parser = KDLParser(stream)
 
-    connection_list = []
-    node_list = []
+    listener = KDLLoader()
+    walker = ParseTreeWalker()
 
-    tree = parser.connection()
-    source_id = tree.node(0).node_id().getText()
-    source_port = tree.node(0).port().port_id().getText()
-    dest_id = tree.node(1).node_id().getText()
-    dest_port = tree.node(1).port().port_id().getText()
-    connection1 = {
-        "id": "0",
-        "source_id": source_id,
-        "source_port": source_port,
-        "dest_id": dest_id,
-        "dest_port": dest_port,
-    }
-    connection_list.append(connection1)
+    nodes_tree = parser.nodes()
+    walker.walk(listener, nodes_tree)
 
-    tree2 = parser.connection()
-    source_id = tree2.node(0).node_id().getText()
-    source_port = tree2.node(0).port().port_id().getText()
-    dest_id = tree2.node(1).node_id().getText()
-    dest_port = tree2.node(1).port().port_id().getText()
-    connection2 = {
-        "id": "1",
-        "source_id": source_id,
-        "source_port": source_port,
-        "dest_id": dest_id,
-        "dest_port": dest_port,
-    }
-    connection_list.append(connection2)
+    workflow_tree = parser.workflow()
+    walker.walk(listener, workflow_tree)
 
-    tree3 = parser.node_settings()
-    node_id = tree3.node().node_id().getText()
-    node_settings = json.loads(tree3.json().getText())
-    node1 = {
-        "id": node_id,
-        "filename": f"{node_settings['name']} (#{node_id})/settings.xml",
-        "settings": node_settings,
-    }
-    node_list.append(node1)
+    print("======= nodes =======")
+    print(listener.nodes)
+    print("")
 
-    tree4 = parser.node_settings()
-    node_id = tree4.node().node_id().getText()
-    node_settings = json.loads(tree4.json().getText())
-    node2 = {
-        "id": node_id,
-        "filename": f"{node_settings['name']} (#{node_id})/settings.xml",
-        "settings": node_settings,
-    }
-    node_list.append(node2)
+    print("==== connections ====")
+    print(listener.connections)
 
-    tree5 = parser.node_settings()
-    node_id = tree5.node().node_id().getText()
-    node_settings = json.loads(tree5.json().getText())
-    node3 = {
-        "id": node_id,
-        "filename": f"{node_settings['name']} (#{node_id})/settings.xml",
-        "settings": node_settings,
-    }
-    node_list.append(node3)
+    # TODO: this should all be abstracted out into a utility function
+    output_wf_name = output_file.replace(".knwf", "")
 
-    print(node_list)
+    # Generate and save workflow.knime in output directory
+    output_workflow_name = f"{output_wf_name}_new"
+    output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_workflow_name}"
+
+    output_workflow_knime = kdlc.create_workflow_knime_from_template(
+        listener.nodes, listener.connections
+    )
+    kdlc.save_workflow_knime(output_workflow_knime, output_workflow_path)
+
+    # Generate and save XML for nodes in output directory
+    for node in listener.nodes:
+        try:
+            kdlc.validate_node_from_schema(node)
+        except jsonschema.ValidationError as e:
+            print(e.message)
+            kdlc.cleanup()
+            sys.exit(1)
+        except jsonschema.SchemaError as e:
+            print(e.message)
+            kdlc.cleanup()
+            sys.exit(1)
+        tree = kdlc.create_node_settings_from_template(node)
+        kdlc.save_node_settings_xml(tree, f'{output_workflow_path}/{node["filename"]}')
+
+    # Zip output workflow into .knwf archive
+    kdlc.create_output_workflow(output_wf_name)
 
 
 def workflow_to_kdl(input_file, output_file):

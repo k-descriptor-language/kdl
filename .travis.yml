@@ -5,8 +5,8 @@ install:
 - pip install -r requirements.txt
 script:
 - flake8 kdlc/ tests/ setup.py
-- black --check kdlc tests setup.py
-- pytest --cov=kdlc
+- black --check kdlc tests setup.py --exclude kdlc/parser
+- pytest --cov=./
 after_success:
 - codecov
 notifications:
