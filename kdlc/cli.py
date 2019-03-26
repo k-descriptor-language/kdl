@@ -5,12 +5,6 @@ import kdlc
 import logging
 import jsonschema
 
-from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
-from kdlc.parser.KDLLexer import KDLLexer
-from kdlc.parser.KDLParser import KDLParser
-from kdlc.KDLLoader import KDLLoader
-
-
 logger = logging.getLogger("kdlc.cli")
 
 
@@ -72,7 +66,7 @@ def prompt(input_file, output_file, modify_file, nodes):
 
     elif input_file and output_file:
         if Path(input_file).suffix == ".kdl" and Path(output_file).suffix == ".knwf":
-            kdl_to_workflow(input_file, output_file)
+            kdlc.kdl_to_workflow(input_file, output_file)
         elif Path(input_file).suffix == ".knwf" and Path(output_file).suffix == ".kdl":
             workflow_to_kdl(input_file, output_file)
         elif Path(input_file).suffix == ".knwf" and Path(output_file).suffix == ".knwf":
@@ -97,59 +91,6 @@ def kdl_to_workflow_custom_template(input_file, output_file, nodes):
 
 def workflow_to_kdl_custom_template(input_file, output_file, nodes):
     pass
-
-
-def kdl_to_workflow(input_file, output_file):
-    input = FileStream(input_file)
-    lexer = KDLLexer(input)
-    stream = CommonTokenStream(lexer)
-    parser = KDLParser(stream)
-
-    listener = KDLLoader()
-    walker = ParseTreeWalker()
-
-    nodes_tree = parser.nodes()
-    walker.walk(listener, nodes_tree)
-
-    workflow_tree = parser.workflow()
-    walker.walk(listener, workflow_tree)
-
-    print("======= nodes =======")
-    print(listener.nodes)
-    print("")
-
-    print("==== connections ====")
-    print(listener.connections)
-
-    # TODO: this should all be abstracted out into a utility function
-    output_wf_name = output_file.replace(".knwf", "")
-
-    # Generate and save workflow.knime in output directory
-    output_workflow_name = f"{output_wf_name}_new"
-    output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_workflow_name}"
-
-    output_workflow_knime = kdlc.create_workflow_knime_from_template(
-        listener.nodes, listener.connections
-    )
-    kdlc.save_workflow_knime(output_workflow_knime, output_workflow_path)
-
-    # Generate and save XML for nodes in output directory
-    for node in listener.nodes:
-        try:
-            kdlc.validate_node_from_schema(node)
-        except jsonschema.ValidationError as e:
-            print(e.message)
-            kdlc.cleanup()
-            sys.exit(1)
-        except jsonschema.SchemaError as e:
-            print(e.message)
-            kdlc.cleanup()
-            sys.exit(1)
-        tree = kdlc.create_node_settings_from_template(node)
-        kdlc.save_node_settings_xml(tree, f'{output_workflow_path}/{node["filename"]}')
-
-    # Zip output workflow into .knwf archive
-    kdlc.create_output_workflow(output_wf_name)
 
 
 def workflow_to_kdl(input_file, output_file):
@@ -180,8 +121,6 @@ def workflow_to_kdl(input_file, output_file):
 
 
 def workflow_to_workflow(input_file, output_file):
-    output_wf_name = output_file.replace(".knwf", "")
-
     # Extract workflow
     input_workflow_name = kdlc.unzip_workflow(input_file)
     input_workflow_path = f"{kdlc.INPUT_PATH}/{input_workflow_name}"
@@ -202,17 +141,22 @@ def workflow_to_workflow(input_file, output_file):
         node["settings"] = kdlc.extract_from_input_xml(infile)
     # print(input_node_list)
 
+    build_knwf(input_node_list, input_connection_list, output_file)
+
+
+def build_knwf(nodes, connections, output_filename):
+    # TODO: revisit this name logic
+    output_wf_name = output_filename.replace(".knwf", "")
+
     # Generate and save workflow.knime in output directory
-    output_workflow_name = f"{input_workflow_name}_new"
+    output_workflow_name = f"{output_wf_name}_new"
     output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_workflow_name}"
 
-    output_workflow_knime = kdlc.create_workflow_knime_from_template(
-        input_node_list, input_connection_list
-    )
+    output_workflow_knime = kdlc.create_workflow_knime_from_template(nodes, connections)
     kdlc.save_workflow_knime(output_workflow_knime, output_workflow_path)
 
     # Generate and save XML for nodes in output directory
-    for node in input_node_list:
+    for node in nodes:
         # POC for JSON validation, uncomment below and indent to test diff scenarios
         # if node["settings"]["name"] == "CSV Reader":
         # empty url

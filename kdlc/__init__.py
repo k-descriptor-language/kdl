@@ -1,5 +1,7 @@
 from .cli import prompt
 
+from .commands import kdl_to_workflow, build_knwf
+
 from .core import (
     TMP_INPUT_DIR,
     INPUT_PATH,
@@ -27,6 +29,8 @@ from .application import main
 
 __all__ = [
     "prompt",
+    "kdl_to_workflow",
+    "build_knwf",
     "TMP_INPUT_DIR",
     "INPUT_PATH",
     "TMP_OUTPUT_DIR",
