@@ -106,17 +106,17 @@ def test_build_knwf(mocker):
     # validate workflow generation
     mock_create_workflow_knime_from_template.assert_called_with(nodes, connections)
     mock_save_workflow_knime.assert_called_with(
-        output_workflow_knime, f"{kdlc.OUTPUT_PATH}/fake_new"
+        output_workflow_knime, f"{kdlc.OUTPUT_PATH}/fake"
     )
 
     # validate xml generation
     mock_create_node_settings_from_template.assert_any_call(node_one)
     mock_save_node_settings_xml.assert_any_call(
-        mock_tree, f"{kdlc.OUTPUT_PATH}/fake_new/node_one"
+        mock_tree, f"{kdlc.OUTPUT_PATH}/fake/node_one"
     )
     mock_create_node_settings_from_template.assert_any_call(node_two)
     mock_save_node_settings_xml.assert_any_call(
-        mock_tree, f"{kdlc.OUTPUT_PATH}/fake_new/node_two"
+        mock_tree, f"{kdlc.OUTPUT_PATH}/fake/node_two"
     )
 
     # validate archive creation

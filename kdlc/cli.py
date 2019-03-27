@@ -149,8 +149,7 @@ def build_knwf(nodes, connections, output_filename):
     output_wf_name = output_filename.replace(".knwf", "")
 
     # Generate and save workflow.knime in output directory
-    output_workflow_name = f"{output_wf_name}_new"
-    output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_workflow_name}"
+    output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_wf_name}"
 
     output_workflow_knime = kdlc.create_workflow_knime_from_template(nodes, connections)
     kdlc.save_workflow_knime(output_workflow_knime, output_workflow_path)
