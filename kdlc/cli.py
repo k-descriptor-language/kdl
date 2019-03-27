@@ -1,9 +1,7 @@
-import sys
 import click
 from pathlib import Path
 import kdlc
 import logging
-import jsonschema
 
 logger = logging.getLogger("kdlc.cli")
 
@@ -141,9 +139,10 @@ def workflow_to_workflow(input_file, output_file):
         node["settings"] = kdlc.extract_from_input_xml(infile)
     # print(input_node_list)
 
-    build_knwf(input_node_list, input_connection_list, output_file)
+    kdlc.build_knwf(input_node_list, input_connection_list, output_file)
 
 
+'''
 def build_knwf(nodes, connections, output_filename):
     # TODO: revisit this name logic
     output_wf_name = output_filename.replace(".knwf", "")
@@ -181,3 +180,4 @@ def build_knwf(nodes, connections, output_filename):
 
     # Zip output workflow into .knwf archive
     kdlc.create_output_workflow(output_wf_name)
+'''
