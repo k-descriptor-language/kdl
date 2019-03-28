@@ -6,6 +6,7 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
 import json
 import jsonschema
+import textwrap
 
 jinja_env = Environment(
     loader=PackageLoader("kdlc", "templates"),
@@ -369,6 +370,38 @@ def create_output_workflow(workflow_name):
     base = os.path.splitext(f"{workflow_name}.zip")[0]
     os.rename(f"{workflow_name}.zip", base + ".knwf")
     cleanup()
+
+
+def save_output_kdl_workflow(output_file, connection_list, node_list):
+    """
+    Outputs node connections and node JSON as .kdl file
+
+    Args:
+        output_file (str): Name of output kdl file
+        connection_list (list): list of connection dicts to be written
+        node_list (list): list of node dicts to be written
+    """
+
+    wrapper = textwrap.TextWrapper(
+        initial_indent="\t", subsequent_indent="\t", width=120
+    )
+    with open(output_file, "w") as file:
+        file.write("Nodes {\n")
+        for node in node_list:
+            output_text = f"(n{node['id']}): {json.dumps(node['settings'], indent=4)}"
+            for line in output_text.splitlines():
+                wrapped = wrapper.fill(line)
+                file.write(f"{wrapped}\n")
+            file.write("\n")
+        file.write("}\n\n")
+        file.write("Workflow {\n")
+        for connection in connection_list:
+            wrapped = wrapper.fill(
+                f"(n{connection['source_id']}:{connection['source_port']})-->"
+                f"(n{connection['dest_id']}:{connection['dest_port']})\n"
+            )
+            file.write(f"{wrapped}\n")
+        file.write("}\n")
 
 
 def cleanup():

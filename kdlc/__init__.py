@@ -1,5 +1,15 @@
 from .cli import prompt
 
+from .commands import (
+    kdl_to_workflow,
+    update_workflow_with_kdl,
+    kdl_to_workflow_custom_template,
+    workflow_to_kdl_custom_template,
+    workflow_to_kdl,
+    workflow_to_workflow,
+    build_knwf,
+)
+
 from .core import (
     TMP_INPUT_DIR,
     INPUT_PATH,
@@ -19,6 +29,7 @@ from .core import (
     save_node_settings_xml,
     save_workflow_knime,
     create_output_workflow,
+    save_output_kdl_workflow,
     cleanup,
 )
 
@@ -26,6 +37,13 @@ from .application import main
 
 __all__ = [
     "prompt",
+    "kdl_to_workflow",
+    "update_workflow_with_kdl",
+    "kdl_to_workflow_custom_template",
+    "workflow_to_kdl_custom_template",
+    "workflow_to_kdl",
+    "workflow_to_workflow",
+    "build_knwf",
     "TMP_INPUT_DIR",
     "INPUT_PATH",
     "TMP_OUTPUT_DIR",
@@ -44,6 +62,7 @@ __all__ = [
     "save_node_settings_xml",
     "save_workflow_knime",
     "create_output_workflow",
+    "save_output_kdl_workflow",
     "cleanup",
     "main",
 ]

@@ -7,3 +7,4 @@ codecov
 flake8
 black
 click
+antlr4-python3-runtime
