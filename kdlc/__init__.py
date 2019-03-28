@@ -1,6 +1,14 @@
 from .cli import prompt
 
-from .commands import kdl_to_workflow, build_knwf
+from .commands import (
+    kdl_to_workflow,
+    update_workflow_with_kdl,
+    kdl_to_workflow_custom_template,
+    workflow_to_kdl_custom_template,
+    workflow_to_kdl,
+    workflow_to_workflow,
+    build_knwf,
+)
 
 from .core import (
     TMP_INPUT_DIR,
@@ -30,6 +38,11 @@ from .application import main
 __all__ = [
     "prompt",
     "kdl_to_workflow",
+    "update_workflow_with_kdl",
+    "kdl_to_workflow_custom_template",
+    "workflow_to_kdl_custom_template",
+    "workflow_to_kdl",
+    "workflow_to_workflow",
     "build_knwf",
     "TMP_INPUT_DIR",
     "INPUT_PATH",
