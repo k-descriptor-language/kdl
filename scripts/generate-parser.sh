@@ -10,3 +10,5 @@ java -jar /usr/local/lib/antlr-4.7.2-complete.jar \
   -Xexact-output-dir \
   -lib grammar \
   grammar/KDL.g4
+
+touch kdlc/parser/__init__.py
