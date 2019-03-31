@@ -10,9 +10,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
-sys.path.insert(0, os.path.abspath('../..'))
+# import os
+# import sys
+# sys.path.insert(0, os.path.abspath('../..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -30,7 +30,6 @@ master_doc = 'index'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -52,27 +51,3 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
-
-# Following snippet from this issue to generate read the docs on build
-# https://github.com/rtfd/readthedocs.org/issues/1139
-def run_apidoc(_):
-    argv = [
-        "-f",
-        "-e",
-        "-o", "source/",
-        "../kdlc"
-    ]
-
-    try:
-        # Sphinx 1.7+
-        from sphinx.ext import apidoc
-        apidoc.main(argv)
-    except ImportError:
-        # Sphinx 1.6 (and earlier)
-        from sphinx import apidoc
-        argv.insert(0, apidoc.__file__)
-        apidoc.main(argv)
-
-
-def setup(app):
-    app.connect('builder-inited', run_apidoc)
