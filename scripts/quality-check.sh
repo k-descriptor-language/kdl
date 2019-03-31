@@ -10,3 +10,7 @@ echo ""
 
 echo ""
 pytest --cov=kdlc
+echo ""
+
+echo "documentation..."
+sphinx-build -nWT -c docs/source/ -b html docs/source/ docs/build/html
