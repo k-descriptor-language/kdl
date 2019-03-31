@@ -119,6 +119,42 @@ def test_extract_from_input_xml_cf(my_setup):
     )
 
 
+def test_extract_from_input_xml_csv_var(my_setup):
+    res = {
+        "name": "CSV Reader",
+        "factory": "org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.1.v201901291053",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.1.v201901291053",
+        "model": [
+            {
+                "url": "/Users/jared/knime-workspace/Example "
+                "Workflows/TheData/Misc/Demographics.csv",
+                "used_variable": "TEST",
+                "exposed_variable": "TEST2",
+            },
+            {"colDelimiter": ","},
+            {"rowDelimiter": "%%00010"},
+            {"quote": '"'},
+            {"commentStart": "#"},
+            {"hasRowHeader": True},
+            {"hasColHeader": True},
+            {"supportShortLines": False},
+            {"limitRowsCount": -1, "data_type": "xlong"},
+            {"skipFirstLinesCount": -1},
+            {"characterSetName": "", "isnull": True},
+            {"limitAnalysisCount": -1},
+        ],
+    }
+
+    assert (
+        kdlc.extract_from_input_xml(f"{test_resources_dir}/csv_settings_var.xml") == res
+    )
+
+
 def test_extract_from_input_xml_ttj_var(my_setup):
     res = {
         "name": "Table to JSON",
@@ -197,6 +233,11 @@ def test_extract_from_input_xml_ttj_var(my_setup):
     assert (
         kdlc.extract_from_input_xml(f"{test_resources_dir}/ttj_settings_var.xml") == res
     )
+
+
+def test_extract_from_input_xml_fail(my_setup):
+    with pytest.raises(Exception):
+        kdlc.extract_from_input_xml(f"{test_resources_dir}/fail_settings.xml")
 
 
 def test_merge_model_and_variables(my_setup):
@@ -334,11 +375,6 @@ def test_merge_model_and_variables(my_setup):
     ]
     kdlc.merge_model_and_variables(model, variables)
     assert result == model
-
-
-def test_extract_from_input_xml_fail(my_setup):
-    with pytest.raises(Exception):
-        kdlc.extract_from_input_xml(f"{test_resources_dir}/fail_settings.xml")
 
 
 def test_extract_entry_tag_string(my_setup):
