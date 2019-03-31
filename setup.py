@@ -42,6 +42,7 @@ setup(
             "pytest-cov",
             "pytest-mock",
             "sphinx",
+            "sphinx_rtd_theme"
         ]
     },
     package_data={"kdlc": ["templates/*.xml", "json_schemas/*.json"]},
