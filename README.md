@@ -30,7 +30,7 @@ Options:
 
 ## Development
 
-## Install Development Dependencies
+### Install Development Dependencies
 `pip install -e '.[dev]'`
 
 ### Run Tests
