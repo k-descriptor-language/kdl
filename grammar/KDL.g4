@@ -9,6 +9,8 @@ WS          : [ \t\n]+ -> skip ;
 
 ARROW       : '-->' ;
 
+VARIABLE_ARROW: '~~>' ;
+
 NODEPREFIX  : 'n' ;
 
 COLON       : ':' ;
@@ -29,7 +31,7 @@ source_node   : node ;
 
 destination_node  : node ;
 
-connection  : source_node ARROW destination_node ;
+connection  : source_node (ARROW|VARIABLE_ARROW) destination_node ;
 
 workflow: 'Workflow {' connection+ '}' ;
 

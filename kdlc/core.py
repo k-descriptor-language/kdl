@@ -89,8 +89,58 @@ def extract_from_input_xml(input_file):
             ex.strerror = "Invalid settings tag"
             raise ex
 
+    variables = list()
+    for child in root.findall("./knime:config[@key='variables']/*", NS):
+        if child.tag == ENTRY_TAG:
+            entry = extract_entry_tag(child)
+            variables.append(entry)
+        elif child.tag == CONFIG_TAG:
+            config = extract_config_tag(child, is_variable=True)
+            variables.append(config)
+        else:
+            ex = ValueError()
+            ex.strerror = "Invalid settings tag"
+            raise ex
+    if variables:
+        # print(f"model before merge: {model}")
+        print(f"variables: {variables}")
+        merge_model_and_variables(model, variables)
+        # print(f"model after merge: {model}")
+
     node["model"] = model
     return node
+
+
+def merge_model_and_variables(model, variables):
+    """
+    Merges workflow variable exposed_variable and used_variable
+    into model
+
+    Args:
+        model (dict): Dict containing model settings
+        variables (dict): Dict containing workflow variables
+    """
+    model_iter = iter(model)
+    curr_model = next(model_iter)
+    for curr_variable in variables:
+        curr_model_key = list(curr_model.keys())[0]
+        curr_model_val = curr_model[curr_model_key]
+
+        curr_variable_key = list(curr_variable.keys())[0]
+        curr_variable_val = curr_variable[curr_variable_key]
+
+        while curr_model_key != curr_variable_key:
+            curr_model = next(model_iter)
+            curr_model_key = list(curr_model.keys())[0]
+            curr_model_val = curr_model[curr_model_key]
+
+        if type(curr_model_val) is list and type(curr_variable_val) is list:
+            merge_model_and_variables(curr_model_val, curr_variable_val)
+        else:
+            for curr in curr_variable_val:
+                var_mod_key = list(curr.keys())[0]
+                var_mod_val = curr[var_mod_key]
+                curr_model[var_mod_key] = var_mod_val
 
 
 def extract_entry_tag(tree):
@@ -139,12 +189,13 @@ def extract_entry_tag(tree):
     return entry
 
 
-def extract_config_tag(tree):
+def extract_config_tag(tree, is_variable=False):
     """
     Extracts the config tag from the provided tree
 
     Args:
         tree (ElementTree): The tree to extract the config tag from
+        is_variable (Boolean): If the tree is a workflow variable tree
 
     Returns:
         dict: Dict containing the config tag definition
@@ -153,9 +204,15 @@ def extract_config_tag(tree):
     for child in tree.findall("./*", NS):
         if child.tag == ENTRY_TAG:
             entry = extract_entry_tag(child)
-            config_value.append(entry)
+            if is_variable and "isnull" not in entry.keys():
+                config_value.append(entry)
+            elif not is_variable:
+                config_value.append(entry)
         elif child.tag == CONFIG_TAG:
-            config = extract_config_tag(child)
+            if is_variable:
+                config = extract_config_tag(child, is_variable=True)
+            else:
+                config = extract_config_tag(child)
             config_value.append(config)
         else:
             ex = ValueError()
@@ -258,8 +315,67 @@ def create_node_settings_from_template(node):
             set_config_element_type(value)
         else:
             set_entry_element_type(value)
-    template_root = ET.fromstring(template.render(node=node, model=model))
+    variables = extract_variables_from_model(model)
+    print(variables)
+    template_root = ET.fromstring(
+        template.render(node=node, model=model, variables=variables)
+    )
     return ET.ElementTree(template_root)
+
+
+def extract_variables_from_model(model):
+    """
+    Extracts workflow variables from model and returns them in own list
+
+    Args:
+        model (dict): Model node settings
+
+    Returns:
+        List: List containing workflow variables
+    """
+    variables = list()
+    for curr in model:
+        curr_model_key = list(curr.keys())[0]
+        curr_model_val = curr[curr_model_key]
+        if type(curr_model_val) is list:
+            new_var = extract_variables_from_model(curr_model_val)
+            if new_var:
+                variables.append({curr_model_key: new_var, "data_type": "config"})
+        elif "used_variable" in curr.keys() or "exposed_variable" in curr.keys():
+            temp_list = list()
+            if "used_variable" in curr.keys():
+                temp_list.append(
+                    {
+                        "used_variable": curr["used_variable"],
+                        "data_type": curr["data_type"],
+                    }
+                )
+            else:
+                temp_list.append(
+                    {
+                        "isnull": True,
+                        "used_variable": "",
+                        "data_type": curr["data_type"],
+                    }
+                )
+            if "exposed_variable" in curr.keys():
+                temp_list.append(
+                    {
+                        "exposed_variable": curr["exposed_variable"],
+                        "data_type": curr["data_type"],
+                    }
+                )
+            else:
+                temp_list.append(
+                    {
+                        "isnull": True,
+                        "exposed_variable": "",
+                        "data_type": curr["data_type"],
+                    }
+                )
+            if temp_list:
+                variables.append({curr_model_key: temp_list, "data_type": "config"})
+    return variables
 
 
 def create_workflow_knime_from_template(node_list, connection_list):
@@ -396,10 +512,15 @@ def save_output_kdl_workflow(output_file, connection_list, node_list):
         file.write("}\n\n")
         file.write("Workflow {\n")
         for connection in connection_list:
-            wrapped = wrapper.fill(
-                f"(n{connection['source_id']}:{connection['source_port']})-->"
-                f"(n{connection['dest_id']}:{connection['dest_port']})\n"
-            )
+            if connection["source_port"] == "0" and connection["dest_port"] == "0":
+                wrapped = wrapper.fill(
+                    f"(n{connection['source_id']})~~>" f"(n{connection['dest_id']})\n"
+                )
+            else:
+                wrapped = wrapper.fill(
+                    f"(n{connection['source_id']}:{connection['source_port']})-->"
+                    f"(n{connection['dest_id']}:{connection['dest_port']})\n"
+                )
             file.write(f"{wrapped}\n")
         file.write("}\n")
 

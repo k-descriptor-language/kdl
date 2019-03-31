@@ -8,7 +8,7 @@ import sys
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\24")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\25")
         buf.write("y\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b")
         buf.write("\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16\t")
         buf.write("\16\4\17\t\17\4\20\t\20\3\2\3\2\3\3\3\3\3\4\3\4\3\4\3")
@@ -20,31 +20,31 @@ def serializedATN():
         buf.write("\3\17\7\17e\n\17\f\17\16\17h\13\17\3\17\3\17\3\17\3\17")
         buf.write("\5\17n\n\17\3\20\3\20\3\20\3\20\3\20\3\20\3\20\5\20w\n")
         buf.write("\20\3\20\2\2\21\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36")
-        buf.write("\2\2\2v\2 \3\2\2\2\4\"\3\2\2\2\6$\3\2\2\2\b\'\3\2\2\2")
-        buf.write("\n/\3\2\2\2\f\63\3\2\2\2\16;\3\2\2\2\20=\3\2\2\2\22?\3")
-        buf.write("\2\2\2\24C\3\2\2\2\26K\3\2\2\2\30Z\3\2\2\2\32\\\3\2\2")
-        buf.write("\2\34m\3\2\2\2\36v\3\2\2\2 !\7\24\2\2!\3\3\2\2\2\"#\7")
-        buf.write("\24\2\2#\5\3\2\2\2$%\7\22\2\2%&\5\4\3\2&\7\3\2\2\2\'(")
-        buf.write("\7\3\2\2()\7\21\2\2)+\5\2\2\2*,\5\6\4\2+*\3\2\2\2+,\3")
-        buf.write("\2\2\2,-\3\2\2\2-.\7\4\2\2.\t\3\2\2\2/\60\5\b\5\2\60\61")
-        buf.write("\7\22\2\2\61\62\5\26\f\2\62\13\3\2\2\2\63\65\7\5\2\2\64")
-        buf.write("\66\5\n\6\2\65\64\3\2\2\2\66\67\3\2\2\2\67\65\3\2\2\2")
-        buf.write("\678\3\2\2\289\3\2\2\29:\7\6\2\2:\r\3\2\2\2;<\5\b\5\2")
-        buf.write("<\17\3\2\2\2=>\5\b\5\2>\21\3\2\2\2?@\5\16\b\2@A\7\20\2")
-        buf.write("\2AB\5\20\t\2B\23\3\2\2\2CE\7\7\2\2DF\5\22\n\2ED\3\2\2")
-        buf.write("\2FG\3\2\2\2GE\3\2\2\2GH\3\2\2\2HI\3\2\2\2IJ\7\6\2\2J")
-        buf.write("\25\3\2\2\2KL\5\36\20\2L\27\3\2\2\2MN\7\b\2\2NS\5\32\16")
-        buf.write("\2OP\7\t\2\2PR\5\32\16\2QO\3\2\2\2RU\3\2\2\2SQ\3\2\2\2")
-        buf.write("ST\3\2\2\2TV\3\2\2\2US\3\2\2\2VW\7\6\2\2W[\3\2\2\2XY\7")
-        buf.write("\b\2\2Y[\7\6\2\2ZM\3\2\2\2ZX\3\2\2\2[\31\3\2\2\2\\]\7")
-        buf.write("\23\2\2]^\7\22\2\2^_\5\36\20\2_\33\3\2\2\2`a\7\n\2\2a")
-        buf.write("f\5\36\20\2bc\7\t\2\2ce\5\36\20\2db\3\2\2\2eh\3\2\2\2")
-        buf.write("fd\3\2\2\2fg\3\2\2\2gi\3\2\2\2hf\3\2\2\2ij\7\13\2\2jn")
-        buf.write("\3\2\2\2kl\7\n\2\2ln\7\13\2\2m`\3\2\2\2mk\3\2\2\2n\35")
-        buf.write("\3\2\2\2ow\7\23\2\2pw\7\24\2\2qw\5\30\r\2rw\5\34\17\2")
-        buf.write("sw\7\f\2\2tw\7\r\2\2uw\7\16\2\2vo\3\2\2\2vp\3\2\2\2vq")
-        buf.write("\3\2\2\2vr\3\2\2\2vs\3\2\2\2vt\3\2\2\2vu\3\2\2\2w\37\3")
-        buf.write("\2\2\2\n+\67GSZfmv")
+        buf.write("\2\3\3\2\20\21\2v\2 \3\2\2\2\4\"\3\2\2\2\6$\3\2\2\2\b")
+        buf.write("\'\3\2\2\2\n/\3\2\2\2\f\63\3\2\2\2\16;\3\2\2\2\20=\3\2")
+        buf.write("\2\2\22?\3\2\2\2\24C\3\2\2\2\26K\3\2\2\2\30Z\3\2\2\2\32")
+        buf.write("\\\3\2\2\2\34m\3\2\2\2\36v\3\2\2\2 !\7\25\2\2!\3\3\2\2")
+        buf.write("\2\"#\7\25\2\2#\5\3\2\2\2$%\7\23\2\2%&\5\4\3\2&\7\3\2")
+        buf.write("\2\2\'(\7\3\2\2()\7\22\2\2)+\5\2\2\2*,\5\6\4\2+*\3\2\2")
+        buf.write("\2+,\3\2\2\2,-\3\2\2\2-.\7\4\2\2.\t\3\2\2\2/\60\5\b\5")
+        buf.write("\2\60\61\7\23\2\2\61\62\5\26\f\2\62\13\3\2\2\2\63\65\7")
+        buf.write("\5\2\2\64\66\5\n\6\2\65\64\3\2\2\2\66\67\3\2\2\2\67\65")
+        buf.write("\3\2\2\2\678\3\2\2\289\3\2\2\29:\7\6\2\2:\r\3\2\2\2;<")
+        buf.write("\5\b\5\2<\17\3\2\2\2=>\5\b\5\2>\21\3\2\2\2?@\5\16\b\2")
+        buf.write("@A\t\2\2\2AB\5\20\t\2B\23\3\2\2\2CE\7\7\2\2DF\5\22\n\2")
+        buf.write("ED\3\2\2\2FG\3\2\2\2GE\3\2\2\2GH\3\2\2\2HI\3\2\2\2IJ\7")
+        buf.write("\6\2\2J\25\3\2\2\2KL\5\36\20\2L\27\3\2\2\2MN\7\b\2\2N")
+        buf.write("S\5\32\16\2OP\7\t\2\2PR\5\32\16\2QO\3\2\2\2RU\3\2\2\2")
+        buf.write("SQ\3\2\2\2ST\3\2\2\2TV\3\2\2\2US\3\2\2\2VW\7\6\2\2W[\3")
+        buf.write("\2\2\2XY\7\b\2\2Y[\7\6\2\2ZM\3\2\2\2ZX\3\2\2\2[\31\3\2")
+        buf.write("\2\2\\]\7\24\2\2]^\7\23\2\2^_\5\36\20\2_\33\3\2\2\2`a")
+        buf.write("\7\n\2\2af\5\36\20\2bc\7\t\2\2ce\5\36\20\2db\3\2\2\2e")
+        buf.write("h\3\2\2\2fd\3\2\2\2fg\3\2\2\2gi\3\2\2\2hf\3\2\2\2ij\7")
+        buf.write("\13\2\2jn\3\2\2\2kl\7\n\2\2ln\7\13\2\2m`\3\2\2\2mk\3\2")
+        buf.write("\2\2n\35\3\2\2\2ow\7\24\2\2pw\7\25\2\2qw\5\30\r\2rw\5")
+        buf.write("\34\17\2sw\7\f\2\2tw\7\r\2\2uw\7\16\2\2vo\3\2\2\2vp\3")
+        buf.write("\2\2\2vq\3\2\2\2vr\3\2\2\2vs\3\2\2\2vt\3\2\2\2vu\3\2\2")
+        buf.write("\2w\37\3\2\2\2\n+\67GSZfmv")
         return buf.getvalue()
 
 
@@ -60,13 +60,13 @@ class KDLParser ( Parser ):
 
     literalNames = [ "<INVALID>", "'('", "')'", "'Nodes {'", "'}'", "'Workflow {'", 
                      "'{'", "','", "'['", "']'", "'true'", "'false'", "'null'", 
-                     "<INVALID>", "'-->'", "'n'", "':'" ]
+                     "<INVALID>", "'-->'", "'~~>'", "'n'", "':'" ]
 
     symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                       "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                       "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                      "<INVALID>", "WS", "ARROW", "NODEPREFIX", "COLON", 
-                      "STRING", "NUMBER" ]
+                      "<INVALID>", "WS", "ARROW", "VARIABLE_ARROW", "NODEPREFIX", 
+                      "COLON", "STRING", "NUMBER" ]
 
     RULE_node_id = 0
     RULE_port_id = 1
@@ -103,10 +103,11 @@ class KDLParser ( Parser ):
     T__11=12
     WS=13
     ARROW=14
-    NODEPREFIX=15
-    COLON=16
-    STRING=17
-    NUMBER=18
+    VARIABLE_ARROW=15
+    NODEPREFIX=16
+    COLON=17
+    STRING=18
+    NUMBER=19
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -509,12 +510,15 @@ class KDLParser ( Parser ):
             return self.getTypedRuleContext(KDLParser.Source_nodeContext,0)
 
 
-        def ARROW(self):
-            return self.getToken(KDLParser.ARROW, 0)
-
         def destination_node(self):
             return self.getTypedRuleContext(KDLParser.Destination_nodeContext,0)
 
+
+        def ARROW(self):
+            return self.getToken(KDLParser.ARROW, 0)
+
+        def VARIABLE_ARROW(self):
+            return self.getToken(KDLParser.VARIABLE_ARROW, 0)
 
         def getRuleIndex(self):
             return KDLParser.RULE_connection
@@ -534,12 +538,18 @@ class KDLParser ( Parser ):
 
         localctx = KDLParser.ConnectionContext(self, self._ctx, self.state)
         self.enterRule(localctx, 16, self.RULE_connection)
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 61
             self.source_node()
             self.state = 62
-            self.match(KDLParser.ARROW)
+            _la = self._input.LA(1)
+            if not(_la==KDLParser.ARROW or _la==KDLParser.VARIABLE_ARROW):
+                self._errHandler.recoverInline(self)
+            else:
+                self._errHandler.reportMatch(self)
+                self.consume()
             self.state = 63
             self.destination_node()
         except RecognitionException as re:
