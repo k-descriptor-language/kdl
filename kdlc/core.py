@@ -312,8 +312,9 @@ def create_node_settings_from_template(node):
             set_config_element_type(value)
         else:
             set_entry_element_type(value)
+    # print(model)
     variables = extract_variables_from_model(model)
-    print(variables)
+    # print(variables)
     template_root = ET.fromstring(
         template.render(node=node, model=model, variables=variables)
     )
