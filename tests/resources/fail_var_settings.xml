@@ -6,7 +6,18 @@
         <entry key="memory_policy" type="xstring" value="CacheSmallInMemory" />
     </config>
     <config key="model">
-        <fail key="column-filter"/>
+        <entry key="url" type="xstring" value="/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv" />
+        <entry key="colDelimiter" type="xstring" value="," />
+        <entry key="rowDelimiter" type="xstring" value="%%00010" />
+        <entry key="quote" type="xstring" value="&quot;" />
+        <entry key="commentStart" type="xstring" value="#" />
+        <entry key="hasRowHeader" type="xboolean" value="true" />
+        <entry key="hasColHeader" type="xboolean" value="true" />
+        <entry key="supportShortLines" type="xboolean" value="false" />
+        <entry key="limitRowsCount" type="xlong" value="-1" />
+        <entry key="skipFirstLinesCount" type="xint" value="-1" />
+        <entry isnull="true" key="characterSetName" type="xstring" value="" />
+        <entry key="limitAnalysisCount" type="xint" value="-1" />
     </config>
     <config key="variables">
         <fail key="url"/>
