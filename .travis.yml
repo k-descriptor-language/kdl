@@ -2,7 +2,7 @@ dist: xenial
 language: python
 python: 3.7
 install:
-- pip install -r requirements.txt
+- pip install -e '.[dev]'
 script:
 - flake8 kdlc/ tests/ setup.py
 - black --check kdlc tests setup.py --exclude kdlc/parser
