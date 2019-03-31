@@ -58,7 +58,8 @@ html_theme = 'sphinx_rtd_theme'
 def run_apidoc(_):
     argv = [
         "-f",
-        "-o", "source",
+        "-e",
+        "-o", "source/",
         "../kdlc"
     ]
 

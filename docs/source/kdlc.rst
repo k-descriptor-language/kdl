@@ -11,46 +11,13 @@ Subpackages
 Submodules
 ----------
 
-kdlc.KDLLoader module
----------------------
+.. toctree::
 
-.. automodule:: kdlc.KDLLoader
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-kdlc.application module
------------------------
-
-.. automodule:: kdlc.application
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-kdlc.cli module
----------------
-
-.. automodule:: kdlc.cli
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-kdlc.commands module
---------------------
-
-.. automodule:: kdlc.commands
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-kdlc.core module
-----------------
-
-.. automodule:: kdlc.core
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
+   kdlc.KDLLoader
+   kdlc.application
+   kdlc.cli
+   kdlc.commands
+   kdlc.core
 
 Module contents
 ---------------
