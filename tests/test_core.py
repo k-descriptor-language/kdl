@@ -666,7 +666,8 @@ def test_extract_variables_from_model(my_setup):
                                     "data_type": "xboolean",
                                 },
                                 {
-                                    "org.knime.core.data.date.DateAndTimeValue": "false",
+                                    "org.knime.core.data.date."
+                                    "DateAndTimeValue": "false",
                                     "data_type": "xboolean",
                                 },
                             ],
