@@ -1,4 +1,4 @@
-# kdl-poc
+# KDL 
 
 [![Build Status](https://travis-ci.com/k-descriptor-language/kdl.svg?branch=master)](https://travis-ci.com/k-descriptor-language/kdl)
 [![codecov](https://codecov.io/gh/k-descriptor-language/kdl/branch/master/graph/badge.svg)](https://codecov.io/gh/k-descriptor-language/kdl)
@@ -8,10 +8,7 @@
 
 Takes input KNIME workflow called "TestWorkflow.knwf", extracts values from the CSV Reader node and generates new workflow "TestWorkflow_new.knwf" using template file
 
-## Install dependencies
-`pip3 install -r requirements.txt`
-
-## Install package
+## Install Package
 `python3 setup.py install`
 
 ## Run
@@ -32,6 +29,9 @@ Options:
 `kdlc -i TestWorkflow.knwf -o OutputWorkflow.knwf`
 
 ## Development
+
+## Install Development Dependencies
+`pip install -e '.[dev]'`
 
 ### Run Tests
 `pytest --cov=./`
