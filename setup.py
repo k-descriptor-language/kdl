@@ -33,17 +33,21 @@ setup(
     packages=find_packages(),
     entry_points={"console_scripts": ["kdlc=kdlc.application:main"]},
     install_requires=[
-        "jinja2",
-        "jsonschema",
-        "pytest",
-        "pytest-cov",
-        "pytest-mock",
-        "codecov",
-        "flake8",
-        "black",
-        "click",
         "antlr4-python3-runtime",
+        "click",
+        "jinja2",
+        "jsonschema"
     ],
+    extras_require={
+        "dev": [
+            "black",
+            "codecov",
+            "flake8",
+            "pytest",
+            "pytest-cov",
+            "pytest-mock"
+        ]
+    },
     package_data={"kdlc": ["templates/*.xml", "json_schemas/*.json"]},
     include_package_data=True,
 )
