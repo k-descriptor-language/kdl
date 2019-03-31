@@ -371,8 +371,8 @@ def extract_variables_from_model(model):
                         "data_type": curr["data_type"],
                     }
                 )
-            if temp_list:
-                variables.append({curr_model_key: temp_list, "data_type": "config"})
+            variables.append({curr_model_key: temp_list, "data_type": "config"})
+
     return variables
 
 
