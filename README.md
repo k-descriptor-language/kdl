@@ -41,3 +41,6 @@ Options:
 
 ### Run Formatter
 `./scripts/format.sh`
+
+### Build Documentation
+`./scripts/build-docs.sh`
