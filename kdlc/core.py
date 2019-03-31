@@ -201,9 +201,10 @@ def extract_config_tag(tree, is_variable=False):
     for child in tree.findall("./*", NS):
         if child.tag == ENTRY_TAG:
             entry = extract_entry_tag(child)
-            if is_variable and "isnull" not in entry.keys():
-                config_value.append(entry)
-            elif not is_variable:
+            if is_variable:
+                if "isnull" not in entry.keys():
+                    config_value.append(entry)
+            else:
                 config_value.append(entry)
         elif child.tag == CONFIG_TAG:
             if is_variable:
