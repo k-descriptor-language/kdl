@@ -50,7 +50,7 @@ def test_extract_from_input_xml_csv(my_setup):
     )
 
 
-def test_extract_from_input_xml_cr(my_setup):
+def test_extract_from_input_xml_cf(my_setup):
     result = {
         "name": "Column Filter",
         "factory": (
@@ -117,6 +117,223 @@ def test_extract_from_input_xml_cr(my_setup):
     assert (
         kdlc.extract_from_input_xml(f"{test_resources_dir}/cf_settings.xml") == result
     )
+
+
+def test_extract_from_input_xml_ttj_var(my_setup):
+    res = {
+        "name": "Table to JSON",
+        "factory": "org.knime.json.node.fromtable.TableToJsonNodeFactory",
+        "bundle_name": "JSON related functionality for KNIME",
+        "bundle_symbolic_name": "org.knime.json",
+        "bundle_version": "3.7.1.v201901281201",
+        "feature_name": "KNIME JSON-Processing",
+        "feature_symbolic_name": "org.knime.features.json.feature.group",
+        "feature_version": "3.7.1.v201901281201",
+        "model": [
+            {
+                "selectedColumns": [
+                    {"filter-type": "STANDARD"},
+                    {
+                        "included_names": [
+                            {"array-size": 11},
+                            {
+                                "0": "MaritalStatus",
+                                "used_variable": "TEST",
+                                "exposed_variable": "TEST2",
+                            },
+                            {"1": "Gender"},
+                            {"2": "EstimatedYearlyIncome"},
+                            {"3": "SentimentRating"},
+                            {"4": "WebActivity"},
+                            {"5": "Age"},
+                            {"6": "Target"},
+                            {"7": "Available401K"},
+                            {"8": "CustomerValueSegment"},
+                            {"9": "ChurnScore"},
+                            {"10": "CallActivity"},
+                        ]
+                    },
+                    {"excluded_names": [{"array-size": 0}]},
+                    {"enforce_option": "EnforceExclusion"},
+                    {
+                        "name_pattern": [
+                            {"pattern": ""},
+                            {"type": "Wildcard"},
+                            {"caseSensitive": True},
+                        ]
+                    },
+                    {
+                        "datatype": [
+                            {
+                                "typelist": [
+                                    {"org.knime.core.data.StringValue": False},
+                                    {"org.knime.core.data.IntValue": False},
+                                    {"org.knime.core.data.DoubleValue": False},
+                                    {"org.knime.core.data.BooleanValue": False},
+                                    {"org.knime.core.data.LongValue": False},
+                                    {
+                                        (
+                                            "org.knime.core.data"
+                                            ".date.DateAndTimeValue"
+                                        ): False
+                                    },
+                                ]
+                            }
+                        ]
+                    },
+                ]
+            },
+            {"rowkey.key": "key"},
+            {"direction": "KeepRows"},
+            {"column.name.separator": "."},
+            {"output.column.name": "JSON"},
+            {"row.key.option": "omit"},
+            {"column.names.as.path": False},
+            {"remove.source.columns": False},
+            {"output.boolean.asNumbers": False},
+            {"missing.values.are.omitted": True},
+        ],
+    }
+    assert (
+        kdlc.extract_from_input_xml(f"{test_resources_dir}/ttj_settings_var.xml") == res
+    )
+
+
+def test_merge_model_and_variables(my_setup):
+    model = [
+        {
+            "selectedColumns": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 11},
+                        {"0": "MaritalStatus"},
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {"org.knime.core.data.date.DateAndTimeValue": False},
+                            ]
+                        }
+                    ]
+                },
+            ]
+        },
+        {"rowkey.key": "key"},
+        {"direction": "KeepRows"},
+        {"column.name.separator": "."},
+        {"output.column.name": "JSON"},
+        {"row.key.option": "omit"},
+        {"column.names.as.path": False},
+        {"remove.source.columns": False},
+        {"output.boolean.asNumbers": False},
+        {"missing.values.are.omitted": True},
+    ]
+
+    variables = [
+        {
+            "selectedColumns": [
+                {
+                    "included_names": [
+                        {
+                            "0": [
+                                {"used_variable": "TEST"},
+                                {"exposed_variable": "TEST2"},
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+
+    result = [
+        {
+            "selectedColumns": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 11},
+                        {
+                            "0": "MaritalStatus",
+                            "used_variable": "TEST",
+                            "exposed_variable": "TEST2",
+                        },
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {"org.knime.core.data.date.DateAndTimeValue": False},
+                            ]
+                        }
+                    ]
+                },
+            ]
+        },
+        {"rowkey.key": "key"},
+        {"direction": "KeepRows"},
+        {"column.name.separator": "."},
+        {"output.column.name": "JSON"},
+        {"row.key.option": "omit"},
+        {"column.names.as.path": False},
+        {"remove.source.columns": False},
+        {"output.boolean.asNumbers": False},
+        {"missing.values.are.omitted": True},
+    ]
+    kdlc.merge_model_and_variables(model, variables)
+    assert result == model
 
 
 def test_extract_from_input_xml_fail(my_setup):
