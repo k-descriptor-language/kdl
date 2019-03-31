@@ -91,10 +91,7 @@ def extract_from_input_xml(input_file):
 
     variables = list()
     for child in root.findall("./knime:config[@key='variables']/*", NS):
-        if child.tag == ENTRY_TAG:
-            entry = extract_entry_tag(child)
-            variables.append(entry)
-        elif child.tag == CONFIG_TAG:
+        if child.tag == CONFIG_TAG:
             config = extract_config_tag(child, is_variable=True)
             variables.append(config)
         else:

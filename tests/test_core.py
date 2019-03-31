@@ -240,6 +240,11 @@ def test_extract_from_input_xml_fail(my_setup):
         kdlc.extract_from_input_xml(f"{test_resources_dir}/fail_settings.xml")
 
 
+def test_extract_from_input_xml_fail_var(my_setup):
+    with pytest.raises(Exception):
+        kdlc.extract_from_input_xml(f"{test_resources_dir}/fail_var_settings.xml")
+
+
 def test_merge_model_and_variables(my_setup):
     model = [
         {
