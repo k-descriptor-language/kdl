@@ -8,6 +8,10 @@ echo "flake8 style guide..."
 flake8 kdlc/ tests/ setup.py --ignore kdlc/parser && echo "passed 👍"
 echo ""
 
+echo "static type checking..."
+mypy kdlc && echo "passed 👍"
+echo ""
+
 echo ""
 pytest --cov=kdlc
 echo ""

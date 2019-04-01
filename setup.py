@@ -38,6 +38,7 @@ setup(
             "black",
             "codecov",
             "flake8",
+            "mypy",
             "pytest",
             "pytest-cov",
             "pytest-mock",
