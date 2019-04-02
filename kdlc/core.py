@@ -89,6 +89,8 @@ def extract_from_input_xml(input_file):
             ex.strerror = "Invalid settings tag"
             raise ex
 
+    node["port_count"] = len(root.findall("./knime:config[@key='ports']/*", NS))
+
     variables = list()
     for child in root.findall("./knime:config[@key='variables']/*", NS):
         if child.tag == CONFIG_TAG:
@@ -303,9 +305,7 @@ def create_node_settings_from_template(node):
             set_config_element_type(value)
         else:
             set_entry_element_type(value)
-    # print(model)
     variables = extract_variables_from_model(model)
-    # print(variables)
     template_root = ET.fromstring(
         template.render(node=node, model=model, variables=variables)
     )

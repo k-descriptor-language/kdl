@@ -8,6 +8,7 @@ Nodes {
 	    "feature_name": "KNIME Core",
 	    "feature_symbolic_name": "org.knime.features.base.feature.group",
 	    "feature_version": "3.7.1.v201901291053",
+	    "port_count": 1,
 	    "model": [
 	        {
 	            "url": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv"
@@ -59,6 +60,7 @@ Nodes {
 	    "feature_name": "KNIME JSON-Processing",
 	    "feature_symbolic_name": "org.knime.features.json.feature.group",
 	    "feature_version": "3.7.1.v201901281201",
+	    "port_count": 1,
 	    "model": [
 	        {
 	            "selectedColumns": [
@@ -196,6 +198,7 @@ Nodes {
 	    "feature_name": "KNIME Core",
 	    "feature_symbolic_name": "org.knime.features.base.feature.group",
 	    "feature_version": "3.7.1.v201901291053",
+	    "port_count": 1,
 	    "model": [
 	        {
 	            "column-filter": [

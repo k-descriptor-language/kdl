@@ -25,6 +25,7 @@ def test_extract_from_input_xml_csv(my_setup):
         "feature_name": "KNIME Core",
         "feature_symbolic_name": "org.knime.features.base.feature.group",
         "feature_version": "3.7.1.v201901291053",
+        "port_count": 1,
         "model": [
             {
                 "url": (
@@ -62,6 +63,7 @@ def test_extract_from_input_xml_cf(my_setup):
         "feature_name": "KNIME Core",
         "feature_symbolic_name": "org.knime.features.base.feature.group",
         "feature_version": "3.7.1.v201901291053",
+        "port_count": 1,
         "model": [
             {
                 "column-filter": [
@@ -129,6 +131,7 @@ def test_extract_from_input_xml_csv_var(my_setup):
         "feature_name": "KNIME Core",
         "feature_symbolic_name": "org.knime.features.base.feature.group",
         "feature_version": "3.7.1.v201901291053",
+        "port_count": 1,
         "model": [
             {
                 "url": "/Users/jared/knime-workspace/Example "
@@ -165,6 +168,7 @@ def test_extract_from_input_xml_ttj_var(my_setup):
         "feature_name": "KNIME JSON-Processing",
         "feature_symbolic_name": "org.knime.features.json.feature.group",
         "feature_version": "3.7.1.v201901281201",
+        "port_count": 1,
         "model": [
             {
                 "selectedColumns": [
@@ -704,6 +708,7 @@ def test_create_node_settings_from_template_csv(my_setup):
             "feature_name": "KNIME Core",
             "feature_symbolic_name": "org.knime.features.base.feature.group",
             "feature_version": "3.7.1.v201901291053",
+            "port_count": 1,
             "model": [
                 {
                     "url": (
@@ -1179,6 +1184,7 @@ def test_create_node_settings_from_template_cf(my_setup):
             "feature_name": "KNIME Core",
             "feature_symbolic_name": "org.knime.features.base.feature.group",
             "feature_version": "3.7.1.v201901291053",
+            "port_count": 1,
             "model": [
                 {
                     "column-filter": [

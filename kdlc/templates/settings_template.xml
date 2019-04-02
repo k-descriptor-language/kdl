@@ -93,10 +93,12 @@
 <entry key="hasContent" type="xboolean" value="true"/>
 <entry key="isInactive" type="xboolean" value="false"/>
 <config key="ports">
-<config key="port_1">
-<entry key="index" type="xint" value="1"/>
-<entry key="port_dir_location" type="xstring" isnull="true" value=""/>
-</config>
+    {% for n in range(node.settings.port_count) %}
+    <config key="port_{{n + 1}}">
+        <entry key="index" type="xint" value="{{n + 1}}"/>
+        <entry key="port_dir_location" type="xstring" isnull="true" value=""/>
+    </config>
+    {% endfor %}
 </config>
 <config key="filestores">
 <entry key="file_store_location" type="xstring" isnull="true" value=""/>
