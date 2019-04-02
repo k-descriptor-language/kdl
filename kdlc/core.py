@@ -99,10 +99,7 @@ def extract_from_input_xml(input_file):
             ex.strerror = "Invalid settings tag"
             raise ex
     if variables:
-        print(f"model before merge: {model}")
-        print(f"variables: {variables}")
         merge_model_and_variables(model, variables)
-        # print(f"model after merge: {model}")
 
     node["model"] = model
     return node

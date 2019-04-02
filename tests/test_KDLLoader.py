@@ -1,4 +1,5 @@
 import kdlc
+import pytest
 
 
 def test_exitNode_settings(mocker):
@@ -132,3 +133,27 @@ def test_exitConnection_var(mocker):
 
     assert len(listener.connections) == 1
     assert listener.connections[0] == expected_connection
+
+
+def test_exitConnection_fail(mocker):
+    ctx = mocker.MagicMock()
+
+    source_node = mocker.MagicMock()
+    ctx.source_node.return_value.node.return_value = source_node
+
+    # source_node_id
+    source_node.node_id.return_value.getText.return_value = "1"
+
+    destination_node = mocker.MagicMock()
+    ctx.destination_node.return_value.node.return_value = destination_node
+
+    # destination_node_id
+    destination_node.node_id.return_value.getText.return_value = "3"
+
+    # connection arrow
+    ctx.VARIABLE_ARROW.return_value.getText.return_value = "FAIL"
+
+    listener = kdlc.commands.KDLLoader()
+
+    with pytest.raises(Exception):
+        listener.exitConnection(ctx)

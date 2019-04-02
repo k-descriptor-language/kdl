@@ -39,6 +39,10 @@ class KDLLoader(KDLListener):
         elif ctx.ARROW().getText() == "-->":
             source_node_port = source_node.port().port_id().NUMBER().getText()
             destination_node_port = destination_node.port().port_id().NUMBER().getText()
+        else:
+            ex = ValueError()
+            ex.strerror = "Invalid workflow connection"
+            raise ex
 
         connection = {
             "id": len(self.connections),
