@@ -92,7 +92,7 @@ def extract_from_input_xml(input_file):
     variables = list()
     for child in root.findall("./knime:config[@key='variables']/*", NS):
         if child.tag == CONFIG_TAG:
-            config = extract_config_tag(child, is_wf_var=True)
+            config = extract_config_tag(child)
             variables.append(config)
         else:
             ex = ValueError()
@@ -132,9 +132,10 @@ def merge_model_and_variables(model, variables):
             merge_model_and_variables(curr_model_val, curr_variable_val)
         else:
             for curr in curr_variable_val:
-                var_mod_key = list(curr.keys())[0]
-                var_mod_val = curr[var_mod_key]
-                curr_model[var_mod_key] = var_mod_val
+                if "isnull" not in curr.keys():
+                    var_mod_key = list(curr.keys())[0]
+                    var_mod_val = curr[var_mod_key]
+                    curr_model[var_mod_key] = var_mod_val
 
 
 def extract_entry_tag(tree):
@@ -183,13 +184,12 @@ def extract_entry_tag(tree):
     return entry
 
 
-def extract_config_tag(tree, is_wf_var=False):
+def extract_config_tag(tree):
     """
     Extracts the config tag from the provided tree
 
     Args:
         tree (ElementTree): The tree to extract the config tag from
-        is_wf_var (Boolean): If the tree is a workflow variable tree
 
     Returns:
         dict: Dict containing the config tag definition
@@ -198,16 +198,9 @@ def extract_config_tag(tree, is_wf_var=False):
     for child in tree.findall("./*", NS):
         if child.tag == ENTRY_TAG:
             entry = extract_entry_tag(child)
-            if is_wf_var:
-                if "isnull" not in entry.keys():
-                    config_value.append(entry)
-            else:
-                config_value.append(entry)
+            config_value.append(entry)
         elif child.tag == CONFIG_TAG:
-            if is_wf_var:
-                config = extract_config_tag(child, is_wf_var=True)
-            else:
-                config = extract_config_tag(child)
+            config = extract_config_tag(child)
             config_value.append(config)
         else:
             ex = ValueError()
