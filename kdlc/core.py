@@ -92,15 +92,15 @@ def extract_from_input_xml(input_file):
     variables = list()
     for child in root.findall("./knime:config[@key='variables']/*", NS):
         if child.tag == CONFIG_TAG:
-            config = extract_config_tag(child, is_variable=True)
+            config = extract_config_tag(child, is_wf_var=True)
             variables.append(config)
         else:
             ex = ValueError()
             ex.strerror = "Invalid settings tag"
             raise ex
     if variables:
-        # print(f"model before merge: {model}")
-        # print(f"variables: {variables}")
+        print(f"model before merge: {model}")
+        print(f"variables: {variables}")
         merge_model_and_variables(model, variables)
         # print(f"model after merge: {model}")
 
@@ -186,13 +186,13 @@ def extract_entry_tag(tree):
     return entry
 
 
-def extract_config_tag(tree, is_variable=False):
+def extract_config_tag(tree, is_wf_var=False):
     """
     Extracts the config tag from the provided tree
 
     Args:
         tree (ElementTree): The tree to extract the config tag from
-        is_variable (Boolean): If the tree is a workflow variable tree
+        is_wf_var (Boolean): If the tree is a workflow variable tree
 
     Returns:
         dict: Dict containing the config tag definition
@@ -201,14 +201,14 @@ def extract_config_tag(tree, is_variable=False):
     for child in tree.findall("./*", NS):
         if child.tag == ENTRY_TAG:
             entry = extract_entry_tag(child)
-            if is_variable:
+            if is_wf_var:
                 if "isnull" not in entry.keys():
                     config_value.append(entry)
             else:
                 config_value.append(entry)
         elif child.tag == CONFIG_TAG:
-            if is_variable:
-                config = extract_config_tag(child, is_variable=True)
+            if is_wf_var:
+                config = extract_config_tag(child, is_wf_var=True)
             else:
                 config = extract_config_tag(child)
             config_value.append(config)

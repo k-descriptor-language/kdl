@@ -63,23 +63,26 @@ def test_exitConnection(mocker):
     ctx.source_node.return_value.node.return_value = source_node
 
     # source_node_id
-    source_node.node_id.return_value.getText.return_value = 1
+    source_node.node_id.return_value.getText.return_value = "1"
 
     # source_node_port
     source_port_id = mocker.MagicMock()
     source_node.port.return_value.port_id = source_port_id
-    source_port_id.return_value.NUMBER.return_value.getText.return_value = 2
+    source_port_id.return_value.NUMBER.return_value.getText.return_value = "2"
 
     destination_node = mocker.MagicMock()
     ctx.destination_node.return_value.node.return_value = destination_node
 
     # destination_node_id
-    destination_node.node_id.return_value.getText.return_value = 3
+    destination_node.node_id.return_value.getText.return_value = "3"
 
     # destination_node_port
     destination_port_id = mocker.MagicMock()
     destination_node.port.return_value.port_id = destination_port_id
-    destination_port_id.return_value.NUMBER.return_value.getText.return_value = 4
+    destination_port_id.return_value.NUMBER.return_value.getText.return_value = "4"
+
+    # connection arrow
+    ctx.ARROW.return_value.getText.return_value = "-->"
 
     listener = kdlc.commands.KDLLoader()
 
@@ -87,10 +90,44 @@ def test_exitConnection(mocker):
 
     expected_connection = {
         "id": 0,
-        "source_id": 1,
-        "dest_id": 3,
-        "source_port": 2,
-        "dest_port": 4,
+        "source_id": "1",
+        "dest_id": "3",
+        "source_port": "2",
+        "dest_port": "4",
+    }
+
+    assert len(listener.connections) == 1
+    assert listener.connections[0] == expected_connection
+
+
+def test_exitConnection_var(mocker):
+    ctx = mocker.MagicMock()
+
+    source_node = mocker.MagicMock()
+    ctx.source_node.return_value.node.return_value = source_node
+
+    # source_node_id
+    source_node.node_id.return_value.getText.return_value = "1"
+
+    destination_node = mocker.MagicMock()
+    ctx.destination_node.return_value.node.return_value = destination_node
+
+    # destination_node_id
+    destination_node.node_id.return_value.getText.return_value = "3"
+
+    # connection arrow
+    ctx.VARIABLE_ARROW.return_value.getText.return_value = "~~>"
+
+    listener = kdlc.commands.KDLLoader()
+
+    listener.exitConnection(ctx)
+
+    expected_connection = {
+        "id": 0,
+        "source_id": "1",
+        "dest_id": "3",
+        "source_port": "0",
+        "dest_port": "0",
     }
 
     assert len(listener.connections) == 1
