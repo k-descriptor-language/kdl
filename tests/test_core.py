@@ -526,10 +526,17 @@ def test_extract_entry_tag_string(my_setup):
     assert kdlc.extract_entry_tag(tree) == result
 
 
-def test_extract_entry_tag_int(my_setup):
-    tree = ET.fromstring('<entry key="limitAnalysisCount" type="xint" value="-1" />')
+def test_extract_entry_tag_password(my_setup):
+    tree = ET.fromstring('<entry key="node-name" type="xstring" value="CSV Reader"/>')
 
-    result = {"limitAnalysisCount": -1}
+    result = {"node-name": "CSV Reader"}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
+def test_extract_entry_tag_int(my_setup):
+    tree = ET.fromstring('<entry key="password" type="xpassword" value="test" />')
+
+    result = {"password": "test", "data_type": "xpassword"}
     assert kdlc.extract_entry_tag(tree) == result
 
 
@@ -1285,6 +1292,13 @@ def test_create_workflow_knime_from_template(my_setup):
 def test_set_entry_element_type_string(my_setup):
     entry = {"url": "/Path/To/TheData/Demographics.csv"}
     result = {"url": "/Path/To/TheData/Demographics.csv", "data_type": "xstring"}
+    kdlc.set_entry_element_type(entry)
+    assert result == entry
+
+
+def test_set_entry_element_type_password(my_setup):
+    entry = {"password": "test", "data_type": "xpassword"}
+    result = {"password": "test", "data_type": "xpassword"}
     kdlc.set_entry_element_type(entry)
     assert result == entry
 

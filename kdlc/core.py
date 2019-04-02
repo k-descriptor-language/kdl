@@ -176,6 +176,11 @@ def extract_entry_tag(tree):
             tree.attrib["key"]: tree.attrib["value"],
             "data_type": tree.attrib["type"],
         }
+    elif tree.attrib["type"] == "xpassword":
+        entry = {
+            tree.attrib["key"]: tree.attrib["value"],
+            "data_type": tree.attrib["type"],
+        }
     else:
         ex = ValueError()
         ex.strerror = "Invalid entry type"
