@@ -24,7 +24,7 @@ ENTRY_TAG = f'{{{NS["knime"]}}}entry'
 CONFIG_TAG = f'{{{NS["knime"]}}}config'
 
 
-def unzip_workflow(input_file):
+def unzip_workflow(input_file: str) -> str:
     """
     Unzips the provided workflow archive and returns the folder with
     the workflow definitions
