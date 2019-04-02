@@ -6,7 +6,6 @@ from .commands import (
     kdl_to_workflow_custom_template,
     workflow_to_kdl_custom_template,
     workflow_to_kdl,
-    workflow_to_workflow,
     build_knwf,
 )
 
@@ -34,6 +33,8 @@ from .core import (
     save_output_kdl_workflow,
     cleanup,
 )
+
+from .dev import workflow_to_workflow
 
 from .application import main
 
