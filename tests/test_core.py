@@ -326,10 +326,7 @@ def test_merge_model_and_variables_1var(my_setup):
                 {
                     "included_names": [
                         {"array-size": 11},
-                        {
-                            "0": "MaritalStatus",
-                            "used_variable": "TEST",
-                        },
+                        {"0": "MaritalStatus", "used_variable": "TEST"},
                         {"1": "Gender"},
                         {"2": "EstimatedYearlyIncome"},
                         {"3": "SentimentRating"},
