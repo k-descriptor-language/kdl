@@ -33,10 +33,10 @@ class KDLLoader(KDLListener):
         destination_node = ctx.destination_node().node()
         destination_node_id = destination_node.node_id().getText()
 
-        if ctx.VARIABLE_ARROW().getText() == "~~>":
+        if ctx.VARIABLE_ARROW():
             source_node_port = "0"
             destination_node_port = "0"
-        elif ctx.ARROW().getText() == "-->":
+        elif ctx.ARROW():
             source_node_port = source_node.port().port_id().NUMBER().getText()
             destination_node_port = destination_node.port().port_id().NUMBER().getText()
         else:

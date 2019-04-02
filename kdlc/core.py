@@ -1,6 +1,6 @@
 import os
 import zipfile
-from shutil import make_archive
+import shutil
 import xml.etree.ElementTree as ET
 from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
@@ -471,9 +471,8 @@ def create_output_workflow(workflow_name):
     Args:
         workflow_name (str): Workflow directory to archive
     """
-    make_archive(workflow_name, "zip", OUTPUT_PATH)
-    base = os.path.splitext(f"{workflow_name}.zip")[0]
-    os.rename(f"{workflow_name}.zip", base + ".knwf")
+    shutil.make_archive(workflow_name, "zip", OUTPUT_PATH)
+    os.rename(f"{workflow_name}.zip", f"{workflow_name}.knwf")
     cleanup()
 
 

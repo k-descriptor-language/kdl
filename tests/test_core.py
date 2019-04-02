@@ -1381,6 +1381,24 @@ def test_save_workflow_knime(my_setup):
     )
 
 
+def test_create_output_workflow(mocker):
+    workflow_name = "test"
+
+    make_archive = mocker.MagicMock()
+    mocker.patch("shutil.make_archive", new=make_archive)
+
+    rename = mocker.MagicMock()
+    mocker.patch("os.rename", new=rename)
+
+    cleanup = mocker.MagicMock()
+    mocker.patch("kdlc.cleanup", new=cleanup)
+
+    kdlc.create_output_workflow(workflow_name)
+    make_archive.assert_called_with(workflow_name, "zip", kdlc.OUTPUT_PATH)
+    rename.assert_called_with(f"{workflow_name}.zip", f"{workflow_name}.knwf")
+    # cleanup.assert_called()
+
+
 def test_cleanup(my_setup):
     kdlc.cleanup()
     assert os.path.exists(kdlc.TMP_INPUT_DIR.name) is False

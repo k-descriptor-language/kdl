@@ -83,7 +83,8 @@ def test_exitConnection(mocker):
     destination_port_id.return_value.NUMBER.return_value.getText.return_value = "4"
 
     # connection arrow
-    ctx.ARROW.return_value.getText.return_value = "-->"
+    ctx.ARROW.return_value = "-->"
+    ctx.VARIABLE_ARROW.return_value = None
 
     listener = kdlc.commands.KDLLoader()
 
@@ -117,7 +118,8 @@ def test_exitConnection_var(mocker):
     destination_node.node_id.return_value.getText.return_value = "3"
 
     # connection arrow
-    ctx.VARIABLE_ARROW.return_value.getText.return_value = "~~>"
+    ctx.ARROW.return_value = None
+    ctx.VARIABLE_ARROW.return_value = "~~>"
 
     listener = kdlc.commands.KDLLoader()
 
@@ -151,7 +153,8 @@ def test_exitConnection_fail(mocker):
     destination_node.node_id.return_value.getText.return_value = "3"
 
     # connection arrow
-    ctx.VARIABLE_ARROW.return_value.getText.return_value = "FAIL"
+    ctx.ARROW.return_value = None
+    ctx.VARIABLE_ARROW.return_value = None
 
     listener = kdlc.commands.KDLLoader()
 
