@@ -30,11 +30,19 @@ class KDLLoader(KDLListener):
     def exitConnection(self, ctx):
         source_node = ctx.source_node().node()
         source_node_id = source_node.node_id().getText()
-        source_node_port = source_node.port().port_id().NUMBER().getText()
-
         destination_node = ctx.destination_node().node()
         destination_node_id = destination_node.node_id().getText()
-        destination_node_port = destination_node.port().port_id().NUMBER().getText()
+
+        if ctx.VARIABLE_ARROW():
+            source_node_port = "0"
+            destination_node_port = "0"
+        elif ctx.ARROW():
+            source_node_port = source_node.port().port_id().NUMBER().getText()
+            destination_node_port = destination_node.port().port_id().NUMBER().getText()
+        else:
+            ex = ValueError()
+            ex.strerror = "Invalid workflow connection"
+            raise ex
 
         connection = {
             "id": len(self.connections),

@@ -26,6 +26,7 @@
                 {% do entry_items.update({"type": value}) %}
             {% elif key=="isnull" %}
                 {% do entry_items.update({"isnull": "true"}) %}
+            {% elif key=="exposed_variable" or key=="used_variable" %}
             {% else %}
                 {% do entry_items.update({"key": key}) %}
                 {% do entry_items.update({"value": value}) %}
@@ -39,6 +40,42 @@
     {% endif %}
     {% endfor %}
 </config>
+{% if variables %}
+<config key="variables">
+    {% for item in variables recursive %}
+    {% if item.data_type=="config" %}
+        {% set config_items = {} %}
+        {% for key, value in item.items() %}
+            {% if key=="data_type" %}
+            {% else %}
+                {% do config_items.update({"key": key}) %}
+                {% do config_items.update({"value": value}) %}
+            {% endif %}
+        {% endfor %}
+        <config key="{{config_items['key']}}">
+        {{ loop (config_items['value']) }}
+        </config>
+    {% else %}
+        {% set entry_items = {} %}
+        {% for key, value in item.items() %}
+            {% if key=="data_type" %}
+                {% do entry_items.update({"type": value}) %}
+            {% elif key=="isnull" %}
+                {% do entry_items.update({"isnull": "true"}) %}
+            {% else %}
+                {% do entry_items.update({"key": key}) %}
+                {% do entry_items.update({"value": value}) %}
+            {% endif %}
+        {% endfor %}
+        {% if entry_items.isnull is defined %}
+            <entry isnull="true" key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}" />
+        {% else %}
+            <entry key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}" />
+        {% endif %}
+    {% endif %}
+    {% endfor %}
+</config>
+{% endif %}
 <entry key="customDescription" type="xstring" isnull="true" value=""/>
 <entry key="state" type="xstring" value="CONFIGURED"/>
 <entry key="factory" type="xstring" value="{{ node.settings.factory }}"/>
@@ -56,10 +93,12 @@
 <entry key="hasContent" type="xboolean" value="true"/>
 <entry key="isInactive" type="xboolean" value="false"/>
 <config key="ports">
-<config key="port_1">
-<entry key="index" type="xint" value="1"/>
-<entry key="port_dir_location" type="xstring" isnull="true" value=""/>
-</config>
+    {% for n in range(node.settings.port_count) %}
+    <config key="port_{{n + 1}}">
+        <entry key="index" type="xint" value="{{n + 1}}"/>
+        <entry key="port_dir_location" type="xstring" isnull="true" value=""/>
+    </config>
+    {% endfor %}
 </config>
 <config key="filestores">
 <entry key="file_store_location" type="xstring" isnull="true" value=""/>

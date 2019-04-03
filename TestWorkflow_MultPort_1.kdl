@@ -1,0 +1,729 @@
+Nodes {
+	(n1): {
+	    "name": "Table Creator",
+	    "factory": "org.knime.base.node.io.tablecreator.TableCreator2NodeFactory",
+	    "bundle_name": "KNIME Base Nodes",
+	    "bundle_symbolic_name": "org.knime.base",
+	    "bundle_version": "3.7.1.v201901291053",
+	    "feature_name": "KNIME Core",
+	    "feature_symbolic_name": "org.knime.features.base.feature.group",
+	    "feature_version": "3.7.1.v201901291053",
+	    "port_count": 1,
+	    "model": [
+	        {
+	            "rowIndices": [
+	                {
+	                    "array-size": 21
+	                },
+	                {
+	                    "0": 0
+	                },
+	                {
+	                    "1": 0
+	                },
+	                {
+	                    "2": 0
+	                },
+	                {
+	                    "3": 1
+	                },
+	                {
+	                    "4": 1
+	                },
+	                {
+	                    "5": 1
+	                },
+	                {
+	                    "6": 2
+	                },
+	                {
+	                    "7": 2
+	                },
+	                {
+	                    "8": 2
+	                },
+	                {
+	                    "9": 3
+	                },
+	                {
+	                    "10": 3
+	                },
+	                {
+	                    "11": 3
+	                },
+	                {
+	                    "12": 4
+	                },
+	                {
+	                    "13": 4
+	                },
+	                {
+	                    "14": 4
+	                },
+	                {
+	                    "15": 5
+	                },
+	                {
+	                    "16": 5
+	                },
+	                {
+	                    "17": 5
+	                },
+	                {
+	                    "18": 6
+	                },
+	                {
+	                    "19": 6
+	                },
+	                {
+	                    "20": 6
+	                }
+	            ]
+	        },
+	        {
+	            "columnIndices": [
+	                {
+	                    "array-size": 21
+	                },
+	                {
+	                    "0": 0
+	                },
+	                {
+	                    "1": 1
+	                },
+	                {
+	                    "2": 2
+	                },
+	                {
+	                    "3": 0
+	                },
+	                {
+	                    "4": 1
+	                },
+	                {
+	                    "5": 2
+	                },
+	                {
+	                    "6": 0
+	                },
+	                {
+	                    "7": 1
+	                },
+	                {
+	                    "8": 2
+	                },
+	                {
+	                    "9": 0
+	                },
+	                {
+	                    "10": 1
+	                },
+	                {
+	                    "11": 2
+	                },
+	                {
+	                    "12": 0
+	                },
+	                {
+	                    "13": 1
+	                },
+	                {
+	                    "14": 2
+	                },
+	                {
+	                    "15": 0
+	                },
+	                {
+	                    "16": 1
+	                },
+	                {
+	                    "17": 2
+	                },
+	                {
+	                    "18": 0
+	                },
+	                {
+	                    "19": 1
+	                },
+	                {
+	                    "20": 2
+	                }
+	            ]
+	        },
+	        {
+	            "values": [
+	                {
+	                    "array-size": 21
+	                },
+	                {
+	                    "0": "Aa"
+	                },
+	                {
+	                    "1": "a"
+	                },
+	                {
+	                    "2": "6"
+	                },
+	                {
+	                    "3": "Bb"
+	                },
+	                {
+	                    "4": "a"
+	                },
+	                {
+	                    "5": "3"
+	                },
+	                {
+	                    "6": "Cc"
+	                },
+	                {
+	                    "7": "a"
+	                },
+	                {
+	                    "8": "4"
+	                },
+	                {
+	                    "9": "Dd"
+	                },
+	                {
+	                    "10": "a"
+	                },
+	                {
+	                    "11": "2"
+	                },
+	                {
+	                    "12": "Aa"
+	                },
+	                {
+	                    "13": "b"
+	                },
+	                {
+	                    "14": "1"
+	                },
+	                {
+	                    "15": "Cc"
+	                },
+	                {
+	                    "16": "b"
+	                },
+	                {
+	                    "17": "9"
+	                },
+	                {
+	                    "18": "Dd"
+	                },
+	                {
+	                    "19": "b"
+	                },
+	                {
+	                    "20": "3"
+	                }
+	            ]
+	        },
+	        {
+	            "rowIdPrefix": "Row"
+	        },
+	        {
+	            "rowIdSuffix": ""
+	        },
+	        {
+	            "rowIdStartValue": 0
+	        },
+	        {
+	            "highlightOutputTable": false
+	        },
+	        {
+	            "columnProperties": [
+	                {
+	                    "0": [
+	                        {
+	                            "UserSetValues": true
+	                        },
+	                        {
+	                            "MissValuePattern": ""
+	                        },
+	                        {
+	                            "FormatParameter": "",
+	                            "isnull": true
+	                        },
+	                        {
+	                            "ReadPossValsFromFile": false
+	                        },
+	                        {
+	                            "SkipThisColumn": false
+	                        },
+	                        {
+	                            "ColumnName": "Name"
+	                        },
+	                        {
+	                            "ColumnClass": [
+	                                {
+	                                    "cell_class": "org.knime.core.data.def.StringCell"
+	                                },
+	                                {
+	                                    "is_null": false
+	                                }
+	                            ]
+	                        }
+	                    ]
+	                },
+	                {
+	                    "1": [
+	                        {
+	                            "UserSetValues": true
+	                        },
+	                        {
+	                            "MissValuePattern": ""
+	                        },
+	                        {
+	                            "FormatParameter": "",
+	                            "isnull": true
+	                        },
+	                        {
+	                            "ReadPossValsFromFile": false
+	                        },
+	                        {
+	                            "SkipThisColumn": false
+	                        },
+	                        {
+	                            "ColumnName": "Type"
+	                        },
+	                        {
+	                            "ColumnClass": [
+	                                {
+	                                    "cell_class": "org.knime.core.data.def.StringCell"
+	                                },
+	                                {
+	                                    "is_null": false
+	                                }
+	                            ]
+	                        }
+	                    ]
+	                },
+	                {
+	                    "2": [
+	                        {
+	                            "UserSetValues": true
+	                        },
+	                        {
+	                            "MissValuePattern": ""
+	                        },
+	                        {
+	                            "FormatParameter": "",
+	                            "isnull": true
+	                        },
+	                        {
+	                            "ReadPossValsFromFile": false
+	                        },
+	                        {
+	                            "SkipThisColumn": false
+	                        },
+	                        {
+	                            "ColumnName": "Score"
+	                        },
+	                        {
+	                            "ColumnClass": [
+	                                {
+	                                    "cell_class": "org.knime.core.data.def.LongCell"
+	                                },
+	                                {
+	                                    "is_null": false
+	                                }
+	                            ]
+	                        }
+	                    ]
+	                }
+	            ]
+	        }
+	    ]
+	}
+
+	(n8): {
+	    "name": "Table to JSON",
+	    "factory": "org.knime.json.node.fromtable.TableToJsonNodeFactory",
+	    "bundle_name": "JSON related functionality for KNIME",
+	    "bundle_symbolic_name": "org.knime.json",
+	    "bundle_version": "3.7.1.v201901281201",
+	    "feature_name": "KNIME JSON-Processing",
+	    "feature_symbolic_name": "org.knime.features.json.feature.group",
+	    "feature_version": "3.7.1.v201901281201",
+	    "port_count": 1,
+	    "model": [
+	        {
+	            "selectedColumns": [
+	                {
+	                    "filter-type": "STANDARD"
+	                },
+	                {
+	                    "included_names": [
+	                        {
+	                            "array-size": 0
+	                        }
+	                    ]
+	                },
+	                {
+	                    "excluded_names": [
+	                        {
+	                            "array-size": 0
+	                        }
+	                    ]
+	                },
+	                {
+	                    "enforce_option": "EnforceExclusion"
+	                },
+	                {
+	                    "name_pattern": [
+	                        {
+	                            "pattern": ""
+	                        },
+	                        {
+	                            "type": "Wildcard"
+	                        },
+	                        {
+	                            "caseSensitive": true
+	                        }
+	                    ]
+	                },
+	                {
+	                    "datatype": [
+	                        {
+	                            "typelist": []
+	                        }
+	                    ]
+	                }
+	            ]
+	        },
+	        {
+	            "rowkey.key": "key"
+	        },
+	        {
+	            "direction": "RowsOutside"
+	        },
+	        {
+	            "column.name.separator": "."
+	        },
+	        {
+	            "output.column.name": "JSON"
+	        },
+	        {
+	            "row.key.option": "omit"
+	        },
+	        {
+	            "column.names.as.path": false
+	        },
+	        {
+	            "remove.source.columns": false
+	        },
+	        {
+	            "output.boolean.asNumbers": false
+	        },
+	        {
+	            "missing.values.are.omitted": true
+	        }
+	    ]
+	}
+
+	(n20): {
+	    "name": "POST Request",
+	    "factory": "org.knime.rest.nodes.post.RestPostNodeFactory",
+	    "bundle_name": "KNIME REST Client Nodes",
+	    "bundle_symbolic_name": "org.knime.rest",
+	    "bundle_version": "3.7.0.v201808081048",
+	    "feature_name": "KNIME REST Client Extension",
+	    "feature_symbolic_name": "org.knime.features.rest.feature.group",
+	    "feature_version": "3.7.0.v201808081048",
+	    "port_count": 1,
+	    "model": [
+	        {
+	            "Use constant URI": true
+	        },
+	        {
+	            "Constant URI": "http://localhost:8080/api/v0/workflow"
+	        },
+	        {
+	            "URI column": "JSON"
+	        },
+	        {
+	            "delay_enabled": false
+	        },
+	        {
+	            "delay": 0,
+	            "data_type": "xlong"
+	        },
+	        {
+	            "concurrency": 1
+	        },
+	        {
+	            "SSL ignore hostname errors": true
+	        },
+	        {
+	            "SSL trust all": true
+	        },
+	        {
+	            "Fail on connection problems": false
+	        },
+	        {
+	            "Fail on HTTP errors": false
+	        },
+	        {
+	            "Request header keys": [
+	                {
+	                    "array-size": 0
+	                }
+	            ]
+	        },
+	        {
+	            "Request header key selector": [
+	                {
+	                    "array-size": 0
+	                }
+	            ]
+	        },
+	        {
+	            "Request header key kind": [
+	                {
+	                    "array-size": 0
+	                }
+	            ]
+	        },
+	        {
+	            "Extract all response fields": false
+	        },
+	        {
+	            "Response header keys": [
+	                {
+	                    "array-size": 2
+	                },
+	                {
+	                    "0": "Status"
+	                },
+	                {
+	                    "1": "Content-Type"
+	                }
+	            ]
+	        },
+	        {
+	            "Response header column name": [
+	                {
+	                    "array-size": 2
+	                },
+	                {
+	                    "0": "Status"
+	                },
+	                {
+	                    "1": "Content type"
+	                }
+	            ]
+	        },
+	        {
+	            "Response header column type": [
+	                {
+	                    "array-size": 2
+	                },
+	                {
+	                    "0": [
+	                        {
+	                            "cell_class": "org.knime.core.data.def.IntCell"
+	                        },
+	                        {
+	                            "is_null": false
+	                        }
+	                    ]
+	                },
+	                {
+	                    "1": [
+	                        {
+	                            "cell_class": "org.knime.core.data.def.StringCell"
+	                        },
+	                        {
+	                            "is_null": false
+	                        }
+	                    ]
+	                }
+	            ]
+	        },
+	        {
+	            "Body column name": "body"
+	        },
+	        {
+	            "None": []
+	        },
+	        {
+	            "None_enabled": true
+	        },
+	        {
+	            "Basic": [
+	                {
+	                    "BASIC auth_Internals": [
+	                        {
+	                            "SettingsModelID": "SMID_authentication"
+	                        },
+	                        {
+	                            "EnabledStatus": true
+	                        }
+	                    ]
+	                },
+	                {
+	                    "BASIC auth": [
+	                        {
+	                            "credentials": "",
+	                            "isnull": true
+	                        },
+	                        {
+	                            "username": ""
+	                        },
+	                        {
+	                            "password": "",
+	                            "data_type": "xpassword",
+	                            "isnull": true
+	                        },
+	                        {
+	                            "selectedType": "USER_PWD"
+	                        }
+	                    ]
+	                }
+	            ]
+	        },
+	        {
+	            "Basic_enabled": false
+	        },
+	        {
+	            "Digest": [
+	                {
+	                    "Digest auth_Internals": [
+	                        {
+	                            "SettingsModelID": "SMID_authentication"
+	                        },
+	                        {
+	                            "EnabledStatus": true
+	                        }
+	                    ]
+	                },
+	                {
+	                    "Digest auth": [
+	                        {
+	                            "credentials": "",
+	                            "isnull": true
+	                        },
+	                        {
+	                            "username": ""
+	                        },
+	                        {
+	                            "password": "",
+	                            "data_type": "xpassword",
+	                            "isnull": true
+	                        },
+	                        {
+	                            "selectedType": "USER_PWD"
+	                        }
+	                    ]
+	                }
+	            ]
+	        },
+	        {
+	            "Digest_enabled": false
+	        },
+	        {
+	            "NTLM": [
+	                {
+	                    "NTLM auth_Internals": [
+	                        {
+	                            "SettingsModelID": "SMID_authentication"
+	                        },
+	                        {
+	                            "EnabledStatus": true
+	                        }
+	                    ]
+	                },
+	                {
+	                    "NTLM auth": [
+	                        {
+	                            "credentials": ""
+	                        },
+	                        {
+	                            "username": ""
+	                        },
+	                        {
+	                            "password": "015B23820E5D69FE178DD2D4FAB40F1303",
+	                            "data_type": "xpassword"
+	                        },
+	                        {
+	                            "selectedType": "USER_PWD"
+	                        }
+	                    ]
+	                }
+	            ]
+	        },
+	        {
+	            "NTLM_enabled": false
+	        },
+	        {
+	            "follow redirects": true
+	        },
+	        {
+	            "timeout": 100
+	        },
+	        {
+	            "Use constant request body": true
+	        },
+	        {
+	            "Constant request body": "[ {%%00010  \"Name\" : \"Aa\",%%00010  \"Type\" : \"a\",%%00010  \"Score\" :
+	6%%00010}, {%%00010  \"Name\" : \"Bb\",%%00010  \"Type\" : \"a\",%%00010  \"Score\" : 3%%00010}, {%%00010  \"Name\" :
+	\"Cc\",%%00010  \"Type\" : \"a\",%%00010  \"Score\" : 4%%00010}, {%%00010  \"Name\" : \"Dd\",%%00010  \"Type\" :
+	\"a\",%%00010  \"Score\" : 2%%00010}, {%%00010  \"Name\" : \"Aa\",%%00010  \"Type\" : \"b\",%%00010  \"Score\" :
+	1%%00010}, {%%00010  \"Name\" : \"Cc\",%%00010  \"Type\" : \"b\",%%00010  \"Score\" : 9%%00010}, {%%00010  \"Name\" :
+	\"Dd\",%%00010  \"Type\" : \"b\",%%00010  \"Score\" : 3%%00010} ]"
+	        },
+	        {
+	            "Request body column": "JSON"
+	        }
+	    ]
+	}
+
+	(n21): {
+	    "name": "IF Switch",
+	    "factory": "org.knime.base.node.switches.manualif.ManualIfNodeFactory",
+	    "bundle_name": "KNIME Base Nodes",
+	    "bundle_symbolic_name": "org.knime.base",
+	    "bundle_version": "3.7.1.v201901291053",
+	    "feature_name": "KNIME Core",
+	    "feature_symbolic_name": "org.knime.features.base.feature.group",
+	    "feature_version": "3.7.1.v201901291053",
+	    "port_count": 2,
+	    "model": [
+	        {
+	            "PortChoice_Internals": [
+	                {
+	                    "SettingsModelID": "SMID_string"
+	                },
+	                {
+	                    "EnabledStatus": true
+	                }
+	            ]
+	        },
+	        {
+	            "PortChoice": "top"
+	        },
+	        {
+	            "activate_all_outputs_during_configure_Internals": [
+	                {
+	                    "SettingsModelID": "SMID_boolean"
+	                },
+	                {
+	                    "EnabledStatus": true
+	                }
+	            ]
+	        },
+	        {
+	            "activate_all_outputs_during_configure": true
+	        }
+	    ]
+	}
+
+}
+
+Workflow {
+	(n1:1)-->(n8:1)
+	(n8:1)-->(n21:1)
+	(n21:2)-->(n20:1)
+}

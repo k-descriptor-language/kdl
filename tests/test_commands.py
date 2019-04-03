@@ -64,6 +64,44 @@ def test_kdl_to_workflow(mocker):
     )
 
 
+def test_workflow_to_kdl(mocker):
+    input_file = "test.knwf"
+    output_file = "test.kdl"
+
+    unzip_workflow = mocker.MagicMock()
+    unzip_workflow.return_value = "test"
+    mocker.patch("kdlc.unzip_workflow", new=unzip_workflow)
+
+    extract_connections = mocker.MagicMock()
+    extract_connections.return_value = []
+    mocker.patch("kdlc.extract_connections", new=extract_connections)
+
+    extract_nodes = mocker.MagicMock()
+    extract_nodes.return_value = [{"filename": "test.xml"}]
+    mocker.patch("kdlc.extract_nodes", new=extract_nodes)
+
+    extract_from_input_xml = mocker.MagicMock()
+    extract_from_input_xml.return_value = {}
+    mocker.patch("kdlc.extract_from_input_xml", new=extract_from_input_xml)
+
+    save_output_kdl_workflow = mocker.MagicMock()
+    mocker.patch("kdlc.save_output_kdl_workflow", new=save_output_kdl_workflow)
+
+    cleanup = mocker.MagicMock()
+    mocker.patch("kdlc.cleanup", new=cleanup)
+
+    kdlc.workflow_to_kdl(input_file, output_file)
+
+    unzip_workflow.assert_called_with(input_file)
+    extract_connections.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
+    extract_nodes.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
+    extract_from_input_xml.assert_called_with(f"{kdlc.INPUT_PATH}/test/test.xml")
+    save_output_kdl_workflow.assert_called_with(
+        output_file, [], [{"filename": "test.xml", "settings": {}}]
+    )
+    cleanup.assert_called()
+
+
 def test_build_knwf(mocker):
     # mock create_workflow_knime_from_template
     mock_create_workflow_knime_from_template = mocker.MagicMock()
