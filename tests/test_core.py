@@ -16,7 +16,7 @@ def test_unzip_workflow(my_setup):
 
 
 def test_extract_from_input_xml_csv(my_setup):
-    result = kdlc.Node(
+    res = kdlc.Node(
         id=1,
         name="CSV Reader",
         factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
@@ -27,8 +27,8 @@ def test_extract_from_input_xml_csv(my_setup):
         feature_symbolic_name="org.knime.features.base.feature.group",
         feature_version="3.7.1.v201901291053",
     )
-    result.port_count = 1
-    result.model = [
+    res.port_count = 1
+    res.model = [
         {
             "url": (
                 "/Users/jared/knime-workspace/Example Workflows/"
@@ -49,16 +49,18 @@ def test_extract_from_input_xml_csv(my_setup):
     ]
 
     assert (
-        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/csv_settings.xml")
-        == result
+        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/csv_settings.xml") == res
     )
 
 
 def test_extract_from_input_xml_cf(my_setup):
-    result = kdlc.Node(
+    res = kdlc.Node(
         id=1,
         name="Column Filter",
-        factory="org.knime.base.node.preproc.filter.column.DataColumnSpecFilterNodeFactory",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
         bundle_name="KNIME Base Nodes",
         bundle_symbolic_name="org.knime.base",
         bundle_version="3.7.1.v201901291053",
@@ -66,8 +68,8 @@ def test_extract_from_input_xml_cf(my_setup):
         feature_symbolic_name="org.knime.features.base.feature.group",
         feature_version="3.7.1.v201901291053",
     )
-    result.port_count = 1
-    result.model = [
+    res.port_count = 1
+    res.model = [
         {
             "column-filter": [
                 {"filter-type": "STANDARD"},
@@ -119,8 +121,7 @@ def test_extract_from_input_xml_cf(my_setup):
     ]
 
     assert (
-        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/cf_settings.xml")
-        == result
+        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/cf_settings.xml") == res
     )
 
 
@@ -158,10 +159,7 @@ def test_extract_from_input_xml_csv_var(my_setup):
         {"url": [{"used_variable": "TEST"}, {"exposed_variable": "TEST2"}]}
     ]
 
-    assert (
-        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/csv_settings_var.xml")
-        == res
-    )
+    assert kdlc.extract_from_input_xml(1, f"{test_resources_dir}/csv_var.xml") == res
 
 
 def test_extract_from_input_xml_ttj_var(my_setup):
@@ -252,10 +250,7 @@ def test_extract_from_input_xml_ttj_var(my_setup):
             ]
         }
     ]
-    assert (
-        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/ttj_settings_var.xml")
-        == res
-    )
+    assert kdlc.extract_from_input_xml(1, f"{test_resources_dir}/ttj_var.xml") == res
 
 
 def test_extract_from_input_xml_fail(my_setup):
@@ -454,7 +449,10 @@ def test_create_node_settings_from_template_cf(my_setup):
     node = kdlc.Node(
         id=1,
         name="Column Filter",
-        factory="org.knime.base.node.preproc.filter.column.DataColumnSpecFilterNodeFactory",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
         bundle_name="KNIME Base Nodes",
         bundle_symbolic_name="org.knime.base",
         bundle_version="3.7.1.v201901291053",
@@ -558,7 +556,10 @@ def test_create_workflow_knime_from_template(my_setup):
     node2 = kdlc.Node(
         id=1,
         name="Column Filter",
-        factory="org.knime.base.node.preproc.filter.column.DataColumnSpecFilterNodeFactory",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
         bundle_name="KNIME Base Nodes",
         bundle_symbolic_name="org.knime.base",
         bundle_version="3.7.1.v201901291053",
