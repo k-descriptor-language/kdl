@@ -1,5 +1,6 @@
 import json
 from kdlc.parser.KDLListener import KDLListener
+from kdlc.objects import Connection, Node
 
 
 class KDLLoader(KDLListener):
@@ -18,12 +19,19 @@ class KDLLoader(KDLListener):
 
         # TODO: does this name even matter? if it does, we need to be defensive here
         node_name = node_settings["name"]
-
-        node = {
-            "id": node_number,
-            "filename": f"{node_name} (#{node_number})/settings.xml",
-            "settings": node_settings,
-        }
+        node = Node(
+            id=node_number,
+            name=node_name,
+            factory=node_settings["factory"],
+            bundle_name=node_settings["bundle_name"],
+            bundle_symbolic_name=node_settings["bundle_symbolic_name"],
+            bundle_version=node_settings["bundle_version"],
+            feature_name=node_settings["feature_name"],
+            feature_symbolic_name=node_settings["feature_symbolic_name"],
+            feature_version=node_settings["feature_version"],
+        )
+        node.port_count = node_settings["port_count"]
+        node.model = node_settings["model"]
 
         self.nodes.append(node)
 
@@ -43,13 +51,12 @@ class KDLLoader(KDLListener):
             ex = ValueError()
             ex.strerror = "Invalid workflow connection"
             raise ex
-
-        connection = {
-            "id": len(self.connections),
-            "source_id": source_node_id,
-            "dest_id": destination_node_id,
-            "source_port": source_node_port,
-            "dest_port": destination_node_port,
-        }
+        connection = Connection(
+            id=len(self.connections),
+            source_id=source_node_id,
+            dest_id=destination_node_id,
+            source_port=source_node_port,
+            dest_port=destination_node_port,
+        )
 
         self.connections.append(connection)

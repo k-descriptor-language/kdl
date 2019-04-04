@@ -26,6 +26,48 @@ def test_exitNode_settings(mocker):
     token_colon.getText.return_value = ":"
     token_b = mocker.MagicMock()
     token_b.getText.return_value = "b"
+    token_comma = mocker.MagicMock()
+    token_comma.getText.return_value = ","
+
+    token_f = mocker.MagicMock()
+    token_f.getText.return_value = "f"
+    token_c = mocker.MagicMock()
+    token_c.getText.return_value = "c"
+    token_t = mocker.MagicMock()
+    token_t.getText.return_value = "t"
+    token_o = mocker.MagicMock()
+    token_o.getText.return_value = "o"
+    token_r = mocker.MagicMock()
+    token_r.getText.return_value = "r"
+    token_y = mocker.MagicMock()
+    token_y.getText.return_value = "y"
+
+    token_u = mocker.MagicMock()
+    token_u.getText.return_value = "u"
+    token_d = mocker.MagicMock()
+    token_d.getText.return_value = "d"
+    token_l = mocker.MagicMock()
+    token_l.getText.return_value = "l"
+    token_us = mocker.MagicMock()
+    token_us.getText.return_value = "_"
+
+    token_s = mocker.MagicMock()
+    token_s.getText.return_value = "s"
+    token_i = mocker.MagicMock()
+    token_i.getText.return_value = "i"
+
+    token_v = mocker.MagicMock()
+    token_v.getText.return_value = "v"
+
+    token_p = mocker.MagicMock()
+    token_p.getText.return_value = "p"
+    token_one = mocker.MagicMock()
+    token_one.getText.return_value = "1"
+
+    token_l_bracket = mocker.MagicMock()
+    token_l_bracket.getText.return_value = "["
+    token_r_bracket = mocker.MagicMock()
+    token_r_bracket.getText.return_value = "]"
 
     children = [
         token_l_paren,
@@ -39,6 +81,181 @@ def test_exitNode_settings(mocker):
         token_d_quote,
         token_b,
         token_d_quote,
+        token_comma,
+        token_d_quote,
+        token_f,
+        token_a,
+        token_c,
+        token_t,
+        token_o,
+        token_r,
+        token_y,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_b,
+        token_d_quote,
+        token_comma,
+        token_d_quote,
+        token_b,
+        token_u,
+        token_n,
+        token_d,
+        token_l,
+        token_e,
+        token_us,
+        token_n,
+        token_a,
+        token_m,
+        token_e,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_b,
+        token_d_quote,
+        token_comma,
+        token_d_quote,
+        token_b,
+        token_u,
+        token_n,
+        token_d,
+        token_l,
+        token_e,
+        token_us,
+        token_s,
+        token_y,
+        token_m,
+        token_b,
+        token_o,
+        token_l,
+        token_i,
+        token_c,
+        token_us,
+        token_n,
+        token_a,
+        token_m,
+        token_e,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_b,
+        token_d_quote,
+        token_comma,
+        token_d_quote,
+        token_b,
+        token_u,
+        token_n,
+        token_d,
+        token_l,
+        token_e,
+        token_us,
+        token_v,
+        token_e,
+        token_r,
+        token_s,
+        token_i,
+        token_o,
+        token_n,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_b,
+        token_d_quote,
+        token_comma,
+        token_d_quote,
+        token_f,
+        token_e,
+        token_a,
+        token_t,
+        token_u,
+        token_r,
+        token_e,
+        token_us,
+        token_n,
+        token_a,
+        token_m,
+        token_e,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_b,
+        token_d_quote,
+        token_comma,
+        token_d_quote,
+        token_f,
+        token_e,
+        token_a,
+        token_t,
+        token_u,
+        token_r,
+        token_e,
+        token_us,
+        token_s,
+        token_y,
+        token_m,
+        token_b,
+        token_o,
+        token_l,
+        token_i,
+        token_c,
+        token_us,
+        token_n,
+        token_a,
+        token_m,
+        token_e,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_b,
+        token_d_quote,
+        token_comma,
+        token_d_quote,
+        token_f,
+        token_e,
+        token_a,
+        token_t,
+        token_u,
+        token_r,
+        token_e,
+        token_us,
+        token_v,
+        token_e,
+        token_r,
+        token_s,
+        token_i,
+        token_o,
+        token_n,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_b,
+        token_d_quote,
+        token_comma,
+        token_d_quote,
+        token_p,
+        token_o,
+        token_r,
+        token_t,
+        token_us,
+        token_c,
+        token_o,
+        token_u,
+        token_n,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_comma,
+        token_d_quote,
+        token_m,
+        token_o,
+        token_d,
+        token_e,
+        token_l,
+        token_d_quote,
+        token_colon,
+        token_l_bracket,
+        token_r_bracket,
         token_r_paren,
     ]
     ctx.json.return_value.children = children
@@ -47,11 +264,19 @@ def test_exitNode_settings(mocker):
 
     listener.exitNode_settings(ctx)
 
-    expected_node = {
-        "id": 42,
-        "filename": "b (#42)/settings.xml",
-        "settings": {"name": "b"},
-    }
+    expected_node = kdlc.Node(
+        id=42,
+        name="b",
+        factory="b",
+        bundle_name="b",
+        bundle_symbolic_name="b",
+        bundle_version="b",
+        feature_name="b",
+        feature_symbolic_name="b",
+        feature_version="b",
+    )
+    expected_node.port_count = 1
+    expected_node.model = list()
 
     assert len(listener.nodes) == 1
     assert listener.nodes[0] == expected_node
@@ -90,13 +315,9 @@ def test_exitConnection(mocker):
 
     listener.exitConnection(ctx)
 
-    expected_connection = {
-        "id": 0,
-        "source_id": "1",
-        "dest_id": "3",
-        "source_port": "2",
-        "dest_port": "4",
-    }
+    expected_connection = kdlc.Connection(
+        id=0, source_id="1", dest_id="3", source_port="2", dest_port="4"
+    )
 
     assert len(listener.connections) == 1
     assert listener.connections[0] == expected_connection
@@ -125,13 +346,9 @@ def test_exitConnection_var(mocker):
 
     listener.exitConnection(ctx)
 
-    expected_connection = {
-        "id": 0,
-        "source_id": "1",
-        "dest_id": "3",
-        "source_port": "0",
-        "dest_port": "0",
-    }
+    expected_connection = kdlc.Connection(
+        id=0, source_id="1", dest_id="3", source_port="0", dest_port="0"
+    )
 
     assert len(listener.connections) == 1
     assert listener.connections[0] == expected_connection

@@ -7,8 +7,8 @@ from kdlc.KDLLoader import KDLLoader
 
 
 def kdl_to_workflow(input_file, output_file):
-    input = FileStream(input_file)
-    lexer = KDLLexer(input)
+    input_stream = FileStream(input_file)
+    lexer = KDLLexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = KDLParser(stream)
 
@@ -46,6 +46,7 @@ def workflow_to_kdl_custom_template(input_file, output_file, nodes):
 def workflow_to_kdl(input_file, output_file):
     # Extract workflow
     input_workflow_name = kdlc.unzip_workflow(input_file)
+
     input_workflow_path = f"{kdlc.INPUT_PATH}/{input_workflow_name}"
 
     # Parse connections from workflow.knime
@@ -55,14 +56,17 @@ def workflow_to_kdl(input_file, output_file):
     # print(input_connection_list)
 
     # Parse nodes from workflow.knime
-    input_node_list = kdlc.extract_nodes(f"{input_workflow_path}/workflow.knime")
+    node_filename_list = kdlc.extract_node_filenames(
+        f"{input_workflow_path}/workflow.knime"
+    )
     # print(input_node_list)
 
     # Parse settings.xml for each node in workflow.knime and add to node
-    for node in input_node_list:
-        infile = f'{input_workflow_path}/{node["filename"]}'
-        node["settings"] = kdlc.extract_from_input_xml(infile)
-        # print(node)
+    input_node_list = list()
+    for curr in node_filename_list:
+        infile = f'{input_workflow_path}/{curr["filename"]}'
+        node = kdlc.extract_from_input_xml(curr["id"], infile)
+        input_node_list.append(node)
     # print(input_node_list)
 
     kdlc.save_output_kdl_workflow(output_file, input_connection_list, input_node_list)
@@ -104,7 +108,9 @@ def build_knwf(nodes, connections, output_filename):
         #     kdlc.cleanup()
         #     sys.exit(1)
         tree = kdlc.create_node_settings_from_template(node)
-        kdlc.save_node_settings_xml(tree, f'{output_workflow_path}/{node["filename"]}')
+        kdlc.save_node_settings_xml(
+            tree, f"{output_workflow_path}/{node.get_filename()}"
+        )
 
     # Zip output workflow into .knwf archive
     kdlc.create_output_workflow(output_wf_name)

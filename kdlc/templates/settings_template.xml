@@ -6,7 +6,7 @@
 <entry key="memory_policy" type="xstring" value="CacheSmallInMemory"/>
 </config>
 <config key="model">
-    {% for item in model recursive %}
+    {% for item in node.model recursive %}
     {% if item.data_type=="config" %}
         {% set config_items = {} %}
         {% for key, value in item.items() %}
@@ -40,9 +40,9 @@
     {% endif %}
     {% endfor %}
 </config>
-{% if variables %}
+{% if node.variables %}
 <config key="variables">
-    {% for item in variables recursive %}
+    {% for item in node.variables recursive %}
     {% if item.data_type=="config" %}
         {% set config_items = {} %}
         {% for key, value in item.items() %}
@@ -78,22 +78,22 @@
 {% endif %}
 <entry key="customDescription" type="xstring" isnull="true" value=""/>
 <entry key="state" type="xstring" value="CONFIGURED"/>
-<entry key="factory" type="xstring" value="{{ node.settings.factory }}"/>
-<entry key="node-name" type="xstring" value="{{ node.settings.name }}"/>
-<entry key="node-bundle-name" type="xstring" value="{{ node.settings.bundle_name }}"/>
-<entry key="node-bundle-symbolic-name" type="xstring" value="{{ node.settings.bundle_symbolic_name }}"/>
+<entry key="factory" type="xstring" value="{{ node.factory }}"/>
+<entry key="node-name" type="xstring" value="{{ node.name }}"/>
+<entry key="node-bundle-name" type="xstring" value="{{ node.bundle_name }}"/>
+<entry key="node-bundle-symbolic-name" type="xstring" value="{{ node.bundle_symbolic_name }}"/>
 <entry key="node-bundle-vendor" type="xstring" value="KNIME AG, Zurich, Switzerland"/>
-<entry key="node-bundle-version" type="xstring" value="{{ node.settings.bundle_version }}"/>
-<entry key="node-feature-name" type="xstring" value="{{ node.settings.feature_name }}"/>
-<entry key="node-feature-symbolic-name" type="xstring" value="{{ node.settings.feature_symbolic_name }}"/>
+<entry key="node-bundle-version" type="xstring" value="{{ node.bundle_version }}"/>
+<entry key="node-feature-name" type="xstring" value="{{ node.feature_name }}"/>
+<entry key="node-feature-symbolic-name" type="xstring" value="{{ node.feature_symbolic_name }}"/>
 <entry key="node-feature-vendor" type="xstring" value="KNIME AG, Zurich, Switzerland"/>
-<entry key="node-feature-version" type="xstring" value="{{ node.settings.feature_version }}"/>
+<entry key="node-feature-version" type="xstring" value="{{ node.feature_version }}"/>
 <config key="factory_settings"/>
-<entry key="name" type="xstring" value="{{ node.settings.name }}"/>
+<entry key="name" type="xstring" value="{{ node.name }}"/>
 <entry key="hasContent" type="xboolean" value="true"/>
 <entry key="isInactive" type="xboolean" value="false"/>
 <config key="ports">
-    {% for n in range(node.settings.port_count) %}
+    {% for n in range(node.port_count) %}
     <config key="port_{{n + 1}}">
         <entry key="index" type="xint" value="{{n + 1}}"/>
         <entry key="port_dir_location" type="xstring" isnull="true" value=""/>

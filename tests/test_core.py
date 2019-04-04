@@ -16,243 +16,60 @@ def test_unzip_workflow(my_setup):
 
 
 def test_extract_from_input_xml_csv(my_setup):
-    result = {
-        "name": "CSV Reader",
-        "factory": "org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
-        "bundle_name": "KNIME Base Nodes",
-        "bundle_symbolic_name": "org.knime.base",
-        "bundle_version": "3.7.1.v201901291053",
-        "feature_name": "KNIME Core",
-        "feature_symbolic_name": "org.knime.features.base.feature.group",
-        "feature_version": "3.7.1.v201901291053",
-        "port_count": 1,
-        "model": [
-            {
-                "url": (
-                    "/Users/jared/knime-workspace/Example Workflows/"
-                    "TheData/Misc/Demographics.csv"
-                )
-            },
-            {"colDelimiter": ","},
-            {"rowDelimiter": "%%00010"},
-            {"quote": '"'},
-            {"commentStart": "#"},
-            {"hasRowHeader": True},
-            {"hasColHeader": True},
-            {"supportShortLines": False},
-            {"limitRowsCount": -1, "data_type": "xlong"},
-            {"skipFirstLinesCount": -1},
-            {"characterSetName": "", "isnull": True},
-            {"limitAnalysisCount": -1},
-        ],
-    }
+    result = kdlc.Node(
+        id=1,
+        name="CSV Reader",
+        factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    result.port_count = 1
+    result.model = [
+        {
+            "url": (
+                "/Users/jared/knime-workspace/Example Workflows/"
+                "TheData/Misc/Demographics.csv"
+            )
+        },
+        {"colDelimiter": ","},
+        {"rowDelimiter": "%%00010"},
+        {"quote": '"'},
+        {"commentStart": "#"},
+        {"hasRowHeader": True},
+        {"hasColHeader": True},
+        {"supportShortLines": False},
+        {"limitRowsCount": -1, "data_type": "xlong"},
+        {"skipFirstLinesCount": -1},
+        {"characterSetName": "", "isnull": True},
+        {"limitAnalysisCount": -1},
+    ]
+
     assert (
-        kdlc.extract_from_input_xml(f"{test_resources_dir}/csv_settings.xml") == result
+        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/csv_settings.xml")
+        == result
     )
 
 
 def test_extract_from_input_xml_cf(my_setup):
-    result = {
-        "name": "Column Filter",
-        "factory": (
-            "org.knime.base.node.preproc.filter.column.DataColumnSpecFilterNodeFactory"
-        ),
-        "bundle_name": "KNIME Base Nodes",
-        "bundle_symbolic_name": "org.knime.base",
-        "bundle_version": "3.7.1.v201901291053",
-        "feature_name": "KNIME Core",
-        "feature_symbolic_name": "org.knime.features.base.feature.group",
-        "feature_version": "3.7.1.v201901291053",
-        "port_count": 1,
-        "model": [
-            {
-                "column-filter": [
-                    {"filter-type": "STANDARD"},
-                    {
-                        "included_names": [
-                            {"array-size": 11},
-                            {"0": "MaritalStatus"},
-                            {"1": "Gender"},
-                            {"2": "EstimatedYearlyIncome"},
-                            {"3": "SentimentRating"},
-                            {"4": "WebActivity"},
-                            {"5": "Age"},
-                            {"6": "Target"},
-                            {"7": "Available401K"},
-                            {"8": "CustomerValueSegment"},
-                            {"9": "ChurnScore"},
-                            {"10": "CallActivity"},
-                        ]
-                    },
-                    {"excluded_names": [{"array-size": 1}, {"0": "NumberOfContracts"}]},
-                    {"enforce_option": "EnforceExclusion"},
-                    {
-                        "name_pattern": [
-                            {"pattern": ""},
-                            {"type": "Wildcard"},
-                            {"caseSensitive": True},
-                        ]
-                    },
-                    {
-                        "datatype": [
-                            {
-                                "typelist": [
-                                    {"org.knime.core.data.StringValue": False},
-                                    {"org.knime.core.data.IntValue": False},
-                                    {"org.knime.core.data.DoubleValue": False},
-                                    {"org.knime.core.data.BooleanValue": False},
-                                    {"org.knime.core.data.LongValue": False},
-                                    {
-                                        (
-                                            "org.knime.core.data."
-                                            "date.DateAndTimeValue"
-                                        ): False
-                                    },
-                                ]
-                            }
-                        ]
-                    },
-                ]
-            }
-        ],
-    }
-    assert (
-        kdlc.extract_from_input_xml(f"{test_resources_dir}/cf_settings.xml") == result
+    result = kdlc.Node(
+        id=1,
+        name="Column Filter",
+        factory="org.knime.base.node.preproc.filter.column.DataColumnSpecFilterNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
     )
-
-
-def test_extract_from_input_xml_csv_var(my_setup):
-    res = {
-        "name": "CSV Reader",
-        "factory": "org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
-        "bundle_name": "KNIME Base Nodes",
-        "bundle_symbolic_name": "org.knime.base",
-        "bundle_version": "3.7.1.v201901291053",
-        "feature_name": "KNIME Core",
-        "feature_symbolic_name": "org.knime.features.base.feature.group",
-        "feature_version": "3.7.1.v201901291053",
-        "port_count": 1,
-        "model": [
-            {
-                "url": "/Users/jared/knime-workspace/Example "
-                "Workflows/TheData/Misc/Demographics.csv",
-                "used_variable": "TEST",
-                "exposed_variable": "TEST2",
-            },
-            {"colDelimiter": ","},
-            {"rowDelimiter": "%%00010"},
-            {"quote": '"'},
-            {"commentStart": "#"},
-            {"hasRowHeader": True},
-            {"hasColHeader": True},
-            {"supportShortLines": False},
-            {"limitRowsCount": -1, "data_type": "xlong"},
-            {"skipFirstLinesCount": -1},
-            {"characterSetName": "", "isnull": True},
-            {"limitAnalysisCount": -1},
-        ],
-    }
-
-    assert (
-        kdlc.extract_from_input_xml(f"{test_resources_dir}/csv_settings_var.xml") == res
-    )
-
-
-def test_extract_from_input_xml_ttj_var(my_setup):
-    res = {
-        "name": "Table to JSON",
-        "factory": "org.knime.json.node.fromtable.TableToJsonNodeFactory",
-        "bundle_name": "JSON related functionality for KNIME",
-        "bundle_symbolic_name": "org.knime.json",
-        "bundle_version": "3.7.1.v201901281201",
-        "feature_name": "KNIME JSON-Processing",
-        "feature_symbolic_name": "org.knime.features.json.feature.group",
-        "feature_version": "3.7.1.v201901281201",
-        "port_count": 1,
-        "model": [
-            {
-                "selectedColumns": [
-                    {"filter-type": "STANDARD"},
-                    {
-                        "included_names": [
-                            {"array-size": 11},
-                            {
-                                "0": "MaritalStatus",
-                                "used_variable": "TEST",
-                                "exposed_variable": "TEST2",
-                            },
-                            {"1": "Gender"},
-                            {"2": "EstimatedYearlyIncome"},
-                            {"3": "SentimentRating"},
-                            {"4": "WebActivity"},
-                            {"5": "Age"},
-                            {"6": "Target"},
-                            {"7": "Available401K"},
-                            {"8": "CustomerValueSegment"},
-                            {"9": "ChurnScore"},
-                            {"10": "CallActivity"},
-                        ]
-                    },
-                    {"excluded_names": [{"array-size": 0}]},
-                    {"enforce_option": "EnforceExclusion"},
-                    {
-                        "name_pattern": [
-                            {"pattern": ""},
-                            {"type": "Wildcard"},
-                            {"caseSensitive": True},
-                        ]
-                    },
-                    {
-                        "datatype": [
-                            {
-                                "typelist": [
-                                    {"org.knime.core.data.StringValue": False},
-                                    {"org.knime.core.data.IntValue": False},
-                                    {"org.knime.core.data.DoubleValue": False},
-                                    {"org.knime.core.data.BooleanValue": False},
-                                    {"org.knime.core.data.LongValue": False},
-                                    {
-                                        (
-                                            "org.knime.core.data"
-                                            ".date.DateAndTimeValue"
-                                        ): False
-                                    },
-                                ]
-                            }
-                        ]
-                    },
-                ]
-            },
-            {"rowkey.key": "key"},
-            {"direction": "KeepRows"},
-            {"column.name.separator": "."},
-            {"output.column.name": "JSON"},
-            {"row.key.option": "omit"},
-            {"column.names.as.path": False},
-            {"remove.source.columns": False},
-            {"output.boolean.asNumbers": False},
-            {"missing.values.are.omitted": True},
-        ],
-    }
-    assert (
-        kdlc.extract_from_input_xml(f"{test_resources_dir}/ttj_settings_var.xml") == res
-    )
-
-
-def test_extract_from_input_xml_fail(my_setup):
-    with pytest.raises(Exception):
-        kdlc.extract_from_input_xml(f"{test_resources_dir}/fail_settings.xml")
-
-
-def test_extract_from_input_xml_fail_var(my_setup):
-    with pytest.raises(Exception):
-        kdlc.extract_from_input_xml(f"{test_resources_dir}/fail_var_settings.xml")
-
-
-def test_merge_model_and_variables_1var(my_setup):
-    model = [
+    result.port_count = 1
+    result.model = [
         {
-            "selectedColumns": [
+            "column-filter": [
                 {"filter-type": "STANDARD"},
                 {
                     "included_names": [
@@ -270,7 +87,7 @@ def test_merge_model_and_variables_1var(my_setup):
                         {"10": "CallActivity"},
                     ]
                 },
-                {"excluded_names": [{"array-size": 0}]},
+                {"excluded_names": [{"array-size": 1}, {"0": "NumberOfContracts"}]},
                 {"enforce_option": "EnforceExclusion"},
                 {
                     "name_pattern": [
@@ -288,102 +105,79 @@ def test_merge_model_and_variables_1var(my_setup):
                                 {"org.knime.core.data.DoubleValue": False},
                                 {"org.knime.core.data.BooleanValue": False},
                                 {"org.knime.core.data.LongValue": False},
-                                {"org.knime.core.data.date.DateAndTimeValue": False},
+                                {
+                                    (
+                                        "org.knime.core.data." "date.DateAndTimeValue"
+                                    ): False
+                                },
                             ]
                         }
                     ]
                 },
-            ]
-        },
-        {"rowkey.key": "key"},
-        {"direction": "KeepRows"},
-        {"column.name.separator": "."},
-        {"output.column.name": "JSON"},
-        {"row.key.option": "omit"},
-        {"column.names.as.path": False},
-        {"remove.source.columns": False},
-        {"output.boolean.asNumbers": False},
-        {"missing.values.are.omitted": True},
-    ]
-
-    variables = [
-        {
-            "selectedColumns": [
-                {
-                    "included_names": [
-                        {
-                            "0": [
-                                {"used_variable": "TEST"},
-                                {"exposed_variable": "", "isnull": "true"},
-                            ]
-                        }
-                    ]
-                }
             ]
         }
     ]
 
-    result = [
+    assert (
+        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/cf_settings.xml")
+        == result
+    )
+
+
+def test_extract_from_input_xml_csv_var(my_setup):
+    res = kdlc.Node(
+        id=1,
+        name="CSV Reader",
+        factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    res.port_count = 1
+    res.model = [
         {
-            "selectedColumns": [
-                {"filter-type": "STANDARD"},
-                {
-                    "included_names": [
-                        {"array-size": 11},
-                        {"0": "MaritalStatus", "used_variable": "TEST"},
-                        {"1": "Gender"},
-                        {"2": "EstimatedYearlyIncome"},
-                        {"3": "SentimentRating"},
-                        {"4": "WebActivity"},
-                        {"5": "Age"},
-                        {"6": "Target"},
-                        {"7": "Available401K"},
-                        {"8": "CustomerValueSegment"},
-                        {"9": "ChurnScore"},
-                        {"10": "CallActivity"},
-                    ]
-                },
-                {"excluded_names": [{"array-size": 0}]},
-                {"enforce_option": "EnforceExclusion"},
-                {
-                    "name_pattern": [
-                        {"pattern": ""},
-                        {"type": "Wildcard"},
-                        {"caseSensitive": True},
-                    ]
-                },
-                {
-                    "datatype": [
-                        {
-                            "typelist": [
-                                {"org.knime.core.data.StringValue": False},
-                                {"org.knime.core.data.IntValue": False},
-                                {"org.knime.core.data.DoubleValue": False},
-                                {"org.knime.core.data.BooleanValue": False},
-                                {"org.knime.core.data.LongValue": False},
-                                {"org.knime.core.data.date.DateAndTimeValue": False},
-                            ]
-                        }
-                    ]
-                },
-            ]
+            "url": "/Users/jared/knime-workspace/Example "
+            "Workflows/TheData/Misc/Demographics.csv"
         },
-        {"rowkey.key": "key"},
-        {"direction": "KeepRows"},
-        {"column.name.separator": "."},
-        {"output.column.name": "JSON"},
-        {"row.key.option": "omit"},
-        {"column.names.as.path": False},
-        {"remove.source.columns": False},
-        {"output.boolean.asNumbers": False},
-        {"missing.values.are.omitted": True},
+        {"colDelimiter": ","},
+        {"rowDelimiter": "%%00010"},
+        {"quote": '"'},
+        {"commentStart": "#"},
+        {"hasRowHeader": True},
+        {"hasColHeader": True},
+        {"supportShortLines": False},
+        {"limitRowsCount": -1, "data_type": "xlong"},
+        {"skipFirstLinesCount": -1},
+        {"characterSetName": "", "isnull": True},
+        {"limitAnalysisCount": -1},
     ]
-    kdlc.merge_model_and_variables(model, variables)
-    assert result == model
+    res.variables = [
+        {"url": [{"used_variable": "TEST"}, {"exposed_variable": "TEST2"}]}
+    ]
+
+    assert (
+        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/csv_settings_var.xml")
+        == res
+    )
 
 
-def test_merge_model_and_variables_2var(my_setup):
-    model = [
+def test_extract_from_input_xml_ttj_var(my_setup):
+    res = kdlc.Node(
+        id=1,
+        name="Table to JSON",
+        factory="org.knime.json.node.fromtable.TableToJsonNodeFactory",
+        bundle_name="JSON related functionality for KNIME",
+        bundle_symbolic_name="org.knime.json",
+        bundle_version="3.7.1.v201901281201",
+        feature_name="KNIME JSON-Processing",
+        feature_symbolic_name="org.knime.features.json.feature.group",
+        feature_version="3.7.1.v201901281201",
+    )
+    res.port_count = 1
+    res.model = [
         {
             "selectedColumns": [
                 {"filter-type": "STANDARD"},
@@ -421,7 +215,11 @@ def test_merge_model_and_variables_2var(my_setup):
                                 {"org.knime.core.data.DoubleValue": False},
                                 {"org.knime.core.data.BooleanValue": False},
                                 {"org.knime.core.data.LongValue": False},
-                                {"org.knime.core.data.date.DateAndTimeValue": False},
+                                {
+                                    (
+                                        "org.knime.core.data" ".date.DateAndTimeValue"
+                                    ): False
+                                },
                             ]
                         }
                     ]
@@ -438,8 +236,7 @@ def test_merge_model_and_variables_2var(my_setup):
         {"output.boolean.asNumbers": False},
         {"missing.values.are.omitted": True},
     ]
-
-    variables = [
+    res.variables = [
         {
             "selectedColumns": [
                 {
@@ -455,68 +252,20 @@ def test_merge_model_and_variables_2var(my_setup):
             ]
         }
     ]
+    assert (
+        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/ttj_settings_var.xml")
+        == res
+    )
 
-    result = [
-        {
-            "selectedColumns": [
-                {"filter-type": "STANDARD"},
-                {
-                    "included_names": [
-                        {"array-size": 11},
-                        {
-                            "0": "MaritalStatus",
-                            "used_variable": "TEST",
-                            "exposed_variable": "TEST2",
-                        },
-                        {"1": "Gender"},
-                        {"2": "EstimatedYearlyIncome"},
-                        {"3": "SentimentRating"},
-                        {"4": "WebActivity"},
-                        {"5": "Age"},
-                        {"6": "Target"},
-                        {"7": "Available401K"},
-                        {"8": "CustomerValueSegment"},
-                        {"9": "ChurnScore"},
-                        {"10": "CallActivity"},
-                    ]
-                },
-                {"excluded_names": [{"array-size": 0}]},
-                {"enforce_option": "EnforceExclusion"},
-                {
-                    "name_pattern": [
-                        {"pattern": ""},
-                        {"type": "Wildcard"},
-                        {"caseSensitive": True},
-                    ]
-                },
-                {
-                    "datatype": [
-                        {
-                            "typelist": [
-                                {"org.knime.core.data.StringValue": False},
-                                {"org.knime.core.data.IntValue": False},
-                                {"org.knime.core.data.DoubleValue": False},
-                                {"org.knime.core.data.BooleanValue": False},
-                                {"org.knime.core.data.LongValue": False},
-                                {"org.knime.core.data.date.DateAndTimeValue": False},
-                            ]
-                        }
-                    ]
-                },
-            ]
-        },
-        {"rowkey.key": "key"},
-        {"direction": "KeepRows"},
-        {"column.name.separator": "."},
-        {"output.column.name": "JSON"},
-        {"row.key.option": "omit"},
-        {"column.names.as.path": False},
-        {"remove.source.columns": False},
-        {"output.boolean.asNumbers": False},
-        {"missing.values.are.omitted": True},
-    ]
-    kdlc.merge_model_and_variables(model, variables)
-    assert result == model
+
+def test_extract_from_input_xml_fail(my_setup):
+    with pytest.raises(Exception):
+        kdlc.extract_from_input_xml(f"{test_resources_dir}/fail_settings.xml")
+
+
+def test_extract_from_input_xml_fail_var(my_setup):
+    with pytest.raises(Exception):
+        kdlc.extract_from_input_xml(f"{test_resources_dir}/fail_var_settings.xml")
 
 
 def test_extract_entry_tag_string(my_setup):
@@ -640,103 +389,58 @@ def test_extract_config_tag_fail(my_setup):
         kdlc.extract_config_tag(tree)
 
 
-def test_extract_nodes(my_setup):
+def test_extract_node_filenames(my_setup):
     result = [
         {"id": "1", "filename": "CSV Reader (#1)/settings.xml"},
         {"id": "2", "filename": "Table to JSON (#2)/settings.xml"},
         {"id": "3", "filename": "Column Filter (#3)/settings.xml"},
     ]
-    assert kdlc.extract_nodes(f"{test_resources_dir}/workflow.knime") == result
+    assert kdlc.extract_node_filenames(f"{test_resources_dir}/workflow.knime") == result
 
 
 def test_extract_connections(my_setup):
-    result = [
-        {
-            "id": 0,
-            "source_id": "1",
-            "dest_id": "3",
-            "source_port": "1",
-            "dest_port": "1",
-        },
-        {
-            "id": 1,
-            "source_id": "3",
-            "dest_id": "2",
-            "source_port": "1",
-            "dest_port": "1",
-        },
-    ]
+    connection1 = kdlc.Connection(
+        id=0, source_id="1", dest_id="3", source_port="1", dest_port="1"
+    )
+    connection2 = kdlc.Connection(
+        id=1, source_id="3", dest_id="2", source_port="1", dest_port="1"
+    )
+    result = [connection1, connection2]
     assert kdlc.extract_connections(f"{test_resources_dir}/workflow.knime") == result
 
 
-def test_validate_node_from_schema(my_setup):
-    node = {
-        "settings": {
-            "name": "CSV Reader",
-            "factory": "org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
-            "bundle_name": "KNIME Base Nodes",
-            "bundle_symbolic_name": "org.knime.base",
-            "bundle_version": "3.7.1.v201901291053",
-            "feature_name": "KNIME Core",
-            "feature_symbolic_name": "org.knime.features.base.feature.group",
-            "feature_version": "3.7.1.v201901291053",
-            "model": [
-                {
-                    "url": (
-                        "/Users/jared/knime-workspace/Example Workflows/"
-                        "TheData/Misc/Demographics.csv"
-                    )
-                },
-                {"colDelimiter": ","},
-                {"rowDelimiter": "%%00010"},
-                {"quote": '"'},
-                {"commentStart": "#"},
-                {"hasRowHeader": True},
-                {"hasColHeader": True},
-                {"supportShortLines": False},
-                {"limitRowsCount": -1, "data_type": "xlong"},
-                {"skipFirstLinesCount": -1},
-                {"characterSetName": "", "isnull": True},
-                {"limitAnalysisCount": -1},
-            ],
-        }
-    }
-    kdlc.validate_node_from_schema(node)
-
-
 def test_create_node_settings_from_template_csv(my_setup):
-    node = {
-        "settings": {
-            "name": "CSV Reader",
-            "factory": "org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
-            "bundle_name": "KNIME Base Nodes",
-            "bundle_symbolic_name": "org.knime.base",
-            "bundle_version": "3.7.1.v201901291053",
-            "feature_name": "KNIME Core",
-            "feature_symbolic_name": "org.knime.features.base.feature.group",
-            "feature_version": "3.7.1.v201901291053",
-            "port_count": 1,
-            "model": [
-                {
-                    "url": (
-                        "/Users/jared/knime-workspace/Example Workflows/"
-                        "TheData/Misc/Demographics.csv"
-                    )
-                },
-                {"colDelimiter": ","},
-                {"rowDelimiter": "%%00010"},
-                {"quote": '"'},
-                {"commentStart": "#"},
-                {"hasRowHeader": True},
-                {"hasColHeader": True},
-                {"supportShortLines": False},
-                {"limitRowsCount": -1, "data_type": "xlong"},
-                {"skipFirstLinesCount": -1},
-                {"characterSetName": "", "isnull": True},
-                {"limitAnalysisCount": -1},
-            ],
-        }
-    }
+    node = kdlc.Node(
+        id=1,
+        name="CSV Reader",
+        factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node.port_count = 1
+    node.model = [
+        {
+            "url": (
+                "/Users/jared/knime-workspace/Example Workflows/"
+                "TheData/Misc/Demographics.csv"
+            )
+        },
+        {"colDelimiter": ","},
+        {"rowDelimiter": "%%00010"},
+        {"quote": '"'},
+        {"commentStart": "#"},
+        {"hasRowHeader": True},
+        {"hasColHeader": True},
+        {"supportShortLines": False},
+        {"limitRowsCount": -1, "data_type": "xlong"},
+        {"skipFirstLinesCount": -1},
+        {"characterSetName": "", "isnull": True},
+        {"limitAnalysisCount": -1},
+    ]
     expected_result = ET.parse(f"{test_resources_dir}/csv_settings.xml")
     expected_result_flattened = [i.tag for i in expected_result.iter()]
 
@@ -746,508 +450,70 @@ def test_create_node_settings_from_template_csv(my_setup):
     assert result_flattened == expected_result_flattened
 
 
-def test_extract_variables_from_model_used_exposed(my_setup):
-    model = [
-        {
-            "selectedColumns": [
-                {"filter-type": "STANDARD", "data_type": "xstring"},
-                {
-                    "included_names": [
-                        {"array-size": "11", "data_type": "xint"},
-                        {
-                            "0": "MaritalStatus",
-                            "used_variable": "TEST",
-                            "exposed_variable": "TEST2",
-                            "data_type": "xstring",
-                        },
-                        {"1": "Gender", "data_type": "xstring"},
-                        {"2": "EstimatedYearlyIncome", "data_type": "xstring"},
-                        {"3": "SentimentRating", "data_type": "xstring"},
-                        {"4": "WebActivity", "data_type": "xstring"},
-                        {"5": "Age", "data_type": "xstring"},
-                        {"6": "Target", "data_type": "xstring"},
-                        {"7": "Available401K", "data_type": "xstring"},
-                        {"8": "CustomerValueSegment", "data_type": "xstring"},
-                        {"9": "ChurnScore", "data_type": "xstring"},
-                        {"10": "CallActivity", "data_type": "xstring"},
-                    ],
-                    "data_type": "config",
-                },
-                {
-                    "excluded_names": [{"array-size": "0", "data_type": "xint"}],
-                    "data_type": "config",
-                },
-                {"enforce_option": "EnforceExclusion", "data_type": "xstring"},
-                {
-                    "name_pattern": [
-                        {"pattern": "", "data_type": "xstring"},
-                        {"type": "Wildcard", "data_type": "xstring"},
-                        {"caseSensitive": "true", "data_type": "xboolean"},
-                    ],
-                    "data_type": "config",
-                },
-                {
-                    "datatype": [
-                        {
-                            "typelist": [
-                                {
-                                    "org.knime.core.data.StringValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.IntValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.DoubleValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.BooleanValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.LongValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.date."
-                                    "DateAndTimeValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                            ],
-                            "data_type": "config",
-                        }
-                    ],
-                    "data_type": "config",
-                },
-            ],
-            "data_type": "config",
-        },
-        {"rowkey.key": "key", "data_type": "xstring"},
-        {"direction": "KeepRows", "data_type": "xstring"},
-        {"column.name.separator": ".", "data_type": "xstring"},
-        {"output.column.name": "JSON", "data_type": "xstring"},
-        {"row.key.option": "omit", "data_type": "xstring"},
-        {"column.names.as.path": "false", "data_type": "xboolean"},
-        {"remove.source.columns": "false", "data_type": "xboolean"},
-        {"output.boolean.asNumbers": "false", "data_type": "xboolean"},
-        {"missing.values.are.omitted": "true", "data_type": "xboolean"},
-    ]
-
-    res = [
-        {
-            "selectedColumns": [
-                {
-                    "included_names": [
-                        {
-                            "0": [
-                                {"used_variable": "TEST", "data_type": "xstring"},
-                                {"exposed_variable": "TEST2", "data_type": "xstring"},
-                            ],
-                            "data_type": "config",
-                        }
-                    ],
-                    "data_type": "config",
-                }
-            ],
-            "data_type": "config",
-        }
-    ]
-
-    assert kdlc.extract_variables_from_model(model) == res
-
-
-def test_extract_variables_from_model_used(my_setup):
-    model = [
-        {
-            "selectedColumns": [
-                {"filter-type": "STANDARD", "data_type": "xstring"},
-                {
-                    "included_names": [
-                        {"array-size": "11", "data_type": "xint"},
-                        {
-                            "0": "MaritalStatus",
-                            "used_variable": "TEST",
-                            "data_type": "xstring",
-                        },
-                        {"1": "Gender", "data_type": "xstring"},
-                        {"2": "EstimatedYearlyIncome", "data_type": "xstring"},
-                        {"3": "SentimentRating", "data_type": "xstring"},
-                        {"4": "WebActivity", "data_type": "xstring"},
-                        {"5": "Age", "data_type": "xstring"},
-                        {"6": "Target", "data_type": "xstring"},
-                        {"7": "Available401K", "data_type": "xstring"},
-                        {"8": "CustomerValueSegment", "data_type": "xstring"},
-                        {"9": "ChurnScore", "data_type": "xstring"},
-                        {"10": "CallActivity", "data_type": "xstring"},
-                    ],
-                    "data_type": "config",
-                },
-                {
-                    "excluded_names": [{"array-size": "0", "data_type": "xint"}],
-                    "data_type": "config",
-                },
-                {"enforce_option": "EnforceExclusion", "data_type": "xstring"},
-                {
-                    "name_pattern": [
-                        {"pattern": "", "data_type": "xstring"},
-                        {"type": "Wildcard", "data_type": "xstring"},
-                        {"caseSensitive": "true", "data_type": "xboolean"},
-                    ],
-                    "data_type": "config",
-                },
-                {
-                    "datatype": [
-                        {
-                            "typelist": [
-                                {
-                                    "org.knime.core.data.StringValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.IntValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.DoubleValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.BooleanValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.LongValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.date."
-                                    "DateAndTimeValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                            ],
-                            "data_type": "config",
-                        }
-                    ],
-                    "data_type": "config",
-                },
-            ],
-            "data_type": "config",
-        },
-        {"rowkey.key": "key", "data_type": "xstring"},
-        {"direction": "KeepRows", "data_type": "xstring"},
-        {"column.name.separator": ".", "data_type": "xstring"},
-        {"output.column.name": "JSON", "data_type": "xstring"},
-        {"row.key.option": "omit", "data_type": "xstring"},
-        {"column.names.as.path": "false", "data_type": "xboolean"},
-        {"remove.source.columns": "false", "data_type": "xboolean"},
-        {"output.boolean.asNumbers": "false", "data_type": "xboolean"},
-        {"missing.values.are.omitted": "true", "data_type": "xboolean"},
-    ]
-
-    res = [
-        {
-            "selectedColumns": [
-                {
-                    "included_names": [
-                        {
-                            "0": [
-                                {"used_variable": "TEST", "data_type": "xstring"},
-                                {
-                                    "exposed_variable": "",
-                                    "data_type": "xstring",
-                                    "isnull": True,
-                                },
-                            ],
-                            "data_type": "config",
-                        }
-                    ],
-                    "data_type": "config",
-                }
-            ],
-            "data_type": "config",
-        }
-    ]
-
-    assert kdlc.extract_variables_from_model(model) == res
-
-
-def test_extract_variables_from_model_exposed(my_setup):
-    model = [
-        {
-            "selectedColumns": [
-                {"filter-type": "STANDARD", "data_type": "xstring"},
-                {
-                    "included_names": [
-                        {"array-size": "11", "data_type": "xint"},
-                        {
-                            "0": "MaritalStatus",
-                            "exposed_variable": "TEST2",
-                            "data_type": "xstring",
-                        },
-                        {"1": "Gender", "data_type": "xstring"},
-                        {"2": "EstimatedYearlyIncome", "data_type": "xstring"},
-                        {"3": "SentimentRating", "data_type": "xstring"},
-                        {"4": "WebActivity", "data_type": "xstring"},
-                        {"5": "Age", "data_type": "xstring"},
-                        {"6": "Target", "data_type": "xstring"},
-                        {"7": "Available401K", "data_type": "xstring"},
-                        {"8": "CustomerValueSegment", "data_type": "xstring"},
-                        {"9": "ChurnScore", "data_type": "xstring"},
-                        {"10": "CallActivity", "data_type": "xstring"},
-                    ],
-                    "data_type": "config",
-                },
-                {
-                    "excluded_names": [{"array-size": "0", "data_type": "xint"}],
-                    "data_type": "config",
-                },
-                {"enforce_option": "EnforceExclusion", "data_type": "xstring"},
-                {
-                    "name_pattern": [
-                        {"pattern": "", "data_type": "xstring"},
-                        {"type": "Wildcard", "data_type": "xstring"},
-                        {"caseSensitive": "true", "data_type": "xboolean"},
-                    ],
-                    "data_type": "config",
-                },
-                {
-                    "datatype": [
-                        {
-                            "typelist": [
-                                {
-                                    "org.knime.core.data.StringValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.IntValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.DoubleValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.BooleanValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.LongValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.date."
-                                    "DateAndTimeValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                            ],
-                            "data_type": "config",
-                        }
-                    ],
-                    "data_type": "config",
-                },
-            ],
-            "data_type": "config",
-        },
-        {"rowkey.key": "key", "data_type": "xstring"},
-        {"direction": "KeepRows", "data_type": "xstring"},
-        {"column.name.separator": ".", "data_type": "xstring"},
-        {"output.column.name": "JSON", "data_type": "xstring"},
-        {"row.key.option": "omit", "data_type": "xstring"},
-        {"column.names.as.path": "false", "data_type": "xboolean"},
-        {"remove.source.columns": "false", "data_type": "xboolean"},
-        {"output.boolean.asNumbers": "false", "data_type": "xboolean"},
-        {"missing.values.are.omitted": "true", "data_type": "xboolean"},
-    ]
-
-    res = [
-        {
-            "selectedColumns": [
-                {
-                    "included_names": [
-                        {
-                            "0": [
-                                {
-                                    "used_variable": "",
-                                    "data_type": "xstring",
-                                    "isnull": True,
-                                },
-                                {"exposed_variable": "TEST2", "data_type": "xstring"},
-                            ],
-                            "data_type": "config",
-                        }
-                    ],
-                    "data_type": "config",
-                }
-            ],
-            "data_type": "config",
-        }
-    ]
-
-    assert kdlc.extract_variables_from_model(model) == res
-
-
-def test_extract_variables_from_model_none(my_setup):
-    model = [
-        {
-            "selectedColumns": [
-                {"filter-type": "STANDARD", "data_type": "xstring"},
-                {
-                    "included_names": [
-                        {"array-size": "11", "data_type": "xint"},
-                        {"0": "MaritalStatus", "data_type": "xstring"},
-                        {"1": "Gender", "data_type": "xstring"},
-                        {"2": "EstimatedYearlyIncome", "data_type": "xstring"},
-                        {"3": "SentimentRating", "data_type": "xstring"},
-                        {"4": "WebActivity", "data_type": "xstring"},
-                        {"5": "Age", "data_type": "xstring"},
-                        {"6": "Target", "data_type": "xstring"},
-                        {"7": "Available401K", "data_type": "xstring"},
-                        {"8": "CustomerValueSegment", "data_type": "xstring"},
-                        {"9": "ChurnScore", "data_type": "xstring"},
-                        {"10": "CallActivity", "data_type": "xstring"},
-                    ],
-                    "data_type": "config",
-                },
-                {
-                    "excluded_names": [{"array-size": "0", "data_type": "xint"}],
-                    "data_type": "config",
-                },
-                {"enforce_option": "EnforceExclusion", "data_type": "xstring"},
-                {
-                    "name_pattern": [
-                        {"pattern": "", "data_type": "xstring"},
-                        {"type": "Wildcard", "data_type": "xstring"},
-                        {"caseSensitive": "true", "data_type": "xboolean"},
-                    ],
-                    "data_type": "config",
-                },
-                {
-                    "datatype": [
-                        {
-                            "typelist": [
-                                {
-                                    "org.knime.core.data.StringValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.IntValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.DoubleValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.BooleanValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.LongValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                                {
-                                    "org.knime.core.data.date."
-                                    "DateAndTimeValue": "false",
-                                    "data_type": "xboolean",
-                                },
-                            ],
-                            "data_type": "config",
-                        }
-                    ],
-                    "data_type": "config",
-                },
-            ],
-            "data_type": "config",
-        },
-        {"rowkey.key": "key", "data_type": "xstring"},
-        {"direction": "KeepRows", "data_type": "xstring"},
-        {"column.name.separator": ".", "data_type": "xstring"},
-        {"output.column.name": "JSON", "data_type": "xstring"},
-        {"row.key.option": "omit", "data_type": "xstring"},
-        {"column.names.as.path": "false", "data_type": "xboolean"},
-        {"remove.source.columns": "false", "data_type": "xboolean"},
-        {"output.boolean.asNumbers": "false", "data_type": "xboolean"},
-        {"missing.values.are.omitted": "true", "data_type": "xboolean"},
-    ]
-
-    res = []
-
-    assert kdlc.extract_variables_from_model(model) == res
-
-
 def test_create_node_settings_from_template_cf(my_setup):
-    node = {
-        "settings": {
-            "name": "Column Filter",
-            "factory": (
-                "org.knime.base.node.preproc.filter."
-                "column.DataColumnSpecFilterNodeFactory"
-            ),
-            "bundle_name": "KNIME Base Nodes",
-            "bundle_symbolic_name": "org.knime.base",
-            "bundle_version": "3.7.1.v201901291053",
-            "feature_name": "KNIME Core",
-            "feature_symbolic_name": "org.knime.features.base.feature.group",
-            "feature_version": "3.7.1.v201901291053",
-            "port_count": 1,
-            "model": [
+    node = kdlc.Node(
+        id=1,
+        name="Column Filter",
+        factory="org.knime.base.node.preproc.filter.column.DataColumnSpecFilterNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node.port_count = 1
+    node.model = [
+        {
+            "column-filter": [
+                {"filter-type": "STANDARD"},
                 {
-                    "column-filter": [
-                        {"filter-type": "STANDARD"},
-                        {
-                            "included_names": [
-                                {"array-size": 11},
-                                {"0": "MaritalStatus"},
-                                {"1": "Gender"},
-                                {"2": "EstimatedYearlyIncome"},
-                                {"3": "SentimentRating"},
-                                {"4": "WebActivity"},
-                                {"5": "Age"},
-                                {"6": "Target"},
-                                {"7": "Available401K"},
-                                {"8": "CustomerValueSegment"},
-                                {"9": "ChurnScore"},
-                                {"10": "CallActivity"},
-                            ]
-                        },
-                        {
-                            "excluded_names": [
-                                {"array-size": 1},
-                                {"0": "NumberOfContracts"},
-                            ]
-                        },
-                        {"enforce_option": "EnforceExclusion"},
-                        {
-                            "name_pattern": [
-                                {"pattern": ""},
-                                {"type": "Wildcard"},
-                                {"caseSensitive": True},
-                            ]
-                        },
-                        {
-                            "datatype": [
-                                {
-                                    "typelist": [
-                                        {"org.knime.core.data.StringValue": False},
-                                        {"org.knime.core.data.IntValue": False},
-                                        {"org.knime.core.data.DoubleValue": False},
-                                        {"org.knime.core.data.BooleanValue": False},
-                                        {"org.knime.core.data.LongValue": False},
-                                        {
-                                            "org.knime.core.data."
-                                            "date.DateAndTimeValue": False
-                                        },
-                                    ]
-                                }
-                            ]
-                        },
+                    "included_names": [
+                        {"array-size": 11},
+                        {"0": "MaritalStatus"},
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
                     ]
-                }
-            ],
+                },
+                {"excluded_names": [{"array-size": 1}, {"0": "NumberOfContracts"}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {
+                                    (
+                                        "org.knime.core.data." "date.DateAndTimeValue"
+                                    ): False
+                                },
+                            ]
+                        }
+                    ]
+                },
+            ]
         }
-    }
+    ]
+
     expected_result = ET.parse(f"{test_resources_dir}/cf_settings.xml")
     expected_result_flattened = [i.tag for i in expected_result.iter()]
 
@@ -1258,11 +524,171 @@ def test_create_node_settings_from_template_cf(my_setup):
 
 
 def test_create_workflow_knime_from_template(my_setup):
-    node_list = [
-        {"id": "1", "filename": "CSV Reader (#1)/settings.xml"},
-        {"id": "2", "filename": "Table to JSON (#2)/settings.xml"},
-        {"id": "3", "filename": "Column Filter (#3)/settings.xml"},
+    node1 = kdlc.Node(
+        id=1,
+        name="CSV Reader",
+        factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node1.port_count = 1
+    node1.model = [
+        {
+            "url": (
+                "/Users/jared/knime-workspace/Example Workflows/"
+                "TheData/Misc/Demographics.csv"
+            )
+        },
+        {"colDelimiter": ","},
+        {"rowDelimiter": "%%00010"},
+        {"quote": '"'},
+        {"commentStart": "#"},
+        {"hasRowHeader": True},
+        {"hasColHeader": True},
+        {"supportShortLines": False},
+        {"limitRowsCount": -1, "data_type": "xlong"},
+        {"skipFirstLinesCount": -1},
+        {"characterSetName": "", "isnull": True},
+        {"limitAnalysisCount": -1},
     ]
+    node2 = kdlc.Node(
+        id=1,
+        name="Column Filter",
+        factory="org.knime.base.node.preproc.filter.column.DataColumnSpecFilterNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node2.port_count = 1
+    node2.model = [
+        {
+            "column-filter": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 11},
+                        {"0": "MaritalStatus"},
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 1}, {"0": "NumberOfContracts"}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {
+                                    (
+                                        "org.knime.core.data." "date.DateAndTimeValue"
+                                    ): False
+                                },
+                            ]
+                        }
+                    ]
+                },
+            ]
+        }
+    ]
+    node3 = kdlc.Node(
+        id=1,
+        name="Table to JSON",
+        factory="org.knime.json.node.fromtable.TableToJsonNodeFactory",
+        bundle_name="JSON related functionality for KNIME",
+        bundle_symbolic_name="org.knime.json",
+        bundle_version="3.7.1.v201901281201",
+        feature_name="KNIME JSON-Processing",
+        feature_symbolic_name="org.knime.features.json.feature.group",
+        feature_version="3.7.1.v201901281201",
+    )
+    node3.port_count = 1
+    node3.model = [
+        {
+            "selectedColumns": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 11},
+                        {"0": "MaritalStatus"},
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {
+                                    (
+                                        "org.knime.core.data" ".date.DateAndTimeValue"
+                                    ): False
+                                },
+                            ]
+                        }
+                    ]
+                },
+            ]
+        },
+        {"rowkey.key": "key"},
+        {"direction": "KeepRows"},
+        {"column.name.separator": "."},
+        {"output.column.name": "JSON"},
+        {"row.key.option": "omit"},
+        {"column.names.as.path": False},
+        {"remove.source.columns": False},
+        {"output.boolean.asNumbers": False},
+        {"missing.values.are.omitted": True},
+    ]
+    node_list = [node1, node2, node3]
     connection_list = [
         {
             "id": 0,

@@ -17,7 +17,7 @@
     {% for node in nodes %}
     <config key="node_{{node.id}}">
         <entry key="id" type="xint" value="{{node.id}}" />
-        <entry key="node_settings_file" type="xstring" value="{{node.filename}}" />
+        <entry key="node_settings_file" type="xstring" value="{{node.get_filename()}}" />
         <entry key="node_is_meta" type="xboolean" value="false" />
         <entry key="node_type" type="xstring" value="NativeNode" />
         <entry key="ui_classname" type="xstring" value="org.knime.core.node.workflow.NodeUIInformation" />
