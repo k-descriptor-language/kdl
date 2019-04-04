@@ -254,13 +254,13 @@ def test_extract_from_input_xml_ttj_var(my_setup):
 
 
 def test_extract_from_input_xml_fail(my_setup):
-    with pytest.raises(Exception):
-        kdlc.extract_from_input_xml(f"{test_resources_dir}/fail_settings.xml")
+    with pytest.raises(ValueError):
+        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/fail_settings.xml")
 
 
 def test_extract_from_input_xml_fail_var(my_setup):
-    with pytest.raises(Exception):
-        kdlc.extract_from_input_xml(f"{test_resources_dir}/fail_var_settings.xml")
+    with pytest.raises(ValueError):
+        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/fail_var_settings.xml")
 
 
 def test_extract_entry_tag_string(my_setup):
