@@ -268,6 +268,7 @@ def create_node_settings_from_template(node):
             set_config_element_type(value)
         else:
             set_entry_element_type(value)
+
     node.extract_variables_from_model()
     template_root = ET.fromstring(template.render(node=node))
     return ET.ElementTree(template_root)
