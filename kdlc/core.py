@@ -6,7 +6,7 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
 import json
 import textwrap
-from typing import List
+from typing import List, Any, Dict
 from kdlc.objects import Node, Connection
 
 jinja_env = Environment(
@@ -128,8 +128,7 @@ def extract_from_input_xml(node_id: str, input_file: str) -> Node:
     return node
 
 
-# TODO: introduce static typing here
-def extract_entry_tag(tree):
+def extract_entry_tag(tree: ET.Element) -> Dict[str, Any]:
     """
     Extracts the entry tag from the provided tree
 
@@ -139,37 +138,27 @@ def extract_entry_tag(tree):
     Returns:
         dict: Dict containing the entry tag definition
     """
+    entry: Dict[str, Any] = dict()
     if tree.attrib["type"] == "xstring":
-        entry = {tree.attrib["key"]: tree.attrib["value"]}
+        entry[tree.attrib["key"]] = tree.attrib["value"]
     elif tree.attrib["type"] == "xboolean":
         if tree.attrib["value"] == "true":
-            entry = {tree.attrib["key"]: True}
+            entry[tree.attrib["key"]] = True
         else:
-            entry = {tree.attrib["key"]: False}
+            entry[tree.attrib["key"]] = False
     elif tree.attrib["type"] == "xint":
-        entry = {tree.attrib["key"]: int(tree.attrib["value"])}
+        entry[tree.attrib["key"]] = int(tree.attrib["value"])
     elif tree.attrib["type"] in ["xlong", "xshort"]:
-        entry = {
-            tree.attrib["key"]: int(tree.attrib["value"]),
-            "data_type": tree.attrib["type"],
-        }
+        entry[tree.attrib["key"]] = int(tree.attrib["value"])
+        entry["data_type"] = tree.attrib["type"]
     elif tree.attrib["type"] == "xfloat":
-        entry = {tree.attrib["key"]: float(tree.attrib["value"])}
+        entry[tree.attrib["key"]] = float(tree.attrib["value"])
     elif tree.attrib["type"] == "xdouble":
-        entry = {
-            tree.attrib["key"]: float(tree.attrib["value"]),
-            "data_type": tree.attrib["type"],
-        }
-    elif tree.attrib["type"] in ["xchar", "xbyte"]:
-        entry = {
-            tree.attrib["key"]: tree.attrib["value"],
-            "data_type": tree.attrib["type"],
-        }
-    elif tree.attrib["type"] == "xpassword":
-        entry = {
-            tree.attrib["key"]: tree.attrib["value"],
-            "data_type": tree.attrib["type"],
-        }
+        entry[tree.attrib["key"]] = float(tree.attrib["value"])
+        entry["data_type"] = tree.attrib["type"]
+    elif tree.attrib["type"] in ["xchar", "xbyte", "xpassword"]:
+        entry[tree.attrib["key"]] = tree.attrib["value"]
+        entry["data_type"] = tree.attrib["type"]
     else:
         ex = ValueError("Invalid entry type")
         raise ex
