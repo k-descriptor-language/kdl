@@ -35,7 +35,7 @@ logger = logging.getLogger("kdlc.cli")
     help="The path to the custom node templates",
     type=click.Path(exists=True),
 )
-def prompt(input_file, output_file, modify_file, nodes):
+def prompt(input_file: str, output_file: str, modify_file: str, nodes: str) -> None:
     if modify_file and nodes:
         raise click.UsageError("nodes and modify options cannot be used simultaneously")
 

@@ -4,9 +4,11 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 from kdlc.parser.KDLLexer import KDLLexer
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.KDLLoader import KDLLoader
+from kdlc.objects import Node, Connection
+from typing import List
 
 
-def kdl_to_workflow(input_file, output_file):
+def kdl_to_workflow(input_file: str, output_file: str) -> None:
     input_stream = FileStream(input_file)
     lexer = KDLLexer(input_stream)
     stream = CommonTokenStream(lexer)
@@ -31,19 +33,25 @@ def kdl_to_workflow(input_file, output_file):
     build_knwf(listener.nodes, listener.connections, output_file)
 
 
-def update_workflow_with_kdl(input_file, output_file, modify_file):
+def update_workflow_with_kdl(
+    input_file: str, output_file: str, modify_file: str
+) -> None:
     pass
 
 
-def kdl_to_workflow_custom_template(input_file, output_file, nodes):
+def kdl_to_workflow_custom_template(
+    input_file: str, output_file: str, nodes: str
+) -> None:
     pass
 
 
-def workflow_to_kdl_custom_template(input_file, output_file, nodes):
+def workflow_to_kdl_custom_template(
+    input_file: str, output_file: str, nodes: str
+) -> None:
     pass
 
 
-def workflow_to_kdl(input_file, output_file):
+def workflow_to_kdl(input_file: str, output_file: str) -> None:
     # Extract workflow
     input_workflow_name = kdlc.unzip_workflow(input_file)
 
@@ -59,7 +67,7 @@ def workflow_to_kdl(input_file, output_file):
     node_filename_list = kdlc.extract_node_filenames(
         f"{input_workflow_path}/workflow.knime"
     )
-    # print(input_node_list)
+    print(node_filename_list)
 
     # Parse settings.xml for each node in workflow.knime and add to node
     input_node_list = list()
@@ -74,7 +82,9 @@ def workflow_to_kdl(input_file, output_file):
     kdlc.cleanup()
 
 
-def build_knwf(nodes, connections, output_filename):
+def build_knwf(
+    nodes: List[Node], connections: List[Connection], output_filename: str
+) -> None:
     # TODO: revisit this name logic
     output_wf_name = output_filename.replace(".knwf", "")
 
@@ -98,7 +108,7 @@ def build_knwf(nodes, connections, output_filename):
         # node["settings"]["model"][0]["url"] = "/path/to/other/file.txt"
         # TODO: uncomment lines 63-72 and add tests
         # try:
-        #     kdlc.validate_node_from_schema(node)
+        #     node.validate_node_from_schema()
         # except jsonschema.ValidationError as e:
         #     print(e.message)
         #     kdlc.cleanup()

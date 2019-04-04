@@ -1,5 +1,6 @@
 import json
 from kdlc.parser.KDLListener import KDLListener
+from kdlc.parser.KDLParser import KDLParser
 from kdlc.objects import Connection, Node
 
 
@@ -8,7 +9,9 @@ class KDLLoader(KDLListener):
         self.nodes = []
         self.connections = []
 
-    def exitNode_settings(self, ctx):
+    def exitNode_settings(
+        self: KDLListener, ctx: KDLParser.Node_settingsContext
+    ) -> None:
         node_number = ctx.node().node_id().NUMBER().getText()
         # print(f"nodeNumber: {node_number}")
 
@@ -35,7 +38,7 @@ class KDLLoader(KDLListener):
 
         self.nodes.append(node)
 
-    def exitConnection(self, ctx):
+    def exitConnection(self: KDLListener, ctx: KDLParser.ConnectionContext) -> None:
         source_node = ctx.source_node().node()
         source_node_id = source_node.node_id().getText()
         destination_node = ctx.destination_node().node()
@@ -48,8 +51,7 @@ class KDLLoader(KDLListener):
             source_node_port = source_node.port().port_id().NUMBER().getText()
             destination_node_port = destination_node.port().port_id().NUMBER().getText()
         else:
-            ex = ValueError()
-            ex.strerror = "Invalid workflow connection"
+            ex = ValueError("Invalid workflow connection")
             raise ex
         connection = Connection(
             id=len(self.connections),

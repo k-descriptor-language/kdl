@@ -6,7 +6,8 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
 import json
 import textwrap
-from kdlc import Node, Connection
+from typing import List
+from kdlc.objects import Node, Connection
 
 jinja_env = Environment(
     loader=PackageLoader("kdlc", "templates"),
@@ -42,7 +43,7 @@ def unzip_workflow(input_file: str) -> str:
     return os.listdir(INPUT_PATH).pop()
 
 
-def extract_from_input_xml(node_id, input_file):
+def extract_from_input_xml(node_id: str, input_file: str) -> Node:
     """
     Parses the provided input file and returns a populated dict with
     associated values
@@ -57,26 +58,42 @@ def extract_from_input_xml(node_id, input_file):
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()
 
-    name = root.find("./knime:entry[@key='name']", NS).attrib["value"]
-    factory = root.find("./knime:entry[@key='factory']", NS).attrib["value"]
-    bundle_name = root.find("./knime:entry[@key='node-bundle-name']", NS).attrib[
-        "value"
-    ]
-    bundle_symbolic_name = root.find(
+    name_ele = root.find("./knime:entry[@key='name']", NS)
+    if name_ele is not None:
+        name = name_ele.attrib["value"]
+
+    factory_ele = root.find("./knime:entry[@key='factory']", NS)
+    if factory_ele is not None:
+        factory = factory_ele.attrib["value"]
+
+    bundle_name_ele = root.find("./knime:entry[@key='node-bundle-name']", NS)
+    if bundle_name_ele is not None:
+        bundle_name = bundle_name_ele.attrib["value"]
+
+    bundle_symbolic_name_ele = root.find(
         "./knime:entry[@key='node-bundle-symbolic-name']", NS
-    ).attrib["value"]
-    bundle_version = root.find("./knime:entry[@key='node-bundle-version']", NS).attrib[
-        "value"
-    ]
-    feature_name = root.find("./knime:entry[@key='node-feature-name']", NS).attrib[
-        "value"
-    ]
-    feature_symbolic_name = root.find(
+    )
+    if bundle_symbolic_name_ele is not None:
+        bundle_symbolic_name = bundle_symbolic_name_ele.attrib["value"]
+
+    bundle_version_ele = root.find("./knime:entry[@key='node-bundle-version']", NS)
+    if bundle_version_ele is not None:
+        bundle_version = bundle_version_ele.attrib["value"]
+
+    feature_name_ele = root.find("./knime:entry[@key='node-feature-name']", NS)
+    if feature_name_ele is not None:
+        feature_name = feature_name_ele.attrib["value"]
+
+    feature_symbolic_name_ele = root.find(
         "./knime:entry[@key='node-feature-symbolic-name']", NS
-    ).attrib["value"]
-    feature_version = root.find(
-        "./knime:entry[@key='node-feature-version']", NS
-    ).attrib["value"]
+    )
+    if feature_symbolic_name_ele is not None:
+        feature_symbolic_name = feature_symbolic_name_ele.attrib["value"]
+
+    feature_version_ele = root.find("./knime:entry[@key='node-feature-version']", NS)
+    if feature_version_ele is not None:
+        feature_version = feature_version_ele.attrib["value"]
+
     node = Node(
         id=node_id,
         name=name,
@@ -96,8 +113,7 @@ def extract_from_input_xml(node_id, input_file):
             config = extract_config_tag(child)
             node.model.append(config)
         else:
-            ex = ValueError()
-            ex.strerror = "Invalid settings tag"
+            ex = ValueError("Invalid settings tag")
             raise ex
 
     node.port_count = len(root.findall("./knime:config[@key='ports']/*", NS))
@@ -107,18 +123,18 @@ def extract_from_input_xml(node_id, input_file):
             config = extract_config_tag(child)
             node.variables.append(config)
         else:
-            ex = ValueError()
-            ex.strerror = "Invalid settings tag"
+            ex = ValueError("Invalid settings tag")
             raise ex
     return node
 
 
+# TODO: introduce static typing here
 def extract_entry_tag(tree):
     """
     Extracts the entry tag from the provided tree
 
     Args:
-        tree (ElementTree): The tree to extract entry tag from
+        tree (Element): The tree to extract entry tag from
 
     Returns:
         dict: Dict containing the entry tag definition
@@ -155,8 +171,7 @@ def extract_entry_tag(tree):
             "data_type": tree.attrib["type"],
         }
     else:
-        ex = ValueError()
-        ex.strerror = "Invalid entry type"
+        ex = ValueError("Invalid entry type")
         raise ex
 
     if "isnull" in tree.attrib:
@@ -164,12 +179,12 @@ def extract_entry_tag(tree):
     return entry
 
 
-def extract_config_tag(tree):
+def extract_config_tag(tree: ET.Element) -> dict:
     """
     Extracts the config tag from the provided tree
 
     Args:
-        tree (ElementTree): The tree to extract the config tag from
+        tree (Element): The tree to extract the config tag from
 
     Returns:
         dict: Dict containing the config tag definition
@@ -183,19 +198,18 @@ def extract_config_tag(tree):
             config = extract_config_tag(child)
             config_value.append(config)
         else:
-            ex = ValueError()
-            ex.strerror = "Invalid child tag"
+            ex = ValueError("Invalid child tag")
             raise ex
     config = {tree.attrib["key"]: config_value}
     return config
 
 
-def extract_node_filenames(input_file):
+def extract_node_filenames(input_file: str) -> List[dict]:
     """
     Extracts the list of nodes from the provided KNIME workflow
 
     Args:
-        input_file (str): Name of input file
+        input_file (str): Name of input workflow.knime file
 
     Returns:
         list: The list of node file names within the KNIME workflow
@@ -205,22 +219,24 @@ def extract_node_filenames(input_file):
     root = base_tree.getroot()
     for child in root.findall("./knime:config[@key='nodes']/knime:config", NS):
         node = dict()
-        node_id = child.find("./knime:entry[@key='id']", NS).attrib["value"]
-        node["id"] = node_id
-        settings_file = child.find(
-            "./knime:entry[@key='node_settings_file']", NS
-        ).attrib["value"]
-        node["filename"] = settings_file
+        node_id_ele = child.find("./knime:entry[@key='id']", NS)
+        if node_id_ele is not None:
+            node["id"] = node_id_ele.attrib["value"]
+
+        settings_file_ele = child.find("./knime:entry[@key='node_settings_file']", NS)
+        if settings_file_ele is not None:
+            node["filename"] = settings_file_ele.attrib["value"]
+
         node_list.append(node)
     return node_list
 
 
-def extract_connections(input_file):
+def extract_connections(input_file: str) -> List[Connection]:
     """
     Extracts a list of connections from the provided KNIME workflow
 
     Args:
-        input_file (str): Name of input workflow
+        input_file (str): Name of input workflow.knime file
 
     Returns:
         list: The list of connections within the KNIME workflow
@@ -232,13 +248,22 @@ def extract_connections(input_file):
     for i, child in enumerate(
         root.findall("./knime:config[@key='connections']/knime:config", NS)
     ):
-        source_id = child.find("./knime:entry[@key='sourceID']", NS).attrib["value"]
+        source_id_ele = child.find("./knime:entry[@key='sourceID']", NS)
+        if source_id_ele is not None:
+            source_id = source_id_ele.attrib["value"]
 
-        dest_id = child.find("./knime:entry[@key='destID']", NS).attrib["value"]
+        dest_id_ele = child.find("./knime:entry[@key='destID']", NS)
+        if dest_id_ele is not None:
+            dest_id = dest_id_ele.attrib["value"]
 
-        source_port = child.find("./knime:entry[@key='sourcePort']", NS).attrib["value"]
+        source_port_ele = child.find("./knime:entry[@key='sourcePort']", NS)
+        if source_port_ele is not None:
+            source_port = source_port_ele.attrib["value"]
 
-        dest_port = child.find("./knime:entry[@key='destPort']", NS).attrib["value"]
+        dest_port_ele = child.find("./knime:entry[@key='destPort']", NS)
+        if dest_port_ele is not None:
+            dest_port = dest_port_ele.attrib["value"]
+
         connection = Connection(
             id=i,
             source_id=source_id,
@@ -250,12 +275,12 @@ def extract_connections(input_file):
     return connection_list
 
 
-def create_node_settings_from_template(node):
+def create_node_settings_from_template(node: Node) -> ET.ElementTree:
     """
     Creates an ElementTree with the provided node definition
 
     Args:
-        node (dict): Node definition
+        node (Node): Node definition
 
     Returns:
         ElementTree: ElementTree populated with the provided node definition
@@ -274,13 +299,15 @@ def create_node_settings_from_template(node):
     return ET.ElementTree(template_root)
 
 
-def create_workflow_knime_from_template(node_list, connection_list):
+def create_workflow_knime_from_template(
+    node_list: List[Node], connection_list: List[Connection]
+) -> ET.ElementTree:
     """
     Creates an ElementTree with the provided node list and connection list
 
     Args:
-        node_list (list): List of node definitions
-        connection_list (list): List of connections amongst nodes
+        node_list (list): List of Node definitions
+        connection_list (list): List of Connections amongst nodes
 
     Returns:
         ElementTree: ElementTree populated with nodes and their associated
@@ -291,7 +318,7 @@ def create_workflow_knime_from_template(node_list, connection_list):
     return ET.ElementTree(ET.fromstring(template.render(data)))
 
 
-def set_entry_element_type(entry):
+def set_entry_element_type(entry: dict) -> None:
     """
     Sets an entry Element's type and value based on the provided entry definition
 
@@ -303,25 +330,24 @@ def set_entry_element_type(entry):
     entry_type = type(entry[entry_key])
     entry_value = str(entry[entry_key])
     if "data_type" in entry:
-        entry_type = entry["data_type"]
+        data_type = entry["data_type"]
     elif entry_type is int:
-        entry_type = "xint"
+        data_type = "xint"
     elif entry_type is float:
-        entry_type = "xfloat"
+        data_type = "xfloat"
     elif entry_type is bool:
         entry_value = entry_value.lower()
-        entry_type = "xboolean"
+        data_type = "xboolean"
     elif entry_type is str:
-        entry_type = "xstring"
+        data_type = "xstring"
     else:
-        ex = ValueError()
-        ex.strerror = "Cannot set element type"
+        ex = ValueError("Cannot set element type")
         raise ex
-    entry["data_type"] = entry_type
+    entry["data_type"] = data_type
     entry[entry_key] = entry_value
 
 
-def set_config_element_type(config):
+def set_config_element_type(config: dict) -> None:
     """
     Sets a config Element's type based on the provided config definition
 
@@ -341,12 +367,12 @@ def set_config_element_type(config):
             set_entry_element_type(value)
 
 
-def save_node_settings_xml(tree, output_path):
+def save_node_settings_xml(tree: ET.ElementTree, output_path: str) -> None:
     """Writes the provided tree to the provided output path
 
     Args:
         tree (ElementTree): Populated ElementTree
-        output_path (str): Location to write the tree too
+        output_path (str): Location to write the tree to
     """
     output_dir = os.path.dirname(output_path)
     if not os.path.exists(output_dir):
@@ -356,13 +382,13 @@ def save_node_settings_xml(tree, output_path):
     tree.write(output_path, xml_declaration=True, encoding="UTF-8")
 
 
-def save_workflow_knime(tree, output_path):
+def save_workflow_knime(tree: ET.ElementTree, output_path: str) -> None:
     """
     Writes the provided tree containing a KNIME workflow to the provided output path
 
     Args:
         tree (ElementTree): Populated ElementTree containing a KNIME workflow
-        output_path (str): Name of output wf
+        output_path (str): Location to write tree to
     """
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -371,7 +397,7 @@ def save_workflow_knime(tree, output_path):
     tree.write(f"{output_path}/workflow.knime", xml_declaration=True, encoding="UTF-8")
 
 
-def create_output_workflow(workflow_name):
+def create_output_workflow(workflow_name: str) -> None:
     """
     Bundles the provided workflow into a knwf archive
 
@@ -383,14 +409,16 @@ def create_output_workflow(workflow_name):
     cleanup()
 
 
-def save_output_kdl_workflow(output_file, connection_list, node_list):
+def save_output_kdl_workflow(
+    output_file: str, connection_list: List[Connection], node_list: List[Node]
+) -> None:
     """
     Outputs node connections and node JSON as .kdl file
 
     Args:
         output_file (str): Name of output kdl file
-        connection_list (list): list of connection dicts to be written
-        node_list (list): list of node dicts to be written
+        connection_list (list): list of Connections to be written
+        node_list (list): list of Nodes to be written
     """
 
     wrapper = textwrap.TextWrapper(
@@ -423,7 +451,7 @@ def save_output_kdl_workflow(output_file, connection_list, node_list):
         file.write("}\n")
 
 
-def cleanup():
+def cleanup() -> None:
     """
     Cleans up temp directories
 
