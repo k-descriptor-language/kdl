@@ -61,38 +61,62 @@ def extract_from_input_xml(node_id: str, input_file: str) -> Node:
     name_ele = root.find("./knime:entry[@key='name']", NS)
     if name_ele is not None:
         name = name_ele.attrib["value"]
+    else:
+        ex = ValueError("Input file missing name tag")
+        raise ex
 
     factory_ele = root.find("./knime:entry[@key='factory']", NS)
     if factory_ele is not None:
         factory = factory_ele.attrib["value"]
+    else:
+        ex = ValueError("Input file missing factory tag")
+        raise ex
 
     bundle_name_ele = root.find("./knime:entry[@key='node-bundle-name']", NS)
     if bundle_name_ele is not None:
         bundle_name = bundle_name_ele.attrib["value"]
+    else:
+        ex = ValueError("Input file missing node-bundle-name tag")
+        raise ex
 
     bundle_symbolic_name_ele = root.find(
         "./knime:entry[@key='node-bundle-symbolic-name']", NS
     )
     if bundle_symbolic_name_ele is not None:
         bundle_symbolic_name = bundle_symbolic_name_ele.attrib["value"]
+    else:
+        ex = ValueError("Input file missing node-bundle-symbolic-name tag")
+        raise ex
 
     bundle_version_ele = root.find("./knime:entry[@key='node-bundle-version']", NS)
     if bundle_version_ele is not None:
         bundle_version = bundle_version_ele.attrib["value"]
+    else:
+        ex = ValueError("Input file missing node-bundle-version tag")
+        raise ex
 
     feature_name_ele = root.find("./knime:entry[@key='node-feature-name']", NS)
     if feature_name_ele is not None:
         feature_name = feature_name_ele.attrib["value"]
+    else:
+        ex = ValueError("Input file missing node-feature-name tag")
+        raise ex
 
     feature_symbolic_name_ele = root.find(
         "./knime:entry[@key='node-feature-symbolic-name']", NS
     )
     if feature_symbolic_name_ele is not None:
         feature_symbolic_name = feature_symbolic_name_ele.attrib["value"]
+    else:
+        ex = ValueError("Input file missing node-feature-symbolic-name tag")
+        raise ex
 
     feature_version_ele = root.find("./knime:entry[@key='node-feature-version']", NS)
     if feature_version_ele is not None:
         feature_version = feature_version_ele.attrib["value"]
+    else:
+        ex = ValueError("Input file missing node-feature-version tag")
+        raise ex
 
     node = Node(
         id=node_id,
@@ -211,10 +235,16 @@ def extract_node_filenames(input_file: str) -> List[dict]:
         node_id_ele = child.find("./knime:entry[@key='id']", NS)
         if node_id_ele is not None:
             node["id"] = node_id_ele.attrib["value"]
+        else:
+            ex = ValueError("Input file missing id")
+            raise ex
 
         settings_file_ele = child.find("./knime:entry[@key='node_settings_file']", NS)
         if settings_file_ele is not None:
             node["filename"] = settings_file_ele.attrib["value"]
+        else:
+            ex = ValueError("Input file missing node_settings_file")
+            raise ex
 
         node_list.append(node)
     return node_list
@@ -240,18 +270,30 @@ def extract_connections(input_file: str) -> List[Connection]:
         source_id_ele = child.find("./knime:entry[@key='sourceID']", NS)
         if source_id_ele is not None:
             source_id = source_id_ele.attrib["value"]
+        else:
+            ex = ValueError("Input file missing sourceID")
+            raise ex
 
         dest_id_ele = child.find("./knime:entry[@key='destID']", NS)
         if dest_id_ele is not None:
             dest_id = dest_id_ele.attrib["value"]
+        else:
+            ex = ValueError("Input file missing destID")
+            raise ex
 
         source_port_ele = child.find("./knime:entry[@key='sourcePort']", NS)
         if source_port_ele is not None:
             source_port = source_port_ele.attrib["value"]
+        else:
+            ex = ValueError("Input file missing sourcePort")
+            raise ex
 
         dest_port_ele = child.find("./knime:entry[@key='destPort']", NS)
         if dest_port_ele is not None:
             dest_port = dest_port_ele.attrib["value"]
+        else:
+            ex = ValueError("Input file missing destPort")
+            raise ex
 
         connection = Connection(
             id=i,

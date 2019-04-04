@@ -49,7 +49,7 @@ def test_extract_from_input_xml_csv(my_setup):
     ]
 
     assert (
-        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/csv_settings.xml") == res
+        kdlc.extract_from_input_xml("1", f"{test_resources_dir}/csv_settings.xml") == res
     )
 
 
@@ -121,7 +121,7 @@ def test_extract_from_input_xml_cf(my_setup):
     ]
 
     assert (
-        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/cf_settings.xml") == res
+        kdlc.extract_from_input_xml("1", f"{test_resources_dir}/cf_settings.xml") == res
     )
 
 
@@ -159,7 +159,7 @@ def test_extract_from_input_xml_csv_var(my_setup):
         {"url": [{"used_variable": "TEST"}, {"exposed_variable": "TEST2"}]}
     ]
 
-    assert kdlc.extract_from_input_xml(1, f"{test_resources_dir}/csv_var.xml") == res
+    assert kdlc.extract_from_input_xml("1", f"{test_resources_dir}/csv_var.xml") == res
 
 
 def test_extract_from_input_xml_ttj_var(my_setup):
@@ -250,17 +250,17 @@ def test_extract_from_input_xml_ttj_var(my_setup):
             ]
         }
     ]
-    assert kdlc.extract_from_input_xml(1, f"{test_resources_dir}/ttj_var.xml") == res
+    assert kdlc.extract_from_input_xml("1", f"{test_resources_dir}/ttj_var.xml") == res
 
 
 def test_extract_from_input_xml_fail(my_setup):
     with pytest.raises(ValueError):
-        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/fail_settings.xml")
+        kdlc.extract_from_input_xml("1", f"{test_resources_dir}/fail_settings.xml")
 
 
 def test_extract_from_input_xml_fail_var(my_setup):
     with pytest.raises(ValueError):
-        kdlc.extract_from_input_xml(1, f"{test_resources_dir}/fail_var_settings.xml")
+        kdlc.extract_from_input_xml("1", f"{test_resources_dir}/fail_var_settings.xml")
 
 
 def test_extract_entry_tag_string(my_setup):
