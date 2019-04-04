@@ -1219,39 +1219,36 @@ def test_extract_variables_from_model_none(my_setup):
     assert node == res
 
 
-"""
 def test_validate_node_from_schema(my_setup):
-    node = {
-        "settings": {
-            "name": "CSV Reader",
-            "factory": "org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
-            "bundle_name": "KNIME Base Nodes",
-            "bundle_symbolic_name": "org.knime.base",
-            "bundle_version": "3.7.1.v201901291053",
-            "feature_name": "KNIME Core",
-            "feature_symbolic_name": "org.knime.features.base.feature.group",
-            "feature_version": "3.7.1.v201901291053",
-            "model": [
-                {
-                    "url": (
-                        "/Users/jared/knime-workspace/Example Workflows/"
-                        "TheData/Misc/Demographics.csv"
-                    )
-                },
-                {"colDelimiter": ","},
-                {"rowDelimiter": "%%00010"},
-                {"quote": '"'},
-                {"commentStart": "#"},
-                {"hasRowHeader": True},
-                {"hasColHeader": True},
-                {"supportShortLines": False},
-                {"limitRowsCount": -1, "data_type": "xlong"},
-                {"skipFirstLinesCount": -1},
-                {"characterSetName": "", "isnull": True},
-                {"limitAnalysisCount": -1},
-            ],
-        }
-    }
-    kdlc.validate_node_from_schema(node)
-
-"""
+    node = kdlc.Node(
+        id=1,
+        name="CSV Reader",
+        factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node.port_count = 1
+    node.model = [
+        {
+            "url": (
+                "/Users/jared/knime-workspace/Example Workflows/"
+                "TheData/Misc/Demographics.csv"
+            )
+        },
+        {"colDelimiter": ","},
+        {"rowDelimiter": "%%00010"},
+        {"quote": '"'},
+        {"commentStart": "#"},
+        {"hasRowHeader": True},
+        {"hasColHeader": True},
+        {"supportShortLines": False},
+        {"limitRowsCount": -1, "data_type": "xlong"},
+        {"skipFirstLinesCount": -1},
+        {"characterSetName": "", "isnull": True},
+        {"limitAnalysisCount": -1},
+    ]
+    node.validate_node_from_schema()
