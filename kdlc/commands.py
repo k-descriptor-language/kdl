@@ -67,7 +67,7 @@ def workflow_to_kdl(input_file: str, output_file: str) -> None:
     node_filename_list = kdlc.extract_node_filenames(
         f"{input_workflow_path}/workflow.knime"
     )
-    print(node_filename_list)
+    # print(node_filename_list)
 
     # Parse settings.xml for each node in workflow.knime and add to node
     input_node_list = list()
