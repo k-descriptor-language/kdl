@@ -1,38 +1,41 @@
 import os
 import json
 import jsonschema
+from typing import Any
 
 
 class Connection:
-    def __init__(self, id, source_id, dest_id, source_port, dest_port):
+    def __init__(
+        self, id: int, source_id: str, dest_id: str, source_port: str, dest_port: str
+    ):
         self.id = id
         self.source_id = source_id
         self.dest_id = dest_id
         self.source_port = source_port
         self.dest_port = dest_port
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         else:
             return False
 
-    def __ne__(self, other):
+    def __ne__(self, other: Any) -> bool:
         return not self.__eq__(other)
 
 
 class Node:
     def __init__(
         self,
-        id,
-        name,
-        factory,
-        bundle_name,
-        bundle_symbolic_name,
-        bundle_version,
-        feature_name,
-        feature_symbolic_name,
-        feature_version,
+        id: str,
+        name: str,
+        factory: str,
+        bundle_name: str,
+        bundle_symbolic_name: str,
+        bundle_version: str,
+        feature_name: str,
+        feature_symbolic_name: str,
+        feature_version: str,
     ):
         self.id = id
         self.name = name
@@ -43,17 +46,17 @@ class Node:
         self.feature_name = feature_name
         self.feature_symbolic_name = feature_symbolic_name
         self.feature_version = feature_version
-        self.model = list()
-        self.variables = list()
+        self.model: list = list()
+        self.variables: list = list()
         self.port_count = 0
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         else:
             return False
 
-    def __ne__(self, other):
+    def __ne__(self, other: Any) -> bool:
         return not self.__eq__(other)
 
     def merge_variables_into_model(self):
@@ -65,7 +68,7 @@ class Node:
         """
         self.__merge_variables_helper(self.model, self.variables)
 
-    def __merge_variables_helper(self, model_list, var_list):
+    def __merge_variables_helper(self, model_list: list, var_list: list) -> None:
         """
         Helper function for merging var
 
@@ -96,14 +99,14 @@ class Node:
                         var_mod_val = curr[var_mod_key]
                         curr_model[var_mod_key] = var_mod_val
 
-    def extract_variables_from_model(self):
+    def extract_variables_from_model(self) -> None:
         """
         Helper function for extracting workflow variables from node
 
         """
         self.variables = self.__extract_variables_from_model_helper(self.model)
 
-    def __extract_variables_from_model_helper(self, model_list):
+    def __extract_variables_from_model_helper(self, model_list: list) -> list:
         """
         Extracts workflow variables from model and returns them in own list
 
@@ -157,12 +160,9 @@ class Node:
 
         return variables
 
-    def validate_node_from_schema(self):
+    def validate_node_from_schema(self) -> None:
         """
         Validates node settings against JSON Schema
-
-        Args:
-            node (dict): Node definition
 
         Raises:
             jsonschema.ValidationError: if node does not follow defined json schema
@@ -175,5 +175,5 @@ class Node:
         ).read()
         jsonschema.validate(instance=self.__dict__, schema=json.loads(schema))
 
-    def get_filename(self):
+    def get_filename(self) -> str:
         return f"{self.name} (#{self.id})/settings.xml"
