@@ -16,8 +16,8 @@ def test_unzip_workflow(my_setup):
 
 
 def test_extract_from_input_xml_csv(my_setup):
-    res = kdlc.Node(
-        id=1,
+    r = kdlc.Node(
+        id="1",
         name="CSV Reader",
         factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
         bundle_name="KNIME Base Nodes",
@@ -27,8 +27,8 @@ def test_extract_from_input_xml_csv(my_setup):
         feature_symbolic_name="org.knime.features.base.feature.group",
         feature_version="3.7.1.v201901291053",
     )
-    res.port_count = 1
-    res.model = [
+    r.port_count = 1
+    r.model = [
         {
             "url": (
                 "/Users/jared/knime-workspace/Example Workflows/"
@@ -49,13 +49,13 @@ def test_extract_from_input_xml_csv(my_setup):
     ]
 
     assert (
-        kdlc.extract_from_input_xml("1", f"{test_resources_dir}/csv_settings.xml") == res
+        kdlc.extract_from_input_xml("1", f"{test_resources_dir}/csv_settings.xml") == r
     )
 
 
 def test_extract_from_input_xml_cf(my_setup):
     res = kdlc.Node(
-        id=1,
+        id="1",
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -127,7 +127,7 @@ def test_extract_from_input_xml_cf(my_setup):
 
 def test_extract_from_input_xml_csv_var(my_setup):
     res = kdlc.Node(
-        id=1,
+        id="1",
         name="CSV Reader",
         factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
         bundle_name="KNIME Base Nodes",
@@ -164,7 +164,7 @@ def test_extract_from_input_xml_csv_var(my_setup):
 
 def test_extract_from_input_xml_ttj_var(my_setup):
     res = kdlc.Node(
-        id=1,
+        id="1",
         name="Table to JSON",
         factory="org.knime.json.node.fromtable.TableToJsonNodeFactory",
         bundle_name="JSON related functionality for KNIME",
