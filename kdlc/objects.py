@@ -48,7 +48,7 @@ class Node:
         self.feature_version = feature_version
         self.model: list = list()
         self.variables: list = list()
-        self.port_count = 0
+        self.port_count: int = 0
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, self.__class__):
