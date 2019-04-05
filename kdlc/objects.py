@@ -59,7 +59,7 @@ class Node:
     def __ne__(self, other: Any) -> bool:
         return not self.__eq__(other)
 
-    def merge_variables_into_model(self):
+    def merge_variables_into_model(self) -> None:
         """
         Merges workflow variables into Node's model
 
