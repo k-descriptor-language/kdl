@@ -6,9 +6,14 @@ from typing import Any
 
 class Connection:
     def __init__(
-        self, id: int, source_id: str, dest_id: str, source_port: str, dest_port: str
+        self,
+        connection_id: int,
+        source_id: str,
+        dest_id: str,
+        source_port: str,
+        dest_port: str,
     ):
-        self.id = id
+        self.connection_id = connection_id
         self.source_id = source_id
         self.dest_id = dest_id
         self.source_port = source_port
@@ -27,7 +32,7 @@ class Connection:
 class Node:
     def __init__(
         self,
-        id: str,
+        node_id: str,
         name: str,
         factory: str,
         bundle_name: str,
@@ -37,7 +42,7 @@ class Node:
         feature_symbolic_name: str,
         feature_version: str,
     ):
-        self.id = id
+        self.node_id = node_id
         self.name = name
         self.factory = factory
         self.bundle_name = bundle_name
@@ -63,8 +68,6 @@ class Node:
         """
         Merges workflow variables into Node's model
 
-        Args:
-            variables (list): List containing workflow variables
         """
         self.__merge_variables_helper(self.model, self.variables)
 
@@ -176,4 +179,4 @@ class Node:
         jsonschema.validate(instance=self.__dict__, schema=json.loads(schema))
 
     def get_filename(self) -> str:
-        return f"{self.name} (#{self.id})/settings.xml"
+        return f"{self.name} (#{self.node_id})/settings.xml"

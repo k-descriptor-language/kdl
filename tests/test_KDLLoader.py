@@ -6,7 +6,7 @@ def test_exitNode_settings(mocker):
     ctx = mocker.MagicMock()
     node_id = mocker.MagicMock()
     ctx.node.return_value.node_id.return_value = node_id
-    node_id.NUMBER.return_value.getText.return_value = 42
+    node_id.NUMBER.return_value.getText.return_value = "42"
 
     token_l_paren = mocker.MagicMock()
     token_l_paren.getText.return_value = "{"
@@ -265,7 +265,7 @@ def test_exitNode_settings(mocker):
     listener.exitNode_settings(ctx)
 
     expected_node = kdlc.Node(
-        id=42,
+        node_id="42",
         name="b",
         factory="b",
         bundle_name="b",
@@ -316,7 +316,7 @@ def test_exitConnection(mocker):
     listener.exitConnection(ctx)
 
     expected_connection = kdlc.Connection(
-        id=0, source_id="1", dest_id="3", source_port="2", dest_port="4"
+        connection_id=0, source_id="1", dest_id="3", source_port="2", dest_port="4"
     )
 
     assert len(listener.connections) == 1
@@ -347,7 +347,7 @@ def test_exitConnection_var(mocker):
     listener.exitConnection(ctx)
 
     expected_connection = kdlc.Connection(
-        id=0, source_id="1", dest_id="3", source_port="0", dest_port="0"
+        connection_id=0, source_id="1", dest_id="3", source_port="0", dest_port="0"
     )
 
     assert len(listener.connections) == 1

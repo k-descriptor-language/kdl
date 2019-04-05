@@ -17,7 +17,7 @@ def test_unzip_workflow(my_setup):
 
 def test_extract_from_input_xml_csv(my_setup):
     r = kdlc.Node(
-        id="1",
+        node_id="1",
         name="CSV Reader",
         factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
         bundle_name="KNIME Base Nodes",
@@ -55,7 +55,7 @@ def test_extract_from_input_xml_csv(my_setup):
 
 def test_extract_from_input_xml_cf(my_setup):
     res = kdlc.Node(
-        id="1",
+        node_id="1",
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -127,7 +127,7 @@ def test_extract_from_input_xml_cf(my_setup):
 
 def test_extract_from_input_xml_csv_var(my_setup):
     res = kdlc.Node(
-        id="1",
+        node_id="1",
         name="CSV Reader",
         factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
         bundle_name="KNIME Base Nodes",
@@ -164,7 +164,7 @@ def test_extract_from_input_xml_csv_var(my_setup):
 
 def test_extract_from_input_xml_ttj_var(my_setup):
     res = kdlc.Node(
-        id="1",
+        node_id="1",
         name="Table to JSON",
         factory="org.knime.json.node.fromtable.TableToJsonNodeFactory",
         bundle_name="JSON related functionality for KNIME",
@@ -386,19 +386,19 @@ def test_extract_config_tag_fail(my_setup):
 
 def test_extract_node_filenames(my_setup):
     result = [
-        {"id": "1", "filename": "CSV Reader (#1)/settings.xml"},
-        {"id": "2", "filename": "Table to JSON (#2)/settings.xml"},
-        {"id": "3", "filename": "Column Filter (#3)/settings.xml"},
+        {"node_id": "1", "filename": "CSV Reader (#1)/settings.xml"},
+        {"node_id": "2", "filename": "Table to JSON (#2)/settings.xml"},
+        {"node_id": "3", "filename": "Column Filter (#3)/settings.xml"},
     ]
     assert kdlc.extract_node_filenames(f"{test_resources_dir}/workflow.knime") == result
 
 
 def test_extract_connections(my_setup):
     connection1 = kdlc.Connection(
-        id=0, source_id="1", dest_id="3", source_port="1", dest_port="1"
+        connection_id=0, source_id="1", dest_id="3", source_port="1", dest_port="1"
     )
     connection2 = kdlc.Connection(
-        id=1, source_id="3", dest_id="2", source_port="1", dest_port="1"
+        connection_id=1, source_id="3", dest_id="2", source_port="1", dest_port="1"
     )
     result = [connection1, connection2]
     assert kdlc.extract_connections(f"{test_resources_dir}/workflow.knime") == result
@@ -406,7 +406,7 @@ def test_extract_connections(my_setup):
 
 def test_create_node_settings_from_template_csv(my_setup):
     node = kdlc.Node(
-        id=1,
+        node_id="1",
         name="CSV Reader",
         factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
         bundle_name="KNIME Base Nodes",
@@ -447,7 +447,7 @@ def test_create_node_settings_from_template_csv(my_setup):
 
 def test_create_node_settings_from_template_cf(my_setup):
     node = kdlc.Node(
-        id=1,
+        node_id="1",
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -523,7 +523,7 @@ def test_create_node_settings_from_template_cf(my_setup):
 
 def test_create_workflow_knime_from_template(my_setup):
     node1 = kdlc.Node(
-        id=1,
+        node_id="1",
         name="CSV Reader",
         factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
         bundle_name="KNIME Base Nodes",
@@ -554,7 +554,7 @@ def test_create_workflow_knime_from_template(my_setup):
         {"limitAnalysisCount": -1},
     ]
     node2 = kdlc.Node(
-        id=1,
+        node_id="2",
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -619,7 +619,7 @@ def test_create_workflow_knime_from_template(my_setup):
         }
     ]
     node3 = kdlc.Node(
-        id=1,
+        node_id="3",
         name="Table to JSON",
         factory="org.knime.json.node.fromtable.TableToJsonNodeFactory",
         bundle_name="JSON related functionality for KNIME",

@@ -76,13 +76,13 @@ def test_workflow_to_kdl(mocker):
     extract_connections.return_value = []
     mocker.patch("kdlc.extract_connections", new=extract_connections)
 
-    node_dict = {"id": 1, "filename": "test.xml"}
+    node_dict = {"node_id": "1", "filename": "test.xml"}
     extract_node_filenames = mocker.MagicMock()
     extract_node_filenames.return_value = [node_dict]
     mocker.patch("kdlc.extract_node_filenames", new=extract_node_filenames)
 
     node = kdlc.Node(
-        id=1,
+        node_id="1",
         name="a",
         factory="a",
         bundle_name="a",
@@ -108,7 +108,7 @@ def test_workflow_to_kdl(mocker):
     extract_connections.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
     extract_node_filenames.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
     extract_from_input_xml.assert_called_with(
-        node_dict["id"], f'{kdlc.INPUT_PATH}/test/{node_dict["filename"]}'
+        node_dict["node_id"], f'{kdlc.INPUT_PATH}/test/{node_dict["filename"]}'
     )
     save_output_kdl_workflow.assert_called_with(output_file, [], [node])
     cleanup.assert_called()
@@ -147,7 +147,7 @@ def test_build_knwf(mocker):
 
     # fake inputs
     node_one = kdlc.Node(
-        id=1,
+        node_id="1",
         name="a",
         factory="a",
         bundle_name="a",
@@ -158,7 +158,7 @@ def test_build_knwf(mocker):
         feature_version="a",
     )
     node_two = kdlc.Node(
-        id=2,
+        node_id="2",
         name="b",
         factory="b",
         bundle_name="b",

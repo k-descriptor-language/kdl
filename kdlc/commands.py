@@ -73,7 +73,7 @@ def workflow_to_kdl(input_file: str, output_file: str) -> None:
     input_node_list = list()
     for curr in node_filename_list:
         infile = f'{input_workflow_path}/{curr["filename"]}'
-        node = kdlc.extract_from_input_xml(curr["id"], infile)
+        node = kdlc.extract_from_input_xml(curr["node_id"], infile)
         input_node_list.append(node)
     # print(input_node_list)
 

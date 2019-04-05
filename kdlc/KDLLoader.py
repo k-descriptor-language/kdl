@@ -23,7 +23,7 @@ class KDLLoader(KDLListener):
         # TODO: does this name even matter? if it does, we need to be defensive here
         node_name = node_settings["name"]
         node = Node(
-            id=node_number,
+            node_id=node_number,
             name=node_name,
             factory=node_settings["factory"],
             bundle_name=node_settings["bundle_name"],
@@ -54,7 +54,7 @@ class KDLLoader(KDLListener):
             ex = ValueError("Invalid workflow connection")
             raise ex
         connection = Connection(
-            id=len(self.connections),
+            connection_id=len(self.connections),
             source_id=source_node_id,
             dest_id=destination_node_id,
             source_port=source_node_port,

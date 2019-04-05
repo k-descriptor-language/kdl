@@ -95,7 +95,7 @@ def extract_from_input_xml(node_id: str, input_file: str) -> Node:
         feature_version = feature_version_ele.attrib["value"]
 
     node = Node(
-        id=node_id,
+        node_id=node_id,
         name=name,
         factory=factory,
         bundle_name=bundle_name,
@@ -125,6 +125,7 @@ def extract_from_input_xml(node_id: str, input_file: str) -> Node:
         else:
             ex = ValueError("Invalid settings tag")
             raise ex
+    node.merge_variables_into_model()
     return node
 
 
@@ -210,7 +211,7 @@ def extract_node_filenames(input_file: str) -> List[dict]:
         node = dict()
         node_id_ele = child.find("./knime:entry[@key='id']", NS)
         if node_id_ele is not None:
-            node["id"] = node_id_ele.attrib["value"]
+            node["node_id"] = node_id_ele.attrib["value"]
 
         settings_file_ele = child.find("./knime:entry[@key='node_settings_file']", NS)
         if settings_file_ele is not None:
@@ -254,7 +255,7 @@ def extract_connections(input_file: str) -> List[Connection]:
             dest_port = dest_port_ele.attrib["value"]
 
         connection = Connection(
-            id=i,
+            connection_id=i,
             source_id=source_id,
             dest_id=dest_id,
             source_port=source_port,
@@ -417,9 +418,9 @@ def save_output_kdl_workflow(
         file.write("Nodes {\n")
         for node in node_list:
             settings = node.__dict__.copy()
-            settings.pop("id")
+            settings.pop("node_id")
             settings.pop("variables")
-            output_text = f"(n{node.id}): {json.dumps(settings, indent=4)}"
+            output_text = f"(n{node.node_id}): {json.dumps(settings, indent=4)}"
             for line in output_text.splitlines():
                 wrapped = wrapper.fill(line)
                 file.write(f"{wrapped}\n")

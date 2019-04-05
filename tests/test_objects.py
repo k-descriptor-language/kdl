@@ -3,27 +3,27 @@ import kdlc
 
 def test_connection_equal(my_setup):
     connection1 = kdlc.Connection(
-        id=0, source_id="1", dest_id="3", source_port="1", dest_port="1"
+        connection_id=0, source_id="1", dest_id="3", source_port="1", dest_port="1"
     )
     connection2 = kdlc.Connection(
-        id=0, source_id="1", dest_id="3", source_port="1", dest_port="1"
+        connection_id=0, source_id="1", dest_id="3", source_port="1", dest_port="1"
     )
     assert connection1 == connection2
 
 
 def test_connection_nequal(my_setup):
     connection1 = kdlc.Connection(
-        id=0, source_id="1", dest_id="3", source_port="1", dest_port="1"
+        connection_id=0, source_id="1", dest_id="3", source_port="1", dest_port="1"
     )
     connection2 = kdlc.Connection(
-        id=1, source_id="3", dest_id="2", source_port="1", dest_port="1"
+        connection_id=1, source_id="3", dest_id="2", source_port="1", dest_port="1"
     )
     assert connection1 != connection2
 
 
 def test_connection_nequal_2(my_setup):
     connection1 = kdlc.Connection(
-        id=0, source_id="1", dest_id="3", source_port="1", dest_port="1"
+        connection_id=0, source_id="1", dest_id="3", source_port="1", dest_port="1"
     )
 
     assert connection1 != "fail"
@@ -31,7 +31,7 @@ def test_connection_nequal_2(my_setup):
 
 def test_node_equal(my_setup):
     node1 = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -101,7 +101,7 @@ def test_node_equal(my_setup):
         {"missing.values.are.omitted": True},
     ]
     node2 = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -176,7 +176,7 @@ def test_node_equal(my_setup):
 
 def test_node_nequal(my_setup):
     node1 = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -246,7 +246,7 @@ def test_node_nequal(my_setup):
         {"missing.values.are.omitted": True},
     ]
     node2 = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -321,7 +321,7 @@ def test_node_nequal(my_setup):
 
 def test_node_nequal_2(my_setup):
     node = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -396,7 +396,7 @@ def test_node_nequal_2(my_setup):
 
 def test_merge_model_and_variables_1var(my_setup):
     node = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -483,7 +483,7 @@ def test_merge_model_and_variables_1var(my_setup):
     ]
     node.variables = variables
     result = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -559,7 +559,7 @@ def test_merge_model_and_variables_1var(my_setup):
 
 def test_merge_model_and_variables_2var(my_setup):
     node = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -646,7 +646,7 @@ def test_merge_model_and_variables_2var(my_setup):
     ]
     node.variables = variables
     result = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -726,7 +726,7 @@ def test_merge_model_and_variables_2var(my_setup):
 
 def test_extract_variables_from_model_used_exposed(my_setup):
     node = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -828,7 +828,7 @@ def test_extract_variables_from_model_used_exposed(my_setup):
         {"missing.values.are.omitted": "true", "data_type": "xboolean"},
     ]
     res = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -954,7 +954,7 @@ def test_extract_variables_from_model_used_exposed(my_setup):
 
 def test_extract_variables_from_model_used(my_setup):
     node = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -1055,7 +1055,7 @@ def test_extract_variables_from_model_used(my_setup):
         {"missing.values.are.omitted": "true", "data_type": "xboolean"},
     ]
     res = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -1184,7 +1184,7 @@ def test_extract_variables_from_model_used(my_setup):
 
 def test_extract_variables_from_model_exposed(my_setup):
     node = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -1285,7 +1285,7 @@ def test_extract_variables_from_model_exposed(my_setup):
         {"missing.values.are.omitted": "true", "data_type": "xboolean"},
     ]
     res = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -1414,7 +1414,7 @@ def test_extract_variables_from_model_exposed(my_setup):
 
 def test_extract_variables_from_model_none(my_setup):
     node = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -1511,7 +1511,7 @@ def test_extract_variables_from_model_none(my_setup):
         {"missing.values.are.omitted": "true", "data_type": "xboolean"},
     ]
     res = kdlc.Node(
-        id=1,
+        node_id=1,
         name="Column Filter",
         factory=(
             "org.knime.base.node.preproc.filter."
@@ -1614,7 +1614,7 @@ def test_extract_variables_from_model_none(my_setup):
 
 def test_validate_node_from_schema(my_setup):
     node = kdlc.Node(
-        id=1,
+        node_id=1,
         name="CSV Reader",
         factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
         bundle_name="KNIME Base Nodes",

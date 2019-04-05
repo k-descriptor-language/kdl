@@ -15,8 +15,8 @@
 <config key="workflow_credentials"/>
 <config key="nodes">
     {% for node in nodes %}
-    <config key="node_{{node.id}}">
-        <entry key="id" type="xint" value="{{node.id}}" />
+    <config key="node_{{node.node_id}}">
+        <entry key="id" type="xint" value="{{node.node_id}}" />
         <entry key="node_settings_file" type="xstring" value="{{node.get_filename()}}" />
         <entry key="node_is_meta" type="xboolean" value="false" />
         <entry key="node_type" type="xstring" value="NativeNode" />
@@ -35,7 +35,7 @@
 </config>
 <config key="connections">
     {% for connection in connections %}
-    <config key="connection_{{connection.id}}">
+    <config key="connection_{{connection.connection_id}}">
         <entry key="sourceID" type="xint" value="{{connection.source_id}}" />
         <entry key="destID" type="xint" value="{{connection.dest_id}}" />
         <entry key="sourcePort" type="xint" value="{{connection.source_port}}" />
