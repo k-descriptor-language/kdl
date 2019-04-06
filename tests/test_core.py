@@ -141,7 +141,9 @@ def test_extract_from_input_xml_csv_var(my_setup):
     res.model = [
         {
             "url": "/Users/jared/knime-workspace/Example "
-            "Workflows/TheData/Misc/Demographics.csv"
+            "Workflows/TheData/Misc/Demographics.csv",
+            "used_variable": "TEST",
+            "exposed_variable": "TEST2",
         },
         {"colDelimiter": ","},
         {"rowDelimiter": "%%00010"},
@@ -182,7 +184,11 @@ def test_extract_from_input_xml_ttj_var(my_setup):
                 {
                     "included_names": [
                         {"array-size": 11},
-                        {"0": "MaritalStatus"},
+                        {
+                            "0": "MaritalStatus",
+                            "used_variable": "TEST",
+                            "exposed_variable": "TEST2",
+                        },
                         {"1": "Gender"},
                         {"2": "EstimatedYearlyIncome"},
                         {"3": "SentimentRating"},
