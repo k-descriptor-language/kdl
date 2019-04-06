@@ -1,5 +1,7 @@
 import json
 from kdlc.parser.KDLListener import KDLListener
+from kdlc.parser.KDLParser import KDLParser
+from kdlc.objects import Connection, Node
 
 
 class KDLLoader(KDLListener):
@@ -7,7 +9,9 @@ class KDLLoader(KDLListener):
         self.nodes = []
         self.connections = []
 
-    def exitNode_settings(self, ctx):
+    def exitNode_settings(
+        self: KDLListener, ctx: KDLParser.Node_settingsContext
+    ) -> None:
         node_number = ctx.node().node_id().NUMBER().getText()
         # print(f"nodeNumber: {node_number}")
 
@@ -18,16 +22,23 @@ class KDLLoader(KDLListener):
 
         # TODO: does this name even matter? if it does, we need to be defensive here
         node_name = node_settings["name"]
-
-        node = {
-            "id": node_number,
-            "filename": f"{node_name} (#{node_number})/settings.xml",
-            "settings": node_settings,
-        }
+        node = Node(
+            node_id=node_number,
+            name=node_name,
+            factory=node_settings["factory"],
+            bundle_name=node_settings["bundle_name"],
+            bundle_symbolic_name=node_settings["bundle_symbolic_name"],
+            bundle_version=node_settings["bundle_version"],
+            feature_name=node_settings["feature_name"],
+            feature_symbolic_name=node_settings["feature_symbolic_name"],
+            feature_version=node_settings["feature_version"],
+        )
+        node.port_count = node_settings["port_count"]
+        node.model = node_settings["model"]
 
         self.nodes.append(node)
 
-    def exitConnection(self, ctx):
+    def exitConnection(self: KDLListener, ctx: KDLParser.ConnectionContext) -> None:
         source_node = ctx.source_node().node()
         source_node_id = source_node.node_id().getText()
         destination_node = ctx.destination_node().node()
@@ -40,16 +51,14 @@ class KDLLoader(KDLListener):
             source_node_port = source_node.port().port_id().NUMBER().getText()
             destination_node_port = destination_node.port().port_id().NUMBER().getText()
         else:
-            ex = ValueError()
-            ex.strerror = "Invalid workflow connection"
+            ex = ValueError("Invalid workflow connection")
             raise ex
-
-        connection = {
-            "id": len(self.connections),
-            "source_id": source_node_id,
-            "dest_id": destination_node_id,
-            "source_port": source_node_port,
-            "dest_port": destination_node_port,
-        }
+        connection = Connection(
+            connection_id=len(self.connections),
+            source_id=source_node_id,
+            dest_id=destination_node_id,
+            source_port=source_node_port,
+            dest_port=destination_node_port,
+        )
 
         self.connections.append(connection)

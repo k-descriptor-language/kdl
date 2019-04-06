@@ -4,11 +4,13 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 from kdlc.parser.KDLLexer import KDLLexer
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.KDLLoader import KDLLoader
+from kdlc.objects import Node, Connection
+from typing import List
 
 
-def kdl_to_workflow(input_file, output_file):
-    input = FileStream(input_file)
-    lexer = KDLLexer(input)
+def kdl_to_workflow(input_file: str, output_file: str) -> None:
+    input_stream = FileStream(input_file)
+    lexer = KDLLexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = KDLParser(stream)
 
@@ -31,21 +33,28 @@ def kdl_to_workflow(input_file, output_file):
     build_knwf(listener.nodes, listener.connections, output_file)
 
 
-def update_workflow_with_kdl(input_file, output_file, modify_file):
+def update_workflow_with_kdl(
+    input_file: str, output_file: str, modify_file: str
+) -> None:
     pass
 
 
-def kdl_to_workflow_custom_template(input_file, output_file, nodes):
+def kdl_to_workflow_custom_template(
+    input_file: str, output_file: str, nodes: str
+) -> None:
     pass
 
 
-def workflow_to_kdl_custom_template(input_file, output_file, nodes):
+def workflow_to_kdl_custom_template(
+    input_file: str, output_file: str, nodes: str
+) -> None:
     pass
 
 
-def workflow_to_kdl(input_file, output_file):
+def workflow_to_kdl(input_file: str, output_file: str) -> None:
     # Extract workflow
     input_workflow_name = kdlc.unzip_workflow(input_file)
+
     input_workflow_path = f"{kdlc.INPUT_PATH}/{input_workflow_name}"
 
     # Parse connections from workflow.knime
@@ -55,14 +64,17 @@ def workflow_to_kdl(input_file, output_file):
     # print(input_connection_list)
 
     # Parse nodes from workflow.knime
-    input_node_list = kdlc.extract_nodes(f"{input_workflow_path}/workflow.knime")
-    # print(input_node_list)
+    node_filename_list = kdlc.extract_node_filenames(
+        f"{input_workflow_path}/workflow.knime"
+    )
+    # print(node_filename_list)
 
     # Parse settings.xml for each node in workflow.knime and add to node
-    for node in input_node_list:
-        infile = f'{input_workflow_path}/{node["filename"]}'
-        node["settings"] = kdlc.extract_from_input_xml(infile)
-        # print(node)
+    input_node_list = list()
+    for curr in node_filename_list:
+        infile = f'{input_workflow_path}/{curr["filename"]}'
+        node = kdlc.extract_from_input_xml(curr["node_id"], infile)
+        input_node_list.append(node)
     # print(input_node_list)
 
     kdlc.save_output_kdl_workflow(output_file, input_connection_list, input_node_list)
@@ -70,7 +82,9 @@ def workflow_to_kdl(input_file, output_file):
     kdlc.cleanup()
 
 
-def build_knwf(nodes, connections, output_filename):
+def build_knwf(
+    nodes: List[Node], connections: List[Connection], output_filename: str
+) -> None:
     # TODO: revisit this name logic
     output_wf_name = output_filename.replace(".knwf", "")
 
@@ -94,7 +108,7 @@ def build_knwf(nodes, connections, output_filename):
         # node["settings"]["model"][0]["url"] = "/path/to/other/file.txt"
         # TODO: uncomment lines 63-72 and add tests
         # try:
-        #     kdlc.validate_node_from_schema(node)
+        #     node.validate_node_from_schema()
         # except jsonschema.ValidationError as e:
         #     print(e.message)
         #     kdlc.cleanup()
@@ -104,7 +118,9 @@ def build_knwf(nodes, connections, output_filename):
         #     kdlc.cleanup()
         #     sys.exit(1)
         tree = kdlc.create_node_settings_from_template(node)
-        kdlc.save_node_settings_xml(tree, f'{output_workflow_path}/{node["filename"]}')
+        kdlc.save_node_settings_xml(
+            tree, f"{output_workflow_path}/{node.get_filename()}"
+        )
 
     # Zip output workflow into .knwf archive
     kdlc.create_output_workflow(output_wf_name)
