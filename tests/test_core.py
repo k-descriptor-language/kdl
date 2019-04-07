@@ -410,6 +410,13 @@ def test_extract_connections(my_setup):
     assert kdlc.extract_connections(f"{test_resources_dir}/workflow.knime") == result
 
 
+def test_extract_global_wf_variables(my_setup):
+    result = [{"test1": "test"}, {"test2": 1}, {"test3": 1.1}]
+    assert result == kdlc.extract_global_wf_variables(
+        f"{test_resources_dir}/workflow_var.knime"
+    )
+
+
 def test_create_node_settings_from_template_csv(my_setup):
     node = kdlc.Node(
         node_id="1",
@@ -723,6 +730,17 @@ def test_create_workflow_knime_from_template(my_setup):
     result_flattened = [i.tag for i in result.iter()]
 
     assert result_flattened == expected_result_flattened
+
+
+def test_set_class_for_global_variables_str(my_setup):
+    variables = [{"test1": "test"}, {"test2": 2}, {"test3": 3.0}]
+    result = [
+        {"test1": "test", "var_class": "STRING"},
+        {"test2": 2, "var_class": "INTEGER"},
+        {"test3": 3.0, "var_class": "DOUBLE"},
+    ]
+    kdlc.set_class_for_global_variables(variables)
+    assert result == variables
 
 
 def test_set_entry_element_type_string(my_setup):

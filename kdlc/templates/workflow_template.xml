@@ -24,7 +24,7 @@
         <entry key="value" type="xstring" value="{{value}}" />
         {% endif %}
     {% endfor %}
-    </config>
+    </config>e
 {% endfor %}
 </config>
 {% endif %}
