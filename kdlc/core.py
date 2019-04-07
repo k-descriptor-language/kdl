@@ -343,7 +343,11 @@ def create_workflow_knime_from_template(
     """
     set_class_for_global_variables(global_variable_list)
     template = jinja_env.get_template("workflow_template.xml")
-    data = {"nodes": node_list, "connections": connection_list, "variables": global_variable_list}
+    data = {
+        "nodes": node_list,
+        "connections": connection_list,
+        "variables": global_variable_list,
+    }
     return ET.ElementTree(ET.fromstring(template.render(data)))
 
 

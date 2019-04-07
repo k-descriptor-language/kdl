@@ -30,7 +30,9 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
     # print("==== connections ====")
     # print(listener.connections)
 
-    build_knwf(listener.nodes, listener.connections, listener.global_variables, output_file)
+    build_knwf(
+        listener.nodes, listener.connections, listener.global_variables, output_file
+    )
 
 
 def update_workflow_with_kdl(
@@ -89,7 +91,10 @@ def workflow_to_kdl(input_file: str, output_file: str) -> None:
 
 
 def build_knwf(
-    nodes: List[Node], connections: List[Connection], global_variables, output_filename: str
+    nodes: List[Node],
+    connections: List[Connection],
+    global_variables,
+    output_filename: str,
 ) -> None:
     # TODO: revisit this name logic
     output_wf_name = output_filename.replace(".knwf", "")
@@ -97,7 +102,9 @@ def build_knwf(
     # Generate and save workflow.knime in output directory
     output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_wf_name}"
 
-    output_workflow_knime = kdlc.create_workflow_knime_from_template(nodes, connections, global_variables)
+    output_workflow_knime = kdlc.create_workflow_knime_from_template(
+        nodes, connections, global_variables
+    )
     kdlc.save_workflow_knime(output_workflow_knime, output_workflow_path)
 
     # Generate and save XML for nodes in output directory

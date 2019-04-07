@@ -712,11 +712,14 @@ def test_create_workflow_knime_from_template(my_setup):
             "dest_port": "1",
         },
     ]
+    global_variable_list = []
 
     expected_result = ET.parse(f"{test_resources_dir}/workflow.knime")
     expected_result_flattened = [i.tag for i in expected_result.iter()]
 
-    result = kdlc.create_workflow_knime_from_template(node_list, connection_list)
+    result = kdlc.create_workflow_knime_from_template(
+        node_list, connection_list, global_variable_list
+    )
     result_flattened = [i.tag for i in result.iter()]
 
     assert result_flattened == expected_result_flattened
