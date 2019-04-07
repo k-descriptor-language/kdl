@@ -8,6 +8,7 @@ class KDLLoader(KDLListener):
     def __init__(self):
         self.nodes = []
         self.connections = []
+        self.global_variables = []
 
     def exitNode_settings(
         self: KDLListener, ctx: KDLParser.Node_settingsContext
@@ -62,3 +63,8 @@ class KDLLoader(KDLListener):
         )
 
         self.connections.append(connection)
+
+    def exitGlobal_variables(self, ctx: KDLParser.Global_variablesContext):
+        json_tokens = [i.getText() for i in ctx.json().children]
+        json_string = "".join(json_tokens)
+        self.global_variables = json.loads(json_string)

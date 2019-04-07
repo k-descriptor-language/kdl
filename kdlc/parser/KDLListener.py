@@ -89,6 +89,15 @@ class KDLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by KDLParser#global_variables.
+    def enterGlobal_variables(self, ctx:KDLParser.Global_variablesContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#global_variables.
+    def exitGlobal_variables(self, ctx:KDLParser.Global_variablesContext):
+        pass
+
+
     # Enter a parse tree produced by KDLParser#workflow.
     def enterWorkflow(self, ctx:KDLParser.WorkflowContext):
         pass

@@ -12,6 +12,22 @@
 </config>
 <entry key="customDescription" type="xstring" isnull="true" value=""/>
 <entry key="state" type="xstring" value="CONFIGURED"/>
+{% if variables %}
+<config key="workflow_variables">
+{% for variable in variables %}
+    <config key="Var_{{loop.index0}}">
+    {% for key, value in variable.items() %}
+        {% if key=="var_class" %}
+        <entry key="class" type="xstring" value="{{value}}" />
+        {% else %}
+        <entry key="name" type="xstring" value="{{key}}" />
+        <entry key="value" type="xstring" value="{{value}}" />
+        {% endif %}
+    {% endfor %}
+    </config>e
+{% endfor %}
+</config>
+{% endif %}
 <config key="workflow_credentials"/>
 <config key="nodes">
     {% for node in nodes %}

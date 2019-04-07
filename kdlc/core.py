@@ -6,7 +6,7 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
 import json
 import textwrap
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Union
 from kdlc.objects import Node, Connection
 
 jinja_env = Environment(
@@ -265,6 +265,44 @@ def extract_connections(input_file: str) -> List[Connection]:
     return connection_list
 
 
+def extract_global_wf_variables(input_file):
+    """
+    Extracts global workflow variables from input workflow.knime file
+
+    Args:
+        input_file (str): Name of input workflow.knime file
+
+    Returns:
+        list: The list of global workflow variable dicts within the KNIME workflow
+    """
+    global_variable_list = list()
+    base_tree = ET.parse(input_file)
+    root = base_tree.getroot()
+    for child in root.findall(
+        "./knime:config[@key='workflow_variables']/knime:config", NS
+    ):
+        variable = dict()
+        variable_name_ele = child.find("./knime:entry[@key='name']", NS)
+        if variable_name_ele is not None:
+            variable_name = variable_name_ele.attrib["value"]
+
+        variable_class_ele = child.find("./knime:entry[@key='class']", NS)
+        if variable_class_ele is not None:
+            variable_class = variable_class_ele.attrib["value"]
+
+        variable_value_ele = child.find("./knime:entry[@key='value']", NS)
+        if variable_value_ele is not None and variable_class is not None:
+            if variable_class == "STRING":
+                variable_value = variable_value_ele.attrib["value"]
+            elif variable_class == "DOUBLE":
+                variable_value = float(variable_value_ele.attrib["value"])
+            elif variable_class == "INTEGER":
+                variable_value = int(variable_value_ele.attrib["value"])
+        variable[variable_name] = variable_value
+        global_variable_list.append(variable)
+    return global_variable_list
+
+
 def create_node_settings_from_template(node: Node) -> ET.ElementTree:
     """
     Creates an ElementTree with the provided node definition
@@ -290,7 +328,7 @@ def create_node_settings_from_template(node: Node) -> ET.ElementTree:
 
 
 def create_workflow_knime_from_template(
-    node_list: List[Node], connection_list: List[Connection]
+    node_list: List[Node], connection_list: List[Connection], global_variable_list
 ) -> ET.ElementTree:
     """
     Creates an ElementTree with the provided node list and connection list
@@ -298,14 +336,39 @@ def create_workflow_knime_from_template(
     Args:
         node_list (list): List of Node definitions
         connection_list (list): List of Connections amongst nodes
+        global_variable_list (list): List of global workflow variables
 
     Returns:
         ElementTree: ElementTree populated with nodes and their associated
         connections
     """
+    set_class_for_global_variables(global_variable_list)
     template = jinja_env.get_template("workflow_template.xml")
-    data = {"nodes": node_list, "connections": connection_list}
+    data = {
+        "nodes": node_list,
+        "connections": connection_list,
+        "variables": global_variable_list,
+    }
     return ET.ElementTree(ET.fromstring(template.render(data)))
+
+
+def set_class_for_global_variables(variable_list):
+    """
+    Sets var_class property for each dict in variable_list
+    for generating XML template
+
+    Args:
+        variable_list (list): List of global variable dicts
+    """
+    for variable in variable_list:
+        name = list(variable.keys())[0]
+        value = variable[name]
+        if type(value) == int:
+            variable["var_class"] = "INTEGER"
+        elif type(value) == float:
+            variable["var_class"] = "DOUBLE"
+        else:
+            variable["var_class"] = "STRING"
 
 
 def set_entry_element_type(entry: dict) -> None:
@@ -400,7 +463,10 @@ def create_output_workflow(workflow_name: str) -> None:
 
 
 def save_output_kdl_workflow(
-    output_file: str, connection_list: List[Connection], node_list: List[Node]
+    output_file: str,
+    connection_list: List[Connection],
+    node_list: List[Node],
+    global_variable_list: List[Dict[str, Union[str, int, float]]],
 ) -> None:
     """
     Outputs node connections and node JSON as .kdl file
@@ -409,6 +475,8 @@ def save_output_kdl_workflow(
         output_file (str): Name of output kdl file
         connection_list (list): list of Connections to be written
         node_list (list): list of Nodes to be written
+        global_variable_list(list): Optional list of global workflow
+            variables to be written
     """
 
     wrapper = textwrap.TextWrapper(
@@ -416,18 +484,24 @@ def save_output_kdl_workflow(
     )
     with open(output_file, "w") as file:
         file.write("Nodes {\n")
-        for node in node_list:
+        for i, node in enumerate(node_list):
             settings = node.__dict__.copy()
             settings.pop("node_id")
             settings.pop("variables")
             output_text = f"(n{node.node_id}): {json.dumps(settings, indent=4)}"
+            if i < len(node_list) - 1:
+                output_text += ","
             for line in output_text.splitlines():
                 wrapped = wrapper.fill(line)
                 file.write(f"{wrapped}\n")
-            file.write("\n")
         file.write("}\n\n")
         file.write("Workflow {\n")
-        for connection in connection_list:
+        if global_variable_list:
+            output_text = f"variables: {json.dumps(global_variable_list, indent=4)},"
+            for line in output_text.splitlines():
+                wrapped = wrapper.fill(line)
+                file.write(f"{wrapped}\n")
+        for i, connection in enumerate(connection_list):
             if connection.source_port == "0" and connection.dest_port == "0":
                 wrapped = wrapper.fill(
                     f"(n{connection.source_id})~~>" f"(n{connection.dest_id})\n"
@@ -437,6 +511,8 @@ def save_output_kdl_workflow(
                     f"(n{connection.source_id}:{connection.source_port})-->"
                     f"(n{connection.dest_id}:{connection.dest_port})\n"
                 )
+            if i < len(connection_list) - 1:
+                wrapped += ","
             file.write(f"{wrapped}\n")
         file.write("}\n")
 

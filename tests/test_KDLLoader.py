@@ -377,3 +377,70 @@ def test_exitConnection_fail(mocker):
 
     with pytest.raises(Exception):
         listener.exitConnection(ctx)
+
+
+def test_exitGlobal_variables(mocker):
+    ctx = mocker.MagicMock()
+
+    token_l_paren = mocker.MagicMock()
+    token_l_paren.getText.return_value = "{"
+    token_r_paren = mocker.MagicMock()
+    token_r_paren.getText.return_value = "}"
+    token_d_quote = mocker.MagicMock()
+    token_d_quote.getText.return_value = '"'
+    token_l_bracket = mocker.MagicMock()
+    token_l_bracket.getText.return_value = "["
+    token_r_bracket = mocker.MagicMock()
+    token_r_bracket.getText.return_value = "]"
+    token_colon = mocker.MagicMock()
+    token_colon.getText.return_value = ":"
+    token_comma = mocker.MagicMock()
+    token_comma.getText.return_value = ","
+
+    token_t = mocker.MagicMock()
+    token_t.getText.return_value = "t"
+    token_one = mocker.MagicMock()
+    token_one.getText.return_value = "1"
+    token_dot = mocker.MagicMock()
+    token_dot.getText.return_value = "."
+
+    children = [
+        token_l_bracket,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_dot,
+        token_one,
+        token_r_paren,
+        token_r_bracket,
+    ]
+
+    ctx.json.return_value.children = children
+    listener = kdlc.commands.KDLLoader()
+
+    listener.exitGlobal_variables(ctx)
+
+    expected_variables = [{"t": "t"}, {"t": 1}, {"t": 1.1}]
+
+    assert listener.global_variables == expected_variables

@@ -10,7 +10,8 @@ Nodes {
 	    "feature_version": "3.7.1.v201901291053",
 	    "model": [
 	        {
-	            "url": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv"
+	            "url": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv",
+	            "used_variable": "input_file"
 	        },
 	        {
 	            "colDelimiter": ","
@@ -68,10 +69,12 @@ Nodes {
 	                {
 	                    "included_names": [
 	                        {
-	                            "array-size": 12
+	                            "array-size": 11
 	                        },
 	                        {
-	                            "0": "MaritalStatus"
+	                            "0": "MaritalStatus",
+	                            "used_variable": "TEST",
+	                            "exposed_variable": "TEST2"
 	                        },
 	                        {
 	                            "1": "Gender"
@@ -86,25 +89,22 @@ Nodes {
 	                            "4": "WebActivity"
 	                        },
 	                        {
-	                            "5": "NumberOfContracts"
+	                            "5": "Age"
 	                        },
 	                        {
-	                            "6": "Age"
+	                            "6": "Target"
 	                        },
 	                        {
-	                            "7": "Target"
+	                            "7": "Available401K"
 	                        },
 	                        {
-	                            "8": "Available401K"
+	                            "8": "CustomerValueSegment"
 	                        },
 	                        {
-	                            "9": "CustomerValueSegment"
+	                            "9": "ChurnScore"
 	                        },
 	                        {
-	                            "10": "ChurnScore"
-	                        },
-	                        {
-	                            "11": "CallActivity"
+	                            "10": "CallActivity"
 	                        }
 	                    ]
 	                },
@@ -210,7 +210,8 @@ Nodes {
 	                            "array-size": 11
 	                        },
 	                        {
-	                            "0": "MaritalStatus"
+	                            "0": "MaritalStatus",
+	                            "exposed_variable": "TEST"
 	                        },
 	                        {
 	                            "1": "Gender"
@@ -304,6 +305,12 @@ Nodes {
 }
 
 Workflow {
+	variables: [
+	    {
+	        "input_file": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv"
+	    }
+	],
 	(n1:1)-->(n3:1),
-	(n3:1)-->(n2:1)
+	(n3:1)-->(n2:1),
+	(n3)~~>(n2)
 }
