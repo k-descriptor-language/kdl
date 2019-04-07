@@ -336,6 +336,7 @@ def create_workflow_knime_from_template(
     Args:
         node_list (list): List of Node definitions
         connection_list (list): List of Connections amongst nodes
+        global_variable_list (list): List of global workflow variables
 
     Returns:
         ElementTree: ElementTree populated with nodes and their associated
