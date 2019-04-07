@@ -5,7 +5,7 @@
 grammar KDL;
 import JSON;
 
-WS          : [ \t\n]+ -> skip ;
+WS          : [ \t\n\r]+ -> skip ;
 
 ARROW       : '-->' ;
 
@@ -14,6 +14,8 @@ VARIABLE_ARROW: '~~>' ;
 NODEPREFIX  : 'n' ;
 
 COLON       : ':' ;
+
+COMMA       : ',' ;
 
 node_id     : NUMBER ;
 
@@ -25,7 +27,7 @@ node        : '(' NODEPREFIX node_id port? ')' ;
 
 node_settings: node COLON json ;
 
-nodes       : 'Nodes {' node_settings+ '}' ;
+nodes       : 'Nodes {' node_settings (',' node_settings)* '}' ;
 
 source_node   : node ;
 
@@ -33,5 +35,7 @@ destination_node  : node ;
 
 connection  : source_node (ARROW|VARIABLE_ARROW) destination_node ;
 
-workflow: 'Workflow {' connection+ '}' ;
+global_variables: 'variables: ' json ',' ;
+
+workflow: 'Workflow {' global_variables? connection (',' connection)* '}' ;
 

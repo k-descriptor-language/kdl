@@ -76,6 +76,10 @@ def test_workflow_to_kdl(mocker):
     extract_connections.return_value = []
     mocker.patch("kdlc.extract_connections", new=extract_connections)
 
+    extract_global_wf_variables = mocker.MagicMock()
+    extract_global_wf_variables.return_value = []
+    mocker.patch("kdlc.extract_global_wf_variables", new=extract_global_wf_variables)
+
     node_dict = {"node_id": "1", "filename": "test.xml"}
     extract_node_filenames = mocker.MagicMock()
     extract_node_filenames.return_value = [node_dict]
@@ -106,11 +110,14 @@ def test_workflow_to_kdl(mocker):
 
     unzip_workflow.assert_called_with(input_file)
     extract_connections.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
+    extract_global_wf_variables.assert_called_with(
+        f"{kdlc.INPUT_PATH}/test/workflow.knime"
+    )
     extract_node_filenames.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
     extract_from_input_xml.assert_called_with(
         node_dict["node_id"], f'{kdlc.INPUT_PATH}/test/{node_dict["filename"]}'
     )
-    save_output_kdl_workflow.assert_called_with(output_file, [], [node])
+    save_output_kdl_workflow.assert_called_with(output_file, [], [node], [])
     cleanup.assert_called()
 
 
