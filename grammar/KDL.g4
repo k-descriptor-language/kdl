@@ -27,7 +27,7 @@ node        : '(' NODEPREFIX node_id port? ')' ;
 
 node_settings: node COLON json ;
 
-nodes       : 'Nodes {' node_settings (',' node_settings)* '}' ;
+nodes       : 'Nodes {' node_settings (COMMA node_settings)* '}' ;
 
 source_node   : node ;
 
@@ -35,7 +35,7 @@ destination_node  : node ;
 
 connection  : source_node (ARROW|VARIABLE_ARROW) destination_node ;
 
-global_variables: 'variables: ' json ',' ;
+global_variables: 'variables: ' json COMMA ;
 
-workflow: 'Workflow {' global_variables? connection (',' connection)* '}' ;
+workflow: 'Workflow {' global_variables? connection (COMMA connection)* '}' ;
 
