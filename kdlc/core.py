@@ -352,6 +352,13 @@ def create_workflow_knime_from_template(
 
 
 def set_class_for_global_variables(variable_list):
+    """
+    Sets var_class property for each dict in variable_list
+    for generating XML template
+
+    Args:
+        variable_list (list): List of global variable dicts
+    """
     for variable in variable_list:
         name = list(variable.keys())[0]
         value = variable[name]
@@ -361,7 +368,6 @@ def set_class_for_global_variables(variable_list):
             variable["var_class"] = "DOUBLE"
         else:
             variable["var_class"] = "STRING"
-        variable[name] = str(value)
 
 
 def set_entry_element_type(entry: dict) -> None:
