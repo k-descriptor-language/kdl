@@ -8,7 +8,6 @@ Nodes {
 	    "feature_name": "KNIME Core",
 	    "feature_symbolic_name": "org.knime.features.base.feature.group",
 	    "feature_version": "3.7.1.v201901291053",
-	    "port_count": 1,
 	    "model": [
 	        {
 	            "rowIndices": [
@@ -335,9 +334,9 @@ Nodes {
 	                }
 	            ]
 	        }
-	    ]
-	}
-
+	    ],
+	    "port_count": 1
+	},
 	(n8): {
 	    "name": "Table to JSON",
 	    "factory": "org.knime.json.node.fromtable.TableToJsonNodeFactory",
@@ -347,7 +346,6 @@ Nodes {
 	    "feature_name": "KNIME JSON-Processing",
 	    "feature_symbolic_name": "org.knime.features.json.feature.group",
 	    "feature_version": "3.7.1.v201901281201",
-	    "port_count": 1,
 	    "model": [
 	        {
 	            "selectedColumns": [
@@ -420,9 +418,9 @@ Nodes {
 	        {
 	            "missing.values.are.omitted": true
 	        }
-	    ]
-	}
-
+	    ],
+	    "port_count": 1
+	},
 	(n20): {
 	    "name": "POST Request",
 	    "factory": "org.knime.rest.nodes.post.RestPostNodeFactory",
@@ -432,7 +430,6 @@ Nodes {
 	    "feature_name": "KNIME REST Client Extension",
 	    "feature_symbolic_name": "org.knime.features.rest.feature.group",
 	    "feature_version": "3.7.0.v201808081048",
-	    "port_count": 1,
 	    "model": [
 	        {
 	            "Use constant URI": true
@@ -666,20 +663,20 @@ Nodes {
 	        {
 	            "Use constant request body": true
 	        },
-        {
-            "Constant request body": "[ {%%00010  \"Name\" : \"Aa\",%%00010  \"Type\" : \"a\",%%00010  \"Score\" :
-6%%00010}, {%%00010  \"Name\" : \"Bb\",%%00010  \"Type\" : \"a\",%%00010  \"Score\" : 3%%00010}, {%%00010  \"Name\" :
-\"Cc\",%%00010  \"Type\" : \"a\",%%00010  \"Score\" : 4%%00010}, {%%00010  \"Name\" : \"Dd\",%%00010  \"Type\" :
-\"a\",%%00010  \"Score\" : 2%%00010}, {%%00010  \"Name\" : \"Aa\",%%00010  \"Type\" : \"b\",%%00010  \"Score\" :
-1%%00010}, {%%00010  \"Name\" : \"Cc\",%%00010  \"Type\" : \"b\",%%00010  \"Score\" : 9%%00010}, {%%00010  \"Name\" :
-\"Dd\",%%00010  \"Type\" : \"b\",%%00010  \"Score\" : 3%%00010} ]"
-        },
+	        {
+	            "Constant request body": "[ {%%00010  \"Name\" : \"Aa\",%%00010  \"Type\" : \"a\",%%00010  \"Score\" :
+	6%%00010}, {%%00010  \"Name\" : \"Bb\",%%00010  \"Type\" : \"a\",%%00010  \"Score\" : 3%%00010}, {%%00010  \"Name\" :
+	\"Cc\",%%00010  \"Type\" : \"a\",%%00010  \"Score\" : 4%%00010}, {%%00010  \"Name\" : \"Dd\",%%00010  \"Type\" :
+	\"a\",%%00010  \"Score\" : 2%%00010}, {%%00010  \"Name\" : \"Aa\",%%00010  \"Type\" : \"b\",%%00010  \"Score\" :
+	1%%00010}, {%%00010  \"Name\" : \"Cc\",%%00010  \"Type\" : \"b\",%%00010  \"Score\" : 9%%00010}, {%%00010  \"Name\" :
+	\"Dd\",%%00010  \"Type\" : \"b\",%%00010  \"Score\" : 3%%00010} ]"
+	        },
 	        {
 	            "Request body column": "JSON"
 	        }
-	    ]
-	}
-
+	    ],
+	    "port_count": 1
+	},
 	(n21): {
 	    "name": "IF Switch",
 	    "factory": "org.knime.base.node.switches.manualif.ManualIfNodeFactory",
@@ -689,7 +686,6 @@ Nodes {
 	    "feature_name": "KNIME Core",
 	    "feature_symbolic_name": "org.knime.features.base.feature.group",
 	    "feature_version": "3.7.1.v201901291053",
-	    "port_count": 2,
 	    "model": [
 	        {
 	            "PortChoice_Internals": [
@@ -717,13 +713,13 @@ Nodes {
 	        {
 	            "activate_all_outputs_during_configure": true
 	        }
-	    ]
+	    ],
+	    "port_count": 2
 	}
-
 }
 
 Workflow {
-	(n1:1)-->(n8:1)
-	(n8:1)-->(n21:1)
+	(n1:1)-->(n8:1),
+	(n8:1)-->(n21:1),
 	(n21:2)-->(n20:1)
 }

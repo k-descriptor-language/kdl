@@ -49,8 +49,7 @@ Nodes {
                 "limitAnalysisCount": -1
             }
         ]
-    }
-
+    },
     (n2): {
         "name": "Table to JSON",
         "factory": "org.knime.json.node.fromtable.TableToJsonNodeFactory",
@@ -189,8 +188,7 @@ Nodes {
                 "missing.values.are.omitted": true
             }
         ]
-    }
-
+    },
     (n3): {
         "name": "Column Filter",
         "factory": "org.knime.base.node.preproc.filter.column.DataColumnSpecFilterNodeFactory",
@@ -306,6 +304,6 @@ Nodes {
 }
 
 Workflow {
-  (n1:1)-->(n3:1)
+  (n1:1)-->(n3:1),
   (n3:1)-->(n2:1)
 }
