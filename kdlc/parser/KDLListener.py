@@ -53,6 +53,15 @@ class KDLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by KDLParser#meta_settings.
+    def enterMeta_settings(self, ctx:KDLParser.Meta_settingsContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#meta_settings.
+    def exitMeta_settings(self, ctx:KDLParser.Meta_settingsContext):
+        pass
+
+
     # Enter a parse tree produced by KDLParser#nodes.
     def enterNodes(self, ctx:KDLParser.NodesContext):
         pass
@@ -80,12 +89,57 @@ class KDLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by KDLParser#meta_in.
+    def enterMeta_in(self, ctx:KDLParser.Meta_inContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#meta_in.
+    def exitMeta_in(self, ctx:KDLParser.Meta_inContext):
+        pass
+
+
+    # Enter a parse tree produced by KDLParser#meta_in_node.
+    def enterMeta_in_node(self, ctx:KDLParser.Meta_in_nodeContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#meta_in_node.
+    def exitMeta_in_node(self, ctx:KDLParser.Meta_in_nodeContext):
+        pass
+
+
+    # Enter a parse tree produced by KDLParser#meta_out.
+    def enterMeta_out(self, ctx:KDLParser.Meta_outContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#meta_out.
+    def exitMeta_out(self, ctx:KDLParser.Meta_outContext):
+        pass
+
+
+    # Enter a parse tree produced by KDLParser#meta_out_node.
+    def enterMeta_out_node(self, ctx:KDLParser.Meta_out_nodeContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#meta_out_node.
+    def exitMeta_out_node(self, ctx:KDLParser.Meta_out_nodeContext):
+        pass
+
+
     # Enter a parse tree produced by KDLParser#connection.
     def enterConnection(self, ctx:KDLParser.ConnectionContext):
         pass
 
     # Exit a parse tree produced by KDLParser#connection.
     def exitConnection(self, ctx:KDLParser.ConnectionContext):
+        pass
+
+
+    # Enter a parse tree produced by KDLParser#meta_connection.
+    def enterMeta_connection(self, ctx:KDLParser.Meta_connectionContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#meta_connection.
+    def exitMeta_connection(self, ctx:KDLParser.Meta_connectionContext):
         pass
 
 

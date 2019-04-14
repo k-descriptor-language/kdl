@@ -4,7 +4,7 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 from kdlc.parser.KDLLexer import KDLLexer
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.KDLLoader import KDLLoader
-from kdlc.objects import Node, Connection
+from kdlc.objects import Node, Connection, Workflow
 from typing import List
 
 
@@ -61,29 +61,31 @@ def workflow_to_kdl(input_file: str, output_file: str) -> None:
 
     input_workflow_filename = f"{input_workflow_path}/workflow.knime"
 
-    # Parse connections from workflow.knime
-    input_connection_list = kdlc.extract_connections(input_workflow_filename)
-    # print(input_connection_list)
-
     # Parse global variables from workflow.knime
     input_global_variable_list = kdlc.extract_global_wf_variables(
         input_workflow_filename
     )
     # print(input_global_variable_list)
 
-    # Parse nodes from workflow.knime
+    # Parse nodes filenames from workflow.knime
     node_filename_list = kdlc.extract_node_filenames(input_workflow_filename)
     # print(node_filename_list)
 
-    # Parse settings.xml for each node in workflow.knime and add to node
+    # Parse settings.xml for each node in workflow.knime
     input_node_list = kdlc.extract_nodes_from_filenames(
         input_workflow_path, node_filename_list
     )
     # print(input_node_list)
 
-    kdlc.save_output_kdl_workflow(
-        output_file, input_connection_list, input_node_list, input_global_variable_list
+    # Parse connections from workflow.knime
+    input_connection_list = kdlc.extract_connections(
+        input_workflow_filename, input_node_list
     )
+    # print(input_connection_list)
+
+    # Create workflow and save output KDL
+    input_workflow = Workflow(input_connection_list, input_global_variable_list)
+    kdlc.save_output_kdl_workflow(output_file, input_workflow, input_node_list)
 
     kdlc.cleanup()
 

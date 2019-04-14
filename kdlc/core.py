@@ -4,10 +4,9 @@ import shutil
 import xml.etree.ElementTree as ET
 from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
-import json
 import textwrap
-from typing import List, Any, Dict, Union
-from kdlc.objects import Node, Connection, MetaNode, AbstractNode
+from typing import List, Any, Dict
+from kdlc.objects import Node, Connection, MetaNode, AbstractNode, Workflow
 
 jinja_env = Environment(
     loader=PackageLoader("kdlc", "templates"),
@@ -23,6 +22,9 @@ OUTPUT_PATH = TMP_OUTPUT_DIR.name
 NS = {"knime": "http://www.knime.org/2008/09/XMLConfig"}
 ENTRY_TAG = f'{{{NS["knime"]}}}entry'
 CONFIG_TAG = f'{{{NS["knime"]}}}config'
+
+META_IN = MetaNode(node_id="-1", name="META_IN")
+META_OUT = MetaNode(node_id="-1", name="META_OUT")
 
 
 def unzip_workflow(input_file: str) -> str:
@@ -247,12 +249,13 @@ def extract_nodes_from_filenames(workflow_path, node_filenames, parent_id=None):
             node = extract_node_from_settings_xml(curr["node_id"], infile)
             input_node_list.append(node)
         elif curr["node_type"] == "MetaNode":
-            connections = extract_connections(infile)
+            # connections = extract_connections(infile)
             children = extract_nodes_from_filenames(
                 workflow_path=os.path.dirname(infile),
                 node_filenames=curr["children"],
                 parent_id=curr["node_id"],
             )
+            connections = extract_connections(infile, children)
             node = MetaNode(
                 node_id=curr["node_id"],
                 name=curr["name"],
@@ -260,22 +263,34 @@ def extract_nodes_from_filenames(workflow_path, node_filenames, parent_id=None):
                 connections=connections,
             )
             input_node_list.append(node)
-            input_node_list = input_node_list + children
+            # input_node_list = input_node_list + children
 
     return input_node_list
 
 
-def extract_connections(input_file: str) -> List[Connection]:
+def flatten_node_list(node_list):
+    flattened_list = list()
+    for node in node_list:
+        flattened_list.append(node)
+        if type(node) is MetaNode:
+            flattened_list += flatten_node_list(node.children)
+    return flattened_list
+
+
+def extract_connections(
+    input_file: str, node_list: List[AbstractNode]
+) -> List[Connection]:
     """
     Extracts a list of connections from the provided KNIME workflow
 
     Args:
         input_file (str): Name of input workflow.knime file
+        node_list (List[AbstractNode]): List of nodes for connections
 
     Returns:
         list: The list of connections within the KNIME workflow
     """
-
+    node_dict = {i.node_id.rsplit(".", 1)[-1]: i for i in node_list}
     connection_list = list()
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()
@@ -285,10 +300,12 @@ def extract_connections(input_file: str) -> List[Connection]:
         source_id_ele = child.find("./knime:entry[@key='sourceID']", NS)
         if source_id_ele is not None:
             source_id = source_id_ele.attrib["value"]
+            source_node = META_IN if source_id == "-1" else node_dict[source_id]
 
         dest_id_ele = child.find("./knime:entry[@key='destID']", NS)
         if dest_id_ele is not None:
             dest_id = dest_id_ele.attrib["value"]
+            dest_node = META_OUT if dest_id == "-1" else node_dict[dest_id]
 
         source_port_ele = child.find("./knime:entry[@key='sourcePort']", NS)
         if source_port_ele is not None:
@@ -301,7 +318,9 @@ def extract_connections(input_file: str) -> List[Connection]:
         connection = Connection(
             connection_id=i,
             source_id=source_id,
+            source_node=source_node,
             dest_id=dest_id,
+            dest_node=dest_node,
             source_port=source_port,
             dest_port=dest_port,
         )
@@ -507,90 +526,31 @@ def create_output_workflow(workflow_name: str) -> None:
 
 
 def save_output_kdl_workflow(
-    output_file: str,
-    connection_list: List[Connection],
-    node_list: List[AbstractNode],
-    global_variable_list: List[Dict[str, Union[str, int, float]]],
+    output_file: str, workflow: Workflow, node_list: List[AbstractNode]
 ) -> None:
     """
     Outputs node connections and node JSON as .kdl file
 
     Args:
         output_file (str): Name of output kdl file
-        connection_list (list): list of Connections to be written
-        node_list (list): list of Nodes to be written
-        global_variable_list(list): Optional list of global workflow
-            variables to be written
+        workflow (Workflow): Workflow to be written
+        node_list (List[AbstractNode]): list of Nodes to be written
     """
-
+    flattened_list = flatten_node_list(node_list)
     wrapper = textwrap.TextWrapper(
         initial_indent="\t", subsequent_indent="\t", width=120
     )
     with open(output_file, "w") as file:
         file.write("Nodes {\n")
-        for i, node in enumerate(node_list):
-            if type(node) is Node:
-                settings = node.__dict__.copy()
-                settings.pop("node_id")
-                settings.pop("variables")
-                output_text = f"(n{node.node_id}): {json.dumps(settings, indent=4)}"
-            elif type(node) is MetaNode:
-                output_connections = ""
-                for i, connection in enumerate(node.connections):
-                    if connection.source_id == "-1":
-                        wrapped = wrapper.fill(
-                            f"(META_IN:{int(connection.source_port) + 1})-->"
-                            f"(n{connection.dest_id}:{connection.dest_port})\n"
-                        )
-                    elif connection.dest_id == "-1":
-                        wrapped = wrapper.fill(
-                            f"(n{connection.source_id}:{connection.source_port})-->"
-                            f"(META_OUT:{int(connection.dest_port) + 1})\n"
-                        )
-                    else:
-                        wrapped = wrapper.fill(
-                            f"(n{connection.source_id}:{connection.source_port})-->"
-                            f"(n{connection.dest_id}:{connection.dest_port})\n"
-                        )
-                    if i < len(node.connections) - 1:
-                        wrapped += ",\n"
-                    output_connections += wrapped
-                output_text = (
-                    f"(n{node.node_id}): "
-                    "{\n"
-                    f'    "name": "{node.name}",\n'
-                    '    "type": "MetaNode",\n'
-                    '    "connections": {\n'
-                    f"{output_connections}\n"
-                    "    }\n"
-                    "}"
-                )
-            if i < len(node_list) - 1:
+        for i, node in enumerate(flattened_list):
+            output_text = node.kdl_str()
+            if i < len(flattened_list) - 1:
                 output_text += ","
             for line in output_text.splitlines():
                 wrapped = wrapper.fill(line)
                 file.write(f"{wrapped}\n")
         file.write("}\n\n")
-        file.write("Workflow {\n")
-        if global_variable_list:
-            output_text = f"variables: {json.dumps(global_variable_list, indent=4)},"
-            for line in output_text.splitlines():
-                wrapped = wrapper.fill(line)
-                file.write(f"{wrapped}\n")
-        for i, connection in enumerate(connection_list):
-            if connection.source_port == "0" and connection.dest_port == "0":
-                wrapped = wrapper.fill(
-                    f"(n{connection.source_id})~~>" f"(n{connection.dest_id})\n"
-                )
-            else:
-                wrapped = wrapper.fill(
-                    f"(n{connection.source_id}:{connection.source_port})-->"
-                    f"(n{connection.dest_id}:{connection.dest_port})\n"
-                )
-            if i < len(connection_list) - 1:
-                wrapped += ","
-            file.write(f"{wrapped}\n")
-        file.write("}\n")
+        file.write(workflow.kdl_str())
 
 
 def cleanup() -> None:
