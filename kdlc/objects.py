@@ -1,7 +1,8 @@
 import os
 import json
 import jsonschema
-from typing import Any
+from typing import Any, List
+from abc import ABC
 
 
 class Connection:
@@ -29,7 +30,23 @@ class Connection:
         return not self.__eq__(other)
 
 
-class Node:
+class AbstractNode(ABC):
+    def __init__(self, node_id, name):
+        self.node_id = node_id
+        self.name = name
+        super(AbstractNode, self).__init__()
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        else:
+            return False
+
+    def __ne__(self, other: Any) -> bool:
+        return not self.__eq__(other)
+
+
+class Node(AbstractNode):
     def __init__(
         self,
         node_id: str,
@@ -42,8 +59,7 @@ class Node:
         feature_symbolic_name: str,
         feature_version: str,
     ):
-        self.node_id = node_id
-        self.name = name
+        super().__init__(node_id=node_id, name=name)
         self.factory = factory
         self.bundle_name = bundle_name
         self.bundle_symbolic_name = bundle_symbolic_name
@@ -54,15 +70,6 @@ class Node:
         self.model: list = list()
         self.variables: list = list()
         self.port_count: int = 0
-
-    def __eq__(self, other: Any) -> bool:
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        else:
-            return False
-
-    def __ne__(self, other: Any) -> bool:
-        return not self.__eq__(other)
 
     def merge_variables_into_model(self) -> None:
         """
@@ -180,3 +187,16 @@ class Node:
 
     def get_filename(self) -> str:
         return f"{self.name} (#{self.node_id})/settings.xml"
+
+
+class MetaNode(AbstractNode):
+    def __init__(
+        self,
+        node_id: str,
+        name: str,
+        children: List[Node],
+        connections: List[Connection],
+    ):
+        super().__init__(node_id=node_id, name=name)
+        self.children = children
+        self.connections = connections

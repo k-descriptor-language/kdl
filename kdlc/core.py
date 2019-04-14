@@ -7,7 +7,7 @@ import tempfile
 import json
 import textwrap
 from typing import List, Any, Dict, Union
-from kdlc.objects import Node, Connection
+from kdlc.objects import Node, Connection, MetaNode, AbstractNode
 
 jinja_env = Environment(
     loader=PackageLoader("kdlc", "templates"),
@@ -43,7 +43,7 @@ def unzip_workflow(input_file: str) -> str:
     return os.listdir(INPUT_PATH).pop()
 
 
-def extract_from_input_xml(node_id: str, input_file: str) -> Node:
+def extract_node_from_settings_xml(node_id: str, input_file: str) -> Node:
     """
     Parses the provided input file and returns a populated dict with
     associated values
@@ -194,7 +194,7 @@ def extract_config_tag(tree: ET.Element) -> dict:
     return config
 
 
-def extract_node_filenames(input_file: str) -> List[dict]:
+def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
     """
     Extracts the list of nodes from the provided KNIME workflow
 
@@ -204,11 +204,12 @@ def extract_node_filenames(input_file: str) -> List[dict]:
     Returns:
         list: The list of node file names within the KNIME workflow
     """
+    input_path = os.path.dirname(input_file)
     node_list = list()
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()
     for child in root.findall("./knime:config[@key='nodes']/knime:config", NS):
-        node = dict()
+        node: Dict[str, Any] = dict()
         node_id_ele = child.find("./knime:entry[@key='id']", NS)
         if node_id_ele is not None:
             node["node_id"] = node_id_ele.attrib["value"]
@@ -217,8 +218,51 @@ def extract_node_filenames(input_file: str) -> List[dict]:
         if settings_file_ele is not None:
             node["filename"] = settings_file_ele.attrib["value"]
 
+        node_type_ele = child.find("./knime:entry[@key='node_type']", NS)
+        if node_type_ele is not None:
+            node["node_type"] = node_type_ele.attrib["value"]
+
+        if node["node_type"] == "MetaNode":
+            base_tree = ET.parse(f"{input_path}/{node['filename']}")
+            root = base_tree.getroot()
+
+            name_ele = root.find("./knime:entry[@key='name']", NS)
+            if name_ele is not None:
+                node["name"] = name_ele.attrib["value"]
+            node["children"] = extract_node_filenames(
+                f"{input_path}/{node['filename']}"
+            )
+
         node_list.append(node)
     return node_list
+
+
+def extract_nodes_from_filenames(workflow_path, node_filenames, parent_id=None):
+    input_node_list = list()
+    for curr in node_filenames:
+        infile = f'{workflow_path}/{curr["filename"]}'
+        if parent_id is not None:
+            curr["node_id"] = f"{parent_id}.{curr['node_id']}"
+        if curr["node_type"] == "NativeNode":
+            node = extract_node_from_settings_xml(curr["node_id"], infile)
+            input_node_list.append(node)
+        elif curr["node_type"] == "MetaNode":
+            connections = extract_connections(infile)
+            children = extract_nodes_from_filenames(
+                workflow_path=os.path.dirname(infile),
+                node_filenames=curr["children"],
+                parent_id=curr["node_id"],
+            )
+            node = MetaNode(
+                node_id=curr["node_id"],
+                name=curr["name"],
+                children=children,
+                connections=connections,
+            )
+            input_node_list.append(node)
+            input_node_list = input_node_list + children
+
+    return input_node_list
 
 
 def extract_connections(input_file: str) -> List[Connection]:
@@ -465,7 +509,7 @@ def create_output_workflow(workflow_name: str) -> None:
 def save_output_kdl_workflow(
     output_file: str,
     connection_list: List[Connection],
-    node_list: List[Node],
+    node_list: List[AbstractNode],
     global_variable_list: List[Dict[str, Union[str, int, float]]],
 ) -> None:
     """
@@ -485,10 +529,42 @@ def save_output_kdl_workflow(
     with open(output_file, "w") as file:
         file.write("Nodes {\n")
         for i, node in enumerate(node_list):
-            settings = node.__dict__.copy()
-            settings.pop("node_id")
-            settings.pop("variables")
-            output_text = f"(n{node.node_id}): {json.dumps(settings, indent=4)}"
+            if type(node) is Node:
+                settings = node.__dict__.copy()
+                settings.pop("node_id")
+                settings.pop("variables")
+                output_text = f"(n{node.node_id}): {json.dumps(settings, indent=4)}"
+            elif type(node) is MetaNode:
+                output_connections = ""
+                for i, connection in enumerate(node.connections):
+                    if connection.source_id == "-1":
+                        wrapped = wrapper.fill(
+                            f"(META_IN:{int(connection.source_port) + 1})-->"
+                            f"(n{connection.dest_id}:{connection.dest_port})\n"
+                        )
+                    elif connection.dest_id == "-1":
+                        wrapped = wrapper.fill(
+                            f"(n{connection.source_id}:{connection.source_port})-->"
+                            f"(META_OUT:{int(connection.dest_port) + 1})\n"
+                        )
+                    else:
+                        wrapped = wrapper.fill(
+                            f"(n{connection.source_id}:{connection.source_port})-->"
+                            f"(n{connection.dest_id}:{connection.dest_port})\n"
+                        )
+                    if i < len(node.connections) - 1:
+                        wrapped += ",\n"
+                    output_connections += wrapped
+                output_text = (
+                    f"(n{node.node_id}): "
+                    "{\n"
+                    f'    "name": "{node.name}",\n'
+                    '    "type": "MetaNode",\n'
+                    '    "connections": {\n'
+                    f"{output_connections}\n"
+                    "    }\n"
+                    "}"
+                )
             if i < len(node_list) - 1:
                 output_text += ","
             for line in output_text.splitlines():

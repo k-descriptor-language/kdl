@@ -99,9 +99,9 @@ def test_workflow_to_kdl(mocker):
         feature_symbolic_name="a",
         feature_version="a",
     )
-    extract_from_input_xml = mocker.MagicMock()
-    extract_from_input_xml.return_value = node
-    mocker.patch("kdlc.extract_from_input_xml", new=extract_from_input_xml)
+    extract_nodes_from_filenames = mocker.MagicMock()
+    extract_nodes_from_filenames.return_value = [node]
+    mocker.patch("kdlc.extract_nodes_from_filenames", new=extract_nodes_from_filenames)
 
     save_output_kdl_workflow = mocker.MagicMock()
     mocker.patch("kdlc.save_output_kdl_workflow", new=save_output_kdl_workflow)
@@ -117,8 +117,8 @@ def test_workflow_to_kdl(mocker):
         f"{kdlc.INPUT_PATH}/test/workflow.knime"
     )
     extract_node_filenames.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
-    extract_from_input_xml.assert_called_with(
-        node_dict["node_id"], f'{kdlc.INPUT_PATH}/test/{node_dict["filename"]}'
+    extract_nodes_from_filenames.assert_called_with(
+        f"{kdlc.INPUT_PATH}/test", [node_dict]
     )
     save_output_kdl_workflow.assert_called_with(output_file, [], [node], [])
     cleanup.assert_called()

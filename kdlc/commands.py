@@ -76,11 +76,9 @@ def workflow_to_kdl(input_file: str, output_file: str) -> None:
     # print(node_filename_list)
 
     # Parse settings.xml for each node in workflow.knime and add to node
-    input_node_list = list()
-    for curr in node_filename_list:
-        infile = f'{input_workflow_path}/{curr["filename"]}'
-        node = kdlc.extract_from_input_xml(curr["node_id"], infile)
-        input_node_list.append(node)
+    input_node_list = kdlc.extract_nodes_from_filenames(
+        input_workflow_path, node_filename_list
+    )
     # print(input_node_list)
 
     kdlc.save_output_kdl_workflow(

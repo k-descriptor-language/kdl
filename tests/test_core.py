@@ -15,7 +15,7 @@ def test_unzip_workflow(my_setup):
     assert os.path.isdir(f"{kdlc.INPUT_PATH}/TestWorkflow")
 
 
-def test_extract_from_input_xml_csv(my_setup):
+def test_extract_node_from_settings_xml_csv(my_setup):
     r = kdlc.Node(
         node_id="1",
         name="CSV Reader",
@@ -48,12 +48,12 @@ def test_extract_from_input_xml_csv(my_setup):
         {"limitAnalysisCount": -1},
     ]
 
-    assert (
-        kdlc.extract_from_input_xml("1", f"{test_resources_dir}/csv_settings.xml") == r
+    assert r == kdlc.extract_node_from_settings_xml(
+        "1", f"{test_resources_dir}/csv_settings.xml"
     )
 
 
-def test_extract_from_input_xml_cf(my_setup):
+def test_extract_node_from_settings_xml_cf(my_setup):
     res = kdlc.Node(
         node_id="1",
         name="Column Filter",
@@ -120,12 +120,12 @@ def test_extract_from_input_xml_cf(my_setup):
         }
     ]
 
-    assert (
-        kdlc.extract_from_input_xml("1", f"{test_resources_dir}/cf_settings.xml") == res
+    assert res == kdlc.extract_node_from_settings_xml(
+        "1", f"{test_resources_dir}/cf_settings.xml"
     )
 
 
-def test_extract_from_input_xml_csv_var(my_setup):
+def test_extract_node_from_settings_xml_csv_var(my_setup):
     res = kdlc.Node(
         node_id="1",
         name="CSV Reader",
@@ -161,10 +161,12 @@ def test_extract_from_input_xml_csv_var(my_setup):
         {"url": [{"used_variable": "TEST"}, {"exposed_variable": "TEST2"}]}
     ]
 
-    assert kdlc.extract_from_input_xml("1", f"{test_resources_dir}/csv_var.xml") == res
+    assert res == kdlc.extract_node_from_settings_xml(
+        "1", f"{test_resources_dir}/csv_var.xml"
+    )
 
 
-def test_extract_from_input_xml_ttj_var(my_setup):
+def test_extract_node_from_settings_xml_ttj_var(my_setup):
     res = kdlc.Node(
         node_id="1",
         name="Table to JSON",
@@ -256,17 +258,23 @@ def test_extract_from_input_xml_ttj_var(my_setup):
             ]
         }
     ]
-    assert kdlc.extract_from_input_xml("1", f"{test_resources_dir}/ttj_var.xml") == res
+    assert res == kdlc.extract_node_from_settings_xml(
+        "1", f"{test_resources_dir}/ttj_var.xml"
+    )
 
 
-def test_extract_from_input_xml_fail(my_setup):
+def test_extract_node_from_settings_xml_fail(my_setup):
     with pytest.raises(ValueError):
-        kdlc.extract_from_input_xml("1", f"{test_resources_dir}/fail_settings.xml")
+        kdlc.extract_node_from_settings_xml(
+            "1", f"{test_resources_dir}/fail_settings.xml"
+        )
 
 
-def test_extract_from_input_xml_fail_var(my_setup):
+def test_extract_node_from_settings_xml_fail_var(my_setup):
     with pytest.raises(ValueError):
-        kdlc.extract_from_input_xml("1", f"{test_resources_dir}/fail_var_settings.xml")
+        kdlc.extract_node_from_settings_xml(
+            "1", f"{test_resources_dir}/fail_var_settings.xml"
+        )
 
 
 def test_extract_entry_tag_string(my_setup):
@@ -392,9 +400,43 @@ def test_extract_config_tag_fail(my_setup):
 
 def test_extract_node_filenames(my_setup):
     result = [
-        {"node_id": "1", "filename": "CSV Reader (#1)/settings.xml"},
-        {"node_id": "2", "filename": "Table to JSON (#2)/settings.xml"},
-        {"node_id": "3", "filename": "Column Filter (#3)/settings.xml"},
+        {
+            "node_id": "1",
+            "filename": "CSV Reader (#1)/settings.xml",
+            "node_type": "NativeNode",
+        },
+        {
+            "node_id": "2",
+            "filename": "Table to JSON (#2)/settings.xml",
+            "node_type": "NativeNode",
+        },
+        {
+            "node_id": "3",
+            "filename": "Column Filter (#3)/settings.xml",
+            "node_type": "NativeNode",
+        },
+    ]
+    assert kdlc.extract_node_filenames(f"{test_resources_dir}/workflow.knime") == result
+
+
+# TODO: create test for metanode filenames
+def test_extract_node_filenames_meta(my_setup):
+    result = [
+        {
+            "node_id": "1",
+            "filename": "CSV Reader (#1)/settings.xml",
+            "node_type": "NativeNode",
+        },
+        {
+            "node_id": "2",
+            "filename": "Table to JSON (#2)/settings.xml",
+            "node_type": "NativeNode",
+        },
+        {
+            "node_id": "3",
+            "filename": "Column Filter (#3)/settings.xml",
+            "node_type": "NativeNode",
+        },
     ]
     assert kdlc.extract_node_filenames(f"{test_resources_dir}/workflow.knime") == result
 

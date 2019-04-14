@@ -19,7 +19,7 @@ def workflow_to_workflow(input_file, output_file):
     # Parse settings.xml for each node in workflow.knime and add to node
     for node in input_node_list:
         infile = f'{input_workflow_path}/{node["filename"]}'
-        node["settings"] = kdlc.extract_from_input_xml(infile)
+        node["settings"] = kdlc.extract_node_from_settings_xml(infile)
     # print(input_node_list)
 
     kdlc.build_knwf(input_node_list, input_connection_list, output_file)
