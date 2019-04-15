@@ -75,10 +75,6 @@ def test_workflow_to_kdl(mocker):
     unzip_workflow.return_value = "test"
     mocker.patch("kdlc.unzip_workflow", new=unzip_workflow)
 
-    extract_connections = mocker.MagicMock()
-    extract_connections.return_value = []
-    mocker.patch("kdlc.extract_connections", new=extract_connections)
-
     extract_global_wf_variables = mocker.MagicMock()
     extract_global_wf_variables.return_value = []
     mocker.patch("kdlc.extract_global_wf_variables", new=extract_global_wf_variables)
@@ -103,6 +99,12 @@ def test_workflow_to_kdl(mocker):
     extract_nodes_from_filenames.return_value = [node]
     mocker.patch("kdlc.extract_nodes_from_filenames", new=extract_nodes_from_filenames)
 
+    extract_connections = mocker.MagicMock()
+    extract_connections.return_value = []
+    mocker.patch("kdlc.extract_connections", new=extract_connections)
+
+    workflow = kdlc.Workflow([], [])
+
     save_output_kdl_workflow = mocker.MagicMock()
     mocker.patch("kdlc.save_output_kdl_workflow", new=save_output_kdl_workflow)
 
@@ -112,15 +114,18 @@ def test_workflow_to_kdl(mocker):
     kdlc.workflow_to_kdl(input_file, output_file)
 
     unzip_workflow.assert_called_with(input_file)
-    extract_connections.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
-    extract_global_wf_variables.assert_called_with(
-        f"{kdlc.INPUT_PATH}/test/workflow.knime"
-    )
+
     extract_node_filenames.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
     extract_nodes_from_filenames.assert_called_with(
         f"{kdlc.INPUT_PATH}/test", [node_dict]
     )
-    save_output_kdl_workflow.assert_called_with(output_file, [], [node], [])
+    extract_connections.assert_called_with(
+        f"{kdlc.INPUT_PATH}/test/workflow.knime", [node]
+    )
+    extract_global_wf_variables.assert_called_with(
+        f"{kdlc.INPUT_PATH}/test/workflow.knime"
+    )
+    save_output_kdl_workflow.assert_called_with(output_file, workflow, [node])
     cleanup.assert_called()
 
 

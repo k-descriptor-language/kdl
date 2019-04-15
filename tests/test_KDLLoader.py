@@ -6,7 +6,7 @@ def test_exitNode_settings(mocker):
     ctx = mocker.MagicMock()
     node_id = mocker.MagicMock()
     ctx.node.return_value.node_id.return_value = node_id
-    node_id.NUMBER.return_value.getText.return_value = "42"
+    node_id.getText.return_value = "42"
 
     token_l_paren = mocker.MagicMock()
     token_l_paren.getText.return_value = "{"

@@ -23,8 +23,8 @@ NS = {"knime": "http://www.knime.org/2008/09/XMLConfig"}
 ENTRY_TAG = f'{{{NS["knime"]}}}entry'
 CONFIG_TAG = f'{{{NS["knime"]}}}config'
 
-META_IN = MetaNode(node_id="-1", name="META_IN")
-META_OUT = MetaNode(node_id="-1", name="META_OUT")
+META_IN = MetaNode(node_id="-1", name="META_IN", children=[], connections=[])
+META_OUT = MetaNode(node_id="-1", name="META_OUT", children=[], connections=[])
 
 
 def unzip_workflow(input_file: str) -> str:
@@ -249,7 +249,6 @@ def extract_nodes_from_filenames(workflow_path, node_filenames, parent_id=None):
             node = extract_node_from_settings_xml(curr["node_id"], infile)
             input_node_list.append(node)
         elif curr["node_type"] == "MetaNode":
-            # connections = extract_connections(infile)
             children = extract_nodes_from_filenames(
                 workflow_path=os.path.dirname(infile),
                 node_filenames=curr["children"],
@@ -263,7 +262,6 @@ def extract_nodes_from_filenames(workflow_path, node_filenames, parent_id=None):
                 connections=connections,
             )
             input_node_list.append(node)
-            # input_node_list = input_node_list + children
 
     return input_node_list
 
@@ -275,6 +273,21 @@ def flatten_node_list(node_list):
         if type(node) is MetaNode:
             flattened_list += flatten_node_list(node.children)
     return flattened_list
+
+
+def unflatten_node_list(node_list):
+    metanode_list = [node for node in node_list if type(node) is MetaNode]
+
+    for metanode in metanode_list:
+        dot_count = metanode.node_id.count(".")
+        child_list = [
+            node
+            for node in node_list
+            if node.node_id.startswith(f"{metanode.node_id}.")
+            and node.node_id.count(".") == dot_count + 1
+        ]
+        metanode.children += child_list
+    return [node for node in node_list if node.node_id.count(".") == 0]
 
 
 def extract_connections(

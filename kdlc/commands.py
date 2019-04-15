@@ -30,6 +30,8 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
     # print("==== connections ====")
     # print(listener.connections)
 
+    listener.nodes = kdlc.unflatten_node_list(listener.nodes)
+
     build_knwf(
         listener.nodes, listener.connections, listener.global_variables, output_file
     )

@@ -195,8 +195,8 @@ class MetaNode(AbstractNode):
         self,
         node_id: str,
         name: str,
-        children: List[AbstractNode] = None,
-        connections: List[AbstractConnection] = None,
+        children: List[AbstractNode],
+        connections: List[AbstractConnection],
     ):
         super().__init__(node_id=node_id, name=name)
         self.children = children
@@ -229,11 +229,11 @@ class Connection(AbstractConnection):
         self,
         connection_id: int,
         source_id: str,
-        source_node: AbstractNode,
         dest_id: str,
-        dest_node: AbstractNode,
         source_port: str,
         dest_port: str,
+        source_node: AbstractNode = None,
+        dest_node: AbstractNode = None,
     ):
         self.connection_id = connection_id
         self.source_id = source_id
@@ -244,7 +244,7 @@ class Connection(AbstractConnection):
         self.dest_port = dest_port
 
     def kdl_str(self) -> str:
-        if type(self.source_node) is MetaNode:
+        if self.source_node and type(self.source_node) is MetaNode:
             if self.source_node.node_id == "-1":
                 source_str = f"(META_IN:{int(self.source_port) + 1})"
             else:
@@ -252,7 +252,7 @@ class Connection(AbstractConnection):
         else:
             source_str = f"(n{self.source_id}:{self.source_port})"
 
-        if type(self.dest_node) is MetaNode:
+        if self.dest_node and type(self.dest_node) is MetaNode:
             if self.dest_node.node_id == "-1":
                 dest_str = f"(META_OUT:{int(self.dest_port) + 1})"
             else:

@@ -9,7 +9,7 @@ from .commands import (
     build_knwf,
 )
 
-from .objects import Node, Connection
+from .objects import Node, Connection, MetaNode, Workflow
 
 from .core import (
     TMP_INPUT_DIR,
@@ -24,6 +24,7 @@ from .core import (
     extract_nodes_from_filenames,
     extract_global_wf_variables,
     extract_connections,
+    unflatten_node_list,
     create_node_settings_from_template,
     create_workflow_knime_from_template,
     set_class_for_global_variables,
@@ -51,6 +52,8 @@ __all__ = [
     "build_knwf",
     "Node",
     "Connection",
+    "Workflow",
+    "MetaNode",
     "TMP_INPUT_DIR",
     "INPUT_PATH",
     "TMP_OUTPUT_DIR",
@@ -63,6 +66,7 @@ __all__ = [
     "extract_node_filenames",
     "extract_nodes_from_filenames",
     "extract_connections",
+    "unflatten_node_list",
     "create_node_settings_from_template",
     "create_workflow_knime_from_template",
     "set_class_for_global_variables",
