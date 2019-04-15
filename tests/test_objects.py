@@ -2537,7 +2537,8 @@ def test_workflow_neq(my_setup):
 def test_workflow_kdl_str(my_setup):
     variables = [
         {
-            "input_file": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv"
+            "input_file": "/Users/jared/knime-workspace/Example Workflows/"
+            "TheData/Misc/Demographics.csv"
         }
     ]
     node1 = kdlc.Node(
@@ -2792,7 +2793,8 @@ def test_workflow_kdl_str(my_setup):
         "Workflow {\n"
         '\t"variables": [\n'
         "\t    {\n"
-        '\t        "input_file": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv"\n'
+        '\t        "input_file": "/Users/jared/knime-workspace/Example '
+        'Workflows/TheData/Misc/Demographics.csv"\n'
         "\t    }\n"
         "\t],\n"
         '\t"connections": {\n'

@@ -444,3 +444,30 @@ def test_exitGlobal_variables(mocker):
     expected_variables = [{"t": "t"}, {"t": 1}, {"t": 1.1}]
 
     assert listener.global_variables == expected_variables
+
+
+def test_exitMeta_settings_connection(mocker):
+    ctx = mocker.MagicMock()
+    node_id = mocker.MagicMock()
+    ctx.node.return_value.node_id.return_value = node_id
+    node_id.getText.return_value = "42"
+    ctx.STRING.return_value = "test"
+
+    connection = mocker.MagicMock()
+
+    source_node = mocker.MagicMock()
+    source_node.node_id.return_value.getText.return_value = "1"
+
+    dest_node = mocker.MagicMock()
+    dest_node.node_id.return_value.getText.return_value = "2"
+
+    # connection arrow
+    connection.ARROW.return_value = "-->"
+    connection.VARIABLE_ARROW.return_value = None
+    connection.source_node.return_value.node.return_value = source_node
+    connection.des_node.return_value.node.return_value = dest_node
+
+    listener = kdlc.commands.KDLLoader()
+    listener.exitMeta_settings(ctx)
+
+    assert len(listener.nodes) == 1
