@@ -454,6 +454,7 @@ def test_exitMeta_settings_connection(mocker):
     ctx.STRING.return_value = "test"
 
     connection = mocker.MagicMock()
+    ctx.connection.return_value = [connection]
 
     source_node = mocker.MagicMock()
     source_node.node_id.return_value.getText.return_value = "1"
@@ -471,3 +472,4 @@ def test_exitMeta_settings_connection(mocker):
     listener.exitMeta_settings(ctx)
 
     assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections)
