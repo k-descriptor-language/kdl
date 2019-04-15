@@ -419,26 +419,42 @@ def test_extract_node_filenames(my_setup):
     assert kdlc.extract_node_filenames(f"{test_resources_dir}/workflow.knime") == result
 
 
-# TODO: create test for metanode filenames
 def test_extract_node_filenames_meta(my_setup):
     result = [
         {
             "node_id": "1",
-            "filename": "CSV Reader (#1)/settings.xml",
+            "filename": "File Reader (#1)/settings.xml",
             "node_type": "NativeNode",
         },
         {
-            "node_id": "2",
-            "filename": "Table to JSON (#2)/settings.xml",
+            "node_id": "7",
+            "filename": "CSV Writer (#7)/settings.xml",
             "node_type": "NativeNode",
         },
         {
-            "node_id": "3",
-            "filename": "Column Filter (#3)/settings.xml",
-            "node_type": "NativeNode",
+            "node_id": "8",
+            "filename": "workflow_meta_2.knime",
+            "node_type": "MetaNode",
+            "name": "Metanode",
+            "children": [
+                {
+                    "node_id": "2",
+                    "filename": "Row Filter (#2)/settings.xml",
+                    "node_type": "NativeNode",
+                },
+                {
+                    "node_id": "3",
+                    "filename": "Row Filter (#3)/settings.xml",
+                    "node_type": "NativeNode",
+                },
+            ],
         },
     ]
-    assert kdlc.extract_node_filenames(f"{test_resources_dir}/workflow.knime") == result
+
+    assert (
+        kdlc.extract_node_filenames(f"{test_resources_dir}/workflow_meta.knime")
+        == result
+    )
 
 
 def test_extract_connections(my_setup):
