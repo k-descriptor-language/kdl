@@ -473,3 +473,96 @@ def test_exitMeta_settings_connection(mocker):
 
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+
+
+def test_exitMeta_settings_var_connection(mocker):
+    ctx = mocker.MagicMock()
+    node_id = mocker.MagicMock()
+    ctx.node.return_value.node_id.return_value = node_id
+    node_id.getText.return_value = "42"
+    ctx.STRING.return_value = "test"
+
+    connection = mocker.MagicMock()
+    ctx.connection.return_value = [connection]
+
+    source_node = mocker.MagicMock()
+    source_node.node_id.return_value.getText.return_value = "1"
+
+    dest_node = mocker.MagicMock()
+    dest_node.node_id.return_value.getText.return_value = "2"
+
+    # connection arrow
+    connection.ARROW.return_value = None
+    connection.VARIABLE_ARROW.return_value = "~~>"
+    connection.source_node.return_value.node.return_value = source_node
+    connection.des_node.return_value.node.return_value = dest_node
+
+    listener = kdlc.commands.KDLLoader()
+    listener.exitMeta_settings(ctx)
+
+    assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections)
+
+
+def test_exitMeta_settings_metaconnection_in(mocker):
+    ctx = mocker.MagicMock()
+    node_id = mocker.MagicMock()
+    ctx.node.return_value.node_id.return_value = node_id
+    node_id.getText.return_value = "42"
+    ctx.STRING.return_value = "test"
+
+    connection = mocker.MagicMock()
+
+    ctx.meta_connection.return_value = [connection]
+
+    meta_in_node = mocker.MagicMock()
+    NUMBER = mocker.MagicMock()
+    NUMBER.return_value.getText.return_value = "1"
+    meta_in_node.port.return_value.port_id.return_value = NUMBER
+
+    dest_node = mocker.MagicMock()
+    NUMBER = mocker.MagicMock()
+    NUMBER.return_value.getText.return_value = "2"
+    dest_node.node_id.return_value.getText.return_value = "2"
+    dest_node.port.return_value.port_id.return_value = NUMBER
+
+    # connection arrow
+    connection.meta_in_node = meta_in_node
+
+    listener = kdlc.commands.KDLLoader()
+    listener.exitMeta_settings(ctx)
+
+    assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections)
+
+
+def test_exitMeta_settings_metaconnection_out(mocker):
+    ctx = mocker.MagicMock()
+    node_id = mocker.MagicMock()
+    ctx.node.return_value.node_id.return_value = node_id
+    node_id.getText.return_value = "42"
+    ctx.STRING.return_value = "test"
+
+    connection = mocker.MagicMock()
+
+    ctx.meta_connection.return_value = [connection]
+
+    meta_out_node = mocker.MagicMock()
+    NUMBER = mocker.MagicMock()
+    NUMBER.return_value.getText.return_value = "1"
+    meta_out_node.port.return_value.port_id.return_value = NUMBER
+
+    source_node = mocker.MagicMock()
+    source_node.node_id.return_value.getText.return_value = "2"
+    NUMBER = mocker.MagicMock()
+    NUMBER.return_value.getText.return_value = "2"
+    source_node.port.return_value.port_id.return_value = NUMBER
+
+    # connection arrow
+    connection.meta_out_node = meta_out_node
+
+    listener = kdlc.commands.KDLLoader()
+    listener.exitMeta_settings(ctx)
+
+    assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections)
