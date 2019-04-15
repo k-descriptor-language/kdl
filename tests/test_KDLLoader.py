@@ -527,7 +527,7 @@ def test_exitMeta_settings_metaconnection_in(mocker):
     dest_node.port.return_value.port_id.return_value = NUMBER
 
     # connection arrow
-    connection.meta_in_node = meta_in_node
+    connection.meta_in_node.return_value = meta_in_node
 
     listener = kdlc.commands.KDLLoader()
     listener.exitMeta_settings(ctx)
@@ -559,7 +559,8 @@ def test_exitMeta_settings_metaconnection_out(mocker):
     source_node.port.return_value.port_id.return_value = NUMBER
 
     # connection arrow
-    connection.meta_out_node = meta_out_node
+    connection.meta_in_node.return_value = None
+    connection.meta_out_node.return_value = meta_out_node
 
     listener = kdlc.commands.KDLLoader()
     listener.exitMeta_settings(ctx)
