@@ -919,19 +919,15 @@ def test_unflatten_node_list(my_setup):
         connection_id=0,
         dest_id="4",
         dest_port="1",
-        dest_node=node864,
         source_id="-1",
-        source_port="0",
-        source_node=kdlc.META_IN,
+        source_port="1",
     )
     connection1 = kdlc.Connection(
         connection_id=1,
         dest_id="-1",
-        dest_node=kdlc.META_OUT,
-        dest_port="0",
+        dest_port="1",
         source_id="4",
         source_port="1",
-        source_node=node864,
     )
     metanode86 = kdlc.MetaNode(
         node_id="8.6",
@@ -942,29 +938,23 @@ def test_unflatten_node_list(my_setup):
     connection0 = kdlc.Connection(
         connection_id=0,
         dest_id="4",
-        dest_node=node84,
         dest_port="1",
         source_id="-1",
-        source_port="0",
-        source_node=kdlc.META_IN,
+        source_port="1",
     )
     connection1 = kdlc.Connection(
         connection_id=1,
         dest_id="6",
-        dest_node=metanode86,
-        dest_port="0",
+        dest_port="1",
         source_id="4",
         source_port="1",
-        source_node=node84,
     )
     connection2 = kdlc.Connection(
         connection_id=2,
         dest_id="-1",
-        dest_node=kdlc.META_OUT,
-        dest_port="0",
+        dest_port="1",
         source_id="6",
-        source_port="0",
-        source_node=metanode86,
+        source_port="1",
     )
     metanode8 = kdlc.MetaNode(
         node_id="8",
@@ -977,6 +967,243 @@ def test_unflatten_node_list(my_setup):
     result = [node1, metanode8]
 
     assert result == kdlc.unflatten_node_list(input)
+
+
+def test_normalize_connections(my_setup):
+    cf_model = [
+        {
+            "column-filter": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 11},
+                        {"0": "MaritalStatus"},
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 1}, {"0": "NumberOfContracts"}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {"org.knime.core.data.date.DateAndTimeValue": False},
+                            ]
+                        }
+                    ]
+                },
+            ]
+        }
+    ]
+
+    node1 = kdlc.Node(
+        node_id="1",
+        name="Column Filter",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node1.model = cf_model
+    node1.port_count = 1
+
+    node84 = kdlc.Node(
+        node_id="8.4",
+        name="Column Filter",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node84.model = cf_model
+    node84.port_count = 1
+
+    node864 = kdlc.Node(
+        node_id="8.6.4",
+        name="Column Filter",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node864.model = cf_model
+    node864.port_count = 1
+
+    connection_m_in_864 = kdlc.Connection(
+        connection_id=0,
+        dest_id="4",
+        dest_port="1",
+        source_id="-1",
+        source_port="1",
+    )
+    connection_864_m_out = kdlc.Connection(
+        connection_id=1,
+        dest_id="-1",
+        dest_port="1",
+        source_id="4",
+        source_port="1",
+    )
+    metanode86 = kdlc.MetaNode(
+        node_id="8.6",
+        name="Metanode6",
+        children=[node864],
+        connections=[connection_m_in_864, connection_864_m_out],
+    )
+    connection_m_in_84 = kdlc.Connection(
+        connection_id=0,
+        dest_id="4",
+        dest_port="1",
+        source_id="-1",
+        source_port="1",
+    )
+    connection_84_86 = kdlc.Connection(
+        connection_id=1,
+        dest_id="6",
+        dest_port="1",
+        source_id="4",
+        source_port="1",
+    )
+    connection_86_m_out = kdlc.Connection(
+        connection_id=2,
+        dest_id="-1",
+        dest_port="1",
+        source_id="6",
+        source_port="1",
+    )
+    metanode8 = kdlc.MetaNode(
+        node_id="8",
+        name="Metanode8",
+        children=[node84, metanode86],
+        connections=[connection_m_in_84, connection_84_86, connection_86_m_out],
+    )
+
+    connection_1_8  = kdlc.Connection(
+        connection_id=0,
+        dest_id="8",
+        dest_port="1",
+        source_id="1",
+        source_port="1",
+    )
+
+    # Result data begins
+
+    res_connection_m_in_864 = kdlc.Connection(
+        connection_id=0,
+        dest_id="4",
+        dest_port="1",
+        dest_node=node864,
+        source_id="-1",
+        source_port="0",
+        source_node=kdlc.META_IN,
+    )
+    res_connection_864_m_out = kdlc.Connection(
+        connection_id=1,
+        dest_id="-1",
+        dest_node=kdlc.META_OUT,
+        dest_port="0",
+        source_id="4",
+        source_port="1",
+        source_node=node864,
+    )
+    res_metanode86 = kdlc.MetaNode(
+        node_id="8.6",
+        name="Metanode6",
+        children=[node864],
+        connections=[res_connection_m_in_864, res_connection_864_m_out],
+    )
+    res_connection_m_in_84 = kdlc.Connection(
+        connection_id=0,
+        dest_id="4",
+        dest_node=node84,
+        dest_port="1",
+        source_id="-1",
+        source_port="0",
+        source_node=kdlc.META_IN,
+    )
+    res_connection_84_86 = kdlc.Connection(
+        connection_id=1,
+        dest_id="6",
+        dest_node=res_metanode86,
+        dest_port="0",
+        source_id="4",
+        source_port="1",
+        source_node=node84,
+    )
+    res_connection_86_m_out = kdlc.Connection(
+        connection_id=2,
+        dest_id="-1",
+        dest_node=kdlc.META_OUT,
+        dest_port="0",
+        source_id="6",
+        source_port="0",
+        source_node=res_metanode86,
+    )
+    res_metanode8 = kdlc.MetaNode(
+        node_id="8",
+        name="Metanode8",
+        children=[node84, metanode86],
+        connections=[res_connection_m_in_84, res_connection_84_86, res_connection_86_m_out],
+    )
+
+    res_connection_1_8 = kdlc.Connection(
+        connection_id=0,
+        dest_id="8",
+        dest_port="0",
+        dest_node=res_metanode8,
+        source_id="1",
+        source_port="1",
+        source_node=node1
+    )
+
+    in_nodes = [node1, metanode8]
+    in_connections = [connection_1_8]
+
+    res_connections = [res_connection_1_8]
+    res_nodes = [node1, res_metanode8]
+
+    kdlc.normalize_connections(in_nodes, in_connections)
+    test=1
+    assert res_nodes == in_nodes
+    assert res_connections == in_connections
 
 
 def test_extract_connections(my_setup):
