@@ -40,6 +40,10 @@ class AbstractNode(ABC):
     def kdl_str(self) -> str:
         pass
 
+    @abstractmethod
+    def get_filename(self) -> str:
+        pass
+
 
 class Node(AbstractNode):
     def __init__(
@@ -65,15 +69,6 @@ class Node(AbstractNode):
         self.model: list = list()
         self.variables: list = list()
         self.port_count: int = 0
-
-    def __eq__(self, other: Any) -> bool:
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        else:
-            return False
-
-    def __ne__(self, other: Any) -> bool:
-        return not self.__eq__(other)
 
     def merge_variables_into_model(self) -> None:
         """
@@ -231,6 +226,9 @@ class MetaNode(AbstractNode):
             "    }\n"
             "}"
         )
+
+    def get_filename(self) -> str:
+        return f"{self.name} (#{self.node_id})/workflow.knime"
 
 
 class Connection(AbstractConnection):

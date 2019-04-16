@@ -417,7 +417,7 @@ def extract_global_wf_variables(input_file):
     return global_variable_list
 
 
-def create_node_settings_from_template(node: Node) -> ET.ElementTree:
+def create_node_settings_from_template(node: AbstractNode) -> ET.ElementTree:
     """
     Creates an ElementTree with the provided node definition
 
@@ -442,26 +442,25 @@ def create_node_settings_from_template(node: Node) -> ET.ElementTree:
 
 
 def create_workflow_knime_from_template(
-    node_list: List[Node], connection_list: List[Connection], global_variable_list
+    node_list: List[AbstractNode], workflow: Workflow
 ) -> ET.ElementTree:
     """
     Creates an ElementTree with the provided node list and connection list
 
     Args:
         node_list (list): List of Node definitions
-        connection_list (list): List of Connections amongst nodes
-        global_variable_list (list): List of global workflow variables
+        workflow (Workflow): Input workflow
 
     Returns:
         ElementTree: ElementTree populated with nodes and their associated
         connections
     """
-    set_class_for_global_variables(global_variable_list)
+    set_class_for_global_variables(workflow.variables)
     template = jinja_env.get_template("workflow_template.xml")
     data = {
         "nodes": node_list,
-        "connections": connection_list,
-        "variables": global_variable_list,
+        "connections": workflow.connections,
+        "variables": workflow.variables,
     }
     return ET.ElementTree(ET.fromstring(template.render(data)))
 

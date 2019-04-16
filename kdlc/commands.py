@@ -4,7 +4,7 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 from kdlc.parser.KDLLexer import KDLLexer
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.KDLLoader import KDLLoader
-from kdlc.objects import Node, Connection, Workflow
+from kdlc.objects import AbstractNode, AbstractConnection, Workflow
 from typing import List
 
 
@@ -32,9 +32,11 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
 
     listener.nodes = kdlc.unflatten_node_list(listener.nodes)
 
-    build_knwf(
-        listener.nodes, listener.connections, listener.global_variables, output_file
+    workflow = Workflow(
+        variables=listener.global_variables, connections=listener.connections
     )
+
+    build_knwf(listener.nodes, workflow, output_file)
 
 
 def update_workflow_with_kdl(
@@ -71,7 +73,7 @@ def workflow_to_kdl(input_file: str, output_file: str) -> None:
 
     # Parse nodes filenames from workflow.knime
     node_filename_list = kdlc.extract_node_filenames(input_workflow_filename)
-    print(node_filename_list)
+    # print(node_filename_list)
 
     # Parse settings.xml for each node in workflow.knime
     input_node_list = kdlc.extract_nodes_from_filenames(
@@ -93,10 +95,7 @@ def workflow_to_kdl(input_file: str, output_file: str) -> None:
 
 
 def build_knwf(
-    nodes: List[Node],
-    connections: List[Connection],
-    global_variables,
-    output_filename: str,
+    nodes: List[AbstractNode], workflow: Workflow, output_filename: str
 ) -> None:
     # TODO: revisit this name logic
     output_wf_name = output_filename.replace(".knwf", "")
@@ -104,9 +103,7 @@ def build_knwf(
     # Generate and save workflow.knime in output directory
     output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_wf_name}"
 
-    output_workflow_knime = kdlc.create_workflow_knime_from_template(
-        nodes, connections, global_variables
-    )
+    output_workflow_knime = kdlc.create_workflow_knime_from_template(nodes, workflow)
     kdlc.save_workflow_knime(output_workflow_knime, output_workflow_path)
 
     # Generate and save XML for nodes in output directory

@@ -589,67 +589,66 @@ def test_extract_nodes_from_filenames(my_setup):
 
     connection0 = kdlc.Connection(
         connection_id=0,
-        dest_id='4',
-        dest_port='1',
+        dest_id="4",
+        dest_port="1",
         dest_node=node864,
-        source_id='-1',
-        source_port='0',
-        source_node=kdlc.META_IN
+        source_id="-1",
+        source_port="0",
+        source_node=kdlc.META_IN,
     )
     connection1 = kdlc.Connection(
         connection_id=1,
-        dest_id='-1',
+        dest_id="-1",
         dest_node=kdlc.META_OUT,
-        dest_port='0',
-        source_id='4',
-        source_port='1',
-        source_node=node864
+        dest_port="0",
+        source_id="4",
+        source_port="1",
+        source_node=node864,
     )
     metanode86 = kdlc.MetaNode(
         node_id="8.6",
         name="Metanode6",
         children=[node864],
-        connections=[connection0, connection1]
+        connections=[connection0, connection1],
     )
     connection0 = kdlc.Connection(
         connection_id=0,
-        dest_id='4',
+        dest_id="4",
         dest_node=node84,
-        dest_port='1',
-        source_id='-1',
-        source_port='0',
-        source_node=kdlc.META_IN
+        dest_port="1",
+        source_id="-1",
+        source_port="0",
+        source_node=kdlc.META_IN,
     )
     connection1 = kdlc.Connection(
         connection_id=1,
-        dest_id='6',
+        dest_id="6",
         dest_node=metanode86,
-        dest_port='0',
-        source_id='4',
-        source_port='1',
-        source_node=node84
+        dest_port="0",
+        source_id="4",
+        source_port="1",
+        source_node=node84,
     )
     connection2 = kdlc.Connection(
         connection_id=2,
-        dest_id='-1',
+        dest_id="-1",
         dest_node=kdlc.META_OUT,
-        dest_port='0',
-        source_id='6',
-        source_port='0',
-        source_node=metanode86
+        dest_port="0",
+        source_id="6",
+        source_port="0",
+        source_node=metanode86,
     )
     metanode8 = kdlc.MetaNode(
         node_id="8",
         name="Metanode8",
         children=[node84, metanode86],
-        connections=[connection0,connection1,connection2]
+        connections=[connection0, connection1, connection2],
     )
 
     result = [node1, metanode8]
 
     assert result == kdlc.extract_nodes_from_filenames(
-        test_resources_dir,
-        node_filename_list
+        test_resources_dir, node_filename_list
     )
 
 
@@ -1024,13 +1023,13 @@ def test_create_workflow_knime_from_template(my_setup):
         },
     ]
     global_variable_list = []
-
+    workflow = kdlc.Workflow(
+        connections=connection_list, variables=global_variable_list
+    )
     expected_result = ET.parse(f"{test_resources_dir}/workflow.knime")
     expected_result_flattened = [i.tag for i in expected_result.iter()]
 
-    result = kdlc.create_workflow_knime_from_template(
-        node_list, connection_list, global_variable_list
-    )
+    result = kdlc.create_workflow_knime_from_template(node_list, workflow)
     result_flattened = [i.tag for i in result.iter()]
 
     assert result_flattened == expected_result_flattened
