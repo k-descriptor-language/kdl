@@ -98,7 +98,6 @@ def workflow_to_kdl(input_file: str, output_file: str) -> None:
 def build_knwf(
     nodes: List[AbstractNode], workflow: Workflow, output_filename: str
 ) -> None:
-    # TODO: revisit this name logic
     output_wf_name = output_filename.replace(".knwf", "")
 
     # Generate and save workflow.knime in output directory

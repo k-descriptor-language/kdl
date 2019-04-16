@@ -143,17 +143,8 @@ def test_build_knwf(mocker):
     mocker.patch("kdlc.save_workflow_knime", new=mock_save_workflow_knime)
 
     # mock create_node_settings_from_template
-    mock_create_node_settings_from_template = mocker.MagicMock()
-    mock_tree = mocker.MagicMock()
-    mock_create_node_settings_from_template.return_value = mock_tree
-    mocker.patch(
-        "kdlc.create_node_settings_from_template",
-        new=mock_create_node_settings_from_template,
-    )
-
-    # mock save_node_settings_xml
-    mock_save_node_settings_xml = mocker.MagicMock()
-    mocker.patch("kdlc.save_node_settings_xml", new=mock_save_node_settings_xml)
+    mock_create_node_files = mocker.MagicMock()
+    mocker.patch("kdlc.create_node_files", new=mock_create_node_files)
 
     # mock create_output_workflow
     mock_create_output_workflow = mocker.MagicMock()
@@ -196,15 +187,8 @@ def test_build_knwf(mocker):
         output_workflow_knime, f"{kdlc.OUTPUT_PATH}/fake"
     )
 
-    # validate xml generation
-    mock_create_node_settings_from_template.assert_any_call(node_one)
-    mock_save_node_settings_xml.assert_any_call(
-        mock_tree, f"{kdlc.OUTPUT_PATH}/fake/{node_one.get_filename()}"
-    )
-    mock_create_node_settings_from_template.assert_any_call(node_two)
-    mock_save_node_settings_xml.assert_any_call(
-        mock_tree, f"{kdlc.OUTPUT_PATH}/fake/{node_two.get_filename()}"
-    )
+    # validate creation of node files
+    mock_create_node_files.assert_called_with(f"{kdlc.OUTPUT_PATH}/fake", nodes)
 
     # validate archive creation
     mock_create_output_workflow.assert_called_with("fake")

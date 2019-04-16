@@ -451,7 +451,7 @@ def test_exitMeta_settings_connection(mocker):
     node_id = mocker.MagicMock()
     ctx.node.return_value.node_id.return_value = node_id
     node_id.getText.return_value = "42"
-    ctx.STRING.return_value = "test"
+    ctx.STRING.return_value.getText.return_value = "test"
 
     connection = mocker.MagicMock()
     ctx.connection.return_value = [connection]
@@ -480,7 +480,7 @@ def test_exitMeta_settings_var_connection(mocker):
     node_id = mocker.MagicMock()
     ctx.node.return_value.node_id.return_value = node_id
     node_id.getText.return_value = "42"
-    ctx.STRING.return_value = "test"
+    ctx.STRING.return_value.getText.return_value = "test"
 
     connection = mocker.MagicMock()
     ctx.connection.return_value = [connection]
@@ -509,7 +509,7 @@ def test_exitMeta_settings_metaconnection_in(mocker):
     node_id = mocker.MagicMock()
     ctx.node.return_value.node_id.return_value = node_id
     node_id.getText.return_value = "42"
-    ctx.STRING.return_value = "test"
+    ctx.STRING.return_value.getText.return_value = "test"
 
     connection = mocker.MagicMock()
 
@@ -541,7 +541,7 @@ def test_exitMeta_settings_metaconnection_out(mocker):
     node_id = mocker.MagicMock()
     ctx.node.return_value.node_id.return_value = node_id
     node_id.getText.return_value = "42"
-    ctx.STRING.return_value = "test"
+    ctx.STRING.return_value.getText.return_value = "test"
 
     connection = mocker.MagicMock()
 
