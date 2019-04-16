@@ -66,6 +66,15 @@ class Node(AbstractNode):
         self.variables: list = list()
         self.port_count: int = 0
 
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        else:
+            return False
+
+    def __ne__(self, other: Any) -> bool:
+        return not self.__eq__(other)
+
     def merge_variables_into_model(self) -> None:
         """
         Merges workflow variables into Node's model
@@ -293,7 +302,7 @@ class AbstractWorkflow(ABC):
 
 
 class Workflow(AbstractWorkflow):
-    def __init__(self, connections: List[Connection], variables=None):
+    def __init__(self, connections: List[AbstractConnection], variables: list = None):
         self.connections = connections
         self.variables = variables
 

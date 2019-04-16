@@ -457,6 +457,202 @@ def test_extract_node_filenames_meta(my_setup):
     )
 
 
+def test_extract_nodes_from_filenames(my_setup):
+
+    node_filename_list = [
+        {"node_id": "1", "filename": "cf_settings.xml", "node_type": "NativeNode"},
+        {
+            "node_id": "8",
+            "filename": "workflow_meta_4.knime",
+            "node_type": "MetaNode",
+            "name": "Metanode8",
+            "children": [
+                {
+                    "node_id": "4",
+                    "filename": "cf_settings.xml",
+                    "node_type": "NativeNode",
+                },
+                {
+                    "node_id": "6",
+                    "filename": "workflow_meta_3.knime",
+                    "node_type": "MetaNode",
+                    "name": "Metanode6",
+                    "children": [
+                        {
+                            "node_id": "4",
+                            "filename": "cf_settings.xml",
+                            "node_type": "NativeNode",
+                        }
+                    ],
+                },
+            ],
+        },
+    ]
+
+    cf_model = [
+        {
+            "column-filter": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 11},
+                        {"0": "MaritalStatus"},
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 1}, {"0": "NumberOfContracts"}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {"org.knime.core.data.date.DateAndTimeValue": False},
+                            ]
+                        }
+                    ]
+                },
+            ]
+        }
+    ]
+
+    node1 = kdlc.Node(
+        node_id="1",
+        name="Column Filter",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node1.model = cf_model
+    node1.port_count = 1
+
+    node84 = kdlc.Node(
+        node_id="8.4",
+        name="Column Filter",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node84.model = cf_model
+    node84.port_count = 1
+
+    node864 = kdlc.Node(
+        node_id="8.6.4",
+        name="Column Filter",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node864.model = cf_model
+    node864.port_count = 1
+
+    connection0 = kdlc.Connection(
+        connection_id=0,
+        dest_id='4',
+        dest_port='1',
+        dest_node=node864,
+        source_id='-1',
+        source_port='0',
+        source_node=kdlc.META_IN
+    )
+    connection1 = kdlc.Connection(
+        connection_id=1,
+        dest_id='-1',
+        dest_node=kdlc.META_OUT,
+        dest_port='0',
+        source_id='4',
+        source_port='1',
+        source_node=node864
+    )
+    metanode86 = kdlc.MetaNode(
+        node_id="8.6",
+        name="Metanode6",
+        children=[node864],
+        connections=[connection0, connection1]
+    )
+    connection0 = kdlc.Connection(
+        connection_id=0,
+        dest_id='4',
+        dest_node=node84,
+        dest_port='1',
+        source_id='-1',
+        source_port='0',
+        source_node=kdlc.META_IN
+    )
+    connection1 = kdlc.Connection(
+        connection_id=1,
+        dest_id='6',
+        dest_node=metanode86,
+        dest_port='0',
+        source_id='4',
+        source_port='1',
+        source_node=node84
+    )
+    connection2 = kdlc.Connection(
+        connection_id=2,
+        dest_id='-1',
+        dest_node=kdlc.META_OUT,
+        dest_port='0',
+        source_id='6',
+        source_port='0',
+        source_node=metanode86
+    )
+    metanode8 = kdlc.MetaNode(
+        node_id="8",
+        name="Metanode8",
+        children=[node84, metanode86],
+        connections=[connection0,connection1,connection2]
+    )
+
+    result = [node1, metanode8]
+
+    assert result == kdlc.extract_nodes_from_filenames(
+        test_resources_dir,
+        node_filename_list
+    )
+
+
 def test_extract_connections(my_setup):
     node1 = kdlc.Node(
         node_id="1",

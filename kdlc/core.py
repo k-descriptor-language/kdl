@@ -6,7 +6,14 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
 import textwrap
 from typing import List, Any, Dict
-from kdlc.objects import Node, Connection, MetaNode, AbstractNode, Workflow
+from kdlc.objects import (
+    Node,
+    Connection,
+    MetaNode,
+    AbstractNode,
+    Workflow,
+    AbstractConnection,
+)
 
 jinja_env = Environment(
     loader=PackageLoader("kdlc", "templates"),
@@ -239,8 +246,21 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
     return node_list
 
 
-def extract_nodes_from_filenames(workflow_path, node_filenames, parent_id=None):
-    input_node_list = list()
+def extract_nodes_from_filenames(
+    workflow_path: str, node_filenames: List[Dict[str, Any]], parent_id: str = None
+) -> List[AbstractNode]:
+    """
+    Extracts nodes from filename dict, including Metanodes
+
+    Args:
+        workflow_path (str): Path to input workflow
+        node_filenames (dict): Dictionary of input node filenames
+        parent_id (str): id of parent metanode when adding child to metanode
+
+    Returns:
+        List[AbstractNode]: The list of nodes extracted from workflow
+    """
+    input_node_list: List[AbstractNode] = list()
     for curr in node_filenames:
         infile = f'{workflow_path}/{curr["filename"]}'
         if parent_id is not None:
@@ -255,18 +275,28 @@ def extract_nodes_from_filenames(workflow_path, node_filenames, parent_id=None):
                 parent_id=curr["node_id"],
             )
             connections = extract_connections(infile, children)
-            node = MetaNode(
+            metanode = MetaNode(
                 node_id=curr["node_id"],
                 name=curr["name"],
                 children=children,
                 connections=connections,
             )
-            input_node_list.append(node)
+            input_node_list.append(metanode)
 
     return input_node_list
 
 
-def flatten_node_list(node_list):
+def flatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
+    """
+    Flattens Node list, returning list with all embedded nodes within
+    Metanodes
+
+    Args:
+        node_list (List[AbstractNode]): input list of Nodes
+
+    Returns:
+        List[AbstractNode]: flattened list of Nodes
+    """
     flattened_list = list()
     for node in node_list:
         flattened_list.append(node)
@@ -275,7 +305,15 @@ def flatten_node_list(node_list):
     return flattened_list
 
 
-def unflatten_node_list(node_list):
+def unflatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
+    """
+    Unflattens node list, adding children to Metanodes
+
+    Args:
+        node_list (List[AbstractNode]): input list of Nodes
+    Returns:
+        List[AbstractNode]: unflattened list of Nodes
+    """
     metanode_list = [node for node in node_list if type(node) is MetaNode]
 
     for metanode in metanode_list:
@@ -292,7 +330,7 @@ def unflatten_node_list(node_list):
 
 def extract_connections(
     input_file: str, node_list: List[AbstractNode]
-) -> List[Connection]:
+) -> List[AbstractConnection]:
     """
     Extracts a list of connections from the provided KNIME workflow
 
@@ -304,7 +342,7 @@ def extract_connections(
         list: The list of connections within the KNIME workflow
     """
     node_dict = {i.node_id.rsplit(".", 1)[-1]: i for i in node_list}
-    connection_list = list()
+    connection_list: List[AbstractConnection] = list()
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()
     for i, child in enumerate(
