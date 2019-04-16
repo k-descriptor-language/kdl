@@ -85,6 +85,38 @@
     </config>
     {% endfor %}
 </config>
+{% if meta_in_ports %}
+<config key="meta_in_ports">
+    <entry key="ui_classname" type="xstring" isnull="true" value="" />
+    <config key="port_enum">
+        {% for port in meta_in_ports %}
+        <config key="inport_{{loop.index0}}">
+            <entry key="index" type="xint" value="{{loop.index0}}" />
+            <entry key="name" type="xstring" value="Inport {{loop.index0}}" />
+            <config key="type">
+                <entry key="object_class" type="xstring" value="org.knime.core.node.BufferedDataTable" />
+            </config>
+        </config>
+        {% endfor %}
+    </config>
+</config>
+{% endif %}
+{% if meta_out_ports %}
+<config key="meta_out_ports">
+    <entry key="ui_classname" type="xstring" isnull="true" value="" />
+    <config key="port_enum">
+        {% for port in meta_out_ports %}
+        <config key="outport_{{loop.index0}}">
+            <entry key="index" type="xint" value="{{loop.index0}}" />
+            <entry key="name" type="xstring" value="" />
+            <config key="type">
+                <entry key="object_class" type="xstring" value="org.knime.core.node.BufferedDataTable" />
+            </config>
+        </config>
+        {% endfor %}
+    </config>
+</config>
+{% endif %}
 <config key="workflow_editor_settings">
 <entry key="workflow.editor.snapToGrid" type="xboolean" value="true"/>
 <entry key="workflow.editor.ShowGrid" type="xboolean" value="true"/>

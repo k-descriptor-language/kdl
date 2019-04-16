@@ -329,11 +329,11 @@ def unflatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
 
 
 def normalize_connections(
-    node_list: List[AbstractNode],
-    connection_list: List[AbstractConnection]
+    node_list: List[AbstractNode], connection_list: List[AbstractConnection]
 ) -> None:
     """
-    Updates connections with correct nodes after ingestion of KDL
+    Updates connections with correct nodes and decrement port ids
+    of for metanode source/dest nodes
 
     Args:
         node_list (List[AbstractNode]): List of input nodes
@@ -351,6 +351,11 @@ def normalize_connections(
             connection.dest_node = META_OUT
         else:
             connection.dest_node = node_dict[connection.dest_id]
+
+        if type(connection.source_node) is MetaNode:
+            connection.source_port = str(int(connection.source_port) - 1)
+        if type(connection.dest_node) is MetaNode:
+            connection.dest_port = str(int(connection.dest_port) - 1)
 
     metanodes = [node for node in node_list if type(node) is MetaNode]
     for metanode in metanodes:
@@ -547,11 +552,24 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
     template = jinja_env.get_template("workflow_template.xml")
     nodes = [node for node in metanode.children if type(node) is Node]
     metanodes = [node for node in metanode.children if type(node) is MetaNode]
+    meta_in_ports = [
+        connection
+        for connection in metanode.connections
+        if connection.source_node is META_IN
+    ]
+    meta_out_ports = [
+        connection
+        for connection in metanode.connections
+        if connection.dest_node is META_OUT
+    ]
+    test =1
     data = {
         "name": metanode.name,
         "nodes": nodes,
         "metanodes": metanodes,
         "connections": metanode.connections,
+        "meta_in_ports": meta_in_ports,
+        "meta_out_ports": meta_out_ports
     }
 
     return ET.ElementTree(ET.fromstring(template.render(data)))
