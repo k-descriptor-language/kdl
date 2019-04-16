@@ -916,18 +916,10 @@ def test_unflatten_node_list(my_setup):
     node864.port_count = 1
 
     connection0 = kdlc.Connection(
-        connection_id=0,
-        dest_id="4",
-        dest_port="1",
-        source_id="-1",
-        source_port="1",
+        connection_id=0, dest_id="4", dest_port="1", source_id="-1", source_port="1"
     )
     connection1 = kdlc.Connection(
-        connection_id=1,
-        dest_id="-1",
-        dest_port="1",
-        source_id="4",
-        source_port="1",
+        connection_id=1, dest_id="-1", dest_port="1", source_id="4", source_port="1"
     )
     metanode86 = kdlc.MetaNode(
         node_id="8.6",
@@ -936,25 +928,13 @@ def test_unflatten_node_list(my_setup):
         connections=[connection0, connection1],
     )
     connection0 = kdlc.Connection(
-        connection_id=0,
-        dest_id="4",
-        dest_port="1",
-        source_id="-1",
-        source_port="1",
+        connection_id=0, dest_id="4", dest_port="1", source_id="-1", source_port="1"
     )
     connection1 = kdlc.Connection(
-        connection_id=1,
-        dest_id="6",
-        dest_port="1",
-        source_id="4",
-        source_port="1",
+        connection_id=1, dest_id="6", dest_port="1", source_id="4", source_port="1"
     )
     connection2 = kdlc.Connection(
-        connection_id=2,
-        dest_id="-1",
-        dest_port="1",
-        source_id="6",
-        source_port="1",
+        connection_id=2, dest_id="-1", dest_port="1", source_id="6", source_port="1"
     )
     metanode8 = kdlc.MetaNode(
         node_id="8",
@@ -1069,18 +1049,10 @@ def test_normalize_connections(my_setup):
     node864.port_count = 1
 
     connection_m_in_864 = kdlc.Connection(
-        connection_id=0,
-        dest_id="4",
-        dest_port="1",
-        source_id="-1",
-        source_port="1",
+        connection_id=0, dest_id="4", dest_port="1", source_id="-1", source_port="1"
     )
     connection_864_m_out = kdlc.Connection(
-        connection_id=1,
-        dest_id="-1",
-        dest_port="1",
-        source_id="4",
-        source_port="1",
+        connection_id=1, dest_id="-1", dest_port="1", source_id="4", source_port="1"
     )
     metanode86 = kdlc.MetaNode(
         node_id="8.6",
@@ -1089,25 +1061,13 @@ def test_normalize_connections(my_setup):
         connections=[connection_m_in_864, connection_864_m_out],
     )
     connection_m_in_84 = kdlc.Connection(
-        connection_id=0,
-        dest_id="4",
-        dest_port="1",
-        source_id="-1",
-        source_port="1",
+        connection_id=0, dest_id="4", dest_port="1", source_id="-1", source_port="1"
     )
     connection_84_86 = kdlc.Connection(
-        connection_id=1,
-        dest_id="6",
-        dest_port="1",
-        source_id="4",
-        source_port="1",
+        connection_id=1, dest_id="6", dest_port="1", source_id="4", source_port="1"
     )
     connection_86_m_out = kdlc.Connection(
-        connection_id=2,
-        dest_id="-1",
-        dest_port="1",
-        source_id="6",
-        source_port="1",
+        connection_id=2, dest_id="-1", dest_port="1", source_id="6", source_port="1"
     )
     metanode8 = kdlc.MetaNode(
         node_id="8",
@@ -1116,12 +1076,8 @@ def test_normalize_connections(my_setup):
         connections=[connection_m_in_84, connection_84_86, connection_86_m_out],
     )
 
-    connection_1_8  = kdlc.Connection(
-        connection_id=0,
-        dest_id="8",
-        dest_port="1",
-        source_id="1",
-        source_port="1",
+    connection_1_8 = kdlc.Connection(
+        connection_id=0, dest_id="8", dest_port="1", source_id="1", source_port="1"
     )
 
     # Result data begins
@@ -1181,7 +1137,11 @@ def test_normalize_connections(my_setup):
         node_id="8",
         name="Metanode8",
         children=[node84, metanode86],
-        connections=[res_connection_m_in_84, res_connection_84_86, res_connection_86_m_out],
+        connections=[
+            res_connection_m_in_84,
+            res_connection_84_86,
+            res_connection_86_m_out,
+        ],
     )
 
     res_connection_1_8 = kdlc.Connection(
@@ -1191,7 +1151,7 @@ def test_normalize_connections(my_setup):
         dest_node=res_metanode8,
         source_id="1",
         source_port="1",
-        source_node=node1
+        source_node=node1,
     )
 
     in_nodes = [node1, metanode8]
@@ -1201,7 +1161,7 @@ def test_normalize_connections(my_setup):
     res_nodes = [node1, res_metanode8]
 
     kdlc.normalize_connections(in_nodes, in_connections)
-    test=1
+
     assert res_nodes == in_nodes
     assert res_connections == in_connections
 
