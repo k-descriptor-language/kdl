@@ -107,32 +107,7 @@ def build_knwf(
     kdlc.save_workflow_knime(output_workflow_knime, output_workflow_path)
 
     # Generate and save XML for nodes in output directory
-    for node in nodes:
-        # POC for JSON validation, uncomment below and indent to test diff scenarios
-        # if node["settings"]["name"] == "CSV Reader":
-        # empty url
-        # node["settings"]["model"][0]["url"] = ""
-        # no url entry
-        # node["settings"]["model"].pop(0)
-        # update url
-        # node["settings"]["model"][0]["url"] = "/path/to/other/file.csv"
-        # not csv
-        # node["settings"]["model"][0]["url"] = "/path/to/other/file.txt"
-        # TODO: uncomment lines 63-72 and add tests
-        # try:
-        #     node.validate_node_from_schema()
-        # except jsonschema.ValidationError as e:
-        #     print(e.message)
-        #     kdlc.cleanup()
-        #     sys.exit(1)
-        # except jsonschema.SchemaError as e:
-        #     print(e.message)
-        #     kdlc.cleanup()
-        #     sys.exit(1)
-        tree = kdlc.create_node_settings_from_template(node)
-        kdlc.save_node_settings_xml(
-            tree, f"{output_workflow_path}/{node.get_filename()}"
-        )
+    kdlc.create_node_files(output_workflow_path, nodes)
 
     # Zip output workflow into .knwf archive
     kdlc.create_output_workflow(output_wf_name)

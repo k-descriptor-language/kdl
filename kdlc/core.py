@@ -417,7 +417,41 @@ def extract_global_wf_variables(input_file):
     return global_variable_list
 
 
-def create_node_settings_from_template(node: AbstractNode) -> ET.ElementTree:
+def create_node_files(output_workflow_path: str, nodes: List[AbstractNode]) -> None:
+    """
+    Create's output node files for nodes
+
+    Args:
+        output_workflow_path (str): Output workflow path for nodes
+        nodes (List[AbstractNode]): List of input notes to be written
+    """
+    for node in nodes:
+        if type(node) is Node:
+            # TODO: uncomment lines 63-72 and add tests
+            # try:
+            #     node.validate_node_from_schema()
+            # except jsonschema.ValidationError as e:
+            #     print(e.message)
+            #     kdlc.cleanup()
+            #     sys.exit(1)
+            # except jsonschema.SchemaError as e:
+            #     print(e.message)
+            #     kdlc.cleanup()
+            #     sys.exit(1)
+            tree = create_node_settings_from_template(node)
+            save_node_settings_xml(
+                tree, f"{output_workflow_path}/{node.get_filename()}"
+            )
+        elif type(node) is MetaNode:
+            tree = create_metanode_workflow_knime_from_template(node)
+            metanode_path = (
+                f"{output_workflow_path}/{os.path.dirname(node.get_filename())}"
+            )
+            save_workflow_knime(tree, metanode_path)
+            create_node_files(metanode_path, node.children)
+
+
+def create_node_settings_from_template(node: Node) -> ET.ElementTree:
     """
     Creates an ElementTree with the provided node definition
 
@@ -457,11 +491,40 @@ def create_workflow_knime_from_template(
     """
     set_class_for_global_variables(workflow.variables)
     template = jinja_env.get_template("workflow_template.xml")
+    nodes = [node for node in node_list if type(node) is Node]
+    metanodes = [node for node in node_list if type(node) is MetaNode]
     data = {
-        "nodes": node_list,
+        "nodes": nodes,
+        "metanodes": metanodes,
         "connections": workflow.connections,
         "variables": workflow.variables,
     }
+    return ET.ElementTree(ET.fromstring(template.render(data)))
+
+
+def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.ElementTree:
+    """
+    Creates an ElementTree with the provided node list and connection list
+
+    Args:
+        node_list (list): List of Node definitions
+        workflow (Workflow): Input workflow
+
+    Returns:
+        ElementTree: ElementTree populated with nodes and their associated
+        connections
+    """
+
+    template = jinja_env.get_template("workflow_template.xml")
+    nodes = [node for node in metanode.children if type(node) is Node]
+    metanodes = [node for node in metanode.children if type(node) is MetaNode]
+    data = {
+        "name": metanode.name,
+        "nodes": nodes,
+        "metanodes": metanodes,
+        "connections": metanode.connections,
+    }
+
     return ET.ElementTree(ET.fromstring(template.render(data)))
 
 

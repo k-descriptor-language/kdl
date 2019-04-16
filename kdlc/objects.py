@@ -40,6 +40,9 @@ class AbstractNode(ABC):
     def kdl_str(self) -> str:
         pass
 
+    def get_base_id(self) -> str:
+        return self.node_id.rsplit(".", 1)[-1]
+
     @abstractmethod
     def get_filename(self) -> str:
         pass
@@ -185,7 +188,7 @@ class Node(AbstractNode):
         jsonschema.validate(instance=self.__dict__, schema=json.loads(schema))
 
     def get_filename(self) -> str:
-        return f"{self.name} (#{self.node_id})/settings.xml"
+        return f"{self.name} (#{self.get_base_id()})/settings.xml"
 
     def kdl_str(self) -> str:
         settings = self.__dict__.copy()
@@ -228,7 +231,7 @@ class MetaNode(AbstractNode):
         )
 
     def get_filename(self) -> str:
-        return f"{self.name} (#{self.node_id})/workflow.knime"
+        return f"{self.name} (#{self.get_base_id()})/workflow.knime"
 
 
 class Connection(AbstractConnection):

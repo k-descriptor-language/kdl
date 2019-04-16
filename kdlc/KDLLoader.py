@@ -42,7 +42,7 @@ class KDLLoader(KDLListener):
 
     def exitMeta_settings(self, ctx: KDLParser.Meta_settingsContext):
         node_number = ctx.node().node_id().getText()
-        name = ctx.STRING(1)
+        name = ctx.STRING(1).getText()[1:-1]
         metanode = MetaNode(node_id=node_number, name=name, children=[], connections=[])
         for connection in ctx.connection():
             source_node = connection.source_node().node()
