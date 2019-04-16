@@ -2,7 +2,6 @@ import json
 from kdlc.parser.KDLListener import KDLListener
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.objects import Connection, Node, MetaNode
-from kdlc.core import META_IN, META_OUT
 
 
 class KDLLoader(KDLListener):

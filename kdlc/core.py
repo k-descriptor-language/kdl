@@ -562,14 +562,13 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
         for connection in metanode.connections
         if connection.dest_node is META_OUT
     ]
-    test =1
     data = {
         "name": metanode.name,
         "nodes": nodes,
         "metanodes": metanodes,
         "connections": metanode.connections,
         "meta_in_ports": meta_in_ports,
-        "meta_out_ports": meta_out_ports
+        "meta_out_ports": meta_out_ports,
     }
 
     return ET.ElementTree(ET.fromstring(template.render(data)))

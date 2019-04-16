@@ -7,6 +7,20 @@ from abc import ABC, abstractmethod
 
 
 class AbstractConnection(ABC):
+    def __init__(
+        self,
+        connection_id: int,
+        source_id: str,
+        dest_id: str,
+        source_port: str,
+        dest_port: str,
+    ):
+        self.connection_id = connection_id
+        self.source_id = source_id
+        self.dest_id = dest_id
+        self.source_port = source_port
+        self.dest_port = dest_port
+
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
@@ -245,13 +259,15 @@ class Connection(AbstractConnection):
         source_node: AbstractNode = None,
         dest_node: AbstractNode = None,
     ):
-        self.connection_id = connection_id
-        self.source_id = source_id
+        super().__init__(
+            connection_id=connection_id,
+            source_id=source_id,
+            source_port=source_port,
+            dest_id=dest_id,
+            dest_port=dest_port,
+        )
         self.source_node = source_node
-        self.dest_id = dest_id
         self.dest_node = dest_node
-        self.source_port = source_port
-        self.dest_port = dest_port
 
     def kdl_str(self) -> str:
         if self.source_node and type(self.source_node) is MetaNode:
