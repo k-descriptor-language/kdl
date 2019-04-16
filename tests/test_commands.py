@@ -45,10 +45,8 @@ def test_kdl_to_workflow(mocker):
     kdlc.commands.ParseTreeWalker.return_value = mock_walker
 
     workflow = kdlc.Workflow(
-        variables=mock_listener.global_variables,
-        connections=mock_listener.connections
+        variables=mock_listener.global_variables, connections=mock_listener.connections
     )
-
 
     mock_build_knwf = mocker.MagicMock()
     mocker.patch("kdlc.commands.build_knwf", new=mock_build_knwf)
@@ -65,11 +63,7 @@ def test_kdl_to_workflow(mocker):
     mock_walker.walk.assert_any_call(mock_listener, nodes_tree)
     mock_walker.walk.assert_any_call(mock_listener, workflow_tree)
 
-    mock_build_knwf.assert_called_with(
-        mock_listener.nodes,
-        workflow,
-        "fake.knwf",
-    )
+    mock_build_knwf.assert_called_with(mock_listener.nodes, workflow, "fake.knwf")
 
 
 def test_workflow_to_kdl(mocker):
@@ -192,17 +186,12 @@ def test_build_knwf(mocker):
     connections = [mocker.MagicMock()]
     global_variables = []
 
-    workflow = kdlc.Workflow(
-        variables=global_variables,
-        connections=connections
-    )
+    workflow = kdlc.Workflow(variables=global_variables, connections=connections)
 
     kdlc.build_knwf(nodes, workflow, "fake.knwf")
 
     # validate workflow generation
-    mock_create_workflow_knime_from_template.assert_called_with(
-        nodes, workflow
-    )
+    mock_create_workflow_knime_from_template.assert_called_with(nodes, workflow)
     mock_save_workflow_knime.assert_called_with(
         output_workflow_knime, f"{kdlc.OUTPUT_PATH}/fake"
     )

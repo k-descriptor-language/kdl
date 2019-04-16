@@ -4,7 +4,7 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 from kdlc.parser.KDLLexer import KDLLexer
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.KDLLoader import KDLLoader
-from kdlc.objects import AbstractNode, AbstractConnection, Workflow
+from kdlc.objects import AbstractNode, Workflow
 from typing import List
 
 
