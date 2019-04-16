@@ -1549,6 +1549,103 @@ def test_create_workflow_knime_from_template(my_setup):
     assert result_flattened == expected_result_flattened
 
 
+def test_create_metanode_workflow_knime_from_template(my_setup):
+    node864 = kdlc.Node(
+        node_id="8.6.4",
+        name="Column Filter",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node864.model = [
+        {
+            "column-filter": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 11},
+                        {"0": "MaritalStatus"},
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 1}, {"0": "NumberOfContracts"}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {"org.knime.core.data.date.DateAndTimeValue": False},
+                            ]
+                        }
+                    ]
+                },
+            ]
+        }
+    ]
+    node864.port_count = 1
+
+    connection_m_in_864 = kdlc.Connection(
+        connection_id=0,
+        dest_id="4",
+        dest_port="1",
+        dest_node=node864,
+        source_id="-1",
+        source_port="0",
+        source_node=kdlc.META_IN,
+    )
+    connection_864_m_out = kdlc.Connection(
+        connection_id=1,
+        dest_id="-1",
+        dest_node=kdlc.META_OUT,
+        dest_port="0",
+        source_id="4",
+        source_port="1",
+        source_node=node864,
+    )
+    metanode86 = kdlc.MetaNode(
+        node_id="8.6",
+        name="Metanode6",
+        children=[node864],
+        connections=[connection_m_in_864, connection_864_m_out],
+    )
+
+    expected_result = ET.parse(f"{test_resources_dir}/workflow_meta_5.knime")
+    expected_result_flattened = [i.tag for i in expected_result.iter()]
+
+    result = kdlc.create_metanode_workflow_knime_from_template(metanode86)
+    result_flattened = [i.tag for i in result.iter()]
+
+    assert result_flattened == expected_result_flattened
+
+
 def test_set_class_for_global_variables_str(my_setup):
     variables = [{"test1": "test"}, {"test2": 2}, {"test3": 3.0}]
     result = [
