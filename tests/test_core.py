@@ -1521,20 +1521,24 @@ def test_create_workflow_knime_from_template(my_setup):
     ]
     node_list = [node1, node2, node3]
     connection_list = [
-        {
-            "id": 0,
-            "source_id": "1",
-            "dest_id": "3",
-            "source_port": "1",
-            "dest_port": "1",
-        },
-        {
-            "id": 1,
-            "source_id": "3",
-            "dest_id": "2",
-            "source_port": "1",
-            "dest_port": "1",
-        },
+        kdlc.Connection(
+            connection_id=0,
+            source_id="1",
+            source_port="1",
+            source_node=node1,
+            dest_id="3",
+            dest_port="1",
+            dest_node=node3,
+        ),
+        kdlc.Connection(
+            connection_id=1,
+            source_id="3",
+            source_port="1",
+            source_node=node3,
+            dest_id="2",
+            dest_port="1",
+            dest_node=node2,
+        ),
     ]
     global_variable_list = []
     workflow = kdlc.Workflow(
@@ -1781,6 +1785,204 @@ def test_create_output_workflow(mocker):
     kdlc.create_output_workflow(workflow_name)
     make_archive.assert_called_with(workflow_name, "zip", kdlc.OUTPUT_PATH)
     rename.assert_called_with(f"{workflow_name}.zip", f"{workflow_name}.knwf")
+
+
+def test_save_output_kdl_workflow(my_setup):
+    node1 = kdlc.Node(
+        node_id="1",
+        name="CSV Reader",
+        factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node1.port_count = 1
+    node1.model = [
+        {
+            "url": (
+                "/Users/jared/knime-workspace/Example Workflows/"
+                "TheData/Misc/Demographics.csv"
+            )
+        },
+        {"colDelimiter": ","},
+        {"rowDelimiter": "%%00010"},
+        {"quote": '"'},
+        {"commentStart": "#"},
+        {"hasRowHeader": True},
+        {"hasColHeader": True},
+        {"supportShortLines": False},
+        {"limitRowsCount": -1, "data_type": "xlong"},
+        {"skipFirstLinesCount": -1},
+        {"characterSetName": "", "isnull": True},
+        {"limitAnalysisCount": -1},
+    ]
+    node2 = kdlc.Node(
+        node_id="2",
+        name="Column Filter",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node2.port_count = 1
+    node2.model = [
+        {
+            "column-filter": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 11},
+                        {"0": "MaritalStatus"},
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 1}, {"0": "NumberOfContracts"}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {
+                                    (
+                                        "org.knime.core.data." "date.DateAndTimeValue"
+                                    ): False
+                                },
+                            ]
+                        }
+                    ]
+                },
+            ]
+        }
+    ]
+    node3 = kdlc.Node(
+        node_id="3",
+        name="Table to JSON",
+        factory="org.knime.json.node.fromtable.TableToJsonNodeFactory",
+        bundle_name="JSON related functionality for KNIME",
+        bundle_symbolic_name="org.knime.json",
+        bundle_version="3.7.1.v201901281201",
+        feature_name="KNIME JSON-Processing",
+        feature_symbolic_name="org.knime.features.json.feature.group",
+        feature_version="3.7.1.v201901281201",
+    )
+    node3.port_count = 1
+    node3.model = [
+        {
+            "selectedColumns": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 11},
+                        {"0": "MaritalStatus"},
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {
+                                    (
+                                        "org.knime.core.data" ".date.DateAndTimeValue"
+                                    ): False
+                                },
+                            ]
+                        }
+                    ]
+                },
+            ]
+        },
+        {"rowkey.key": "key"},
+        {"direction": "KeepRows"},
+        {"column.name.separator": "."},
+        {"output.column.name": "JSON"},
+        {"row.key.option": "omit"},
+        {"column.names.as.path": False},
+        {"remove.source.columns": False},
+        {"output.boolean.asNumbers": False},
+        {"missing.values.are.omitted": True},
+    ]
+    node_list = [node1, node2, node3]
+    connection_list = [
+        kdlc.Connection(
+            connection_id=0,
+            source_id="1",
+            source_port="1",
+            source_node=node1,
+            dest_id="3",
+            dest_port="1",
+            dest_node=node3,
+        ),
+        kdlc.Connection(
+            connection_id=1,
+            source_id="3",
+            source_port="1",
+            source_node=node3,
+            dest_id="2",
+            dest_port="1",
+            dest_node=node2,
+        ),
+    ]
+    global_variable_list = []
+    workflow = kdlc.Workflow(
+        connections=connection_list, variables=global_variable_list
+    )
+    kdlc.save_output_kdl_workflow(f"{test_generated_dir}/out.kdl", workflow, node_list)
+
+    assert filecmp.cmp(f"{test_resources_dir}/in.kdl", f"{test_generated_dir}/out.kdl")
 
 
 def test_cleanup(my_setup):
