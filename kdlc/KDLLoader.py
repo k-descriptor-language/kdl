@@ -76,7 +76,6 @@ class KDLLoader(KDLListener):
                 newConnection = Connection(
                     connection_id=len(self.connections),
                     source_id="-1",
-                    source_node=META_IN,
                     dest_id=dest_node_id,
                     source_port=source_node_port,
                     dest_port=dest_node_port,
@@ -92,7 +91,6 @@ class KDLLoader(KDLListener):
                     connection_id=len(self.connections),
                     source_id=source_node_id,
                     dest_id="-1",
-                    dest_node=META_OUT,
                     source_port=source_node_port,
                     dest_port=dest_node_port,
                 )

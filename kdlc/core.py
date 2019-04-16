@@ -328,6 +328,35 @@ def unflatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
     return [node for node in node_list if node.node_id.count(".") == 0]
 
 
+def normalize_connections(
+    node_list: List[AbstractNode],
+    connection_list: List[AbstractConnection]
+) -> None:
+    """
+    Updates connections with correct nodes after ingestion of KDL
+
+    Args:
+        node_list (List[AbstractNode]): List of input nodes
+        connection_list (List[AbstractConnection]): List of input
+            connections
+    """
+    node_dict = {node.get_base_id(): node for node in node_list}
+
+    for connection in connection_list:
+        if connection.source_id == "-1":
+            connection.source_node = META_IN
+        else:
+            connection.source_node = node_dict[connection.source_id]
+        if connection.dest_id == "-1":
+            connection.dest_node = META_OUT
+        else:
+            connection.dest_node = node_dict[connection.dest_id]
+
+    metanodes = [node for node in node_list if type(node) is MetaNode]
+    for metanode in metanodes:
+        normalize_connections(metanode.children, metanode.connections)
+
+
 def extract_connections(
     input_file: str, node_list: List[AbstractNode]
 ) -> List[AbstractConnection]:
@@ -341,7 +370,7 @@ def extract_connections(
     Returns:
         list: The list of connections within the KNIME workflow
     """
-    node_dict = {i.node_id.rsplit(".", 1)[-1]: i for i in node_list}
+    node_dict = {node.get_base_id(): node for node in node_list}
     connection_list: List[AbstractConnection] = list()
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()

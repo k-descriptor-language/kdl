@@ -31,6 +31,7 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
     # print(listener.connections)
 
     listener.nodes = kdlc.unflatten_node_list(listener.nodes)
+    kdlc.normalize_connections(listener.nodes, listener.connections)
 
     workflow = Workflow(
         variables=listener.global_variables, connections=listener.connections
