@@ -415,7 +415,7 @@ def extract_connections(
     return connection_list
 
 
-def extract_global_wf_variables(input_file):
+def extract_global_wf_variables(input_file: str) -> List[Dict[str, Any]]:
     """
     Extracts global workflow variables from input workflow.knime file
 
@@ -431,7 +431,7 @@ def extract_global_wf_variables(input_file):
     for child in root.findall(
         "./knime:config[@key='workflow_variables']/knime:config", NS
     ):
-        variable = dict()
+        variable: Dict[str, Any] = dict()
         variable_name_ele = child.find("./knime:entry[@key='name']", NS)
         if variable_name_ele is not None:
             variable_name = variable_name_ele.attrib["value"]
@@ -443,12 +443,11 @@ def extract_global_wf_variables(input_file):
         variable_value_ele = child.find("./knime:entry[@key='value']", NS)
         if variable_value_ele is not None and variable_class is not None:
             if variable_class == "STRING":
-                variable_value = variable_value_ele.attrib["value"]
+                variable[variable_name] = variable_value_ele.attrib["value"]
             elif variable_class == "DOUBLE":
-                variable_value = float(variable_value_ele.attrib["value"])
+                variable[variable_name] = float(variable_value_ele.attrib["value"])
             elif variable_class == "INTEGER":
-                variable_value = int(variable_value_ele.attrib["value"])
-        variable[variable_name] = variable_value
+                variable[variable_name] = int(variable_value_ele.attrib["value"])
         global_variable_list.append(variable)
     return global_variable_list
 
@@ -526,7 +525,8 @@ def create_workflow_knime_from_template(
         ElementTree: ElementTree populated with nodes and their associated
         connections
     """
-    set_class_for_global_variables(workflow.variables)
+    if workflow.variables:
+        set_class_for_global_variables(workflow.variables)
     template = jinja_env.get_template("workflow_template.xml")
     nodes = [node for node in node_list if type(node) is Node]
     metanodes = [node for node in node_list if type(node) is MetaNode]
@@ -544,11 +544,10 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
     Creates an ElementTree with the provided node list and connection list
 
     Args:
-        node_list (list): List of Node definitions
-        workflow (Workflow): Input workflow
+        metanode (MetaNode): metanode definition
 
     Returns:
-        ElementTree: ElementTree populated with nodes and their associated
+        ElementTree: ElementTree populated with metanode and  associated
         connections
     """
 
@@ -577,7 +576,7 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
     return ET.ElementTree(ET.fromstring(template.render(data)))
 
 
-def set_class_for_global_variables(variable_list):
+def set_class_for_global_variables(variable_list: list) -> None:
     """
     Sets var_class property for each dict in variable_list
     for generating XML template
