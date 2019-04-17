@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
 import textwrap
-from typing import List, Any, Dict
+from typing import List, Any, Dict, cast
 from kdlc.objects import (
     Node,
     Connection,
@@ -301,7 +301,7 @@ def flatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
     for node in node_list:
         flattened_list.append(node)
         if type(node) is MetaNode:
-            flattened_list += flatten_node_list(node.children)
+            flattened_list += flatten_node_list(cast(MetaNode, node).children)
     return flattened_list
 
 
@@ -324,7 +324,7 @@ def unflatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
             if node.node_id.startswith(f"{metanode.node_id}.")
             and node.node_id.count(".") == dot_count + 1
         ]
-        metanode.children += child_list
+        cast(MetaNode, metanode).children += child_list
     return [node for node in node_list if node.node_id.count(".") == 0]
 
 
@@ -343,6 +343,7 @@ def normalize_connections(
     node_dict = {node.get_base_id(): node for node in node_list}
 
     for connection in connection_list:
+        connection = cast(Connection, connection)
         if connection.source_id == "-1":
             connection.source_node = META_IN
         else:
@@ -359,6 +360,7 @@ def normalize_connections(
 
     metanodes = [node for node in node_list if type(node) is MetaNode]
     for metanode in metanodes:
+        metanode = cast(MetaNode, metanode)
         normalize_connections(metanode.children, metanode.connections)
 
 
@@ -472,11 +474,12 @@ def create_node_files(output_workflow_path: str, nodes: List[AbstractNode]) -> N
             #     print(e.message)
             #     kdlc.cleanup()
             #     sys.exit(1)
-            tree = create_node_settings_from_template(node)
+            tree = create_node_settings_from_template(cast(Node, node))
             save_node_settings_xml(
                 tree, f"{output_workflow_path}/{node.get_filename()}"
             )
         elif type(node) is MetaNode:
+            node = cast(MetaNode, node)
             tree = create_metanode_workflow_knime_from_template(node)
             metanode_path = (
                 f"{output_workflow_path}/{os.path.dirname(node.get_filename())}"
@@ -555,12 +558,12 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
     meta_in_ports = [
         connection
         for connection in metanode.connections
-        if connection.source_node is META_IN
+        if cast(Connection, connection).source_node is META_IN
     ]
     meta_out_ports = [
         connection
         for connection in metanode.connections
-        if connection.dest_node is META_OUT
+        if cast(Connection, connection).dest_node is META_OUT
     ]
     data = {
         "name": metanode.name,
