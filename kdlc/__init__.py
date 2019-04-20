@@ -1,13 +1,6 @@
 from .cli import prompt
 
-from .commands import (
-    kdl_to_workflow,
-    update_workflow_with_kdl,
-    kdl_to_workflow_custom_template,
-    workflow_to_kdl_custom_template,
-    workflow_to_kdl,
-    build_knwf,
-)
+from .commands import kdl_to_workflow, workflow_to_kdl, build_knwf
 
 from .objects import Node, Connection
 
@@ -42,9 +35,6 @@ from .application import main
 __all__ = [
     "prompt",
     "kdl_to_workflow",
-    "update_workflow_with_kdl",
-    "kdl_to_workflow_custom_template",
-    "workflow_to_kdl_custom_template",
     "workflow_to_kdl",
     "workflow_to_workflow",
     "build_knwf",

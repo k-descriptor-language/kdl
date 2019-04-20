@@ -35,24 +35,6 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
     )
 
 
-def update_workflow_with_kdl(
-    input_file: str, output_file: str, modify_file: str
-) -> None:
-    pass
-
-
-def kdl_to_workflow_custom_template(
-    input_file: str, output_file: str, nodes: str
-) -> None:
-    pass
-
-
-def workflow_to_kdl_custom_template(
-    input_file: str, output_file: str, nodes: str
-) -> None:
-    pass
-
-
 def workflow_to_kdl(input_file: str, output_file: str) -> None:
     # Extract workflow
     input_workflow_name = kdlc.unzip_workflow(input_file)
