@@ -2274,7 +2274,7 @@ def test_connection_kdl_str_var():
         {"output.boolean.asNumbers": "false", "data_type": "xboolean"},
         {"missing.values.are.omitted": "true", "data_type": "xboolean"},
     ]
-    connection = kdlc.Connection(
+    connection = kdlc.VariableConnection(
         connection_id=1,
         source_id="1",
         source_node=node1,

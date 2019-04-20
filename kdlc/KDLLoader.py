@@ -80,14 +80,14 @@ class KDLLoader(KDLListener):
                 dest_node_port.port_id().NUMBER().getText() if dest_node_port else "0"
             )
 
-            new_connection = VariableConnection(
+            new_var_connection = VariableConnection(
                 connection_id=len(metanode.connections),
                 source_id=source_node_id,
                 source_port=source_node_port_id,
                 dest_id=dest_node_id,
                 dest_port=dest_node_port_id,
             )
-            metanode.connections.append(new_connection)
+            metanode.connections.append(new_var_connection)
 
         for connection in ctx.meta_connection():
             if connection.meta_in_node():

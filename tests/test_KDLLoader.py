@@ -1,5 +1,4 @@
 import kdlc
-import pytest
 
 
 def test_exitNode_settings(mocker):
@@ -307,10 +306,6 @@ def test_exitConnection(mocker):
     destination_node.port.return_value.port_id = destination_port_id
     destination_port_id.return_value.NUMBER.return_value.getText.return_value = "4"
 
-    # connection arrow
-    ctx.ARROW.return_value = "-->"
-    ctx.VARIABLE_ARROW.return_value = None
-
     listener = kdlc.commands.KDLLoader()
 
     listener.exitConnection(ctx)
@@ -323,7 +318,7 @@ def test_exitConnection(mocker):
     assert listener.connections[0] == expected_connection
 
 
-def test_exitConnection_var(mocker):
+def test_exitVar_connection(mocker):
     ctx = mocker.MagicMock()
 
     source_node = mocker.MagicMock()
@@ -332,51 +327,31 @@ def test_exitConnection_var(mocker):
     # source_node_id
     source_node.node_id.return_value.getText.return_value = "1"
 
+    # source_node_port
+    source_port_id = mocker.MagicMock()
+    source_node.port.return_value.port_id = source_port_id
+    source_port_id.return_value.NUMBER.return_value.getText.return_value = "0"
+
     destination_node = mocker.MagicMock()
     ctx.destination_node.return_value.node.return_value = destination_node
 
     # destination_node_id
     destination_node.node_id.return_value.getText.return_value = "3"
 
-    # connection arrow
-    ctx.ARROW.return_value = None
-    ctx.VARIABLE_ARROW.return_value = "~~>"
+    # destination_node_port
+    destination_port_id = mocker.MagicMock()
+    destination_node.port.return_value.port_id = destination_port_id
+    destination_port_id.return_value.NUMBER.return_value.getText.return_value = "0"
 
     listener = kdlc.commands.KDLLoader()
 
-    listener.exitConnection(ctx)
+    listener.exitVar_connection(ctx)
 
-    expected_connection = kdlc.Connection(
+    expected_connection = kdlc.VariableConnection(
         connection_id=0, source_id="1", dest_id="3", source_port="0", dest_port="0"
     )
-
     assert len(listener.connections) == 1
     assert listener.connections[0] == expected_connection
-
-
-def test_exitConnection_fail(mocker):
-    ctx = mocker.MagicMock()
-
-    source_node = mocker.MagicMock()
-    ctx.source_node.return_value.node.return_value = source_node
-
-    # source_node_id
-    source_node.node_id.return_value.getText.return_value = "1"
-
-    destination_node = mocker.MagicMock()
-    ctx.destination_node.return_value.node.return_value = destination_node
-
-    # destination_node_id
-    destination_node.node_id.return_value.getText.return_value = "3"
-
-    # connection arrow
-    ctx.ARROW.return_value = None
-    ctx.VARIABLE_ARROW.return_value = None
-
-    listener = kdlc.commands.KDLLoader()
-
-    with pytest.raises(Exception):
-        listener.exitConnection(ctx)
 
 
 def test_exitGlobal_variables(mocker):

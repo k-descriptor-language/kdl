@@ -428,14 +428,14 @@ def extract_connections(
         elif type(source_node) is MetaNode and type(dest_node) is MetaNode:
             source_out_connections = [
                 c
-                for c in source_node.connections
+                for c in cast(MetaNode, source_node).connections
                 if c.dest_node is META_OUT and c.dest_port == source_port
             ]
             if source_out_connections:
                 source_out_connection = source_out_connections.pop()
             dest_in_connections = [
                 c
-                for c in dest_node.connections
+                for c in cast(MetaNode, dest_node).connections
                 if c.source_node is META_IN and c.source_port == dest_port
             ]
             if dest_in_connections:
@@ -447,7 +447,7 @@ def extract_connections(
                 is_var_connection = True
 
         if is_var_connection:
-            connection = VariableConnection(
+            var_connection = VariableConnection(
                 connection_id=i,
                 source_id=source_id,
                 source_node=source_node,
@@ -456,6 +456,7 @@ def extract_connections(
                 source_port=source_port,
                 dest_port=dest_port,
             )
+            connection_list.append(var_connection)
         else:
             connection = Connection(
                 connection_id=i,
@@ -466,7 +467,7 @@ def extract_connections(
                 source_port=source_port,
                 dest_port=dest_port,
             )
-        connection_list.append(connection)
+            connection_list.append(connection)
     return connection_list
 
 
