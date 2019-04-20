@@ -2125,7 +2125,6 @@ def test_save_output_kdl_workflow(my_setup):
         connections=connection_list, variables=global_variable_list
     )
     kdlc.save_output_kdl_workflow(f"{test_generated_dir}/out.kdl", workflow, node_list)
-
     assert filecmp.cmp(f"{test_resources_dir}/in.kdl", f"{test_generated_dir}/out.kdl")
 
 

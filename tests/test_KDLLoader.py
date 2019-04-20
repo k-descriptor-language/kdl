@@ -483,64 +483,73 @@ def test_exitMeta_settings_var_connection(mocker):
 
 def test_exitMeta_settings_metaconnection_in(mocker):
     ctx = mocker.MagicMock()
-    node_id = mocker.MagicMock()
-    ctx.node.return_value.node_id.return_value = node_id
-    node_id.getText.return_value = "42"
-    ctx.STRING.return_value.getText.return_value = "test"
 
     connection = mocker.MagicMock()
 
     ctx.meta_connection.return_value = [connection]
 
     meta_in_node = mocker.MagicMock()
-    NUMBER = mocker.MagicMock()
-    NUMBER.return_value.getText.return_value = "1"
-    meta_in_node.port.return_value.port_id.return_value = NUMBER
+    source_port = mocker.MagicMock()
+    meta_in_node.port.return_value = source_port
+    source_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
 
     dest_node = mocker.MagicMock()
-    NUMBER = mocker.MagicMock()
-    NUMBER.return_value.getText.return_value = "2"
     dest_node.node_id.return_value.getText.return_value = "2"
-    dest_node.port.return_value.port_id.return_value = NUMBER
 
-    # connection arrow
+    dest_port = mocker.MagicMock()
+    dest_node.port.return_value = dest_port
+    dest_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
     connection.meta_in_node.return_value = meta_in_node
+    connection.meta_out_node.return_value = None
+    connection.destination_node.return_value.node.return_value = dest_node
 
     listener = kdlc.commands.KDLLoader()
     listener.exitMeta_settings(ctx)
-
+    expected_connection = kdlc.Connection(
+        connection_id=0,
+        source_id="-1",
+        source_port="1",
+        dest_id="2",
+        dest_port="1"
+    )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert listener.nodes[0].connections[0] == expected_connection
 
 
 def test_exitMeta_settings_metaconnection_out(mocker):
     ctx = mocker.MagicMock()
-    node_id = mocker.MagicMock()
-    ctx.node.return_value.node_id.return_value = node_id
-    node_id.getText.return_value = "42"
-    ctx.STRING.return_value.getText.return_value = "test"
 
     connection = mocker.MagicMock()
 
     ctx.meta_connection.return_value = [connection]
 
-    meta_out_node = mocker.MagicMock()
-    NUMBER = mocker.MagicMock()
-    NUMBER.return_value.getText.return_value = "1"
-    meta_out_node.port.return_value.port_id.return_value = NUMBER
-
     source_node = mocker.MagicMock()
-    source_node.node_id.return_value.getText.return_value = "2"
-    NUMBER = mocker.MagicMock()
-    NUMBER.return_value.getText.return_value = "2"
-    source_node.port.return_value.port_id.return_value = NUMBER
+    source_node.node_id.return_value.getText.return_value = "1"
 
-    # connection arrow
+    source_port = mocker.MagicMock()
+    source_node.port.return_value = source_port
+    source_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    meta_out_node = mocker.MagicMock()
+    dest_port = mocker.MagicMock()
+    meta_out_node.port.return_value = dest_port
+    dest_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
     connection.meta_in_node.return_value = None
+    connection.source_node.return_value.node.return_value = source_node
     connection.meta_out_node.return_value = meta_out_node
 
     listener = kdlc.commands.KDLLoader()
     listener.exitMeta_settings(ctx)
-
+    expected_connection = kdlc.Connection(
+        connection_id=0,
+        source_id="1",
+        source_port="1",
+        dest_id="-1",
+        dest_port="1"
+    )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert listener.nodes[0].connections[0] == expected_connection

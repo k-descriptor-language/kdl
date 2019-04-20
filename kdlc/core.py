@@ -4,7 +4,6 @@ import shutil
 import xml.etree.ElementTree as ET
 from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
-import textwrap
 from typing import List, Any, Dict, cast
 from kdlc.objects import (
     Node,
@@ -759,19 +758,17 @@ def save_output_kdl_workflow(
         workflow (Workflow): Workflow to be written
         node_list (List[AbstractNode]): list of Nodes to be written
     """
+
     flattened_list = flatten_node_list(node_list)
-    wrapper = textwrap.TextWrapper(
-        initial_indent="\t", subsequent_indent="\t", width=120
-    )
     with open(output_file, "w") as file:
+        indent = "    "
         file.write("Nodes {\n")
         for i, node in enumerate(flattened_list):
             output_text = node.kdl_str()
             if i < len(flattened_list) - 1:
                 output_text += ","
             for line in output_text.splitlines():
-                wrapped = wrapper.fill(line)
-                file.write(f"{wrapped}\n")
+                file.write(f"{indent}{line}\n")
         file.write("}\n\n")
         file.write(workflow.kdl_str())
 
