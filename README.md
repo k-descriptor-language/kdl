@@ -22,8 +22,6 @@ Usage: kdlc [OPTIONS]
 Options:
   -o, --output TEXT  The output file, either .knwf or .kdl  [required]
   -i, --input PATH   The input file, either .knwf or .kdl  [required]
-  -m, --modify PATH  The KNIME workflow file (.knwf) being modified
-  -n, --nodes PATH   The path to the custom node templates
   --help             Show this message and exit.
 ```
 
