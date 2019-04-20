@@ -11,6 +11,8 @@ from .commands import (
 
 from .objects import Node, Connection, MetaNode, Workflow, VariableConnection
 
+from .KDLLoader import KDLLoader
+
 from .core import (
     TMP_INPUT_DIR,
     INPUT_PATH,
@@ -61,6 +63,7 @@ __all__ = [
     "Workflow",
     "MetaNode",
     "VariableConnection",
+    "KDLLoader",
     "TMP_INPUT_DIR",
     "INPUT_PATH",
     "TMP_OUTPUT_DIR",

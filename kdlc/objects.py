@@ -293,17 +293,7 @@ class Connection(AbstractConnection):
             dest_str = f"(n{self.dest_id})"
         else:
             dest_str = f"(n{self.dest_id}:{self.dest_port})"
-        """
-        if (
-            type(self.source_node) is Node
-            and type(self.dest_node) is Node
-            and self.source_port == "0"
-            and self.dest_port == "0"
-        ):
-            connection_str = "~~>"
-        else:
-            connection_str = "-->"
-        """
+
         connection_str = "-->"
         return source_str + connection_str + dest_str
 
