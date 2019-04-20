@@ -1297,6 +1297,47 @@ def test_extract_var_connections(my_setup):
     )
 
 
+def test_extract_var_connections_meta(my_setup):
+    out_connection = kdlc.VariableConnection(
+        connection_id=0,
+        source_id="1",
+        source_port="0",
+        dest_id="-1",
+        dest_node=kdlc.META_OUT,
+        dest_port="0",
+    )
+    node14 = kdlc.MetaNode(
+        node_id="14", name="14", children=[], connections=[out_connection]
+    )
+    in_connection = kdlc.VariableConnection(
+        connection_id=0,
+        source_id="-1",
+        source_port="0",
+        source_node=kdlc.META_IN,
+        dest_id="1",
+        dest_port="0",
+    )
+    node15 = kdlc.MetaNode(
+        node_id="15", name="15", children=[], connections=[in_connection]
+    )
+    connection14_15 = kdlc.VariableConnection(
+        connection_id=0,
+        source_id="14",
+        source_node=node14,
+        dest_id="15",
+        dest_node=node15,
+        source_port="0",
+        dest_port="0",
+    )
+    result = [connection14_15]
+    assert (
+        kdlc.extract_connections(
+            f"{test_resources_dir}/workflow_var_connection_meta.knime", [node14, node15]
+        )
+        == result
+    )
+
+
 def test_extract_global_wf_variables(my_setup):
     result = [{"test1": "test"}, {"test2": 1}, {"test3": 1.1}]
     assert result == kdlc.extract_global_wf_variables(
