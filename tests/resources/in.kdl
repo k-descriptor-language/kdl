@@ -301,8 +301,8 @@ Nodes {
 }
 
 Workflow {
-	"connections": {
-	    (n1:1)-->(n3:1),
-	    (n3:1)-->(n2:1)
-	}
+    "connections": {
+        (n1:1)-->(n3:1),
+        (n3:1)-->(n2:1)
+    }
 }

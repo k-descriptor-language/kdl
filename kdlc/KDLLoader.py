@@ -134,7 +134,7 @@ class KDLLoader(KDLListener):
                     else "0"
                 )
 
-                new_connection = Connection(
+                new_var_connection = VariableConnection(
                     connection_id=len(metanode.connections),
                     source_id="-1",
                     source_port=source_node_port_id,
@@ -154,14 +154,14 @@ class KDLLoader(KDLListener):
                 dest_node_port_id = (
                     connection.meta_out_node().port().port_id().NUMBER().getText()
                 )
-                new_connection = Connection(
+                new_var_connection = VariableConnection(
                     connection_id=len(metanode.connections),
                     source_id=source_node_id,
                     source_port=source_node_port_id,
                     dest_id="-1",
                     dest_port=dest_node_port_id,
                 )
-            metanode.connections.append(new_connection)
+            metanode.connections.append(new_var_connection)
         self.nodes.append(metanode)
 
     def exitConnection(self: KDLListener, ctx: KDLParser.ConnectionContext) -> None:

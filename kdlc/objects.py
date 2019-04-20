@@ -1,7 +1,6 @@
 import os
 import json
 import jsonschema
-import textwrap
 from typing import Any, List
 from abc import ABC, abstractmethod
 
@@ -228,23 +227,21 @@ class MetaNode(AbstractNode):
         self.connections = connections
 
     def kdl_str(self) -> str:
-        wrapper = textwrap.TextWrapper(
-            initial_indent="\t", subsequent_indent="\t", width=120
-        )
+        indent = "    "
         output_connections = ""
         for j, connection in enumerate(self.connections):
-            wrapped = wrapper.fill(connection.kdl_str())
+            output_text = f"{indent}{indent}{connection.kdl_str()}"
             if j < len(self.connections) - 1:
-                wrapped += ",\n"
-            output_connections += wrapped
+                output_text += ",\n"
+            output_connections += output_text
         return (
             f"(n{self.node_id}): "
             "{\n"
-            f'    "name": "{self.name}",\n'
-            '    "type": "MetaNode",\n'
-            '    "connections": {\n'
+            f'{indent}"name": "{self.name}",\n'
+            f'{indent}"type": "MetaNode",\n'
+            f'{indent}"connections": {{\n'
             f"{output_connections}\n"
-            "    }\n"
+            f"{indent}}}\n"
             "}"
         )
 
@@ -366,27 +363,22 @@ class Workflow(AbstractWorkflow):
         self.variables = variables
 
     def kdl_str(self) -> str:
-        wrapper = textwrap.TextWrapper(
-            initial_indent="\t", subsequent_indent="\t", width=120
-        )
-
+        indent = "    "
         output_text = "Workflow {\n"
         if self.variables:
             var_text = f'"variables": {json.dumps(self.variables, indent=4)},'
             for line in var_text.splitlines():
-                wrapped = wrapper.fill(line)
-                output_text += f"{wrapped}\n"
+                output_text += f"{indent}{line}\n"
 
         output_connections = '"connections": {\n'
         for i, connection in enumerate(self.connections):
             output_connection = connection.kdl_str()
             if i < len(self.connections) - 1:
                 output_connection += ","
-            output_connections += f"    {output_connection}\n"
+            output_connections += f"{indent}{output_connection}\n"
         output_connections += "}\n"
         for line in output_connections.splitlines():
-            wrapped = wrapper.fill(line)
-            output_text += f"{wrapped}\n"
+            output_text += f"{indent}{line}\n"
 
         output_text += "}\n"
         return output_text

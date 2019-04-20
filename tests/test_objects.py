@@ -1993,8 +1993,8 @@ def test_metanode_kdl_str(my_setup):
         '    "name": "Metanode",\n'
         '    "type": "MetaNode",\n'
         '    "connections": {\n'
-        "\t(n1:1)-->(n2:1),\n"
-        "\t(n2:1)-->(n3:1)\n"
+        "        (n1:1)-->(n2:1),\n"
+        "        (n2:1)-->(n3:1)\n"
         "    }\n"
         "}"
     )
@@ -2791,16 +2791,16 @@ def test_workflow_kdl_str(my_setup):
     )
     result = (
         "Workflow {\n"
-        '\t"variables": [\n'
-        "\t    {\n"
-        '\t        "input_file": "/Users/jared/knime-workspace/Example '
+        '    "variables": [\n'
+        "        {\n"
+        '            "input_file": "/Users/jared/knime-workspace/Example '
         'Workflows/TheData/Misc/Demographics.csv"\n'
-        "\t    }\n"
-        "\t],\n"
-        '\t"connections": {\n'
-        "\t    (n1:1)-->(n2:1),\n"
-        "\t    (n2:1)-->(n3:1)\n"
-        "\t}\n"
+        "        }\n"
+        "    ],\n"
+        '    "connections": {\n'
+        "        (n1:1)-->(n2:1),\n"
+        "        (n2:1)-->(n3:1)\n"
+        "    }\n"
         "}\n"
     )
     assert result == workflow.kdl_str()

@@ -358,22 +358,6 @@ def normalize_connections(
         if type(connection.dest_node) is MetaNode:
             connection.dest_port = str(int(connection.dest_port) - 1)
 
-        if type(connection) is Connection and (
-            (type(connection.source_node) is Node and connection.source_port == "0")
-            or (type(connection.dest_node) is Node and connection.dest_port == "0")
-        ):
-            var_connection = VariableConnection(
-                connection_id=connection.connection_id,
-                source_id=connection.source_id,
-                source_port=connection.source_port,
-                source_node=connection.source_node,
-                dest_id=connection.dest_id,
-                dest_port=connection.dest_port,
-                dest_node=connection.dest_node,
-            )
-            connection_list.remove(connection)
-            connection_list.append(var_connection)
-
     metanodes = [node for node in node_list if type(node) is MetaNode]
     for metanode in metanodes:
         metanode = cast(MetaNode, metanode)
