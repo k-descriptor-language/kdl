@@ -333,7 +333,7 @@ def normalize_connections(
 ) -> None:
     """
     Updates connections with correct nodes and decrement port ids
-    of for metanode source/dest nodes
+    for metanode source/dest nodes
 
     Args:
         node_list (List[AbstractNode]): List of input nodes
