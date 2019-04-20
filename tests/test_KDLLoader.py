@@ -507,11 +507,7 @@ def test_exitMeta_settings_metaconnection_in(mocker):
     listener = kdlc.commands.KDLLoader()
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.Connection(
-        connection_id=0,
-        source_id="-1",
-        source_port="1",
-        dest_id="2",
-        dest_port="1"
+        connection_id=0, source_id="-1", source_port="1", dest_id="2", dest_port="1"
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
@@ -544,11 +540,7 @@ def test_exitMeta_settings_metaconnection_out(mocker):
     listener = kdlc.commands.KDLLoader()
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.Connection(
-        connection_id=0,
-        source_id="1",
-        source_port="1",
-        dest_id="-1",
-        dest_port="1"
+        connection_id=0, source_id="1", source_port="1", dest_id="-1", dest_port="1"
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
