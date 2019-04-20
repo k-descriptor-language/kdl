@@ -5,7 +5,6 @@ import xml.etree.ElementTree as ET
 from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
 import json
-import textwrap
 from typing import List, Any, Dict, Union
 from kdlc.objects import Node, Connection
 
@@ -479,10 +478,8 @@ def save_output_kdl_workflow(
             variables to be written
     """
 
-    wrapper = textwrap.TextWrapper(
-        initial_indent="\t", subsequent_indent="\t", width=120
-    )
     with open(output_file, "w") as file:
+        indent = "    "
         file.write("Nodes {\n")
         for i, node in enumerate(node_list):
             settings = node.__dict__.copy()
@@ -492,28 +489,24 @@ def save_output_kdl_workflow(
             if i < len(node_list) - 1:
                 output_text += ","
             for line in output_text.splitlines():
-                wrapped = wrapper.fill(line)
-                file.write(f"{wrapped}\n")
+                file.write(f"{indent}{line}\n")
         file.write("}\n\n")
         file.write("Workflow {\n")
         if global_variable_list:
             output_text = f"variables: {json.dumps(global_variable_list, indent=4)},"
             for line in output_text.splitlines():
-                wrapped = wrapper.fill(line)
-                file.write(f"{wrapped}\n")
+                file.write(f"{indent}{line}\n")
         for i, connection in enumerate(connection_list):
             if connection.source_port == "0" and connection.dest_port == "0":
-                wrapped = wrapper.fill(
-                    f"(n{connection.source_id})~~>" f"(n{connection.dest_id})\n"
-                )
+                line = f"(n{connection.source_id})~~>" f"(n{connection.dest_id})"
             else:
-                wrapped = wrapper.fill(
+                line = (
                     f"(n{connection.source_id}:{connection.source_port})-->"
-                    f"(n{connection.dest_id}:{connection.dest_port})\n"
+                    f"(n{connection.dest_id}:{connection.dest_port})"
                 )
             if i < len(connection_list) - 1:
-                wrapped += ","
-            file.write(f"{wrapped}\n")
+                line += ","
+            file.write(f"{indent}{line}\n")
         file.write("}\n")
 
 
