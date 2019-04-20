@@ -1227,6 +1227,76 @@ def test_extract_connections(my_setup):
     )
 
 
+def test_extract_var_connections(my_setup):
+    node1 = kdlc.Node(
+        node_id="1",
+        name="1",
+        factory="1",
+        bundle_name="1",
+        bundle_symbolic_name="1",
+        bundle_version="1",
+        feature_name="1",
+        feature_symbolic_name="1",
+        feature_version="1",
+    )
+    node2 = kdlc.Node(
+        node_id="2",
+        name="2",
+        factory="2",
+        bundle_name="2",
+        bundle_symbolic_name="2",
+        bundle_version="2",
+        feature_name="2",
+        feature_symbolic_name="2",
+        feature_version="2",
+    )
+    node3 = kdlc.Node(
+        node_id="3",
+        name="3",
+        factory="3",
+        bundle_name="3",
+        bundle_symbolic_name="3",
+        bundle_version="3",
+        feature_name="3",
+        feature_symbolic_name="3",
+        feature_version="3",
+    )
+    connection1 = kdlc.Connection(
+        connection_id=0,
+        source_id="1",
+        source_node=node1,
+        dest_id="3",
+        dest_node=node3,
+        source_port="1",
+        dest_port="1",
+    )
+    connection2 = kdlc.Connection(
+        connection_id=1,
+        source_id="3",
+        source_node=node3,
+        dest_id="2",
+        dest_node=node2,
+        source_port="1",
+        dest_port="1",
+    )
+    connection3 = kdlc.VariableConnection(
+        connection_id=2,
+        source_id="3",
+        source_node=node3,
+        dest_id="2",
+        dest_node=node2,
+        source_port="0",
+        dest_port="0",
+    )
+    result = [connection1, connection2, connection3]
+    assert (
+        kdlc.extract_connections(
+            f"{test_resources_dir}/workflow_var_connection.knime", [node1, node2, node3]
+        )
+        == result
+    )
+
+
 def test_extract_global_wf_variables(my_setup):
     result = [{"test1": "test"}, {"test2": 1}, {"test3": 1.1}]
     assert result == kdlc.extract_global_wf_variables(
