@@ -1,7 +1,7 @@
 import json
 from kdlc.parser.KDLListener import KDLListener
 from kdlc.parser.KDLParser import KDLParser
-from kdlc.objects import Connection, Node, MetaNode
+from kdlc.objects import Connection, Node, MetaNode, VariableConnection
 
 
 class KDLLoader(KDLListener):
@@ -46,23 +46,48 @@ class KDLLoader(KDLListener):
         for connection in ctx.connection():
             source_node = connection.source_node().node()
             source_node_id = source_node.node_id().getText()
+            source_node_port = source_node.port()
+            source_node_port_id = source_node_port.port_id().NUMBER().getText()
+
             dest_node = connection.destination_node().node()
             dest_node_id = dest_node.node_id().getText()
-            if connection.VARIABLE_ARROW():
-                source_node_port = "0"
-                dest_node_port = "0"
-            elif connection.ARROW():
-                source_node_port = source_node.port().port_id().NUMBER().getText()
-                dest_node_port = dest_node.port().port_id().NUMBER().getText()
+            dest_node_port = dest_node.port()
+            dest_node_port_id = dest_node_port.port_id().NUMBER().getText()
 
-            newConnection = Connection(
+            new_connection = Connection(
                 connection_id=len(metanode.connections),
                 source_id=source_node_id,
+                source_port=source_node_port_id,
                 dest_id=dest_node_id,
-                source_port=source_node_port,
-                dest_port=dest_node_port,
+                dest_port=dest_node_port_id,
             )
-            metanode.connections.append(newConnection)
+            metanode.connections.append(new_connection)
+
+        for connection in ctx.var_connection():
+            source_node = connection.source_node().node()
+            source_node_id = source_node.node_id().getText()
+            source_node_port = source_node.port()
+            source_node_port_id = (
+                source_node_port.port_id().NUMBER().getText()
+                if source_node_port
+                else "0"
+            )
+
+            dest_node = connection.destination_node().node()
+            dest_node_id = dest_node.node_id().getText()
+            dest_node_port = dest_node.port()
+            dest_node_port_id = (
+                dest_node_port.port_id().NUMBER().getText() if dest_node_port else "0"
+            )
+
+            new_connection = VariableConnection(
+                connection_id=len(metanode.connections),
+                source_id=source_node_id,
+                source_port=source_node_port_id,
+                dest_id=dest_node_id,
+                dest_port=dest_node_port_id,
+            )
+            metanode.connections.append(new_connection)
 
         for connection in ctx.meta_connection():
             if connection.meta_in_node():
@@ -72,7 +97,7 @@ class KDLLoader(KDLListener):
                 dest_node = connection.destination_node().node()
                 dest_node_id = dest_node.node_id().getText()
                 dest_node_port = dest_node.port().port_id().NUMBER().getText()
-                newConnection = Connection(
+                new_connection = Connection(
                     connection_id=len(metanode.connections),
                     source_id="-1",
                     dest_id=dest_node_id,
@@ -86,14 +111,57 @@ class KDLLoader(KDLListener):
                 dest_node_port = (
                     connection.meta_out_node().port().port_id().NUMBER().getText()
                 )
-                newConnection = Connection(
+                new_connection = Connection(
                     connection_id=len(metanode.connections),
                     source_id=source_node_id,
                     dest_id="-1",
                     source_port=source_node_port,
                     dest_port=dest_node_port,
                 )
-            metanode.connections.append(newConnection)
+            metanode.connections.append(new_connection)
+
+        for connection in ctx.meta_var_connection():
+            if connection.meta_in_node():
+                source_node_port_id = (
+                    connection.meta_in_node().port().port_id().NUMBER().getText()
+                )
+                dest_node = connection.destination_node().node()
+                dest_node_id = dest_node.node_id().getText()
+                dest_node_port = dest_node.port()
+                dest_node_port_id = (
+                    dest_node_port.port_id().NUMBER().getText()
+                    if dest_node_port
+                    else "0"
+                )
+
+                new_connection = Connection(
+                    connection_id=len(metanode.connections),
+                    source_id="-1",
+                    source_port=source_node_port_id,
+                    dest_id=dest_node_id,
+                    dest_port=dest_node_port_id,
+                )
+            elif connection.meta_out_node():
+                source_node = connection.source_node().node()
+                source_node_id = source_node.node_id().getText()
+                source_node_port = source_node.port()
+                source_node_port_id = (
+                    source_node_port.port_id().NUMBER().getText()
+                    if source_node_port
+                    else "0"
+                )
+
+                dest_node_port_id = (
+                    connection.meta_out_node().port().port_id().NUMBER().getText()
+                )
+                new_connection = Connection(
+                    connection_id=len(metanode.connections),
+                    source_id=source_node_id,
+                    source_port=source_node_port_id,
+                    dest_id="-1",
+                    dest_port=dest_node_port_id,
+                )
+            metanode.connections.append(new_connection)
         self.nodes.append(metanode)
 
     def exitConnection(self: KDLListener, ctx: KDLParser.ConnectionContext) -> None:
@@ -102,26 +170,49 @@ class KDLLoader(KDLListener):
             return
         source_node = ctx.source_node().node()
         source_node_id = source_node.node_id().getText()
-        destination_node = ctx.destination_node().node()
-        destination_node_id = destination_node.node_id().getText()
+        source_node_port = source_node.port()
+        source_node_port_id = source_node_port.port_id().NUMBER().getText()
 
-        if ctx.VARIABLE_ARROW():
-            source_node_port = "0"
-            destination_node_port = "0"
-        elif ctx.ARROW():
-            source_node_port = source_node.port().port_id().NUMBER().getText()
-            destination_node_port = destination_node.port().port_id().NUMBER().getText()
-        else:
-            ex = ValueError("Invalid workflow connection")
-            raise ex
+        dest_node = ctx.destination_node().node()
+        dest_node_id = dest_node.node_id().getText()
+        dest_node_port = dest_node.port()
+        dest_node_port_id = dest_node_port.port_id().NUMBER().getText()
+
         connection = Connection(
             connection_id=len(self.connections),
             source_id=source_node_id,
-            dest_id=destination_node_id,
-            source_port=source_node_port,
-            dest_port=destination_node_port,
+            source_port=source_node_port_id,
+            dest_id=dest_node_id,
+            dest_port=dest_node_port_id,
         )
 
+        self.connections.append(connection)
+
+    def exitVar_connection(self, ctx: KDLParser.Var_connectionContext):
+        # TODO: is there a cleaner way to do this?
+        if type(ctx.parentCtx) is KDLParser.Meta_settingsContext:
+            return
+        source_node = ctx.source_node().node()
+        source_node_id = source_node.node_id().getText()
+        source_node_port = source_node.port()
+        source_node_port_id = (
+            source_node_port.port_id().NUMBER().getText() if source_node_port else "0"
+        )
+
+        dest_node = ctx.destination_node().node()
+        dest_node_id = dest_node.node_id().getText()
+        dest_node_port = dest_node.port()
+        dest_node_port_id = (
+            dest_node_port.port_id().NUMBER().getText() if dest_node_port else "0"
+        )
+
+        connection = VariableConnection(
+            connection_id=len(self.connections),
+            source_id=source_node_id,
+            dest_id=dest_node_id,
+            source_port=source_node_port_id,
+            dest_port=dest_node_port_id,
+        )
         self.connections.append(connection)
 
     def exitGlobal_variables(self, ctx: KDLParser.Global_variablesContext):

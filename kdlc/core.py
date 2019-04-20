@@ -13,6 +13,7 @@ from kdlc.objects import (
     AbstractNode,
     Workflow,
     AbstractConnection,
+    VariableConnection,
 )
 
 jinja_env = Environment(
@@ -358,6 +359,22 @@ def normalize_connections(
         if type(connection.dest_node) is MetaNode:
             connection.dest_port = str(int(connection.dest_port) - 1)
 
+        if type(connection) is Connection and (
+            (type(connection.source_node) is Node and connection.source_port == "0")
+            or (type(connection.dest_node) is Node and connection.dest_port == "0")
+        ):
+            var_connection = VariableConnection(
+                connection_id=connection.connection_id,
+                source_id=connection.source_id,
+                source_port=connection.source_port,
+                source_node=connection.source_node,
+                dest_id=connection.dest_id,
+                dest_port=connection.dest_port,
+                dest_node=connection.dest_node,
+            )
+            connection_list.remove(connection)
+            connection_list.append(var_connection)
+
     metanodes = [node for node in node_list if type(node) is MetaNode]
     for metanode in metanodes:
         metanode = cast(MetaNode, metanode)
@@ -402,15 +419,53 @@ def extract_connections(
         if dest_port_ele is not None:
             dest_port = dest_port_ele.attrib["value"]
 
-        connection = Connection(
-            connection_id=i,
-            source_id=source_id,
-            source_node=source_node,
-            dest_id=dest_id,
-            dest_node=dest_node,
-            source_port=source_port,
-            dest_port=dest_port,
-        )
+        is_var_connection = False
+
+        if (type(source_node) is Node and source_port == "0") or (
+            type(dest_node) is Node and dest_port == "0"
+        ):
+            is_var_connection = True
+        elif type(source_node) is MetaNode and type(dest_node) is MetaNode:
+            source_out_connections = [
+                c
+                for c in source_node.connections
+                if c.dest_node is META_OUT and c.dest_port == source_port
+            ]
+            if source_out_connections:
+                source_out_connection = source_out_connections.pop()
+            dest_in_connections = [
+                c
+                for c in dest_node.connections
+                if c.source_node is META_IN and c.source_port == dest_port
+            ]
+            if dest_in_connections:
+                dest_in_connection = dest_in_connections.pop()
+            if (
+                type(source_out_connection) is VariableConnection
+                and type(dest_in_connection) is VariableConnection
+            ):
+                is_var_connection = True
+
+        if is_var_connection:
+            connection = VariableConnection(
+                connection_id=i,
+                source_id=source_id,
+                source_node=source_node,
+                dest_id=dest_id,
+                dest_node=dest_node,
+                source_port=source_port,
+                dest_port=dest_port,
+            )
+        else:
+            connection = Connection(
+                connection_id=i,
+                source_id=source_id,
+                source_node=source_node,
+                dest_id=dest_id,
+                dest_node=dest_node,
+                source_port=source_port,
+                dest_port=dest_port,
+            )
         connection_list.append(connection)
     return connection_list
 
@@ -554,16 +609,22 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
     template = jinja_env.get_template("workflow_template.xml")
     nodes = [node for node in metanode.children if type(node) is Node]
     metanodes = [node for node in metanode.children if type(node) is MetaNode]
-    meta_in_ports = [
-        connection
-        for connection in metanode.connections
-        if cast(Connection, connection).source_node is META_IN
-    ]
-    meta_out_ports = [
-        connection
-        for connection in metanode.connections
-        if cast(Connection, connection).dest_node is META_OUT
-    ]
+    meta_in_ports = sorted(
+        [
+            connection
+            for connection in metanode.connections
+            if connection.source_node is META_IN
+        ],
+        key=lambda x: x.source_port,
+    )
+    meta_out_ports = sorted(
+        [
+            connection
+            for connection in metanode.connections
+            if connection.dest_node is META_OUT
+        ],
+        key=lambda x: x.dest_port,
+    )
     data = {
         "name": metanode.name,
         "nodes": nodes,

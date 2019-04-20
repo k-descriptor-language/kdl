@@ -134,12 +134,30 @@ class KDLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by KDLParser#var_connection.
+    def enterVar_connection(self, ctx:KDLParser.Var_connectionContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#var_connection.
+    def exitVar_connection(self, ctx:KDLParser.Var_connectionContext):
+        pass
+
+
     # Enter a parse tree produced by KDLParser#meta_connection.
     def enterMeta_connection(self, ctx:KDLParser.Meta_connectionContext):
         pass
 
     # Exit a parse tree produced by KDLParser#meta_connection.
     def exitMeta_connection(self, ctx:KDLParser.Meta_connectionContext):
+        pass
+
+
+    # Enter a parse tree produced by KDLParser#meta_var_connection.
+    def enterMeta_var_connection(self, ctx:KDLParser.Meta_var_connectionContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#meta_var_connection.
+    def exitMeta_var_connection(self, ctx:KDLParser.Meta_var_connectionContext):
         pass
 
 

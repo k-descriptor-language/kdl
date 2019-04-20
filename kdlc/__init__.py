@@ -9,7 +9,7 @@ from .commands import (
     build_knwf,
 )
 
-from .objects import Node, Connection, MetaNode, Workflow
+from .objects import Node, Connection, MetaNode, Workflow, VariableConnection
 
 from .core import (
     TMP_INPUT_DIR,
@@ -60,6 +60,7 @@ __all__ = [
     "Connection",
     "Workflow",
     "MetaNode",
+    "VariableConnection",
     "TMP_INPUT_DIR",
     "INPUT_PATH",
     "TMP_OUTPUT_DIR",

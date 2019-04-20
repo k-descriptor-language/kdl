@@ -94,7 +94,11 @@
             <entry key="index" type="xint" value="{{loop.index0}}" />
             <entry key="name" type="xstring" value="Inport {{loop.index0}}" />
             <config key="type">
+                {% if 'VariableConnection' in port.__class__.__name__ %}
+                <entry key="object_class" type="xstring" value="org.knime.core.node.port.flowvariable.FlowVariablePortObject" />
+                {% else %}
                 <entry key="object_class" type="xstring" value="org.knime.core.node.BufferedDataTable" />
+                {% endif %}
             </config>
         </config>
         {% endfor %}
@@ -110,7 +114,11 @@
             <entry key="index" type="xint" value="{{loop.index0}}" />
             <entry key="name" type="xstring" value="" />
             <config key="type">
+                {% if 'VariableConnection' in port.__class__.__name__ %}
+                <entry key="object_class" type="xstring" value="org.knime.core.node.port.flowvariable.FlowVariablePortObject" />
+                {% else %}
                 <entry key="object_class" type="xstring" value="org.knime.core.node.BufferedDataTable" />
+                {% endif %}
             </config>
         </config>
         {% endfor %}

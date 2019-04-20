@@ -6,35 +6,6 @@ from typing import Any, List
 from abc import ABC, abstractmethod
 
 
-class AbstractConnection(ABC):
-    def __init__(
-        self,
-        connection_id: int,
-        source_id: str,
-        dest_id: str,
-        source_port: str,
-        dest_port: str,
-    ):
-        self.connection_id = connection_id
-        self.source_id = source_id
-        self.dest_id = dest_id
-        self.source_port = source_port
-        self.dest_port = dest_port
-
-    def __eq__(self, other: Any) -> bool:
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        else:
-            return False
-
-    def __ne__(self, other: Any) -> bool:
-        return not self.__eq__(other)
-
-    @abstractmethod
-    def kdl_str(self) -> str:
-        pass
-
-
 class AbstractNode(ABC):
     def __init__(self, node_id, name):
         self.node_id = node_id
@@ -59,6 +30,39 @@ class AbstractNode(ABC):
 
     @abstractmethod
     def get_filename(self) -> str:
+        pass
+
+
+class AbstractConnection(ABC):
+    def __init__(
+        self,
+        connection_id: int,
+        source_id: str,
+        source_port: str,
+        dest_id: str,
+        dest_port: str,
+        source_node: AbstractNode = None,
+        dest_node: AbstractNode = None,
+    ):
+        self.connection_id = connection_id
+        self.source_id = source_id
+        self.source_port = source_port
+        self.source_node = source_node
+        self.dest_id = dest_id
+        self.dest_port = dest_port
+        self.dest_node = dest_node
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        else:
+            return False
+
+    def __ne__(self, other: Any) -> bool:
+        return not self.__eq__(other)
+
+    @abstractmethod
+    def kdl_str(self) -> str:
         pass
 
 
@@ -253,6 +257,62 @@ class Connection(AbstractConnection):
         self,
         connection_id: int,
         source_id: str,
+        source_port: str,
+        dest_id: str,
+        dest_port: str,
+        source_node: AbstractNode = None,
+        dest_node: AbstractNode = None,
+    ):
+        super().__init__(
+            connection_id=connection_id,
+            source_id=source_id,
+            source_port=source_port,
+            source_node=source_node,
+            dest_id=dest_id,
+            dest_port=dest_port,
+            dest_node=dest_node,
+        )
+
+    def kdl_str(self) -> str:
+        if self.source_node and type(self.source_node) is MetaNode:
+            if self.source_node.node_id == "-1":
+                source_str = f"(META_IN:{int(self.source_port) + 1})"
+            else:
+                source_str = f"(n{self.source_id}:{int(self.source_port) + 1})"
+        elif self.source_port == "0":
+            source_str = f"(n{self.source_id})"
+        else:
+            source_str = f"(n{self.source_id}:{self.source_port})"
+
+        if self.dest_node and type(self.dest_node) is MetaNode:
+            if self.dest_node.node_id == "-1":
+                dest_str = f"(META_OUT:{int(self.dest_port) + 1})"
+            else:
+                dest_str = f"(n{self.dest_id}:{int(self.dest_port) + 1})"
+        elif self.dest_port == "0":
+            dest_str = f"(n{self.dest_id})"
+        else:
+            dest_str = f"(n{self.dest_id}:{self.dest_port})"
+        """
+        if (
+            type(self.source_node) is Node
+            and type(self.dest_node) is Node
+            and self.source_port == "0"
+            and self.dest_port == "0"
+        ):
+            connection_str = "~~>"
+        else:
+            connection_str = "-->"
+        """
+        connection_str = "-->"
+        return source_str + connection_str + dest_str
+
+
+class VariableConnection(AbstractConnection):
+    def __init__(
+        self,
+        connection_id: int,
+        source_id: str,
         dest_id: str,
         source_port: str,
         dest_port: str,
@@ -263,11 +323,11 @@ class Connection(AbstractConnection):
             connection_id=connection_id,
             source_id=source_id,
             source_port=source_port,
+            source_node=source_node,
             dest_id=dest_id,
             dest_port=dest_port,
+            dest_node=dest_node,
         )
-        self.source_node = source_node
-        self.dest_node = dest_node
 
     def kdl_str(self) -> str:
         if self.source_node and type(self.source_node) is MetaNode:
@@ -290,15 +350,7 @@ class Connection(AbstractConnection):
         else:
             dest_str = f"(n{self.dest_id}:{self.dest_port})"
 
-        if (
-            type(self.source_node) is Node
-            and type(self.dest_node) is Node
-            and self.source_port == "0"
-            and self.dest_port == "0"
-        ):
-            connection_str = "~~>"
-        else:
-            connection_str = "-->"
+        connection_str = "~~>"
 
         return source_str + connection_str + dest_str
 
