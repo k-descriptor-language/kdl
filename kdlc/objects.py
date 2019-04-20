@@ -320,8 +320,6 @@ class VariableConnection(AbstractConnection):
                 source_str = f"(n{self.source_id}:{int(self.source_port) + 1})"
         elif self.source_port == "0":
             source_str = f"(n{self.source_id})"
-        else:
-            source_str = f"(n{self.source_id}:{self.source_port})"
 
         if self.dest_node and type(self.dest_node) is MetaNode:
             if self.dest_node.node_id == "-1":
@@ -330,8 +328,6 @@ class VariableConnection(AbstractConnection):
                 dest_str = f"(n{self.dest_id}:{int(self.dest_port) + 1})"
         elif self.dest_port == "0":
             dest_str = f"(n{self.dest_id})"
-        else:
-            dest_str = f"(n{self.dest_id}:{self.dest_port})"
 
         connection_str = "~~>"
 
