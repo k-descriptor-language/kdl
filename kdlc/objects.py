@@ -276,8 +276,6 @@ class Connection(AbstractConnection):
                 source_str = f"(META_IN:{int(self.source_port) + 1})"
             else:
                 source_str = f"(n{self.source_id}:{int(self.source_port) + 1})"
-        elif self.source_port == "0":
-            source_str = f"(n{self.source_id})"
         else:
             source_str = f"(n{self.source_id}:{self.source_port})"
 
@@ -286,8 +284,6 @@ class Connection(AbstractConnection):
                 dest_str = f"(META_OUT:{int(self.dest_port) + 1})"
             else:
                 dest_str = f"(n{self.dest_id}:{int(self.dest_port) + 1})"
-        elif self.dest_port == "0":
-            dest_str = f"(n{self.dest_id})"
         else:
             dest_str = f"(n{self.dest_id}:{self.dest_port})"
 
