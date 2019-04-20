@@ -95,7 +95,8 @@ class Node(AbstractNode):
         Merges workflow variables into Node's model
 
         """
-        self.__merge_variables_helper(self.model, self.variables)
+        if self.model and self.variables:
+            self.__merge_variables_helper(self.model, self.variables)
 
     def __merge_variables_helper(self, model_list: list, var_list: list) -> None:
         """
