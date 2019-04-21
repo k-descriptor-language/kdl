@@ -164,7 +164,10 @@ def extract_entry_tag(tree: ET.Element) -> Dict[str, Any]:
     elif tree.attrib["type"] == "xfloat":
         entry[tree.attrib["key"]] = float(tree.attrib["value"])
     elif tree.attrib["type"] == "xdouble":
-        entry[tree.attrib["key"]] = float(tree.attrib["value"])
+        if tree.attrib["value"] == "Infinity" or tree.attrib["value"] == "-Infinity":
+            entry[tree.attrib["key"]] = tree.attrib["value"]
+        else:
+            entry[tree.attrib["key"]] = float(tree.attrib["value"])
         entry["data_type"] = tree.attrib["type"]
     elif tree.attrib["type"] in ["xchar", "xbyte", "xpassword"]:
         entry[tree.attrib["key"]] = tree.attrib["value"]
