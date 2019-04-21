@@ -206,7 +206,8 @@ class Node(AbstractNode):
         jsonschema.validate(instance=self.__dict__, schema=json.loads(schema))
 
     def get_filename(self) -> str:
-        return f"{self.name} (#{self.get_base_id()})/settings.xml"
+        folder_name = self.name.replace("(", "_").replace(")", "_")
+        return f"{folder_name} (#{self.get_base_id()})/settings.xml"
 
     def kdl_str(self) -> str:
         settings = self.__dict__.copy()
