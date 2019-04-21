@@ -86,6 +86,7 @@ class Node(AbstractNode):
         self.feature_name = feature_name
         self.feature_symbolic_name = feature_symbolic_name
         self.feature_version = feature_version
+        self.factory_settings: list = list()
         self.model: list = list()
         self.variables: list = list()
         self.port_count: int = 0
@@ -213,6 +214,8 @@ class Node(AbstractNode):
         settings = self.__dict__.copy()
         settings.pop("node_id")
         settings.pop("variables")
+        if not self.factory_settings:
+            settings.pop("factory_settings")
         return f"(n{self.node_id}): {json.dumps(settings, indent=4)}"
 
 

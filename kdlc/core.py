@@ -125,6 +125,11 @@ def extract_node_from_settings_xml(node_id: str, input_file: str) -> Node:
             ex = ValueError("Invalid settings tag")
             raise ex
 
+    for child in root.findall("./knime:config[@key='factory_settings']/*", NS):
+        if child.tag == ENTRY_TAG:
+            entry = extract_entry_tag(child)
+            node.factory_settings.append(entry)
+
     node.port_count = len(root.findall("./knime:config[@key='ports']/*", NS))
 
     for child in root.findall("./knime:config[@key='variables']/*", NS):
@@ -411,7 +416,12 @@ def extract_connections(
             type(dest_node) is Node and dest_port == "0"
         ):
             is_var_connection = True
-        elif type(source_node) is MetaNode and type(dest_node) is MetaNode:
+        elif (
+            type(source_node) is MetaNode
+            and source_node is not META_IN
+            and type(dest_node) is MetaNode
+            and dest_node is not META_OUT
+        ):
             source_out_connections = [
                 c
                 for c in cast(MetaNode, source_node).connections
@@ -547,6 +557,9 @@ def create_node_settings_from_template(node: Node) -> ET.ElementTree:
             set_config_element_type(value)
         else:
             set_entry_element_type(value)
+
+    for value in node.factory_settings:
+        set_entry_element_type(value)
 
     node.extract_variables_from_model()
     template_root = ET.fromstring(template.render(node=node))
