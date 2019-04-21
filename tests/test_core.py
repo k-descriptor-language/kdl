@@ -326,6 +326,20 @@ def test_extract_entry_tag_double(my_setup):
     assert kdlc.extract_entry_tag(tree) == result
 
 
+def test_extract_entry_tag_infinity(my_setup):
+    tree = ET.fromstring('<entry key="someDouble" type="xdouble" value="Infinity" />')
+
+    result = {"someDouble": "Infinity", "data_type": "xdouble"}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
+def test_extract_entry_tag_ninfinity(my_setup):
+    tree = ET.fromstring('<entry key="someDouble" type="xdouble" value="-Infinity" />')
+
+    result = {"someDouble": "-Infinity", "data_type": "xdouble"}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
 def test_extract_entry_tag_char(my_setup):
     tree = ET.fromstring('<entry key="someChar" type="xchar" value="A" />')
 
