@@ -1,4 +1,3 @@
-import collections
 import os
 import zipfile
 import shutil
@@ -267,7 +266,8 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
 
             meta_in_ports = list()
             for port in root.findall(
-                "./knime:config[@key='meta_in_ports']/knime:config[@key='port_enum']/knime:config",
+                "./knime:config[@key='meta_in_ports']"
+                "/knime:config[@key='port_enum']/knime:config",
                 NS,
             ):
                 index_ele = port.find("./knime:entry[@key='index']", NS)
@@ -285,7 +285,8 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
 
             meta_out_ports = list()
             for port in root.findall(
-                "./knime:config[@key='meta_out_ports']/knime:config[@key='port_enum']/knime:config",
+                "./knime:config[@key='meta_out_ports']"
+                "/knime:config[@key='port_enum']/knime:config",
                 NS,
             ):
                 index_ele = port.find("./knime:entry[@key='index']", NS)

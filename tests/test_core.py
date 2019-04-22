@@ -462,6 +462,8 @@ def test_extract_node_filenames_meta(my_setup):
                     "node_type": "NativeNode",
                 },
             ],
+            "meta_in_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
+            "meta_out_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
         },
     ]
 
@@ -498,8 +500,12 @@ def test_extract_nodes_from_filenames(my_setup):
                             "node_type": "NativeNode",
                         }
                     ],
+                    "meta_in_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
+                    "meta_out_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
                 },
             ],
+            "meta_in_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
+            "meta_out_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
         },
     ]
 
@@ -624,6 +630,8 @@ def test_extract_nodes_from_filenames(my_setup):
         name="Metanode6",
         children=[node864],
         connections=[connection0, connection1],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     connection0 = kdlc.Connection(
         connection_id=0,
@@ -657,10 +665,11 @@ def test_extract_nodes_from_filenames(my_setup):
         name="Metanode8",
         children=[node84, metanode86],
         connections=[connection0, connection1, connection2],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
 
     result = [node1, metanode8]
-
     assert result == kdlc.extract_nodes_from_filenames(
         test_resources_dir, node_filename_list
     )
@@ -788,6 +797,8 @@ def test_flatten_node_list(my_setup):
         name="Metanode6",
         children=[node864],
         connections=[connection0, connection1],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     connection0 = kdlc.Connection(
         connection_id=0,
@@ -821,12 +832,13 @@ def test_flatten_node_list(my_setup):
         name="Metanode8",
         children=[node84, metanode86],
         connections=[connection0, connection1, connection2],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
 
     input = [node1, metanode8]
 
     result = [node1, metanode8, node84, metanode86, node864]
-
     assert result == kdlc.flatten_node_list(input)
 
 
@@ -940,6 +952,8 @@ def test_unflatten_node_list(my_setup):
         name="Metanode6",
         children=[node864],
         connections=[connection0, connection1],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     connection0 = kdlc.Connection(
         connection_id=0, dest_id="4", dest_port="1", source_id="-1", source_port="1"
@@ -955,11 +969,12 @@ def test_unflatten_node_list(my_setup):
         name="Metanode8",
         children=[node84, metanode86],
         connections=[connection0, connection1, connection2],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     input = [node1, metanode8, node84, metanode86, node864]
 
     result = [node1, metanode8]
-
     assert result == kdlc.unflatten_node_list(input)
 
 
@@ -1073,6 +1088,8 @@ def test_normalize_connections(my_setup):
         name="Metanode6",
         children=[node864],
         connections=[connection_m_in_864, connection_864_m_out],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     connection_m_in_84 = kdlc.Connection(
         connection_id=0, dest_id="4", dest_port="1", source_id="-1", source_port="1"
@@ -1088,6 +1105,8 @@ def test_normalize_connections(my_setup):
         name="Metanode8",
         children=[node84, metanode86],
         connections=[connection_m_in_84, connection_84_86, connection_86_m_out],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
 
     connection_1_8 = kdlc.Connection(
@@ -1119,6 +1138,8 @@ def test_normalize_connections(my_setup):
         name="Metanode6",
         children=[node864],
         connections=[res_connection_m_in_864, res_connection_864_m_out],
+        meta_in_ports=[{"0": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"0": "org.knime.core.node.BufferedDataTable"}],
     )
     res_connection_m_in_84 = kdlc.Connection(
         connection_id=0,
@@ -1156,6 +1177,8 @@ def test_normalize_connections(my_setup):
             res_connection_84_86,
             res_connection_86_m_out,
         ],
+        meta_in_ports=[{"0": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"0": "org.knime.core.node.BufferedDataTable"}],
     )
 
     res_connection_1_8 = kdlc.Connection(
@@ -1321,7 +1344,12 @@ def test_extract_var_connections_meta(my_setup):
         dest_port="0",
     )
     node14 = kdlc.MetaNode(
-        node_id="14", name="14", children=[], connections=[out_connection]
+        node_id="14",
+        name="14",
+        children=[],
+        connections=[out_connection],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     in_connection = kdlc.VariableConnection(
         connection_id=0,
@@ -1332,7 +1360,12 @@ def test_extract_var_connections_meta(my_setup):
         dest_port="0",
     )
     node15 = kdlc.MetaNode(
-        node_id="15", name="15", children=[], connections=[in_connection]
+        node_id="15",
+        name="15",
+        children=[],
+        connections=[in_connection],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     connection14_15 = kdlc.VariableConnection(
         connection_id=0,
@@ -1764,6 +1797,8 @@ def test_create_metanode_workflow_knime_from_template(my_setup):
         name="Metanode6",
         children=[node864],
         connections=[connection_m_in_864, connection_864_m_out],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
 
     expected_result = ET.parse(f"{test_resources_dir}/workflow_meta_5.knime")
@@ -1861,6 +1896,8 @@ def test_create_node_files(my_setup):
         name="Metanode2",
         children=[node21],
         connections=[connection_m_in_21, connection_21_m_out],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     node1 = kdlc.Node(
         node_id="1",
@@ -1913,7 +1950,6 @@ def test_create_node_files(my_setup):
     expected_result_flattened_3 = [i.tag for i in expected_result_3.iter()]
     result_3 = ET.parse(f"{test_generated_dir}/test/Metanode2 (#1)/workflow.knime")
     result_flattened_3 = [i.tag for i in result_3.iter()]
-
     assert result_flattened_1 == expected_result_flattened_1
     assert result_flattened_2 == expected_result_flattened_2
     assert result_flattened_3 == expected_result_flattened_3
