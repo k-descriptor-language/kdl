@@ -1,0 +1,45 @@
+Nodes {
+    (n1): {
+        "name": "File Reader"
+    },
+    (n7): {
+        "name": "CSV Writer"
+    },
+    (n8): {
+        "name": "Metanode",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n2:1),
+            (n2:1)-->(n3:1),
+            (n3)~~>(META_OUT:1),
+            (n3:1)-->(META_OUT:2)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.port.flowvariable.FlowVariablePortObject"
+            },
+            {
+                "2": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n8.2): {
+        "name": "Row Filter",
+    },
+    (n8.3): {
+        "name": "Row Filter",
+    }
+}
+
+Workflow {
+    "connections": {
+        (n1:1)-->(n8:1),
+        (n8:2)-->(n7:1),
+        (n8:1)~~>(n7)
+    }
+}
