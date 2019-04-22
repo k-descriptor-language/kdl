@@ -1,3 +1,4 @@
+import collections
 import os
 import zipfile
 import shutil
@@ -617,6 +618,11 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
         ],
         key=lambda x: x.source_port,
     )
+
+    unique_meta_in_ports: dict = collections.OrderedDict()
+    for port in meta_in_ports:
+        unique_meta_in_ports.setdefault(port.source_id, port)
+
     meta_out_ports = sorted(
         [
             connection
@@ -625,13 +631,18 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
         ],
         key=lambda x: x.dest_port,
     )
+
+    unique_meta_out_ports: dict = collections.OrderedDict()
+    for port in meta_out_ports:
+        unique_meta_out_ports.setdefault(port.dest_id, port)
+
     data = {
         "name": metanode.name,
         "nodes": nodes,
         "metanodes": metanodes,
         "connections": metanode.connections,
-        "meta_in_ports": meta_in_ports,
-        "meta_out_ports": meta_out_ports,
+        "meta_in_ports": unique_meta_in_ports.items(),
+        "meta_out_ports": unique_meta_out_ports.items(),
     }
 
     return ET.ElementTree(ET.fromstring(template.render(data)))
