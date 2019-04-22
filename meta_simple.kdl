@@ -2,17 +2,14 @@ Nodes {
     (n1): {
         "name": "File Reader"
     },
-    (n7): {
-        "name": "CSV Writer"
-    },
-    (n8): {
+    (n2): {
         "name": "Metanode",
         "type": "MetaNode",
         "connections": {
-            (META_IN:1)-->(n2:1),
-            (n2:1)-->(n3:1),
-            (n3)~~>(META_OUT:1),
-            (n3:1)-->(META_OUT:2)
+            (META_IN:1)-->(n1:1),
+            (n1:1)-->(n2:1),
+            (n2)~~>(META_OUT:1),
+            (n2:1)-->(META_OUT:2)
         },
         "meta_in_ports": [
             {
@@ -28,18 +25,21 @@ Nodes {
             }
         ]
     },
-    (n8.2): {
+    (n2.1): {
         "name": "Row Filter",
     },
-    (n8.3): {
+    (n2.2): {
         "name": "Row Filter",
+    },
+    (n3): {
+        "name": "CSV Writer"
     }
 }
 
 Workflow {
     "connections": {
-        (n1:1)-->(n8:1),
-        (n8:2)-->(n7:1),
-        (n8:1)~~>(n7)
+        (n1:1)-->(n2:1),
+        (n2:2)-->(n3:1),
+        (n2:1)~~>(n3)
     }
 }
