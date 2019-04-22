@@ -3,7 +3,11 @@
 <entry key="created_by" type="xstring" value="3.7.1.v201901281154"/>
 <entry key="created_by_nightly" type="xboolean" value="false"/>
 <entry key="version" type="xstring" value="3.7.0"/>
+{% if name %}
+<entry key="name" type="xstring" value="{{name}}"/>
+{% else %}
 <entry key="name" type="xstring" isnull="true" value=""/>
+{% endif %}
 <config key="authorInformation">
 <entry key="authored-by" type="xstring" value="jared"/>
 <entry key="authored-when" type="xstring" value="2019-03-02 13:43:23 -0500"/>
@@ -31,11 +35,29 @@
 <config key="workflow_credentials"/>
 <config key="nodes">
     {% for node in nodes %}
-    <config key="node_{{node.node_id}}">
-        <entry key="id" type="xint" value="{{node.node_id}}" />
+    <config key="node_{{node.get_base_id()}}">
+        <entry key="id" type="xint" value="{{node.get_base_id()}}" />
         <entry key="node_settings_file" type="xstring" value="{{node.get_filename()}}" />
         <entry key="node_is_meta" type="xboolean" value="false" />
         <entry key="node_type" type="xstring" value="NativeNode" />
+        <entry key="ui_classname" type="xstring" value="org.knime.core.node.workflow.NodeUIInformation" />
+        <config key="ui_settings">
+            <config key="extrainfo.node.bounds">
+                <entry key="array-size" type="xint" value="4" />
+                <entry key="0" type="xint" value="0" />
+                <entry key="1" type="xint" value="0" />
+                <entry key="2" type="xint" value="0" />
+                <entry key="3" type="xint" value="0" />
+            </config>
+        </config>
+    </config>
+    {% endfor %}
+    {% for metanode in metanodes %}
+    <config key="node_{{metanode.get_base_id()}}">
+        <entry key="id" type="xint" value="{{metanode.get_base_id()}}" />
+        <entry key="node_settings_file" type="xstring" value="{{metanode.get_filename()}}" />
+        <entry key="node_is_meta" type="xboolean" value="true" />
+        <entry key="node_type" type="xstring" value="MetaNode" />
         <entry key="ui_classname" type="xstring" value="org.knime.core.node.workflow.NodeUIInformation" />
         <config key="ui_settings">
             <config key="extrainfo.node.bounds">
@@ -63,6 +85,46 @@
     </config>
     {% endfor %}
 </config>
+{% if meta_in_ports %}
+<config key="meta_in_ports">
+    <entry key="ui_classname" type="xstring" isnull="true" value="" />
+    <config key="port_enum">
+        {% for port in meta_in_ports %}
+        <config key="inport_{{loop.index0}}">
+            <entry key="index" type="xint" value="{{loop.index0}}" />
+            <entry key="name" type="xstring" value="Inport {{loop.index0}}" />
+            <config key="type">
+                {% if 'VariableConnection' in port.__class__.__name__ %}
+                <entry key="object_class" type="xstring" value="org.knime.core.node.port.flowvariable.FlowVariablePortObject" />
+                {% else %}
+                <entry key="object_class" type="xstring" value="org.knime.core.node.BufferedDataTable" />
+                {% endif %}
+            </config>
+        </config>
+        {% endfor %}
+    </config>
+</config>
+{% endif %}
+{% if meta_out_ports %}
+<config key="meta_out_ports">
+    <entry key="ui_classname" type="xstring" isnull="true" value="" />
+    <config key="port_enum">
+        {% for port in meta_out_ports %}
+        <config key="outport_{{loop.index0}}">
+            <entry key="index" type="xint" value="{{loop.index0}}" />
+            <entry key="name" type="xstring" value="" />
+            <config key="type">
+                {% if 'VariableConnection' in port.__class__.__name__ %}
+                <entry key="object_class" type="xstring" value="org.knime.core.node.port.flowvariable.FlowVariablePortObject" />
+                {% else %}
+                <entry key="object_class" type="xstring" value="org.knime.core.node.BufferedDataTable" />
+                {% endif %}
+            </config>
+        </config>
+        {% endfor %}
+    </config>
+</config>
+{% endif %}
 <config key="workflow_editor_settings">
 <entry key="workflow.editor.snapToGrid" type="xboolean" value="true"/>
 <entry key="workflow.editor.ShowGrid" type="xboolean" value="true"/>

@@ -88,7 +88,30 @@
 <entry key="node-feature-symbolic-name" type="xstring" value="{{ node.feature_symbolic_name }}"/>
 <entry key="node-feature-vendor" type="xstring" value="KNIME AG, Zurich, Switzerland"/>
 <entry key="node-feature-version" type="xstring" value="{{ node.feature_version }}"/>
+{% if node.factory_settings %}
+<config key="factory_settings">
+    {% for setting in node.factory_settings %}
+        {% set entry_items = {} %}
+        {% for key, value in setting.items() %}
+            {% if key=="data_type" %}
+                {% do entry_items.update({"type": value}) %}
+            {% elif key=="isnull" %}
+                {% do entry_items.update({"isnull": "true"}) %}
+            {% else %}
+                {% do entry_items.update({"key": key}) %}
+                {% do entry_items.update({"value": value}) %}
+            {% endif %}
+        {% endfor %}
+        {% if entry_items.isnull is defined %}
+            <entry isnull="true" key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}" />
+        {% else %}
+            <entry key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}" />
+        {% endif %}
+    {% endfor %}
+</config>
+{% else %}
 <config key="factory_settings"/>
+{% endif %}
 <entry key="name" type="xstring" value="{{ node.name }}"/>
 <entry key="hasContent" type="xboolean" value="true"/>
 <entry key="isInactive" type="xboolean" value="false"/>

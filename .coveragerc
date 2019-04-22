@@ -4,6 +4,7 @@ source = kdlc
 
 [report]
 exclude_lines =
+    pass
     if self.debug:
     pragma: no cover
     raise NotImplementedError

@@ -1,12 +1,11 @@
 import kdlc
-import pytest
 
 
 def test_exitNode_settings(mocker):
     ctx = mocker.MagicMock()
     node_id = mocker.MagicMock()
     ctx.node.return_value.node_id.return_value = node_id
-    node_id.NUMBER.return_value.getText.return_value = "42"
+    node_id.getText.return_value = "42"
 
     token_l_paren = mocker.MagicMock()
     token_l_paren.getText.return_value = "{"
@@ -307,10 +306,6 @@ def test_exitConnection(mocker):
     destination_node.port.return_value.port_id = destination_port_id
     destination_port_id.return_value.NUMBER.return_value.getText.return_value = "4"
 
-    # connection arrow
-    ctx.ARROW.return_value = "-->"
-    ctx.VARIABLE_ARROW.return_value = None
-
     listener = kdlc.commands.KDLLoader()
 
     listener.exitConnection(ctx)
@@ -323,7 +318,7 @@ def test_exitConnection(mocker):
     assert listener.connections[0] == expected_connection
 
 
-def test_exitConnection_var(mocker):
+def test_exitVar_connection(mocker):
     ctx = mocker.MagicMock()
 
     source_node = mocker.MagicMock()
@@ -332,51 +327,31 @@ def test_exitConnection_var(mocker):
     # source_node_id
     source_node.node_id.return_value.getText.return_value = "1"
 
+    # source_node_port
+    source_port_id = mocker.MagicMock()
+    source_node.port.return_value.port_id = source_port_id
+    source_port_id.return_value.NUMBER.return_value.getText.return_value = "0"
+
     destination_node = mocker.MagicMock()
     ctx.destination_node.return_value.node.return_value = destination_node
 
     # destination_node_id
     destination_node.node_id.return_value.getText.return_value = "3"
 
-    # connection arrow
-    ctx.ARROW.return_value = None
-    ctx.VARIABLE_ARROW.return_value = "~~>"
+    # destination_node_port
+    destination_port_id = mocker.MagicMock()
+    destination_node.port.return_value.port_id = destination_port_id
+    destination_port_id.return_value.NUMBER.return_value.getText.return_value = "0"
 
     listener = kdlc.commands.KDLLoader()
 
-    listener.exitConnection(ctx)
+    listener.exitVar_connection(ctx)
 
-    expected_connection = kdlc.Connection(
+    expected_connection = kdlc.VariableConnection(
         connection_id=0, source_id="1", dest_id="3", source_port="0", dest_port="0"
     )
-
     assert len(listener.connections) == 1
     assert listener.connections[0] == expected_connection
-
-
-def test_exitConnection_fail(mocker):
-    ctx = mocker.MagicMock()
-
-    source_node = mocker.MagicMock()
-    ctx.source_node.return_value.node.return_value = source_node
-
-    # source_node_id
-    source_node.node_id.return_value.getText.return_value = "1"
-
-    destination_node = mocker.MagicMock()
-    ctx.destination_node.return_value.node.return_value = destination_node
-
-    # destination_node_id
-    destination_node.node_id.return_value.getText.return_value = "3"
-
-    # connection arrow
-    ctx.ARROW.return_value = None
-    ctx.VARIABLE_ARROW.return_value = None
-
-    listener = kdlc.commands.KDLLoader()
-
-    with pytest.raises(Exception):
-        listener.exitConnection(ctx)
 
 
 def test_exitGlobal_variables(mocker):
@@ -444,3 +419,195 @@ def test_exitGlobal_variables(mocker):
     expected_variables = [{"t": "t"}, {"t": 1}, {"t": 1.1}]
 
     assert listener.global_variables == expected_variables
+
+
+def test_exitMeta_settings_connection(mocker):
+    ctx = mocker.MagicMock()
+
+    connection = mocker.MagicMock()
+    ctx.connection.return_value = [connection]
+
+    source_node = mocker.MagicMock()
+    source_node.node_id.return_value.getText.return_value = "1"
+
+    source_port = mocker.MagicMock()
+    source_node.port.return_value = source_port
+    source_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    dest_node = mocker.MagicMock()
+    dest_node.node_id.return_value.getText.return_value = "2"
+
+    dest_port = mocker.MagicMock()
+    dest_node.port.return_value = dest_port
+    dest_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    connection.source_node.return_value.node.return_value = source_node
+    connection.destination_node.return_value.node.return_value = dest_node
+
+    listener = kdlc.KDLLoader()
+    listener.exitMeta_settings(ctx)
+    expected_connection = kdlc.Connection(
+        connection_id=0, source_id="1", source_port="1", dest_id="2", dest_port="1"
+    )
+    assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections) == 1
+    assert listener.nodes[0].connections[0] == expected_connection
+
+
+def test_exitMeta_settings_var_connection(mocker):
+    ctx = mocker.MagicMock()
+
+    var_connection = mocker.MagicMock()
+    ctx.var_connection.return_value = [var_connection]
+
+    source_node = mocker.MagicMock()
+    source_node.node_id.return_value.getText.return_value = "1"
+    source_node.port.return_value = None
+
+    dest_node = mocker.MagicMock()
+    dest_node.node_id.return_value.getText.return_value = "2"
+    dest_node.port.return_value = None
+
+    var_connection.source_node.return_value.node.return_value = source_node
+    var_connection.destination_node.return_value.node.return_value = dest_node
+
+    listener = kdlc.KDLLoader()
+    listener.exitMeta_settings(ctx)
+    expected_connection = kdlc.VariableConnection(
+        connection_id=0, source_id="1", source_port="0", dest_id="2", dest_port="0"
+    )
+    assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections) == 1
+    assert listener.nodes[0].connections[0] == expected_connection
+
+
+def test_exitMeta_settings_metaconnection_in(mocker):
+    ctx = mocker.MagicMock()
+
+    connection = mocker.MagicMock()
+
+    ctx.meta_connection.return_value = [connection]
+
+    meta_in_node = mocker.MagicMock()
+    source_port = mocker.MagicMock()
+    meta_in_node.port.return_value = source_port
+    source_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    dest_node = mocker.MagicMock()
+    dest_node.node_id.return_value.getText.return_value = "2"
+
+    dest_port = mocker.MagicMock()
+    dest_node.port.return_value = dest_port
+    dest_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    connection.meta_in_node.return_value = meta_in_node
+    connection.meta_out_node.return_value = None
+    connection.destination_node.return_value.node.return_value = dest_node
+
+    listener = kdlc.commands.KDLLoader()
+    listener.exitMeta_settings(ctx)
+    expected_connection = kdlc.Connection(
+        connection_id=0, source_id="-1", source_port="1", dest_id="2", dest_port="1"
+    )
+    assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections)
+    assert listener.nodes[0].connections[0] == expected_connection
+
+
+def test_exitMeta_settings_metaconnection_out(mocker):
+    ctx = mocker.MagicMock()
+
+    connection = mocker.MagicMock()
+
+    ctx.meta_connection.return_value = [connection]
+
+    source_node = mocker.MagicMock()
+    source_node.node_id.return_value.getText.return_value = "1"
+
+    source_port = mocker.MagicMock()
+    source_node.port.return_value = source_port
+    source_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    meta_out_node = mocker.MagicMock()
+    dest_port = mocker.MagicMock()
+    meta_out_node.port.return_value = dest_port
+    dest_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    connection.meta_in_node.return_value = None
+    connection.source_node.return_value.node.return_value = source_node
+    connection.meta_out_node.return_value = meta_out_node
+
+    listener = kdlc.commands.KDLLoader()
+    listener.exitMeta_settings(ctx)
+    expected_connection = kdlc.Connection(
+        connection_id=0, source_id="1", source_port="1", dest_id="-1", dest_port="1"
+    )
+    assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections)
+    assert listener.nodes[0].connections[0] == expected_connection
+
+
+def test_exitMeta_settings_metaconnection_in_var(mocker):
+    ctx = mocker.MagicMock()
+
+    connection = mocker.MagicMock()
+
+    ctx.meta_var_connection.return_value = [connection]
+
+    meta_in_node = mocker.MagicMock()
+    source_port = mocker.MagicMock()
+    meta_in_node.port.return_value = source_port
+    source_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    dest_node = mocker.MagicMock()
+    dest_node.node_id.return_value.getText.return_value = "2"
+
+    dest_port = mocker.MagicMock()
+    dest_node.port.return_value = dest_port
+    dest_port.port_id.return_value.NUMBER.return_value.getText.return_value = "0"
+
+    connection.meta_in_node.return_value = meta_in_node
+    connection.meta_out_node.return_value = None
+    connection.destination_node.return_value.node.return_value = dest_node
+
+    listener = kdlc.commands.KDLLoader()
+    listener.exitMeta_settings(ctx)
+    expected_connection = kdlc.VariableConnection(
+        connection_id=0, source_id="-1", source_port="1", dest_id="2", dest_port="0"
+    )
+    assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections)
+    assert listener.nodes[0].connections[0] == expected_connection
+
+
+def test_exitMeta_settings_metaconnection_out_var(mocker):
+    ctx = mocker.MagicMock()
+
+    connection = mocker.MagicMock()
+
+    ctx.meta_var_connection.return_value = [connection]
+
+    source_node = mocker.MagicMock()
+    source_node.node_id.return_value.getText.return_value = "1"
+
+    source_port = mocker.MagicMock()
+    source_node.port.return_value = source_port
+    source_port.port_id.return_value.NUMBER.return_value.getText.return_value = "0"
+
+    meta_out_node = mocker.MagicMock()
+    dest_port = mocker.MagicMock()
+    meta_out_node.port.return_value = dest_port
+    dest_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    connection.meta_in_node.return_value = None
+    connection.source_node.return_value.node.return_value = source_node
+    connection.meta_out_node.return_value = meta_out_node
+
+    listener = kdlc.commands.KDLLoader()
+    listener.exitMeta_settings(ctx)
+    expected_connection = kdlc.VariableConnection(
+        connection_id=0, source_id="1", source_port="0", dest_id="-1", dest_port="1"
+    )
+    assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections)
+    assert listener.nodes[0].connections[0] == expected_connection

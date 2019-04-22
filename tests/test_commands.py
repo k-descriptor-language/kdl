@@ -44,6 +44,10 @@ def test_kdl_to_workflow(mocker):
     mock_walker = mocker.MagicMock()
     kdlc.commands.ParseTreeWalker.return_value = mock_walker
 
+    workflow = kdlc.Workflow(
+        variables=mock_listener.global_variables, connections=mock_listener.connections
+    )
+
     mock_build_knwf = mocker.MagicMock()
     mocker.patch("kdlc.commands.build_knwf", new=mock_build_knwf)
 
@@ -59,12 +63,7 @@ def test_kdl_to_workflow(mocker):
     mock_walker.walk.assert_any_call(mock_listener, nodes_tree)
     mock_walker.walk.assert_any_call(mock_listener, workflow_tree)
 
-    mock_build_knwf.assert_called_with(
-        mock_listener.nodes,
-        mock_listener.connections,
-        mock_listener.global_variables,
-        "fake.knwf",
-    )
+    mock_build_knwf.assert_called_with(mock_listener.nodes, workflow, "fake.knwf")
 
 
 def test_workflow_to_kdl(mocker):
@@ -74,10 +73,6 @@ def test_workflow_to_kdl(mocker):
     unzip_workflow = mocker.MagicMock()
     unzip_workflow.return_value = "test"
     mocker.patch("kdlc.unzip_workflow", new=unzip_workflow)
-
-    extract_connections = mocker.MagicMock()
-    extract_connections.return_value = []
-    mocker.patch("kdlc.extract_connections", new=extract_connections)
 
     extract_global_wf_variables = mocker.MagicMock()
     extract_global_wf_variables.return_value = []
@@ -99,9 +94,15 @@ def test_workflow_to_kdl(mocker):
         feature_symbolic_name="a",
         feature_version="a",
     )
-    extract_from_input_xml = mocker.MagicMock()
-    extract_from_input_xml.return_value = node
-    mocker.patch("kdlc.extract_from_input_xml", new=extract_from_input_xml)
+    extract_nodes_from_filenames = mocker.MagicMock()
+    extract_nodes_from_filenames.return_value = [node]
+    mocker.patch("kdlc.extract_nodes_from_filenames", new=extract_nodes_from_filenames)
+
+    extract_connections = mocker.MagicMock()
+    extract_connections.return_value = []
+    mocker.patch("kdlc.extract_connections", new=extract_connections)
+
+    workflow = kdlc.Workflow([], [])
 
     save_output_kdl_workflow = mocker.MagicMock()
     mocker.patch("kdlc.save_output_kdl_workflow", new=save_output_kdl_workflow)
@@ -112,15 +113,18 @@ def test_workflow_to_kdl(mocker):
     kdlc.workflow_to_kdl(input_file, output_file)
 
     unzip_workflow.assert_called_with(input_file)
-    extract_connections.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
+
+    extract_node_filenames.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
+    extract_nodes_from_filenames.assert_called_with(
+        f"{kdlc.INPUT_PATH}/test", [node_dict]
+    )
+    extract_connections.assert_called_with(
+        f"{kdlc.INPUT_PATH}/test/workflow.knime", [node]
+    )
     extract_global_wf_variables.assert_called_with(
         f"{kdlc.INPUT_PATH}/test/workflow.knime"
     )
-    extract_node_filenames.assert_called_with(f"{kdlc.INPUT_PATH}/test/workflow.knime")
-    extract_from_input_xml.assert_called_with(
-        node_dict["node_id"], f'{kdlc.INPUT_PATH}/test/{node_dict["filename"]}'
-    )
-    save_output_kdl_workflow.assert_called_with(output_file, [], [node], [])
+    save_output_kdl_workflow.assert_called_with(output_file, workflow, [node])
     cleanup.assert_called()
 
 
@@ -139,17 +143,8 @@ def test_build_knwf(mocker):
     mocker.patch("kdlc.save_workflow_knime", new=mock_save_workflow_knime)
 
     # mock create_node_settings_from_template
-    mock_create_node_settings_from_template = mocker.MagicMock()
-    mock_tree = mocker.MagicMock()
-    mock_create_node_settings_from_template.return_value = mock_tree
-    mocker.patch(
-        "kdlc.create_node_settings_from_template",
-        new=mock_create_node_settings_from_template,
-    )
-
-    # mock save_node_settings_xml
-    mock_save_node_settings_xml = mocker.MagicMock()
-    mocker.patch("kdlc.save_node_settings_xml", new=mock_save_node_settings_xml)
+    mock_create_node_files = mocker.MagicMock()
+    mocker.patch("kdlc.create_node_files", new=mock_create_node_files)
 
     # mock create_output_workflow
     mock_create_output_workflow = mocker.MagicMock()
@@ -182,25 +177,18 @@ def test_build_knwf(mocker):
     connections = [mocker.MagicMock()]
     global_variables = []
 
-    kdlc.build_knwf(nodes, connections, global_variables, "fake.knwf")
+    workflow = kdlc.Workflow(variables=global_variables, connections=connections)
+
+    kdlc.build_knwf(nodes, workflow, "fake.knwf")
 
     # validate workflow generation
-    mock_create_workflow_knime_from_template.assert_called_with(
-        nodes, connections, global_variables
-    )
+    mock_create_workflow_knime_from_template.assert_called_with(nodes, workflow)
     mock_save_workflow_knime.assert_called_with(
         output_workflow_knime, f"{kdlc.OUTPUT_PATH}/fake"
     )
 
-    # validate xml generation
-    mock_create_node_settings_from_template.assert_any_call(node_one)
-    mock_save_node_settings_xml.assert_any_call(
-        mock_tree, f"{kdlc.OUTPUT_PATH}/fake/{node_one.get_filename()}"
-    )
-    mock_create_node_settings_from_template.assert_any_call(node_two)
-    mock_save_node_settings_xml.assert_any_call(
-        mock_tree, f"{kdlc.OUTPUT_PATH}/fake/{node_two.get_filename()}"
-    )
+    # validate creation of node files
+    mock_create_node_files.assert_called_with(f"{kdlc.OUTPUT_PATH}/fake", nodes)
 
     # validate archive creation
     mock_create_output_workflow.assert_called_with("fake")
