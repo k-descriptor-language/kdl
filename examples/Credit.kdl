@@ -1,0 +1,4654 @@
+Nodes {
+    (n42): {
+        "name": "Train and Cross Validate a Decision Tree",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n37:1),
+            (META_IN:1)-->(n2:1),
+            (n2:2)-->(n32:2),
+            (n2:1)-->(n31:1),
+            (n7:1)-->(n26:1),
+            (n26:2)-->(n36:1),
+            (n31:1)-->(n32:1),
+            (n32:1)-->(n7:1),
+            (n36:1)-->(n38:1),
+            (n37:1)-->(n38:2),
+            (n38:1)-->(META_OUT:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n42.2): {
+        "name": "X-Partitioner",
+        "factory": "org.knime.base.node.meta.xvalidation.XValidatePartitionerFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "validations": 10,
+                "data_type": "xshort"
+            },
+            {
+                "randomSampling": false
+            },
+            {
+                "leaveOneOut": false
+            },
+            {
+                "stratifiedSampling": true
+            },
+            {
+                "classColumn": "Score"
+            },
+            {
+                "useRandomSeed": false
+            },
+            {
+                "randomSeed": 1463497874665,
+                "data_type": "xlong"
+            }
+        ],
+        "port_count": 2
+    },
+    (n42.7): {
+        "name": "X-Aggregator",
+        "factory": "org.knime.base.node.meta.xvalidation.AggregateOutputNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "predictionColumn": "Prediction (Score)"
+            },
+            {
+                "targetColumn": "Score"
+            },
+            {
+                "addFoldId": false
+            }
+        ],
+        "port_count": 2
+    },
+    (n42.26): {
+        "name": "Scorer",
+        "factory": "org.knime.base.node.mine.scorer.accuracy.AccuracyScorerNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "first": "Score"
+            },
+            {
+                "second": "Prediction (Score)"
+            },
+            {
+                "flowVarPrefix": "",
+                "isnull": true
+            },
+            {
+                "sortingReversed": false
+            },
+            {
+                "sortingStrategy": 0
+            },
+            {
+                "ignore.missing.values": true
+            }
+        ],
+        "port_count": 2
+    },
+    (n42.31): {
+        "name": "Decision Tree Learner",
+        "factory": "org.knime.base.node.mine.decisiontree2.learner2.DecisionTreeLearnerNodeFactory3",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "classifyColumn_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "classifyColumn": "Score"
+            },
+            {
+                "splitQualityMeasure_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "splitQualityMeasure": "Gini index"
+            },
+            {
+                "pruningMethod_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "pruningMethod": "No pruning"
+            },
+            {
+                "enableReducedErrorPruning_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableReducedErrorPruning": true
+            },
+            {
+                "minNumberRecordsPerNode_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "minNumberRecordsPerNode": 2
+            },
+            {
+                "numverRecordsToView_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "numverRecordsToView": 10000
+            },
+            {
+                "splitAverage_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "splitAverage": false
+            },
+            {
+                "numProcessors_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "numProcessors": 4
+            },
+            {
+                "skipColumnsWithoutDomain_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "skipColumnsWithoutDomain": false
+            },
+            {
+                "useFirstSplitColumn_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "useFirstSplitColumn": false
+            },
+            {
+                "firstSplitColumn_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "firstSplitColumn": "Foreign worker"
+            },
+            {
+                "binaryNominalSplit_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "binaryNominalSplit": false
+            },
+            {
+                "maxNumNominalValues_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "maxNumNominalValues": 10
+            },
+            {
+                "FilterNominalValuesFromParent_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "FilterNominalValuesFromParent": false
+            },
+            {
+                "CFG_NOTRUECHILD_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_NOTRUECHILD": "returnLastPrediction"
+            },
+            {
+                "CFG_MISSINGSTRATEGY_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_MISSINGSTRATEGY": "lastPrediction"
+            }
+        ],
+        "port_count": 1
+    },
+    (n42.32): {
+        "name": "Decision Tree Predictor",
+        "factory": "org.knime.base.node.mine.decisiontree2.predictor2.DecTreePredictorNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "UseGainRatio_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "UseGainRatio": 10000
+            },
+            {
+                "ShowDistribution_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "ShowDistribution": true
+            },
+            {
+                "prediction column name_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "prediction column name": "Prediction (Score)"
+            },
+            {
+                "change prediction_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "change prediction": false
+            },
+            {
+                "class probability suffix_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "class probability suffix": ""
+            }
+        ],
+        "port_count": 1
+    },
+    (n42.36): {
+        "name": "Creation of a table with accuracy and model type (decision tree)",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n9:1),
+            (n9:1)-->(n10:1),
+            (n10:1)-->(n290:1),
+            (n290:1)-->(n292:1),
+            (n292:1)-->(n293:1),
+            (n293:1)-->(META_OUT:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n42.36.9): {
+        "name": "Row Filter",
+        "factory": "org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "rowFilter": [
+                    {
+                        "RowFilter_TypeID": "RowID_RowFilter"
+                    },
+                    {
+                        "RegExprRowFilterInclude": true
+                    },
+                    {
+                        "RegExprRowFilterStart": false
+                    },
+                    {
+                        "RegExprRowFilterPattern": "Overall"
+                    },
+                    {
+                        "RegExprRowFilterCaseSense": false
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n42.36.10): {
+        "name": "Column Filter",
+        "factory": "org.knime.base.node.preproc.filter.column.FilterColumnNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "selectionOption": "EnforceInclusion"
+            },
+            {
+                "exclude": [
+                    {
+                        "array-size": 1
+                    },
+                    {
+                        "0": "Accuracy"
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n42.36.290): {
+        "name": "Constant Value Column",
+        "factory": "org.knime.base.node.preproc.constantvalue.ConstantValueColumnNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "replaced-column": "",
+                "isnull": true
+            },
+            {
+                "column-value": "Decision Tree"
+            },
+            {
+                "new-column-name": "model"
+            },
+            {
+                "column-type": "STRING"
+            },
+            {
+                "date-format": "dd.MM.yyyy"
+            }
+        ],
+        "port_count": 1
+    },
+    (n42.36.292): {
+        "name": "Constant Value Column",
+        "factory": "org.knime.base.node.preproc.constantvalue.ConstantValueColumnNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "replaced-column": "",
+                "isnull": true
+            },
+            {
+                "column-value": "Row0"
+            },
+            {
+                "new-column-name": "RowID"
+            },
+            {
+                "column-type": "STRING"
+            },
+            {
+                "date-format": "dd.MM.yyyy"
+            }
+        ],
+        "port_count": 1
+    },
+    (n42.36.293): {
+        "name": "RowID",
+        "factory": "org.knime.base.node.preproc.rowkey2.RowKeyNodeFactory2",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "replaceRowKey_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "replaceRowKey": true
+            },
+            {
+                "newRowKeyColumnName_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "newRowKeyColumnName": "RowID"
+            },
+            {
+                "removeRowKeyCol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "removeRowKeyCol": true
+            },
+            {
+                "ensureUniqueness_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "ensureUniqueness": false
+            },
+            {
+                "replaceMissingValues_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "replaceMissingValues": false
+            },
+            {
+                "appendRowKeyCol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "appendRowKeyCol": false
+            },
+            {
+                "newColumnName4RowKeyValues_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "newColumnName4RowKeyValues": ""
+            },
+            {
+                "enableHilite_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableHilite": false
+            }
+        ],
+        "port_count": 1
+    },
+    (n42.37): {
+        "name": "Apply the model on all data",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n33:1),
+            (n28:1)-->(n34:1),
+            (n33:1)-->(n28:1),
+            (n34:1)-->(META_OUT:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n42.37.28): {
+        "name": "PMML To Cell",
+        "factory": "org.knime.ensembles.pmmlporttocell.PMMLPortToCellNodeFactory",
+        "bundle_name": "KNIME Ensemble Learning",
+        "bundle_symbolic_name": "org.knime.ensembles",
+        "bundle_version": "3.5.0.v201710051325",
+        "feature_name": "KNIME Ensemble Learning Wrappers",
+        "feature_symbolic_name": "org.knime.features.ensembles.feature.group",
+        "feature_version": "3.5.0.v201710051325",
+        "model": [
+            {
+                "generated_rowkey_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "generated_rowkey": "Row0"
+            }
+        ],
+        "port_count": 1
+    },
+    (n42.37.33): {
+        "name": "Decision Tree Learner",
+        "factory": "org.knime.base.node.mine.decisiontree2.learner2.DecisionTreeLearnerNodeFactory3",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "classifyColumn_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "classifyColumn": "Score"
+            },
+            {
+                "splitQualityMeasure_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "splitQualityMeasure": "Gini index"
+            },
+            {
+                "pruningMethod_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "pruningMethod": "No pruning"
+            },
+            {
+                "enableReducedErrorPruning_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableReducedErrorPruning": true
+            },
+            {
+                "minNumberRecordsPerNode_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "minNumberRecordsPerNode": 2
+            },
+            {
+                "numverRecordsToView_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "numverRecordsToView": 10000
+            },
+            {
+                "splitAverage_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "splitAverage": true
+            },
+            {
+                "numProcessors_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "numProcessors": 8
+            },
+            {
+                "skipColumnsWithoutDomain_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "skipColumnsWithoutDomain": false
+            },
+            {
+                "useFirstSplitColumn_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "useFirstSplitColumn": false
+            },
+            {
+                "firstSplitColumn_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "firstSplitColumn": "Foreign worker"
+            },
+            {
+                "binaryNominalSplit_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "binaryNominalSplit": false
+            },
+            {
+                "maxNumNominalValues_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "maxNumNominalValues": 10
+            },
+            {
+                "FilterNominalValuesFromParent_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "FilterNominalValuesFromParent": false
+            },
+            {
+                "CFG_NOTRUECHILD_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_NOTRUECHILD": "returnLastPrediction"
+            },
+            {
+                "CFG_MISSINGSTRATEGY_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_MISSINGSTRATEGY": "lastPrediction"
+            }
+        ],
+        "port_count": 1
+    },
+    (n42.37.34): {
+        "name": "Rule Engine",
+        "factory": "org.knime.base.node.rules.engine.RuleEngineNodeFactory",
+        "bundle_name": "KNIME Java Snippet Nodes",
+        "bundle_symbolic_name": "org.knime.jsnippets",
+        "bundle_version": "3.5.0.v201710270942",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "rules": [
+                    {
+                        "array-size": 4
+                    },
+                    {
+                        "0": "// enter ordered set of rules, e.g.:"
+                    },
+                    {
+                        "1": "// $double column name$ > 5.0 => \"large\""
+                    },
+                    {
+                        "2": "// $string column name$ LIKE \"*blue*\" => \"small and blue\""
+                    },
+                    {
+                        "3": "TRUE => \"Overall\""
+                    }
+                ]
+            },
+            {
+                "new-column-name": "Dummy"
+            },
+            {
+                "replace-column-name": "PMML"
+            },
+            {
+                "append-column": true
+            },
+            {
+                "disallowLongOutputForCompatibility": true
+            }
+        ],
+        "port_count": 1
+    },
+    (n42.38): {
+        "name": "Cross Joiner",
+        "factory": "org.knime.base.node.preproc.crossjoin.CrossJoinerNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "rigthSuffix_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "rigthSuffix": " (#1)"
+            },
+            {
+                "CFG_CACHE_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_CACHE": 1
+            },
+            {
+                "CFG_SEPARATOR_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_SEPARATOR": "_"
+            },
+            {
+                "CFG_SHOW_FIRST_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_SHOW_FIRST": false
+            },
+            {
+                "CFG_SHOW_SECOND_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_SHOW_SECOND": false
+            },
+            {
+                "CFG_FIRST_COLUMNNAME_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "CFG_FIRST_COLUMNNAME": "FirstRowIDs"
+            },
+            {
+                "CFG_SECOND_COLUMNNAME_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "CFG_SECOND_COLUMNNAME": "SecondRowIDs"
+            }
+        ],
+        "port_count": 1
+    },
+    (n43): {
+        "name": "Train and Cross Validate a Neural Network",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n18:1),
+            (n2:2)-->(n32:2),
+            (n2:1)-->(n31:1),
+            (n7:1)-->(n20:1),
+            (n18:1)-->(n2:1),
+            (n18:1)-->(n36:1),
+            (n20:2)-->(n37:1),
+            (n31:1)-->(n32:1),
+            (n32:1)-->(n7:1),
+            (n36:1)-->(n38:2),
+            (n37:1)-->(n38:1),
+            (n38:1)-->(META_OUT:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n43.2): {
+        "name": "X-Partitioner",
+        "factory": "org.knime.base.node.meta.xvalidation.XValidatePartitionerFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "validations": 10,
+                "data_type": "xshort"
+            },
+            {
+                "randomSampling": false
+            },
+            {
+                "leaveOneOut": false
+            },
+            {
+                "stratifiedSampling": true
+            },
+            {
+                "classColumn": "Score"
+            },
+            {
+                "useRandomSeed": false
+            },
+            {
+                "randomSeed": 1463497874765,
+                "data_type": "xlong"
+            }
+        ],
+        "port_count": 2
+    },
+    (n43.7): {
+        "name": "X-Aggregator",
+        "factory": "org.knime.base.node.meta.xvalidation.AggregateOutputNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "predictionColumn": "Prediction (Score)"
+            },
+            {
+                "targetColumn": "Score"
+            },
+            {
+                "addFoldId": false
+            }
+        ],
+        "port_count": 2
+    },
+    (n43.18): {
+        "name": "Normalizer",
+        "factory": "org.knime.base.node.preproc.normalize.NormalizerNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "mode": 1
+            },
+            {
+                "newmin": 0.0,
+                "data_type": "xdouble"
+            },
+            {
+                "newmax": 1.0,
+                "data_type": "xdouble"
+            },
+            {
+                "columns": [
+                    {
+                        "array-size": 20
+                    },
+                    {
+                        "0": "Duration in months"
+                    },
+                    {
+                        "1": "Credit amount"
+                    },
+                    {
+                        "2": "Installment rate in percentage of disposable income"
+                    },
+                    {
+                        "3": "Present residence since"
+                    },
+                    {
+                        "4": "Age in years"
+                    },
+                    {
+                        "5": "Number of existing credits at this bank"
+                    },
+                    {
+                        "6": "Number of people being liable to provide maintenance for"
+                    },
+                    {
+                        "7": "Status of existing checking account"
+                    },
+                    {
+                        "8": "Credit history"
+                    },
+                    {
+                        "9": "Purpose"
+                    },
+                    {
+                        "10": "Savings account/bonds"
+                    },
+                    {
+                        "11": "Present employment since"
+                    },
+                    {
+                        "12": "Personal status and sex"
+                    },
+                    {
+                        "13": "Other debtors / guarantors"
+                    },
+                    {
+                        "14": "Property"
+                    },
+                    {
+                        "15": "Other installment plans"
+                    },
+                    {
+                        "16": "Housing"
+                    },
+                    {
+                        "17": "Job"
+                    },
+                    {
+                        "18": "Telephone"
+                    },
+                    {
+                        "19": "Foreign worker"
+                    }
+                ]
+            },
+            {
+                "all_numeric_columns_used": true
+            }
+        ],
+        "port_count": 2
+    },
+    (n43.20): {
+        "name": "Scorer",
+        "factory": "org.knime.base.node.mine.scorer.accuracy.AccuracyScorerNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "first": "Score"
+            },
+            {
+                "second": "Prediction (Score)"
+            },
+            {
+                "flowVarPrefix": "",
+                "isnull": true
+            },
+            {
+                "sortingReversed": false
+            },
+            {
+                "sortingStrategy": 0
+            },
+            {
+                "ignore.missing.values": true
+            }
+        ],
+        "port_count": 2
+    },
+    (n43.31): {
+        "name": "RProp MLP Learner",
+        "factory": "org.knime.base.node.mine.neural.rprop.RPropNodeFactory2",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "maxiter_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "maxiter": 100
+            },
+            {
+                "hiddenlayer_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "hiddenlayer": 1
+            },
+            {
+                "nrhiddenneurons_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "nrhiddenneurons": 10
+            },
+            {
+                "classcol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "classcol": "Score"
+            },
+            {
+                "ignoremv_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "ignoremv": false
+            },
+            {
+                "useRandomSeed_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "useRandomSeed": false
+            },
+            {
+                "randomSeed_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "randomSeed": 228362540
+            }
+        ],
+        "port_count": 1
+    },
+    (n43.32): {
+        "name": "MultiLayerPerceptron Predictor",
+        "factory": "org.knime.base.node.mine.neural.mlp2.MLPPredictorNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "prediction column name_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "prediction column name": "Prediction (Score)"
+            },
+            {
+                "change prediction_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "change prediction": false
+            },
+            {
+                "append probabilities_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "append probabilities": true
+            },
+            {
+                "class probability suffix_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "class probability suffix": ""
+            }
+        ],
+        "port_count": 1
+    },
+    (n43.36): {
+        "name": "Apply the model on all data",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n35:1),
+            (n22:1)-->(n34:1),
+            (n34:1)-->(META_OUT:1),
+            (n35:1)-->(n22:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n43.36.22): {
+        "name": "PMML To Cell",
+        "factory": "org.knime.ensembles.pmmlporttocell.PMMLPortToCellNodeFactory",
+        "bundle_name": "KNIME Ensemble Learning",
+        "bundle_symbolic_name": "org.knime.ensembles",
+        "bundle_version": "3.5.0.v201710051325",
+        "feature_name": "KNIME Ensemble Learning Wrappers",
+        "feature_symbolic_name": "org.knime.features.ensembles.feature.group",
+        "feature_version": "3.5.0.v201710051325",
+        "model": [
+            {
+                "generated_rowkey_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "generated_rowkey": "Row0"
+            }
+        ],
+        "port_count": 1
+    },
+    (n43.36.34): {
+        "name": "Rule Engine",
+        "factory": "org.knime.base.node.rules.engine.RuleEngineNodeFactory",
+        "bundle_name": "KNIME Java Snippet Nodes",
+        "bundle_symbolic_name": "org.knime.jsnippets",
+        "bundle_version": "3.5.0.v201710270942",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "rules": [
+                    {
+                        "array-size": 4
+                    },
+                    {
+                        "0": "// enter ordered set of rules, e.g.:"
+                    },
+                    {
+                        "1": "// $double column name$ > 5.0 => \"large\""
+                    },
+                    {
+                        "2": "// $string column name$ LIKE \"*blue*\" => \"small and blue\""
+                    },
+                    {
+                        "3": "TRUE => \"Overall\""
+                    }
+                ]
+            },
+            {
+                "new-column-name": "Dummy"
+            },
+            {
+                "replace-column-name": "PMML"
+            },
+            {
+                "append-column": true
+            },
+            {
+                "disallowLongOutputForCompatibility": true
+            }
+        ],
+        "port_count": 1
+    },
+    (n43.36.35): {
+        "name": "RProp MLP Learner",
+        "factory": "org.knime.base.node.mine.neural.rprop.RPropNodeFactory2",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "maxiter_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "maxiter": 100
+            },
+            {
+                "hiddenlayer_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "hiddenlayer": 1
+            },
+            {
+                "nrhiddenneurons_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "nrhiddenneurons": 10
+            },
+            {
+                "classcol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "classcol": "Score"
+            },
+            {
+                "ignoremv_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "ignoremv": false
+            },
+            {
+                "useRandomSeed_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "useRandomSeed": false
+            },
+            {
+                "randomSeed_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "randomSeed": -2050241214
+            }
+        ],
+        "port_count": 1
+    },
+    (n43.37): {
+        "name": "Creation of a table with accuracy and model type (Neural Network)",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n9:1),
+            (n9:1)-->(n10:1),
+            (n10:1)-->(n290:1),
+            (n290:1)-->(n292:1),
+            (n292:1)-->(n293:1),
+            (n293:1)-->(META_OUT:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n43.37.9): {
+        "name": "Row Filter",
+        "factory": "org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "rowFilter": [
+                    {
+                        "RowFilter_TypeID": "RowID_RowFilter"
+                    },
+                    {
+                        "RegExprRowFilterInclude": true
+                    },
+                    {
+                        "RegExprRowFilterStart": false
+                    },
+                    {
+                        "RegExprRowFilterPattern": "Overall"
+                    },
+                    {
+                        "RegExprRowFilterCaseSense": false
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n43.37.10): {
+        "name": "Column Filter",
+        "factory": "org.knime.base.node.preproc.filter.column.FilterColumnNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "selectionOption": "EnforceInclusion"
+            },
+            {
+                "exclude": [
+                    {
+                        "array-size": 1
+                    },
+                    {
+                        "0": "Accuracy"
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n43.37.290): {
+        "name": "Constant Value Column",
+        "factory": "org.knime.base.node.preproc.constantvalue.ConstantValueColumnNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "replaced-column": "",
+                "isnull": true
+            },
+            {
+                "column-value": "Neural Network"
+            },
+            {
+                "new-column-name": "model"
+            },
+            {
+                "column-type": "STRING"
+            },
+            {
+                "date-format": "dd.MM.yyyy"
+            }
+        ],
+        "port_count": 1
+    },
+    (n43.37.292): {
+        "name": "Constant Value Column",
+        "factory": "org.knime.base.node.preproc.constantvalue.ConstantValueColumnNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "replaced-column": "",
+                "isnull": true
+            },
+            {
+                "column-value": "Row0"
+            },
+            {
+                "new-column-name": "RowID"
+            },
+            {
+                "column-type": "STRING"
+            },
+            {
+                "date-format": "dd.MM.yyyy"
+            }
+        ],
+        "port_count": 1
+    },
+    (n43.37.293): {
+        "name": "RowID",
+        "factory": "org.knime.base.node.preproc.rowkey2.RowKeyNodeFactory2",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "replaceRowKey_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "replaceRowKey": true
+            },
+            {
+                "newRowKeyColumnName_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "newRowKeyColumnName": "RowID"
+            },
+            {
+                "removeRowKeyCol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "removeRowKeyCol": true
+            },
+            {
+                "ensureUniqueness_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "ensureUniqueness": false
+            },
+            {
+                "replaceMissingValues_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "replaceMissingValues": false
+            },
+            {
+                "appendRowKeyCol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "appendRowKeyCol": false
+            },
+            {
+                "newColumnName4RowKeyValues_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "newColumnName4RowKeyValues": ""
+            },
+            {
+                "enableHilite_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableHilite": false
+            }
+        ],
+        "port_count": 1
+    },
+    (n43.38): {
+        "name": "Cross Joiner",
+        "factory": "org.knime.base.node.preproc.crossjoin.CrossJoinerNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "rigthSuffix_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "rigthSuffix": " (#1)"
+            },
+            {
+                "CFG_CACHE_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_CACHE": 1
+            },
+            {
+                "CFG_SEPARATOR_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_SEPARATOR": "_"
+            },
+            {
+                "CFG_SHOW_FIRST_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_SHOW_FIRST": false
+            },
+            {
+                "CFG_SHOW_SECOND_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_SHOW_SECOND": false
+            },
+            {
+                "CFG_FIRST_COLUMNNAME_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "CFG_FIRST_COLUMNNAME": "FirstRowIDs"
+            },
+            {
+                "CFG_SECOND_COLUMNNAME_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "CFG_SECOND_COLUMNNAME": "SecondRowIDs"
+            }
+        ],
+        "port_count": 1
+    },
+    (n44): {
+        "name": "Train and Cross Validate a SVM",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n18:1),
+            (n2:2)-->(n32:2),
+            (n2:1)-->(n31:1),
+            (n7:1)-->(n21:1),
+            (n18:1)-->(n2:1),
+            (n18:1)-->(n38:1),
+            (n21:2)-->(n37:1),
+            (n31:1)-->(n32:1),
+            (n32:1)-->(n7:1),
+            (n37:1)-->(n39:1),
+            (n38:1)-->(n39:2),
+            (n39:1)-->(META_OUT:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n44.2): {
+        "name": "X-Partitioner",
+        "factory": "org.knime.base.node.meta.xvalidation.XValidatePartitionerFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "validations": 10,
+                "data_type": "xshort"
+            },
+            {
+                "randomSampling": false
+            },
+            {
+                "leaveOneOut": false
+            },
+            {
+                "stratifiedSampling": true
+            },
+            {
+                "classColumn": "Score"
+            },
+            {
+                "useRandomSeed": false
+            },
+            {
+                "randomSeed": 1463497874834,
+                "data_type": "xlong"
+            }
+        ],
+        "port_count": 2
+    },
+    (n44.7): {
+        "name": "X-Aggregator",
+        "factory": "org.knime.base.node.meta.xvalidation.AggregateOutputNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "predictionColumn": "Prediction (Score)"
+            },
+            {
+                "targetColumn": "Score"
+            },
+            {
+                "addFoldId": false
+            }
+        ],
+        "port_count": 2
+    },
+    (n44.18): {
+        "name": "Normalizer",
+        "factory": "org.knime.base.node.preproc.normalize.NormalizerNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "mode": 1
+            },
+            {
+                "newmin": 0.0,
+                "data_type": "xdouble"
+            },
+            {
+                "newmax": 1.0,
+                "data_type": "xdouble"
+            },
+            {
+                "columns": [
+                    {
+                        "array-size": 20
+                    },
+                    {
+                        "0": "Duration in months"
+                    },
+                    {
+                        "1": "Credit amount"
+                    },
+                    {
+                        "2": "Installment rate in percentage of disposable income"
+                    },
+                    {
+                        "3": "Present residence since"
+                    },
+                    {
+                        "4": "Age in years"
+                    },
+                    {
+                        "5": "Number of existing credits at this bank"
+                    },
+                    {
+                        "6": "Number of people being liable to provide maintenance for"
+                    },
+                    {
+                        "7": "Status of existing checking account"
+                    },
+                    {
+                        "8": "Credit history"
+                    },
+                    {
+                        "9": "Purpose"
+                    },
+                    {
+                        "10": "Savings account/bonds"
+                    },
+                    {
+                        "11": "Present employment since"
+                    },
+                    {
+                        "12": "Personal status and sex"
+                    },
+                    {
+                        "13": "Other debtors / guarantors"
+                    },
+                    {
+                        "14": "Property"
+                    },
+                    {
+                        "15": "Other installment plans"
+                    },
+                    {
+                        "16": "Housing"
+                    },
+                    {
+                        "17": "Job"
+                    },
+                    {
+                        "18": "Telephone"
+                    },
+                    {
+                        "19": "Foreign worker"
+                    }
+                ]
+            },
+            {
+                "all_numeric_columns_used": true
+            }
+        ],
+        "port_count": 2
+    },
+    (n44.21): {
+        "name": "Scorer",
+        "factory": "org.knime.base.node.mine.scorer.accuracy.AccuracyScorerNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "first": "Score"
+            },
+            {
+                "second": "Prediction (Score)"
+            },
+            {
+                "flowVarPrefix": "",
+                "isnull": true
+            },
+            {
+                "sortingReversed": false
+            },
+            {
+                "sortingStrategy": 0
+            },
+            {
+                "ignore.missing.values": true
+            }
+        ],
+        "port_count": 2
+    },
+    (n44.31): {
+        "name": "SVM Learner",
+        "factory": "org.knime.base.node.mine.svm.learner.SVMLearnerNodeFactory2",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "kernel_type": "Polynomial"
+            },
+            {
+                "c_parameter_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "c_parameter": 1.0,
+                "data_type": "xdouble"
+            },
+            {
+                "classcol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "classcol": "Score"
+            },
+            {
+                "kernel_param_Bias_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "kernel_param_Bias": 1.0,
+                "data_type": "xdouble"
+            },
+            {
+                "kernel_param_Power_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "kernel_param_Power": 1.0,
+                "data_type": "xdouble"
+            },
+            {
+                "kernel_param_Gamma_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "kernel_param_Gamma": 1.0,
+                "data_type": "xdouble"
+            },
+            {
+                "kernel_param_kappa_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "kernel_param_kappa": 0.1,
+                "data_type": "xdouble"
+            },
+            {
+                "kernel_param_delta_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "kernel_param_delta": 0.5,
+                "data_type": "xdouble"
+            },
+            {
+                "kernel_param_sigma_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "kernel_param_sigma": 0.1,
+                "data_type": "xdouble"
+            }
+        ],
+        "port_count": 1
+    },
+    (n44.32): {
+        "name": "SVM Predictor",
+        "factory": "org.knime.base.node.mine.svm.predictor2.SVMPredictorNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "prediction column name_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "prediction column name": "Prediction ()"
+            },
+            {
+                "change prediction_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "change prediction": false
+            },
+            {
+                "add probabilities_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "add probabilities": false
+            },
+            {
+                "class probability suffix_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "class probability suffix": ""
+            }
+        ],
+        "port_count": 1
+    },
+    (n44.37): {
+        "name": "Creation of a table with accuracy and model type (SVM)",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n9:1),
+            (n9:1)-->(n10:1),
+            (n10:1)-->(n290:1),
+            (n290:1)-->(n292:1),
+            (n292:1)-->(n293:1),
+            (n293:1)-->(META_OUT:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n44.37.9): {
+        "name": "Row Filter",
+        "factory": "org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "rowFilter": [
+                    {
+                        "RowFilter_TypeID": "RowID_RowFilter"
+                    },
+                    {
+                        "RegExprRowFilterInclude": true
+                    },
+                    {
+                        "RegExprRowFilterStart": false
+                    },
+                    {
+                        "RegExprRowFilterPattern": "Overall"
+                    },
+                    {
+                        "RegExprRowFilterCaseSense": false
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n44.37.10): {
+        "name": "Column Filter",
+        "factory": "org.knime.base.node.preproc.filter.column.FilterColumnNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "selectionOption": "EnforceInclusion"
+            },
+            {
+                "exclude": [
+                    {
+                        "array-size": 1
+                    },
+                    {
+                        "0": "Accuracy"
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n44.37.290): {
+        "name": "Constant Value Column",
+        "factory": "org.knime.base.node.preproc.constantvalue.ConstantValueColumnNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "replaced-column": "",
+                "isnull": true
+            },
+            {
+                "column-value": "SVM"
+            },
+            {
+                "new-column-name": "model"
+            },
+            {
+                "column-type": "STRING"
+            },
+            {
+                "date-format": "dd.MM.yyyy"
+            }
+        ],
+        "port_count": 1
+    },
+    (n44.37.292): {
+        "name": "Constant Value Column",
+        "factory": "org.knime.base.node.preproc.constantvalue.ConstantValueColumnNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "replaced-column": "",
+                "isnull": true
+            },
+            {
+                "column-value": "Row0"
+            },
+            {
+                "new-column-name": "RowID"
+            },
+            {
+                "column-type": "STRING"
+            },
+            {
+                "date-format": "dd.MM.yyyy"
+            }
+        ],
+        "port_count": 1
+    },
+    (n44.37.293): {
+        "name": "RowID",
+        "factory": "org.knime.base.node.preproc.rowkey2.RowKeyNodeFactory2",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "replaceRowKey_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "replaceRowKey": true
+            },
+            {
+                "newRowKeyColumnName_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "newRowKeyColumnName": "RowID"
+            },
+            {
+                "removeRowKeyCol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "removeRowKeyCol": true
+            },
+            {
+                "ensureUniqueness_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "ensureUniqueness": false
+            },
+            {
+                "replaceMissingValues_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "replaceMissingValues": false
+            },
+            {
+                "appendRowKeyCol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "appendRowKeyCol": false
+            },
+            {
+                "newColumnName4RowKeyValues_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "newColumnName4RowKeyValues": ""
+            },
+            {
+                "enableHilite_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableHilite": false
+            }
+        ],
+        "port_count": 1
+    },
+    (n44.38): {
+        "name": "Apply the model on all data",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n33:1),
+            (n33:1)-->(n34:1),
+            (n34:1)-->(n35:1),
+            (n35:1)-->(META_OUT:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n44.38.33): {
+        "name": "SVM Learner",
+        "factory": "org.knime.base.node.mine.svm.learner.SVMLearnerNodeFactory2",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "kernel_type": "Polynomial"
+            },
+            {
+                "c_parameter_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "c_parameter": 1.0,
+                "data_type": "xdouble"
+            },
+            {
+                "classcol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "classcol": "Score"
+            },
+            {
+                "kernel_param_Bias_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "kernel_param_Bias": 1.0,
+                "data_type": "xdouble"
+            },
+            {
+                "kernel_param_Power_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "kernel_param_Power": 1.0,
+                "data_type": "xdouble"
+            },
+            {
+                "kernel_param_Gamma_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "kernel_param_Gamma": 1.0,
+                "data_type": "xdouble"
+            },
+            {
+                "kernel_param_kappa_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "kernel_param_kappa": 0.1,
+                "data_type": "xdouble"
+            },
+            {
+                "kernel_param_delta_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "kernel_param_delta": 0.5,
+                "data_type": "xdouble"
+            },
+            {
+                "kernel_param_sigma_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "kernel_param_sigma": 0.1,
+                "data_type": "xdouble"
+            }
+        ],
+        "port_count": 1
+    },
+    (n44.38.34): {
+        "name": "PMML To Cell",
+        "factory": "org.knime.ensembles.pmmlporttocell.PMMLPortToCellNodeFactory",
+        "bundle_name": "KNIME Ensemble Learning",
+        "bundle_symbolic_name": "org.knime.ensembles",
+        "bundle_version": "3.5.0.v201710051325",
+        "feature_name": "KNIME Ensemble Learning Wrappers",
+        "feature_symbolic_name": "org.knime.features.ensembles.feature.group",
+        "feature_version": "3.5.0.v201710051325",
+        "model": [
+            {
+                "generated_rowkey_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "generated_rowkey": "Row0"
+            }
+        ],
+        "port_count": 1
+    },
+    (n44.38.35): {
+        "name": "Rule Engine",
+        "factory": "org.knime.base.node.rules.engine.RuleEngineNodeFactory",
+        "bundle_name": "KNIME Java Snippet Nodes",
+        "bundle_symbolic_name": "org.knime.jsnippets",
+        "bundle_version": "3.5.0.v201710270942",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "rules": [
+                    {
+                        "array-size": 4
+                    },
+                    {
+                        "0": "// enter ordered set of rules, e.g.:"
+                    },
+                    {
+                        "1": "// $double column name$ > 5.0 => \"large\""
+                    },
+                    {
+                        "2": "// $string column name$ LIKE \"*blue*\" => \"small and blue\""
+                    },
+                    {
+                        "3": "TRUE => \"Overall\""
+                    }
+                ]
+            },
+            {
+                "new-column-name": "Dummy"
+            },
+            {
+                "replace-column-name": "PMML"
+            },
+            {
+                "append-column": true
+            },
+            {
+                "disallowLongOutputForCompatibility": true
+            }
+        ],
+        "port_count": 1
+    },
+    (n44.39): {
+        "name": "Cross Joiner",
+        "factory": "org.knime.base.node.preproc.crossjoin.CrossJoinerNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "rigthSuffix_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "rigthSuffix": " (#1)"
+            },
+            {
+                "CFG_CACHE_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_CACHE": 1
+            },
+            {
+                "CFG_SEPARATOR_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_SEPARATOR": "_"
+            },
+            {
+                "CFG_SHOW_FIRST_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_SHOW_FIRST": false
+            },
+            {
+                "CFG_SHOW_SECOND_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_SHOW_SECOND": false
+            },
+            {
+                "CFG_FIRST_COLUMNNAME_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "CFG_FIRST_COLUMNNAME": "FirstRowIDs"
+            },
+            {
+                "CFG_SECOND_COLUMNNAME_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "CFG_SECOND_COLUMNNAME": "SecondRowIDs"
+            }
+        ],
+        "port_count": 1
+    },
+    (n51): {
+        "name": "Concatenate (Optional in)",
+        "factory": "org.knime.base.node.preproc.append.row.AppendedRowsWithOptionalInNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "fail_on_duplicates": false
+            },
+            {
+                "append_suffix": true
+            },
+            {
+                "intersection_of_columns": false
+            },
+            {
+                "suffix": "_dup"
+            },
+            {
+                "enable_hiliting": false
+            }
+        ],
+        "port_count": 1
+    },
+    (n52): {
+        "name": "Sorter",
+        "factory": "org.knime.base.node.preproc.sorter.SorterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "incllist": [
+                    {
+                        "array-size": 1
+                    },
+                    {
+                        "0": "Accuracy"
+                    }
+                ]
+            },
+            {
+                "sortOrder": [
+                    {
+                        "array-size": 1
+                    },
+                    {
+                        "0": false
+                    }
+                ]
+            },
+            {
+                "sortinmemory": true
+            },
+            {
+                "missingToEnd": false
+            }
+        ],
+        "port_count": 1
+    },
+    (n53): {
+        "name": "Row Filter",
+        "factory": "org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "rowFilter": [
+                    {
+                        "RowFilter_TypeID": "RowNumber_RowFilter"
+                    },
+                    {
+                        "RowRangeStart": 0
+                    },
+                    {
+                        "RowRangeEnd": 0
+                    },
+                    {
+                        "RowRangeInclude": true
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n54): {
+        "name": "Cell To PMML",
+        "factory": "org.knime.ensembles.tabletopmmlport.TableToPMMLNodeFactory",
+        "bundle_name": "KNIME Ensemble Learning",
+        "bundle_symbolic_name": "org.knime.ensembles",
+        "bundle_version": "3.5.0.v201710051325",
+        "feature_name": "KNIME Ensemble Learning Wrappers",
+        "feature_symbolic_name": "org.knime.features.ensembles.feature.group",
+        "feature_version": "3.5.0.v201710051325",
+        "model": [
+            {
+                "PMML-Model-column_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "PMML-Model-column": "PMML"
+            }
+        ],
+        "port_count": 1
+    },
+    (n55): {
+        "name": "PMML Writer",
+        "factory": "org.knime.base.node.io.pmml.write.PMMLWriterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "PMMLWriterFile_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "PMMLWriterFile": "knime://knime.workflow/../../../TheData/Credit/model.pmml"
+            },
+            {
+                "overwriteOK_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "overwriteOK": true
+            },
+            {
+                "validatePMML_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "validatePMML": true
+            }
+        ],
+        "port_count": 0
+    },
+    (n57): {
+        "name": "File Reader",
+        "factory": "org.knime.base.node.io.filereader.FileReaderNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "DataURL": "knime://knime.workflow/../../../TheData/Credit/german-credit-scoring.csv"
+            },
+            {
+                "Delimiters": [
+                    {
+                        "Delim0": [
+                            {
+                                "pattern": "%%00010"
+                            },
+                            {
+                                "combineMultiple": true
+                            },
+                            {
+                                "includeInToken": false
+                            },
+                            {
+                                "returnAsToken": true
+                            }
+                        ]
+                    },
+                    {
+                        "Delim1": [
+                            {
+                                "pattern": "%%00013"
+                            },
+                            {
+                                "combineMultiple": true
+                            },
+                            {
+                                "includeInToken": false
+                            },
+                            {
+                                "returnAsToken": true
+                            }
+                        ]
+                    },
+                    {
+                        "Delim2": [
+                            {
+                                "pattern": ";"
+                            },
+                            {
+                                "combineMultiple": false
+                            },
+                            {
+                                "includeInToken": false
+                            },
+                            {
+                                "returnAsToken": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "Quotes": [
+                    {
+                        "Quote0": [
+                            {
+                                "left": "\""
+                            },
+                            {
+                                "right": "\""
+                            },
+                            {
+                                "EscChar": "\\",
+                                "data_type": "xchar"
+                            },
+                            {
+                                "DontRem": false
+                            }
+                        ]
+                    },
+                    {
+                        "Quote1": [
+                            {
+                                "left": "'"
+                            },
+                            {
+                                "right": "'"
+                            },
+                            {
+                                "EscChar": "\\",
+                                "data_type": "xchar"
+                            },
+                            {
+                                "DontRem": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "Comments": []
+            },
+            {
+                "WhiteSpaces": [
+                    {
+                        "WhiteSpace0": " "
+                    },
+                    {
+                        "WhiteSpace1": "%%00009"
+                    }
+                ]
+            },
+            {
+                "CombineMultDelims": false
+            },
+            {
+                "SkipFirstLines": 0,
+                "data_type": "xlong"
+            },
+            {
+                "NewLineInQuotes": false
+            },
+            {
+                "hasColHdr": true
+            },
+            {
+                "hasRowHdr": false
+            },
+            {
+                "ignoreEmptyLines": true
+            },
+            {
+                "rowPrefix": "Row"
+            },
+            {
+                "RowDelims": [
+                    {
+                        "RDelim0": "%%00010"
+                    },
+                    {
+                        "SkipEmptyLine0": true
+                    },
+                    {
+                        "RDelim1": "%%00013"
+                    },
+                    {
+                        "SkipEmptyLine1": true
+                    }
+                ]
+            },
+            {
+                "MissingPatterns": []
+            },
+            {
+                "FormatParameter": []
+            },
+            {
+                "globalMissPattern": "",
+                "isnull": true
+            },
+            {
+                "DecimalSeparator": ".",
+                "data_type": "xchar"
+            },
+            {
+                "ThrousandsSeparator": "%%00000",
+                "data_type": "xchar"
+            },
+            {
+                "ignEmtpyTokensAtEOR": false
+            },
+            {
+                "acceptShortLines": false
+            },
+            {
+                "uniquifyRowID": false
+            },
+            {
+                "MaxNumOfRows": -1,
+                "data_type": "xlong"
+            },
+            {
+                "ColNumDetermLine": -1
+            },
+            {
+                "CharsetName": "",
+                "isnull": true
+            },
+            {
+                "ConnectTimeoutInSeconds": 1
+            },
+            {
+                "delimsAtEOLuserVal": false
+            },
+            {
+                "numOfColumns": 21
+            },
+            {
+                "ColumnProperties": [
+                    {
+                        "0": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Status of existing checking account"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "1": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Duration in months"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "2": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Credit history"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "3": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Purpose"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "4": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Credit amount"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "5": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Savings account/bonds"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "6": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Present employment since"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "7": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Installment rate in percentage of disposable income"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "8": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Personal status and sex"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "9": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Other debtors / guarantors"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "10": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Present residence since"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "11": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Property"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "12": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Age in years"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "13": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Other installment plans"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "14": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Housing"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "15": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Number of existing credits at this bank"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "16": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Job"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "17": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Number of people being liable to provide maintenance for"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "18": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Telephone"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "19": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Foreign worker"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "20": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Score"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n58): {
+        "name": "Category To Number",
+        "factory": "org.knime.base.node.preproc.colconvert.categorytonumber2.CategoryToNumberNodeFactory2",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.5.0.v201710151744",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.5.0.v201710301503",
+        "model": [
+            {
+                "column-filter": [
+                    {
+                        "filter-type": "STANDARD"
+                    },
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 13
+                            },
+                            {
+                                "0": "Status of existing checking account"
+                            },
+                            {
+                                "1": "Credit history"
+                            },
+                            {
+                                "2": "Purpose"
+                            },
+                            {
+                                "3": "Savings account/bonds"
+                            },
+                            {
+                                "4": "Present employment since"
+                            },
+                            {
+                                "5": "Personal status and sex"
+                            },
+                            {
+                                "6": "Other debtors / guarantors"
+                            },
+                            {
+                                "7": "Property"
+                            },
+                            {
+                                "8": "Other installment plans"
+                            },
+                            {
+                                "9": "Housing"
+                            },
+                            {
+                                "10": "Job"
+                            },
+                            {
+                                "11": "Telephone"
+                            },
+                            {
+                                "12": "Foreign worker"
+                            }
+                        ]
+                    },
+                    {
+                        "excluded_names": [
+                            {
+                                "array-size": 1
+                            },
+                            {
+                                "0": "Score"
+                            }
+                        ]
+                    },
+                    {
+                        "enforce_option": "EnforceExclusion"
+                    },
+                    {
+                        "name_pattern": [
+                            {
+                                "pattern": ""
+                            },
+                            {
+                                "type": "Wildcard"
+                            },
+                            {
+                                "caseSensitive": true
+                            }
+                        ]
+                    },
+                    {
+                        "datatype": [
+                            {
+                                "typelist": [
+                                    {
+                                        "org.knime.core.data.BooleanValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.date.DateAndTimeValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.DoubleValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.IntValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.LongValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.StringValue": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "append_columns": false
+            },
+            {
+                "column_suffix": " (to number)"
+            },
+            {
+                "start_index": 0
+            },
+            {
+                "increment": 1
+            },
+            {
+                "max_categories": 100
+            },
+            {
+                "default_value": [
+                    {
+                        "datacell": "org.knime.core.data.MissingCell"
+                    },
+                    {
+                        "org.knime.core.data.MissingCell": []
+                    }
+                ]
+            },
+            {
+                "map_missing_to": [
+                    {
+                        "datacell": "org.knime.core.data.MissingCell"
+                    },
+                    {
+                        "org.knime.core.data.MissingCell": []
+                    }
+                ]
+            }
+        ],
+        "port_count": 2
+    },
+    (n59): {
+        "name": "JavaScript Bar Chart",
+        "factory": "org.knime.dynamic.js.v30.DynamicJSNodeFactory",
+        "bundle_name": "KNIME Dynamically Created JavaScript Nodes",
+        "bundle_symbolic_name": "org.knime.dynamic.js",
+        "bundle_version": "3.5.0.v201711021643",
+        "feature_name": "KNIME JavaScript Views",
+        "feature_symbolic_name": "org.knime.features.js.views.feature.group",
+        "feature_version": "3.5.0.v201711021643",
+        "factory_settings": [
+            {
+                "nodeDir": "org.knime.dynamic.js.base:nodes/:barChart"
+            }
+        ],
+        "model": [
+            {
+                "displayFullscreenButton_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "displayFullscreenButton": true
+            },
+            {
+                "catLabel_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "catLabel": ""
+            },
+            {
+                "orientation_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "orientation": false
+            },
+            {
+                "svg_Internals": [
+                    {
+                        "SettingsModelID": "SMID_svg"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "svg": [
+                    {
+                        "width": 600
+                    },
+                    {
+                        "height": 400
+                    },
+                    {
+                        "fullscreen": true
+                    },
+                    {
+                        "showFullscreen": true
+                    }
+                ]
+            },
+            {
+                "staggerLabels_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "staggerLabels": false
+            },
+            {
+                "legend_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "legend": true
+            },
+            {
+                "enableHorizontalToggle_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableHorizontalToggle": true
+            },
+            {
+                "freq_Internals": [
+                    {
+                        "SettingsModelID": "SMID_columnfilter"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "freq": [
+                    {
+                        "filter-type": "STANDARD"
+                    },
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 1
+                            },
+                            {
+                                "0": "Accuracy"
+                            }
+                        ]
+                    },
+                    {
+                        "excluded_names": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "enforce_option": "EnforceExclusion"
+                    },
+                    {
+                        "name_pattern": [
+                            {
+                                "pattern": ""
+                            },
+                            {
+                                "type": "Wildcard"
+                            },
+                            {
+                                "caseSensitive": true
+                            }
+                        ]
+                    },
+                    {
+                        "datatype": [
+                            {
+                                "typelist": [
+                                    {
+                                        "org.knime.core.data.DoubleValue": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "enableTitleEdit_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableTitleEdit": true
+            },
+            {
+                "title_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "title": "Bar Chart"
+            },
+            {
+                "enableStackedEdit_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableStackedEdit": true
+            },
+            {
+                "enableAxisEdit_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableAxisEdit": true
+            },
+            {
+                "enableSwitchMissValCat_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableSwitchMissValCat": true
+            },
+            {
+                "includeMissValCat_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "includeMissValCat": true
+            },
+            {
+                "freqLabel_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "freqLabel": ""
+            },
+            {
+                "reportOnMissingValues_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "reportOnMissingValues": true
+            },
+            {
+                "cat_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "cat": "model"
+            },
+            {
+                "subtitle_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "subtitle": ""
+            },
+            {
+                "chartType_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "chartType": "Grouped"
+            },
+            {
+                "enableStaggerToggle_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableStaggerToggle": true
+            },
+            {
+                "enableViewControls_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableViewControls": true
+            },
+            {
+                "aggr_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "aggr": "Sum"
+            },
+            {
+                "showWarnings_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "showWarnings": true
+            },
+            {
+                "enableSubtitleEdit_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableSubtitleEdit": true
+            },
+            {
+                "hideInWizard": false
+            },
+            {
+                "maxRows": 2500
+            },
+            {
+                "generateImage": true
+            }
+        ],
+        "port_count": 1
+    }
+}
+
+Workflow {
+    "connections": {
+        (n42:1)-->(n51:3),
+        (n43:1)-->(n51:1),
+        (n44:1)-->(n51:2),
+        (n51:1)-->(n52:1),
+        (n52:1)-->(n53:1),
+        (n52:1)-->(n59:1),
+        (n53:1)-->(n54:1),
+        (n54:1)-->(n55:1),
+        (n57:1)-->(n58:1),
+        (n57:1)-->(n42:1),
+        (n58:1)-->(n43:1),
+        (n58:1)-->(n44:1)
+    }
+}

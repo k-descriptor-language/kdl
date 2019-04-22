@@ -44,7 +44,23 @@ class KDLLoader(KDLListener):
     def exitMeta_settings(self, ctx: KDLParser.Meta_settingsContext):
         node_number = ctx.node().node_id().getText()
         name = ctx.STRING(1).getText()[1:-1]
-        metanode = MetaNode(node_id=node_number, name=name, children=[], connections=[])
+
+        json_tokens = [i.getText() for i in ctx.meta_in_ports().json().children]
+        json_string = "".join(json_tokens)
+        meta_in_ports = json.loads(json_string)
+
+        json_tokens = [i.getText() for i in ctx.meta_out_ports().json().children]
+        json_string = "".join(json_tokens)
+        meta_out_ports = json.loads(json_string)
+
+        metanode = MetaNode(
+            node_id=node_number,
+            name=name,
+            children=[],
+            connections=[],
+            meta_in_ports=meta_in_ports,
+            meta_out_ports=meta_out_ports,
+        )
         for connection in ctx.connection():
             source_node = connection.source_node().node()
             source_node_id = source_node.node_id().getText()

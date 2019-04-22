@@ -90,17 +90,15 @@
     <entry key="ui_classname" type="xstring" isnull="true" value="" />
     <config key="port_enum">
         {% for port in meta_in_ports %}
-        <config key="inport_{{loop.index0}}">
-            <entry key="index" type="xint" value="{{loop.index0}}" />
-            <entry key="name" type="xstring" value="Inport {{loop.index0}}" />
+        {% for key, value in port.items() %}
+        <config key="inport_{{key}}">
+            <entry key="index" type="xint" value="{{key}}" />
+            <entry key="name" type="xstring" value="" />
             <config key="type">
-                {% if 'VariableConnection' in port.__class__.__name__ %}
-                <entry key="object_class" type="xstring" value="org.knime.core.node.port.flowvariable.FlowVariablePortObject" />
-                {% else %}
-                <entry key="object_class" type="xstring" value="org.knime.core.node.BufferedDataTable" />
-                {% endif %}
+                <entry key="object_class" type="xstring" value="{{value}}" />
             </config>
         </config>
+        {% endfor %}
         {% endfor %}
     </config>
 </config>
@@ -110,17 +108,15 @@
     <entry key="ui_classname" type="xstring" isnull="true" value="" />
     <config key="port_enum">
         {% for port in meta_out_ports %}
-        <config key="outport_{{loop.index0}}">
-            <entry key="index" type="xint" value="{{loop.index0}}" />
+        {% for key, value in port.items() %}
+        <config key="outport_{{key}}">
+            <entry key="index" type="xint" value="{{key}}" />
             <entry key="name" type="xstring" value="" />
             <config key="type">
-                {% if 'VariableConnection' in port.__class__.__name__ %}
-                <entry key="object_class" type="xstring" value="org.knime.core.node.port.flowvariable.FlowVariablePortObject" />
-                {% else %}
-                <entry key="object_class" type="xstring" value="org.knime.core.node.BufferedDataTable" />
-                {% endif %}
+                <entry key="object_class" type="xstring" value="{{value}}" />
             </config>
         </config>
+        {% endfor %}
         {% endfor %}
     </config>
 </config>

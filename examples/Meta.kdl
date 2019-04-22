@@ -897,7 +897,17 @@ Nodes {
             (META_IN:1)-->(n4:1),
             (n4:1)-->(n6:1),
             (n6:1)-->(META_OUT:1)
-        }
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
     },
     (n8.4): {
         "name": "Row Filter",
@@ -962,7 +972,17 @@ Nodes {
         "connections": {
             (META_IN:1)-->(n4:1),
             (n4:1)-->(META_OUT:1)
-        }
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
     },
     (n8.6.4): {
         "name": "Row Filter",
@@ -1012,7 +1032,20 @@ Nodes {
             (META_IN:2)-->(n6:1),
             (META_IN:1)-->(n6:2),
             (n6:1)-->(META_OUT:1)
-        }
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            },
+            {
+                "2": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
     },
     (n9.6): {
         "name": "Concatenate",

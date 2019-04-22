@@ -1,7 +1,7 @@
 import os
 import json
 import jsonschema
-from typing import Any, List
+from typing import Any, List, Dict
 from abc import ABC, abstractmethod
 
 
@@ -226,19 +226,34 @@ class MetaNode(AbstractNode):
         name: str,
         children: List[AbstractNode],
         connections: List[AbstractConnection],
+        meta_in_ports: List[Dict[str, Any]],
+        meta_out_ports: List[Dict[str, Any]],
     ):
         super().__init__(node_id=node_id, name=name)
         self.children = children
         self.connections = connections
+        self.meta_in_ports = meta_in_ports
+        self.meta_out_ports = meta_out_ports
 
     def kdl_str(self) -> str:
         indent = "    "
         output_connections = ""
-        for j, connection in enumerate(self.connections):
+        for i, connection in enumerate(self.connections):
             output_text = f"{indent}{indent}{connection.kdl_str()}"
-            if j < len(self.connections) - 1:
+            if i < len(self.connections) - 1:
                 output_text += ",\n"
             output_connections += output_text
+
+        in_ports_text = ""
+        in_ports = f'"meta_in_ports": {json.dumps(self.meta_in_ports, indent=4)},'
+        for line in in_ports.splitlines():
+            in_ports_text += f"{indent}{line}\n"
+
+        out_ports_text = ""
+        out_ports = f'"meta_out_ports": {json.dumps(self.meta_out_ports, indent=4)}'
+        for line in out_ports.splitlines():
+            out_ports_text += f"{indent}{line}\n"
+
         return (
             f"(n{self.node_id}): "
             "{\n"
@@ -246,7 +261,9 @@ class MetaNode(AbstractNode):
             f'{indent}"type": "MetaNode",\n'
             f'{indent}"connections": {{\n'
             f"{output_connections}\n"
-            f"{indent}}}\n"
+            f"{indent}}},\n"
+            f"{in_ports_text}"
+            f"{out_ports_text}"
             "}"
         )
 
