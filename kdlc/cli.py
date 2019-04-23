@@ -2,6 +2,7 @@ import click
 from pathlib import Path
 import kdlc
 from loguru import logger
+import sys
 
 
 @click.command()
@@ -21,13 +22,19 @@ from loguru import logger
     type=click.Path(exists=True),
 )
 @click.option(
-    "--debug", "-d", "debug_logging", help="Print debug logging to stdout", is_flag=True
+    "--debug",
+    "-d",
+    "debug_logging",
+    required=False,
+    help="Print debug logging to stdout",
+    is_flag=True,
 )
-def prompt(input_file: str, output_file: str) -> None:
+def prompt(input_file: str, output_file: str, debug_logging) -> None:
     if debug_logging:
         logger.add(sys.stdout, level="DEBUG")
     else:
         logger.add(sys.stderr, level="ERROR")
+
     if Path(input_file).suffix == ".kdl" and Path(output_file).suffix == ".knwf":
         kdlc.kdl_to_workflow(input_file, output_file)
     elif Path(input_file).suffix == ".knwf" and Path(output_file).suffix == ".kdl":
