@@ -444,6 +444,63 @@ def test_exitMeta_settings_connection(mocker):
     connection.source_node.return_value.node.return_value = source_node
     connection.destination_node.return_value.node.return_value = dest_node
 
+    token_l_paren = mocker.MagicMock()
+    token_l_paren.getText.return_value = "{"
+    token_r_paren = mocker.MagicMock()
+    token_r_paren.getText.return_value = "}"
+    token_d_quote = mocker.MagicMock()
+    token_d_quote.getText.return_value = '"'
+    token_l_bracket = mocker.MagicMock()
+    token_l_bracket.getText.return_value = "["
+    token_r_bracket = mocker.MagicMock()
+    token_r_bracket.getText.return_value = "]"
+    token_colon = mocker.MagicMock()
+    token_colon.getText.return_value = ":"
+    token_comma = mocker.MagicMock()
+    token_comma.getText.return_value = ","
+
+    token_t = mocker.MagicMock()
+    token_t.getText.return_value = "t"
+    token_one = mocker.MagicMock()
+    token_one.getText.return_value = "1"
+    token_dot = mocker.MagicMock()
+    token_dot.getText.return_value = "."
+
+    children = [
+        token_l_bracket,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_dot,
+        token_one,
+        token_r_paren,
+        token_r_bracket,
+    ]
+
+    ctx.meta_in_ports.return_value.json.return_value.children = children
+    ctx.meta_out_ports.return_value.json.return_value.children = children
+
     listener = kdlc.KDLLoader()
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.Connection(
@@ -470,6 +527,63 @@ def test_exitMeta_settings_var_connection(mocker):
 
     var_connection.source_node.return_value.node.return_value = source_node
     var_connection.destination_node.return_value.node.return_value = dest_node
+
+    token_l_paren = mocker.MagicMock()
+    token_l_paren.getText.return_value = "{"
+    token_r_paren = mocker.MagicMock()
+    token_r_paren.getText.return_value = "}"
+    token_d_quote = mocker.MagicMock()
+    token_d_quote.getText.return_value = '"'
+    token_l_bracket = mocker.MagicMock()
+    token_l_bracket.getText.return_value = "["
+    token_r_bracket = mocker.MagicMock()
+    token_r_bracket.getText.return_value = "]"
+    token_colon = mocker.MagicMock()
+    token_colon.getText.return_value = ":"
+    token_comma = mocker.MagicMock()
+    token_comma.getText.return_value = ","
+
+    token_t = mocker.MagicMock()
+    token_t.getText.return_value = "t"
+    token_one = mocker.MagicMock()
+    token_one.getText.return_value = "1"
+    token_dot = mocker.MagicMock()
+    token_dot.getText.return_value = "."
+
+    children = [
+        token_l_bracket,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_dot,
+        token_one,
+        token_r_paren,
+        token_r_bracket,
+    ]
+
+    ctx.meta_in_ports.return_value.json.return_value.children = children
+    ctx.meta_out_ports.return_value.json.return_value.children = children
 
     listener = kdlc.KDLLoader()
     listener.exitMeta_settings(ctx)
@@ -504,6 +618,63 @@ def test_exitMeta_settings_metaconnection_in(mocker):
     connection.meta_out_node.return_value = None
     connection.destination_node.return_value.node.return_value = dest_node
 
+    token_l_paren = mocker.MagicMock()
+    token_l_paren.getText.return_value = "{"
+    token_r_paren = mocker.MagicMock()
+    token_r_paren.getText.return_value = "}"
+    token_d_quote = mocker.MagicMock()
+    token_d_quote.getText.return_value = '"'
+    token_l_bracket = mocker.MagicMock()
+    token_l_bracket.getText.return_value = "["
+    token_r_bracket = mocker.MagicMock()
+    token_r_bracket.getText.return_value = "]"
+    token_colon = mocker.MagicMock()
+    token_colon.getText.return_value = ":"
+    token_comma = mocker.MagicMock()
+    token_comma.getText.return_value = ","
+
+    token_t = mocker.MagicMock()
+    token_t.getText.return_value = "t"
+    token_one = mocker.MagicMock()
+    token_one.getText.return_value = "1"
+    token_dot = mocker.MagicMock()
+    token_dot.getText.return_value = "."
+
+    children = [
+        token_l_bracket,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_dot,
+        token_one,
+        token_r_paren,
+        token_r_bracket,
+    ]
+
+    ctx.meta_in_ports.return_value.json.return_value.children = children
+    ctx.meta_out_ports.return_value.json.return_value.children = children
+
     listener = kdlc.commands.KDLLoader()
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.Connection(
@@ -536,6 +707,63 @@ def test_exitMeta_settings_metaconnection_out(mocker):
     connection.meta_in_node.return_value = None
     connection.source_node.return_value.node.return_value = source_node
     connection.meta_out_node.return_value = meta_out_node
+
+    token_l_paren = mocker.MagicMock()
+    token_l_paren.getText.return_value = "{"
+    token_r_paren = mocker.MagicMock()
+    token_r_paren.getText.return_value = "}"
+    token_d_quote = mocker.MagicMock()
+    token_d_quote.getText.return_value = '"'
+    token_l_bracket = mocker.MagicMock()
+    token_l_bracket.getText.return_value = "["
+    token_r_bracket = mocker.MagicMock()
+    token_r_bracket.getText.return_value = "]"
+    token_colon = mocker.MagicMock()
+    token_colon.getText.return_value = ":"
+    token_comma = mocker.MagicMock()
+    token_comma.getText.return_value = ","
+
+    token_t = mocker.MagicMock()
+    token_t.getText.return_value = "t"
+    token_one = mocker.MagicMock()
+    token_one.getText.return_value = "1"
+    token_dot = mocker.MagicMock()
+    token_dot.getText.return_value = "."
+
+    children = [
+        token_l_bracket,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_dot,
+        token_one,
+        token_r_paren,
+        token_r_bracket,
+    ]
+
+    ctx.meta_in_ports.return_value.json.return_value.children = children
+    ctx.meta_out_ports.return_value.json.return_value.children = children
 
     listener = kdlc.commands.KDLLoader()
     listener.exitMeta_settings(ctx)
@@ -570,6 +798,63 @@ def test_exitMeta_settings_metaconnection_in_var(mocker):
     connection.meta_out_node.return_value = None
     connection.destination_node.return_value.node.return_value = dest_node
 
+    token_l_paren = mocker.MagicMock()
+    token_l_paren.getText.return_value = "{"
+    token_r_paren = mocker.MagicMock()
+    token_r_paren.getText.return_value = "}"
+    token_d_quote = mocker.MagicMock()
+    token_d_quote.getText.return_value = '"'
+    token_l_bracket = mocker.MagicMock()
+    token_l_bracket.getText.return_value = "["
+    token_r_bracket = mocker.MagicMock()
+    token_r_bracket.getText.return_value = "]"
+    token_colon = mocker.MagicMock()
+    token_colon.getText.return_value = ":"
+    token_comma = mocker.MagicMock()
+    token_comma.getText.return_value = ","
+
+    token_t = mocker.MagicMock()
+    token_t.getText.return_value = "t"
+    token_one = mocker.MagicMock()
+    token_one.getText.return_value = "1"
+    token_dot = mocker.MagicMock()
+    token_dot.getText.return_value = "."
+
+    children = [
+        token_l_bracket,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_dot,
+        token_one,
+        token_r_paren,
+        token_r_bracket,
+    ]
+
+    ctx.meta_in_ports.return_value.json.return_value.children = children
+    ctx.meta_out_ports.return_value.json.return_value.children = children
+
     listener = kdlc.commands.KDLLoader()
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.VariableConnection(
@@ -602,6 +887,63 @@ def test_exitMeta_settings_metaconnection_out_var(mocker):
     connection.meta_in_node.return_value = None
     connection.source_node.return_value.node.return_value = source_node
     connection.meta_out_node.return_value = meta_out_node
+
+    token_l_paren = mocker.MagicMock()
+    token_l_paren.getText.return_value = "{"
+    token_r_paren = mocker.MagicMock()
+    token_r_paren.getText.return_value = "}"
+    token_d_quote = mocker.MagicMock()
+    token_d_quote.getText.return_value = '"'
+    token_l_bracket = mocker.MagicMock()
+    token_l_bracket.getText.return_value = "["
+    token_r_bracket = mocker.MagicMock()
+    token_r_bracket.getText.return_value = "]"
+    token_colon = mocker.MagicMock()
+    token_colon.getText.return_value = ":"
+    token_comma = mocker.MagicMock()
+    token_comma.getText.return_value = ","
+
+    token_t = mocker.MagicMock()
+    token_t.getText.return_value = "t"
+    token_one = mocker.MagicMock()
+    token_one.getText.return_value = "1"
+    token_dot = mocker.MagicMock()
+    token_dot.getText.return_value = "."
+
+    children = [
+        token_l_bracket,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_dot,
+        token_one,
+        token_r_paren,
+        token_r_bracket,
+    ]
+
+    ctx.meta_in_ports.return_value.json.return_value.children = children
+    ctx.meta_out_ports.return_value.json.return_value.children = children
 
     listener = kdlc.commands.KDLLoader()
     listener.exitMeta_settings(ctx)

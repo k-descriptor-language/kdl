@@ -8,7 +8,6 @@ Nodes {
         "feature_name": "KNIME Core",
         "feature_symbolic_name": "org.knime.features.base.feature.group",
         "feature_version": "3.7.1.v201901291053",
-        "port_count": 1,
         "model": [
             {
                 "url": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv"
@@ -48,7 +47,8 @@ Nodes {
             {
                 "limitAnalysisCount": -1
             }
-        ]
+        ],
+        "port_count": 1
     },
     (n2): {
         "name": "Table to JSON",
@@ -59,7 +59,6 @@ Nodes {
         "feature_name": "KNIME JSON-Processing",
         "feature_symbolic_name": "org.knime.features.json.feature.group",
         "feature_version": "3.7.1.v201901281201",
-        "port_count": 1,
         "model": [
             {
                 "selectedColumns": [
@@ -187,7 +186,8 @@ Nodes {
             {
                 "missing.values.are.omitted": true
             }
-        ]
+        ],
+        "port_count": 1
     },
     (n3): {
         "name": "Column Filter",
@@ -198,7 +198,6 @@ Nodes {
         "feature_name": "KNIME Core",
         "feature_symbolic_name": "org.knime.features.base.feature.group",
         "feature_version": "3.7.1.v201901291053",
-        "port_count": 1,
         "model": [
             {
                 "column-filter": [
@@ -299,13 +298,20 @@ Nodes {
                     }
                 ]
             }
-        ]
+        ],
+        "port_count": 1
     }
 }
 
 Workflow {
-  "connections": {
+    "variables": [
+        {
+            "example": "value123"
+        }
+    ],
+    "connections": {
         (n1:1)-->(n2:1),
-        (n2:1)-->(n3:1)
+        (n2:1)-->(n3:1),
+        (n2)~~>(n3)
     }
 }

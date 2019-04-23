@@ -1987,6 +1987,8 @@ def test_metanode_kdl_str(my_setup):
         name="Metanode",
         children=[node1, node2],
         connections=[connection1, connection2],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     result = (
         "(n1): {\n"
@@ -1995,7 +1997,17 @@ def test_metanode_kdl_str(my_setup):
         '    "connections": {\n'
         "        (n1:1)-->(n2:1),\n"
         "        (n2:1)-->(n3:1)\n"
-        "    }\n"
+        "    },\n"
+        '    "meta_in_ports": [\n'
+        "        {\n"
+        '            "1": "org.knime.core.node.BufferedDataTable"\n'
+        "        }\n"
+        "    ],\n"
+        '    "meta_out_ports": [\n'
+        "        {\n"
+        '            "1": "org.knime.core.node.BufferedDataTable"\n'
+        "        }\n"
+        "    ]\n"
         "}"
     )
     assert result == metanode.kdl_str()
@@ -2608,7 +2620,12 @@ def test_var_connection_kdl_str_meta_src(my_setup):
         {"missing.values.are.omitted": "true", "data_type": "xboolean"},
     ]
     src_metanode = kdlc.MetaNode(
-        node_id="1", name="Metanode1", children=[], connections=[]
+        node_id="1",
+        name="Metanode1",
+        children=[],
+        connections=[],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     connection = kdlc.VariableConnection(
         connection_id=1,
@@ -2944,7 +2961,12 @@ def test_var_connection_kdl_str_meta_dest(my_setup):
         {"missing.values.are.omitted": "true", "data_type": "xboolean"},
     ]
     dest_metanode = kdlc.MetaNode(
-        node_id="2", name="Metanode2", children=[], connections=[]
+        node_id="2",
+        name="Metanode2",
+        children=[],
+        connections=[],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     connection = kdlc.VariableConnection(
         connection_id=1,
@@ -2961,10 +2983,20 @@ def test_var_connection_kdl_str_meta_dest(my_setup):
 
 def test_connection_kdl_str_meta(my_setup):
     metanode1 = kdlc.MetaNode(
-        node_id="1", name="Metanode1", children=[], connections=[]
+        node_id="1",
+        name="Metanode1",
+        children=[],
+        connections=[],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     metanode2 = kdlc.MetaNode(
-        node_id="2", name="Metanode2", children=[], connections=[]
+        node_id="2",
+        name="Metanode2",
+        children=[],
+        connections=[],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
     )
     connection = kdlc.Connection(
         connection_id=1,

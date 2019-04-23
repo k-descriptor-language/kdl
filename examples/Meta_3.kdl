@@ -161,7 +161,19 @@ Nodes {
             (n13:1)~~>(n4),
             (n13:3)-->(n4:1),
             (n13:2)-->(META_OUT:1)
-        }
+        },
+        "meta_in_ports": [],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            },
+            {
+                "2": "org.knime.core.node.port.flowvariable.FlowVariablePortObject"
+            },
+            {
+                "3": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
     },
     (n14.4): {
         "name": "Row Filter",
@@ -229,7 +241,19 @@ Nodes {
             (n1:1)-->(META_OUT:2),
             (n1)~~>(META_OUT:1),
             (n2:1)-->(META_OUT:3)
-        }
+        },
+        "meta_in_ports": [],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.port.flowvariable.FlowVariablePortObject"
+            },
+            {
+                "2": "org.knime.core.node.BufferedDataTable"
+            },
+            {
+                "3": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
     },
     (n14.13.1): {
         "name": "File Reader",
@@ -1004,7 +1028,20 @@ Nodes {
             (META_IN:1)-->(n3:1),
             (META_IN:2)~~>(n3),
             (n3:1)-->(META_OUT:1)
-        }
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            },
+            {
+                "2": "org.knime.core.node.port.flowvariable.FlowVariablePortObject"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
     },
     (n15.3): {
         "name": "Row Filter",

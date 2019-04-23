@@ -1,4 +1,3 @@
-import collections
 import os
 import zipfile
 import shutil
@@ -31,8 +30,22 @@ NS = {"knime": "http://www.knime.org/2008/09/XMLConfig"}
 ENTRY_TAG = f'{{{NS["knime"]}}}entry'
 CONFIG_TAG = f'{{{NS["knime"]}}}config'
 
-META_IN = MetaNode(node_id="-1", name="META_IN", children=[], connections=[])
-META_OUT = MetaNode(node_id="-1", name="META_OUT", children=[], connections=[])
+META_IN = MetaNode(
+    node_id="-1",
+    name="META_IN",
+    children=[],
+    connections=[],
+    meta_in_ports=[],
+    meta_out_ports=[],
+)
+META_OUT = MetaNode(
+    node_id="-1",
+    name="META_OUT",
+    children=[],
+    connections=[],
+    meta_in_ports=[],
+    meta_out_ports=[],
+)
 
 
 def unzip_workflow(input_file: str) -> str:
@@ -251,6 +264,44 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
                 f"{input_path}/{node['filename']}"
             )
 
+            meta_in_ports = list()
+            for port in root.findall(
+                "./knime:config[@key='meta_in_ports']"
+                "/knime:config[@key='port_enum']/knime:config",
+                NS,
+            ):
+                index_ele = port.find("./knime:entry[@key='index']", NS)
+                if index_ele is not None:
+                    index = str(int(index_ele.attrib["value"]) + 1)
+                object_class_ele = port.find(
+                    "./knime:config[@key='type']/knime:entry[@key='object_class']", NS
+                )
+                if object_class_ele is not None:
+                    object_class = object_class_ele.attrib["value"]
+
+                if index and object_class:
+                    meta_in_ports.append({index: object_class})
+            node["meta_in_ports"] = meta_in_ports
+
+            meta_out_ports = list()
+            for port in root.findall(
+                "./knime:config[@key='meta_out_ports']"
+                "/knime:config[@key='port_enum']/knime:config",
+                NS,
+            ):
+                index_ele = port.find("./knime:entry[@key='index']", NS)
+                if index_ele is not None:
+                    index = str(int(index_ele.attrib["value"]) + 1)
+                object_class_ele = port.find(
+                    "./knime:config[@key='type']/knime:entry[@key='object_class']", NS
+                )
+                if object_class_ele is not None:
+                    object_class = object_class_ele.attrib["value"]
+
+                if index and object_class:
+                    meta_out_ports.append({index: object_class})
+            node["meta_out_ports"] = meta_out_ports
+
         node_list.append(node)
     return node_list
 
@@ -289,6 +340,8 @@ def extract_nodes_from_filenames(
                 name=curr["name"],
                 children=children,
                 connections=connections,
+                meta_in_ports=curr["meta_in_ports"],
+                meta_out_ports=curr["meta_out_ports"],
             )
             input_node_list.append(metanode)
 
@@ -370,6 +423,18 @@ def normalize_connections(
     metanodes = [node for node in node_list if type(node) is MetaNode]
     for metanode in metanodes:
         metanode = cast(MetaNode, metanode)
+        meta_in_ports = list()
+        for port in metanode.meta_in_ports:
+            key = list(port.keys())[0]
+            new_key = str(int(key) - 1)
+            meta_in_ports.append({new_key: port[key]})
+        metanode.meta_in_ports = meta_in_ports
+        meta_out_ports = list()
+        for port in metanode.meta_out_ports:
+            key = list(port.keys())[0]
+            new_key = str(int(key) - 1)
+            meta_out_ports.append({new_key: port[key]})
+        metanode.meta_out_ports = meta_out_ports
         normalize_connections(metanode.children, metanode.connections)
 
 
@@ -610,39 +675,14 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
     template = jinja_env.get_template("workflow_template.xml")
     nodes = [node for node in metanode.children if type(node) is Node]
     metanodes = [node for node in metanode.children if type(node) is MetaNode]
-    meta_in_ports = sorted(
-        [
-            connection
-            for connection in metanode.connections
-            if connection.source_node is META_IN
-        ],
-        key=lambda x: x.source_port,
-    )
-
-    unique_meta_in_ports: dict = collections.OrderedDict()
-    for port in meta_in_ports:
-        unique_meta_in_ports.setdefault(port.source_id, port)
-
-    meta_out_ports = sorted(
-        [
-            connection
-            for connection in metanode.connections
-            if connection.dest_node is META_OUT
-        ],
-        key=lambda x: x.dest_port,
-    )
-
-    unique_meta_out_ports: dict = collections.OrderedDict()
-    for port in meta_out_ports:
-        unique_meta_out_ports.setdefault(port.dest_id, port)
 
     data = {
         "name": metanode.name,
         "nodes": nodes,
         "metanodes": metanodes,
         "connections": metanode.connections,
-        "meta_in_ports": unique_meta_in_ports.items(),
-        "meta_out_ports": unique_meta_out_ports.items(),
+        "meta_in_ports": metanode.meta_in_ports,
+        "meta_out_ports": metanode.meta_out_ports,
     }
 
     return ET.ElementTree(ET.fromstring(template.render(data)))
