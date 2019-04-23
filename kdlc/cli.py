@@ -20,19 +20,15 @@ from loguru import logger
     help="The input file, either .knwf or .kdl",
     type=click.Path(exists=True),
 )
-
 @click.option(
-    "--debug",
-    "-d",
-    "debug_logging",
-    help="Print debug logging to stdout",
-    is_flag=True,
+    "--debug", "-d", "debug_logging", help="Print debug logging to stdout", is_flag=True
 )
 def prompt(input_file: str, output_file: str, modify_file: str, nodes: str) -> None:
     if debug_logging:
         logger.add(sys.stdout, level="DEBUG")
     else:
         logger.add(sys.stderr, level="ERROR")
+
 
 def prompt(input_file: str, output_file: str) -> None:
     if Path(input_file).suffix == ".kdl" and Path(output_file).suffix == ".knwf":

@@ -32,7 +32,13 @@ setup(
     url="https://github.com/k-descriptor-language/kdl/",
     packages=find_packages(),
     entry_points={"console_scripts": ["kdlc=kdlc.application:main"]},
-    install_requires=["antlr4-python3-runtime", "click", "jinja2", "jsonschema","loguru"],
+    install_requires=[
+        "antlr4-python3-runtime",
+        "click",
+        "jinja2",
+        "jsonschema",
+        "loguru",
+    ],
     extras_require={
         "dev": [
             "black",
