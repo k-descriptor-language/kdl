@@ -38,15 +38,12 @@ from .core import (
     cleanup,
 )
 
-from .dev import workflow_to_workflow
-
 from .application import main
 
 __all__ = [
     "prompt",
     "kdl_to_workflow",
     "workflow_to_kdl",
-    "workflow_to_workflow",
     "build_knwf",
     "Node",
     "Connection",

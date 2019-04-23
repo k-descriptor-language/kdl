@@ -27,11 +27,6 @@ def prompt(input_file: str, output_file: str) -> None:
         kdlc.kdl_to_workflow(input_file, output_file)
     elif Path(input_file).suffix == ".knwf" and Path(output_file).suffix == ".kdl":
         kdlc.workflow_to_kdl(input_file, output_file)
-    elif Path(input_file).suffix == ".knwf" and Path(output_file).suffix == ".knwf":
-        # This functionality is here for development purposes and not part of
-        # the final solution
-        logger.warning("TEMPORARY! This will be removed before the release.")
-        kdlc.workflow_to_workflow(input_file, output_file)
     else:
         raise click.BadParameter(
             "Input/output file type mismatch. Either .kdl --> .knwf or "

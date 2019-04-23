@@ -25,9 +25,6 @@ Options:
   --help             Show this message and exit.
 ```
 
-### Workflow to Workflow (development only) 
-`kdlc -i TestWorkflow.knwf -o OutputWorkflow.knwf`
-
 ## Development
 
 ### Install Development Dependencies
