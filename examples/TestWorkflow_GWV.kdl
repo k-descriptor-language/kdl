@@ -10,7 +10,8 @@ Nodes {
         "feature_version": "3.7.1.v201901291053",
         "model": [
             {
-                "url": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv"
+                "url": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv",
+                "used_variable": "input_file"
             },
             {
                 "colDelimiter": ","
@@ -72,7 +73,8 @@ Nodes {
                             },
                             {
                                 "0": "MaritalStatus",
-                                "used_variable": "TEST"
+                                "used_variable": "TEST",
+                                "exposed_variable": "TEST2"
                             },
                             {
                                 "1": "Gender"
@@ -303,6 +305,11 @@ Nodes {
 }
 
 Workflow {
+    "variables": [
+        {
+            "input_file": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv"
+        }
+    ],
     "connections": {
         (n1:1)-->(n3:1),
         (n3:1)-->(n2:1),

@@ -1,0 +1,863 @@
+Nodes {
+    (n7): {
+        "name": "Create Example Table",
+        "type": "MetaNode",
+        "connections": {
+            (n2:1)-->(n4:2),
+            (n2:1)-->(n5:1),
+            (n3:1)-->(n4:1),
+            (n4)~~>(n5),
+            (n5:1)-->(META_OUT:1),
+            (n6:1)~~>(n2)
+        },
+        "meta_in_ports": [],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.port.database.DatabasePortObject"
+            }
+        ]
+    },
+    (n7.2): {
+        "name": "SQLite Connector",
+        "factory": "org.knime.database.connectors.sqlite.SQLiteConnectorNodeFactory",
+        "bundle_name": "KNIME connectors to common databases",
+        "bundle_symbolic_name": "org.knime.database.connectors",
+        "bundle_version": "3.7.0.v201808081048",
+        "feature_name": "KNIME Connectors for Common Databases",
+        "feature_symbolic_name": "org.knime.features.dbdrivers.feature.group",
+        "feature_version": "3.7.0.v201808081048",
+        "model": [
+            {
+                "driver": "org.sqlite.JDBC"
+            },
+            {
+                "database": "jdbc:sqlite:C:\\temp\\datasets.sqlite"
+            },
+            {
+                "user": "[Workflows edited with 3.4.1, will not work in older versions]"
+            },
+            {
+                "userName": ""
+            },
+            {
+                "passwordEncrypted": "0168F07456E2496FA29F15BC7D3BC09E95",
+                "data_type": "xpassword"
+            },
+            {
+                "password": "",
+                "isnull": true
+            },
+            {
+                "timezone": "current"
+            },
+            {
+                "validateConnection": false
+            },
+            {
+                "retrieveMetadataInConfigure": true
+            },
+            {
+                "allowSpacesInColumnNames": true
+            },
+            {
+                "rowIdsStartWithZero": true
+            },
+            {
+                "databaseIdentifier": "sqlite"
+            },
+            {
+                "kerberos": false
+            },
+            {
+                "knimeVersion": "3.3.0"
+            },
+            {
+                "sqlite-connection": [
+                    {
+                        "path": "C:\\temp\\datasets.sqlite",
+                        "used_variable": "dbFile"
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n7.3): {
+        "name": "Table Creator",
+        "factory": "org.knime.base.node.io.tablecreator.TableCreator2NodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.1.v201901291053",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.1.v201901291053",
+        "model": [
+            {
+                "rowIndices": [
+                    {
+                        "array-size": 27
+                    },
+                    {
+                        "0": 0
+                    },
+                    {
+                        "1": 0
+                    },
+                    {
+                        "2": 0
+                    },
+                    {
+                        "3": 1
+                    },
+                    {
+                        "4": 1
+                    },
+                    {
+                        "5": 1
+                    },
+                    {
+                        "6": 2
+                    },
+                    {
+                        "7": 2
+                    },
+                    {
+                        "8": 2
+                    },
+                    {
+                        "9": 3
+                    },
+                    {
+                        "10": 3
+                    },
+                    {
+                        "11": 3
+                    },
+                    {
+                        "12": 4
+                    },
+                    {
+                        "13": 4
+                    },
+                    {
+                        "14": 4
+                    },
+                    {
+                        "15": 5
+                    },
+                    {
+                        "16": 5
+                    },
+                    {
+                        "17": 5
+                    },
+                    {
+                        "18": 6
+                    },
+                    {
+                        "19": 6
+                    },
+                    {
+                        "20": 6
+                    },
+                    {
+                        "21": 7
+                    },
+                    {
+                        "22": 7
+                    },
+                    {
+                        "23": 7
+                    },
+                    {
+                        "24": 8
+                    },
+                    {
+                        "25": 8
+                    },
+                    {
+                        "26": 8
+                    }
+                ]
+            },
+            {
+                "columnIndices": [
+                    {
+                        "array-size": 27
+                    },
+                    {
+                        "0": 0
+                    },
+                    {
+                        "1": 1
+                    },
+                    {
+                        "2": 2
+                    },
+                    {
+                        "3": 0
+                    },
+                    {
+                        "4": 1
+                    },
+                    {
+                        "5": 2
+                    },
+                    {
+                        "6": 0
+                    },
+                    {
+                        "7": 1
+                    },
+                    {
+                        "8": 2
+                    },
+                    {
+                        "9": 0
+                    },
+                    {
+                        "10": 1
+                    },
+                    {
+                        "11": 2
+                    },
+                    {
+                        "12": 0
+                    },
+                    {
+                        "13": 1
+                    },
+                    {
+                        "14": 2
+                    },
+                    {
+                        "15": 0
+                    },
+                    {
+                        "16": 1
+                    },
+                    {
+                        "17": 2
+                    },
+                    {
+                        "18": 0
+                    },
+                    {
+                        "19": 1
+                    },
+                    {
+                        "20": 2
+                    },
+                    {
+                        "21": 0
+                    },
+                    {
+                        "22": 1
+                    },
+                    {
+                        "23": 2
+                    },
+                    {
+                        "24": 0
+                    },
+                    {
+                        "25": 1
+                    },
+                    {
+                        "26": 2
+                    }
+                ]
+            },
+            {
+                "values": [
+                    {
+                        "array-size": 27
+                    },
+                    {
+                        "0": "G1"
+                    },
+                    {
+                        "1": "P1"
+                    },
+                    {
+                        "2": "1"
+                    },
+                    {
+                        "3": "G1"
+                    },
+                    {
+                        "4": "P1"
+                    },
+                    {
+                        "5": "2"
+                    },
+                    {
+                        "6": "G1"
+                    },
+                    {
+                        "7": "P2"
+                    },
+                    {
+                        "8": "3"
+                    },
+                    {
+                        "9": "G1"
+                    },
+                    {
+                        "10": "P2"
+                    },
+                    {
+                        "11": "4"
+                    },
+                    {
+                        "12": "G2"
+                    },
+                    {
+                        "13": "P1"
+                    },
+                    {
+                        "14": "5"
+                    },
+                    {
+                        "15": "G2"
+                    },
+                    {
+                        "16": "P1"
+                    },
+                    {
+                        "17": "6"
+                    },
+                    {
+                        "18": "G2"
+                    },
+                    {
+                        "19": "P2"
+                    },
+                    {
+                        "20": "7"
+                    },
+                    {
+                        "21": "G3"
+                    },
+                    {
+                        "22": "P1"
+                    },
+                    {
+                        "23": "8"
+                    },
+                    {
+                        "24": "G3"
+                    },
+                    {
+                        "25": "P1"
+                    },
+                    {
+                        "26": "9"
+                    }
+                ]
+            },
+            {
+                "rowIdPrefix": "Row"
+            },
+            {
+                "rowIdSuffix": ""
+            },
+            {
+                "rowIdStartValue": 0
+            },
+            {
+                "highlightOutputTable": false
+            },
+            {
+                "columnProperties": [
+                    {
+                        "0": [
+                            {
+                                "UserSetValues": true
+                            },
+                            {
+                                "MissValuePattern": ""
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "GroupCol"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "1": [
+                            {
+                                "UserSetValues": true
+                            },
+                            {
+                                "MissValuePattern": ""
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "PivotCol"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "2": [
+                            {
+                                "UserSetValues": true
+                            },
+                            {
+                                "MissValuePattern": ""
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Value"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.DoubleCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n7.4): {
+        "name": "Database Writer",
+        "factory": "org.knime.base.node.io.database.DBWriterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.1.v201901291053",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.1.v201901291053",
+        "model": [
+            {
+                "driver": "org.apache.hive.jdbc.HiveDriver"
+            },
+            {
+                "database": "<protocol>://<host>:<port>/<database_name>"
+            },
+            {
+                "user": "[Workflows edited with 3.4.1, will not work in older versions]"
+            },
+            {
+                "userName": ""
+            },
+            {
+                "passwordEncrypted": "0168F07456E2496FA29F15BC7D3BC09E95",
+                "data_type": "xpassword"
+            },
+            {
+                "password": "",
+                "isnull": true
+            },
+            {
+                "timezone": "current"
+            },
+            {
+                "validateConnection": false
+            },
+            {
+                "retrieveMetadataInConfigure": false
+            },
+            {
+                "allowSpacesInColumnNames": true
+            },
+            {
+                "rowIdsStartWithZero": false
+            },
+            {
+                "databaseIdentifier": "",
+                "isnull": true
+            },
+            {
+                "kerberos": false
+            },
+            {
+                "knimeVersion": "3.3.0"
+            },
+            {
+                "table": "example",
+                "exposed_variable": "tableName"
+            },
+            {
+                "append_data": false
+            },
+            {
+                "insert_null_for_missing_cols": false
+            },
+            {
+                "fail_on_error": false
+            },
+            {
+                "sql_types": [
+                    {
+                        "GroupCol": "varchar(255)"
+                    },
+                    {
+                        "PivotCol": "varchar(255)"
+                    },
+                    {
+                        "Value": "numeric(30,10)"
+                    }
+                ]
+            },
+            {
+                "batch_size": 1
+            }
+        ],
+        "port_count": 0
+    },
+    (n7.5): {
+        "name": "Database Table Selector",
+        "factory": "org.knime.base.node.io.database.connection.DBTableSelectorNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.1.v201901291053",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.1.v201901291053",
+        "model": [
+            {
+                "statement": "SELECT * FROM $${StableName}$$"
+            },
+            {
+                "execute_without_configure": true
+            },
+            {
+                "driver": "org.sqlite.JDBC"
+            },
+            {
+                "database": "jdbc:sqlite://<host>:<port>/<database_name>"
+            },
+            {
+                "user": "[Workflows edited with 3.4.1, will not work in older versions]"
+            },
+            {
+                "userName": "",
+                "isnull": true
+            },
+            {
+                "passwordEncrypted": "0168F07456E2496FA29F15BC7D3BC09E95",
+                "data_type": "xpassword"
+            },
+            {
+                "password": "",
+                "isnull": true
+            },
+            {
+                "timezone": "current"
+            },
+            {
+                "validateConnection": false
+            },
+            {
+                "retrieveMetadataInConfigure": false
+            },
+            {
+                "allowSpacesInColumnNames": true
+            },
+            {
+                "rowIdsStartWithZero": false
+            },
+            {
+                "databaseIdentifier": "",
+                "isnull": true
+            },
+            {
+                "kerberos": false
+            },
+            {
+                "knimeVersion": "3.3.0"
+            }
+        ],
+        "port_count": 1
+    },
+    (n7.6): {
+        "name": "Create Temp Dir",
+        "factory": "org.knime.base.node.util.createtempdir.CreateTempDirectoryNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.1.v201901291053",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.1.v201901291053",
+        "model": [
+            {
+                "baseName": "knime_tc_"
+            },
+            {
+                "variableName": "temp_path"
+            },
+            {
+                "deleteOnReset": true
+            },
+            {
+                "variable_name_pairs": [
+                    {
+                        "dbFile": [
+                            {
+                                "variableName": "dbFile"
+                            },
+                            {
+                                "fileName": "db.sqlite"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n8): {
+        "name": "Database Connection Table Reader",
+        "factory": "org.knime.base.node.io.database.DBConnectionNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.1.v201901291053",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.1.v201901291053",
+        "model": [
+            {
+                "useDbRowId_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "useDbRowId": true
+            }
+        ],
+        "port_count": 1
+    },
+    (n9): {
+        "name": "Metanode",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n1:1),
+            (n1:1)-->(META_OUT:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.port.database.DatabasePortObject"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.port.database.DatabasePortObject"
+            }
+        ]
+    },
+    (n9.1): {
+        "name": "Database Pivot",
+        "factory": "org.knime.base.node.io.database.pivot.DBPivotNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.1.v201901291053",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.1.v201901291053",
+        "model": [
+            {
+                "groupByColumns_Internals": [
+                    {
+                        "SettingsModelID": "SMID_filterString"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "groupByColumns": [
+                    {
+                        "InclList": [
+                            {
+                                "array-size": 1
+                            },
+                            {
+                                "0": "GroupCol"
+                            }
+                        ]
+                    },
+                    {
+                        "ExclList": [
+                            {
+                                "array-size": 2
+                            },
+                            {
+                                "0": "PivotCol"
+                            },
+                            {
+                                "1": "Value"
+                            }
+                        ]
+                    },
+                    {
+                        "keep_all_columns_selected": false
+                    }
+                ]
+            },
+            {
+                "pivotColumns_Internals": [
+                    {
+                        "SettingsModelID": "SMID_filterString"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "pivotColumns": [
+                    {
+                        "InclList": [
+                            {
+                                "array-size": 1
+                            },
+                            {
+                                "0": "PivotCol"
+                            }
+                        ]
+                    },
+                    {
+                        "ExclList": [
+                            {
+                                "array-size": 2
+                            },
+                            {
+                                "0": "GroupCol"
+                            },
+                            {
+                                "1": "Value"
+                            }
+                        ]
+                    },
+                    {
+                        "keep_all_columns_selected": false
+                    }
+                ]
+            },
+            {
+                "columnNamePolicy_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "columnNamePolicy": "Aggregation method (column name)"
+            },
+            {
+                "manualAggregationFunctions": [
+                    {
+                        "f_0": [
+                            {
+                                "columnName": "Value"
+                            },
+                            {
+                                "columnType": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            },
+                            {
+                                "aggregationFunction": "GROUP_CONCAT"
+                            },
+                            {
+                                "functionSettings": [
+                                    {
+                                        "groupSeparator_Internals": [
+                                            {
+                                                "SettingsModelID": "SMID_string"
+                                            },
+                                            {
+                                                "EnabledStatus": true
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "groupSeparator": ","
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    }
+}
+
+Workflow {
+    "connections": {
+        (n7:1)-->(n9:1),
+        (n9:1)-->(n8:1)
+    }
+}

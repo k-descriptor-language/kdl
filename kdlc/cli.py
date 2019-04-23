@@ -21,6 +21,7 @@ from loguru import logger
     help="The input file, either .knwf or .kdl",
     type=click.Path(exists=True),
 )
+<<<<<<< HEAD
 @click.option(
     "--modify",
     "-m",
@@ -88,3 +89,15 @@ def prompt(input_file: str, output_file: str, modify_file: str, nodes: str) -> N
                 "Input/output file type mismatch. Either .kdl --> .knwf or "
                 ".knwf --> .kdl"
             )
+=======
+def prompt(input_file: str, output_file: str) -> None:
+    if Path(input_file).suffix == ".kdl" and Path(output_file).suffix == ".knwf":
+        kdlc.kdl_to_workflow(input_file, output_file)
+    elif Path(input_file).suffix == ".knwf" and Path(output_file).suffix == ".kdl":
+        kdlc.workflow_to_kdl(input_file, output_file)
+    else:
+        raise click.BadParameter(
+            "Input/output file type mismatch. Either .kdl --> .knwf or "
+            ".knwf --> .kdl"
+        )
+>>>>>>> origin
