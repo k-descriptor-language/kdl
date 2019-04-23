@@ -21,13 +21,8 @@ from loguru import logger
     type=click.Path(exists=True),
 )
 @click.option(
-    "--debug",
-    "-d",
-    "debug_logging",
-    help="Print debug logging to stdout",
-    is_flag=True
+    "--debug", "-d", "debug_logging", help="Print debug logging to stdout", is_flag=True
 )
-
 def prompt(input_file: str, output_file: str) -> None:
     if debug_logging:
         logger.add(sys.stdout, level="DEBUG")
