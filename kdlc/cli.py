@@ -2,8 +2,7 @@ import click
 from pathlib import Path
 import kdlc
 import logging
-
-logger = logging.getLogger("kdlc.cli")
+from loguru import logger
 
 
 @click.command()
@@ -35,7 +34,19 @@ logger = logging.getLogger("kdlc.cli")
     help="The path to the custom node templates",
     type=click.Path(exists=True),
 )
+@click.option(
+    "--debug",
+    "-d",
+    "debug_logging",
+    help="Print debug logging to stdout",
+    is_flag=True,
+)
 def prompt(input_file: str, output_file: str, modify_file: str, nodes: str) -> None:
+    if debug_logging:
+        logger.add(sys.stdout, level="DEBUG")
+    else:
+        logger.add(sys.stderr, level="ERROR")
+
     if modify_file and nodes:
         raise click.UsageError("nodes and modify options cannot be used simultaneously")
 
