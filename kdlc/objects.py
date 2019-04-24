@@ -161,7 +161,7 @@ class Node(AbstractNode):
                     temp_list.append(
                         {
                             "used_variable": curr["used_variable"],
-                            "data_type": curr["data_type"],
+                            "data_type": "xstring",
                         }
                     )
                 else:
@@ -169,14 +169,14 @@ class Node(AbstractNode):
                         {
                             "isnull": True,
                             "used_variable": "",
-                            "data_type": curr["data_type"],
+                            "data_type": "xstring",
                         }
                     )
                 if "exposed_variable" in curr.keys():
                     temp_list.append(
                         {
                             "exposed_variable": curr["exposed_variable"],
-                            "data_type": curr["data_type"],
+                            "data_type": "xstring",
                         }
                     )
                 else:
@@ -184,7 +184,7 @@ class Node(AbstractNode):
                         {
                             "isnull": True,
                             "exposed_variable": "",
-                            "data_type": curr["data_type"],
+                            "data_type": "xstring",
                         }
                     )
                 variables.append({curr_model_key: temp_list, "data_type": "config"})

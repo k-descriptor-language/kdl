@@ -1,0 +1,812 @@
+Nodes {
+    (n153): {
+        "name": "Table Creator",
+        "factory": "org.knime.base.node.io.tablecreator.TableCreator2NodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "rowIndices": [
+                    {
+                        "array-size": 2
+                    },
+                    {
+                        "0": 0
+                    },
+                    {
+                        "1": 1
+                    }
+                ]
+            },
+            {
+                "columnIndices": [
+                    {
+                        "array-size": 2
+                    },
+                    {
+                        "0": 0
+                    },
+                    {
+                        "1": 0
+                    }
+                ]
+            },
+            {
+                "values": [
+                    {
+                        "array-size": 2
+                    },
+                    {
+                        "0": "0"
+                    },
+                    {
+                        "1": "1"
+                    }
+                ]
+            },
+            {
+                "rowIdPrefix": "Row"
+            },
+            {
+                "rowIdSuffix": ""
+            },
+            {
+                "rowIdStartValue": 0
+            },
+            {
+                "highlightOutputTable": false
+            },
+            {
+                "columnProperties": [
+                    {
+                        "0": [
+                            {
+                                "UserSetValues": true
+                            },
+                            {
+                                "MissValuePattern": ""
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "Fibonacci"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.DoubleCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n154): {
+        "name": "TimeDelay Loop End",
+        "factory": "org.knime.datageneration.timedelayloop.end.TimeDelayLoopEndNodeFactory",
+        "bundle_name": "KNIME Data Generation",
+        "bundle_symbolic_name": "org.knime.datageneration",
+        "bundle_version": "3.7.0.v201808081048",
+        "feature_name": "KNIME Data Generation",
+        "feature_symbolic_name": "org.knime.features.datageneration.feature.group",
+        "feature_version": "3.7.0.v201808081048",
+        "model": [],
+        "port_count": 1
+    },
+    (n155): {
+        "name": "TimeDelay Loop Start",
+        "factory": "org.knime.datageneration.timedelayloop.start.TimeDelayLoopStartNodeFactory",
+        "bundle_name": "KNIME Data Generation",
+        "bundle_symbolic_name": "org.knime.datageneration",
+        "bundle_version": "3.7.0.v201808081048",
+        "feature_name": "KNIME Data Generation",
+        "feature_symbolic_name": "org.knime.features.datageneration.feature.group",
+        "feature_version": "3.7.0.v201808081048",
+        "model": [
+            {
+                "numIterations_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "numIterations": 10,
+                "used_variable": "Fibonacci_number"
+            },
+            {
+                "sizeOfTimeset_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "sizeOfTimeset": 2
+            }
+        ],
+        "port_count": 1
+    },
+    (n156): {
+        "name": "Math Formula",
+        "factory": "org.knime.ext.jep.JEPNodeFactory",
+        "bundle_name": "KNIME Math Expression Node",
+        "bundle_symbolic_name": "org.knime.ext.jep",
+        "bundle_version": "3.7.2.v201904170930",
+        "feature_name": "KNIME Math Expression (JEP)",
+        "feature_symbolic_name": "org.knime.features.ext.jep.feature.group",
+        "feature_version": "3.7.2.v201904170930",
+        "model": [
+            {
+                "expression": "$Fibonacci( t - 1 )$+$Fibonacci( t - 0 )$"
+            },
+            {
+                "replaced_column": "Fibonacci( t - 1 )"
+            },
+            {
+                "append_column": true
+            },
+            {
+                "convert_to_int": false
+            }
+        ],
+        "port_count": 1
+    },
+    (n157): {
+        "name": "Column Rename",
+        "factory": "org.knime.base.node.preproc.rename.RenameNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "all_columns": [
+                    {
+                        "0": [
+                            {
+                                "old_column_name": "Fibonacci( t - 1 )"
+                            },
+                            {
+                                "new_column_name": "Fibonacci"
+                            },
+                            {
+                                "new_column_type": 0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n158): {
+        "name": "Concatenate",
+        "factory": "org.knime.base.node.preproc.append.row.AppendedRowsNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "fail_on_duplicates": false
+            },
+            {
+                "append_suffix": true
+            },
+            {
+                "intersection_of_columns": false
+            },
+            {
+                "suffix": "_dup"
+            },
+            {
+                "enable_hiliting": false
+            }
+        ],
+        "port_count": 1
+    },
+    (n162): {
+        "name": "String Manipulation",
+        "factory": "org.knime.base.node.preproc.stringmanipulation.StringManipulationNodeFactory",
+        "bundle_name": "KNIME Java Snippet Nodes",
+        "bundle_symbolic_name": "org.knime.jsnippets",
+        "bundle_version": "3.7.2.v201904171038",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "expression": "join(\"F\",$Counter$)"
+            },
+            {
+                "replaced_column": "Counter"
+            },
+            {
+                "append_column": true
+            },
+            {
+                "test_compilation_on_dialog_close": true
+            },
+            {
+                "insert_missing_as_null": false
+            },
+            {
+                "return_type": "java.lang.String"
+            }
+        ],
+        "port_count": 1
+    },
+    (n163): {
+        "name": "String Input",
+        "factory": "org.knime.js.base.node.quickform.input.string.StringInputQuickFormNodeFactory",
+        "bundle_name": "KNIME Quick Form Nodes",
+        "bundle_symbolic_name": "org.knime.js.quickforms",
+        "bundle_version": "3.7.2.v201904170930",
+        "feature_name": "KNIME Quick Forms",
+        "feature_symbolic_name": "org.knime.features.js.quickforms.feature.group",
+        "feature_version": "3.7.2.v201904170930",
+        "model": [
+            {
+                "defaultValue": [
+                    {
+                        "string": "F20"
+                    }
+                ]
+            },
+            {
+                "label": "Fibonacci Number Generation"
+            },
+            {
+                "description": "Enter Description"
+            },
+            {
+                "hideInWizard": false
+            },
+            {
+                "hideInDialog": false
+            },
+            {
+                "required": true
+            },
+            {
+                "parameterName": "string-input"
+            },
+            {
+                "customCSS": ""
+            },
+            {
+                "flowvariablename": "Fibonacci_number"
+            },
+            {
+                "regex": ""
+            },
+            {
+                "error_message": ""
+            },
+            {
+                "editorType": "Single-line"
+            },
+            {
+                "multilineEditorWidth": 60
+            },
+            {
+                "multilineEditorHeight": 5
+            }
+        ],
+        "port_count": 1
+    },
+    (n164): {
+        "name": "Counter Generation",
+        "factory": "org.knime.datageneration.counter.CounterGenerationNodeFactory",
+        "bundle_name": "KNIME Data Generation",
+        "bundle_symbolic_name": "org.knime.datageneration",
+        "bundle_version": "3.7.0.v201808081048",
+        "feature_name": "KNIME Data Generation",
+        "feature_symbolic_name": "org.knime.features.datageneration.feature.group",
+        "feature_version": "3.7.0.v201808081048",
+        "model": [
+            {
+                "Min Value:_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "Min Value:": 0
+            },
+            {
+                "Step Size:_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "Step Size:": 1
+            }
+        ],
+        "port_count": 1
+    },
+    (n165): {
+        "name": "Number To String",
+        "factory": "org.knime.base.node.preproc.colconvert.numbertostring.NumberToStringNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "include_Internals": [
+                    {
+                        "SettingsModelID": "SMID_filterString"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "include": [
+                    {
+                        "InclList": [
+                            {
+                                "array-size": 1
+                            },
+                            {
+                                "0": "Counter"
+                            }
+                        ]
+                    },
+                    {
+                        "ExclList": [
+                            {
+                                "array-size": 1
+                            },
+                            {
+                                "0": "Fibonacci"
+                            }
+                        ]
+                    },
+                    {
+                        "keep_all_columns_selected": false
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n166): {
+        "name": "RowID",
+        "factory": "org.knime.base.node.preproc.rowkey2.RowKeyNodeFactory2",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "replaceRowKey_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "replaceRowKey": true
+            },
+            {
+                "newRowKeyColumnName_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "newRowKeyColumnName": "Counter"
+            },
+            {
+                "removeRowKeyCol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "removeRowKeyCol": true
+            },
+            {
+                "ensureUniqueness_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "ensureUniqueness": false
+            },
+            {
+                "replaceMissingValues_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "replaceMissingValues": false
+            },
+            {
+                "appendRowKeyCol_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "appendRowKeyCol": false
+            },
+            {
+                "newColumnName4RowKeyValues_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": false
+                    }
+                ]
+            },
+            {
+                "newColumnName4RowKeyValues": ""
+            },
+            {
+                "enableHilite_Internals": [
+                    {
+                        "SettingsModelID": "SMID_boolean"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "enableHilite": false
+            }
+        ],
+        "port_count": 1
+    },
+    (n169): {
+        "name": "String Manipulation (Variable)",
+        "factory": "org.knime.base.node.preproc.stringmanipulation.variable.StringManipulationVariableNodeFactory",
+        "bundle_name": "KNIME Java Snippet Nodes",
+        "bundle_symbolic_name": "org.knime.jsnippets",
+        "bundle_version": "3.7.2.v201904171038",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "expression": "substr($${SFibonacci_number}$$,1)"
+            },
+            {
+                "replaced_column": "Fibonacci_number"
+            },
+            {
+                "append_column": true
+            },
+            {
+                "test_compilation_on_dialog_close": true
+            },
+            {
+                "insert_missing_as_null": false
+            },
+            {
+                "return_type": "java.lang.String"
+            }
+        ],
+        "port_count": 1
+    },
+    (n170): {
+        "name": "Variable to Table Row",
+        "factory": "org.knime.base.node.flowvariable.variabletotablerow2.VariableToTable2NodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "row-id_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "row-id": "values"
+            },
+            {
+                "variable-filter": [
+                    {
+                        "filter-type": "STANDARD"
+                    },
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 1
+                            },
+                            {
+                                "0": "Fibonacci_number"
+                            }
+                        ]
+                    },
+                    {
+                        "excluded_names": [
+                            {
+                                "array-size": 1
+                            },
+                            {
+                                "0": "knime.workspace"
+                            }
+                        ]
+                    },
+                    {
+                        "enforce_option": "EnforceInclusion"
+                    },
+                    {
+                        "name_pattern": [
+                            {
+                                "pattern": ""
+                            },
+                            {
+                                "type": "Wildcard"
+                            },
+                            {
+                                "caseSensitive": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n171): {
+        "name": "String To Number",
+        "factory": "org.knime.base.node.preproc.colconvert.stringtonumber.StringToNumberNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "include_Internals": [
+                    {
+                        "SettingsModelID": "SMID_filterString"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "include": [
+                    {
+                        "InclList": [
+                            {
+                                "array-size": 1
+                            },
+                            {
+                                "0": "Fibonacci_number"
+                            }
+                        ]
+                    },
+                    {
+                        "ExclList": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "keep_all_columns_selected": false
+                    }
+                ]
+            },
+            {
+                "decimal_separator": "."
+            },
+            {
+                "thousands_separator": ""
+            },
+            {
+                "parse_type": [
+                    {
+                        "cell_class": "org.knime.core.data.def.IntCell"
+                    },
+                    {
+                        "is_null": false
+                    }
+                ]
+            },
+            {
+                "generic_parse": false
+            }
+        ],
+        "port_count": 1
+    },
+    (n172): {
+        "name": "Math Formula",
+        "factory": "org.knime.ext.jep.JEPNodeFactory",
+        "bundle_name": "KNIME Math Expression Node",
+        "bundle_symbolic_name": "org.knime.ext.jep",
+        "bundle_version": "3.7.2.v201904170930",
+        "feature_name": "KNIME Math Expression (JEP)",
+        "feature_symbolic_name": "org.knime.features.ext.jep.feature.group",
+        "feature_version": "3.7.2.v201904170930",
+        "model": [
+            {
+                "expression": "$Fibonacci_number$-1"
+            },
+            {
+                "replaced_column": "Fibonacci_number"
+            },
+            {
+                "append_column": true
+            },
+            {
+                "convert_to_int": true
+            }
+        ],
+        "port_count": 1
+    },
+    (n173): {
+        "name": "Table Row to Variable",
+        "factory": "org.knime.base.node.flowvariable.tablerowtovariable.TableToVariableNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "CFG_FAILONMISS_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_FAILONMISS": "Use Defaults"
+            },
+            {
+                "CFG_Integer_Internals": [
+                    {
+                        "SettingsModelID": "SMID_integer"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_Integer": 0
+            },
+            {
+                "CFG_Double_Internals": [
+                    {
+                        "SettingsModelID": "SMID_double"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_Double": 0.0,
+                "data_type": "xdouble"
+            },
+            {
+                "CFG_String_Internals": [
+                    {
+                        "SettingsModelID": "SMID_string"
+                    },
+                    {
+                        "EnabledStatus": true
+                    }
+                ]
+            },
+            {
+                "CFG_String": "missing"
+            }
+        ],
+        "port_count": 1
+    }
+}
+
+Workflow {
+    "connections": {
+        (n153:1)-->(n155:1),
+        (n153:1)-->(n158:1),
+        (n154:1)-->(n158:2),
+        (n155:1)-->(n156:1),
+        (n156:1)-->(n157:1),
+        (n157:1)-->(n154:1),
+        (n158:1)-->(n164:1),
+        (n162:1)-->(n166:1),
+        (n163:1)-->(n169:1),
+        (n164:1)-->(n165:1),
+        (n165:1)-->(n162:1),
+        (n169:1)-->(n170:1),
+        (n170:1)-->(n171:1),
+        (n171:1)-->(n172:1),
+        (n172:1)-->(n173:1),
+        (n173:1)~~>(n153)
+    }
+}
