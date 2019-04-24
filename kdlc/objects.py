@@ -159,33 +159,22 @@ class Node(AbstractNode):
                 temp_list = list()
                 if "used_variable" in curr.keys():
                     temp_list.append(
-                        {
-                            "used_variable": curr["used_variable"],
-                            "data_type": curr["data_type"],
-                        }
+                        {"used_variable": curr["used_variable"], "data_type": "xstring"}
                     )
                 else:
                     temp_list.append(
-                        {
-                            "isnull": True,
-                            "used_variable": "",
-                            "data_type": curr["data_type"],
-                        }
+                        {"isnull": True, "used_variable": "", "data_type": "xstring"}
                     )
                 if "exposed_variable" in curr.keys():
                     temp_list.append(
                         {
                             "exposed_variable": curr["exposed_variable"],
-                            "data_type": curr["data_type"],
+                            "data_type": "xstring",
                         }
                     )
                 else:
                     temp_list.append(
-                        {
-                            "isnull": True,
-                            "exposed_variable": "",
-                            "data_type": curr["data_type"],
-                        }
+                        {"isnull": True, "exposed_variable": "", "data_type": "xstring"}
                     )
                 variables.append({curr_model_key: temp_list, "data_type": "config"})
 
