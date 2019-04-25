@@ -30,6 +30,7 @@ import sys
     is_flag=True,
 )
 def prompt(input_file: str, output_file: str, debug_logging) -> None:
+    logger.remove()
     if debug_logging:
         logger.add(sys.stdout, level="DEBUG")
     else:
