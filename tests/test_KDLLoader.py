@@ -63,6 +63,9 @@ def test_exitNode_settings(mocker):
     token_one = mocker.MagicMock()
     token_one.getText.return_value = "1"
 
+    token_g = mocker.MagicMock()
+    token_g.getText.return_value = "g"
+
     token_l_bracket = mocker.MagicMock()
     token_l_bracket.getText.return_value = "["
     token_r_bracket = mocker.MagicMock()
@@ -231,6 +234,28 @@ def test_exitNode_settings(mocker):
         token_d_quote,
         token_comma,
         token_d_quote,
+        token_f,
+        token_a,
+        token_c,
+        token_t,
+        token_o,
+        token_r,
+        token_y,
+        token_us,
+        token_s,
+        token_e,
+        token_t,
+        token_t,
+        token_i,
+        token_n,
+        token_g,
+        token_s,
+        token_d_quote,
+        token_colon,
+        token_l_bracket,
+        token_r_bracket,
+        token_comma,
+        token_d_quote,
         token_p,
         token_o,
         token_r,
@@ -276,6 +301,7 @@ def test_exitNode_settings(mocker):
     )
     expected_node.port_count = 1
     expected_node.model = list()
+    expected_node.factory_settings = []
 
     assert len(listener.nodes) == 1
     assert listener.nodes[0] == expected_node
