@@ -1787,6 +1787,289 @@ def test_create_node_settings_from_template_cf(my_setup):
     assert result_flattened == expected_result_flattened
 
 
+def test_create_node_settings_from_template_js(my_setup):
+    node = kdlc.Node(
+        node_id="1",
+        name="Bar Chart (JavaScript)",
+        factory="org.knime.dynamic.js.v30.DynamicJSNodeFactory",
+        bundle_name="KNIME Dynamically Created JavaScript Nodes",
+        bundle_symbolic_name="org.knime.dynamic.js",
+        bundle_version="3.7.1.v201901281201",
+        feature_name="KNIME JavaScript Views",
+        feature_symbolic_name="org.knime.features.js.views.feature.group",
+        feature_version="3.7.2.v201904170930",
+    )
+    node.port_count = 1
+    node.model = [
+        {
+            "displayFullscreenButton_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"displayFullscreenButton": True},
+        {
+            "legend_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"legend": True},
+        {
+            "enableHorizontalToggle_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableHorizontalToggle": True},
+        {
+            "freq_Internals": [
+                {"SettingsModelID": "SMID_columnfilter"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {
+            "freq": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 1}, {"0": "Accuracy"}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {"typelist": [{"org.knime.core.data.DoubleValue": False}]}
+                    ]
+                },
+            ]
+        },
+        {
+            "tooltip_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"tooltip": True},
+        {
+            "title_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"title": "Bar Chart"},
+        {
+            "enableSwitchMissValCat_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableSwitchMissValCat": True},
+        {
+            "includeMissValCat_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"includeMissValCat": True},
+        {
+            "processInMemory_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"processInMemory": True},
+        {
+            "freqLabel_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"freqLabel": ""},
+        {
+            "cat_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"cat": "model"},
+        {
+            "showWarnings_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"showWarnings": True},
+        {
+            "enableSubtitleEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableSubtitleEdit": True},
+        {
+            "publishSelection_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"publishSelection": True},
+        {
+            "showMaximum_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"showMaximum": True},
+        {
+            "catLabel_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"catLabel": ""},
+        {
+            "orientation_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"orientation": False},
+        {
+            "displayClearSelectionButton_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"displayClearSelectionButton": True},
+        {"svg_Internals": [{"SettingsModelID": "SMID_svg"}, {"EnabledStatus": True}]},
+        {
+            "svg": [
+                {"width": 600},
+                {"height": 400},
+                {"fullscreen": True},
+                {"showFullscreen": True},
+            ]
+        },
+        {
+            "staggerLabels_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"staggerLabels": False},
+        {
+            "enableTitleEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableTitleEdit": True},
+        {
+            "enableSelection_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableSelection": True},
+        {
+            "sort_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"sort": False},
+        {
+            "enableStackedEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableStackedEdit": True},
+        {
+            "enableAxisEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableAxisEdit": True},
+        {
+            "reportOnMissingValues_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"reportOnMissingValues": True},
+        {
+            "subtitle_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"subtitle": ""},
+        {
+            "chartType_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"chartType": "Grouped"},
+        {
+            "enableStaggerToggle_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableStaggerToggle": True},
+        {
+            "enableViewControls_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableViewControls": True},
+        {
+            "aggr_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"aggr": "Sum"},
+        {
+            "subscribeToSelection_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"subscribeToSelection": True},
+        {
+            "enableMaximumValue_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableMaximumValue": True},
+        {"hideInWizard": False},
+        {"maxRows": 2500},
+        {"generateImage": True},
+        {"customCSS": ""},
+    ]
+    node.variables = []
+    node.factory_settings = [{"nodeDir": "org.knime.dynamic.js.base:nodes/:barChart"}]
+
+    expected_result = ET.parse(f"{test_resources_dir}/js_factory_settings.xml")
+    expected_result_flattened = [i.tag for i in expected_result.iter()]
+
+    result = kdlc.create_node_settings_from_template(node)
+    result_flattened = [i.tag for i in result.iter()]
+
+    assert result_flattened == expected_result_flattened
+
+
 def test_create_workflow_knime_from_template(my_setup):
     node1 = kdlc.Node(
         node_id="1",
