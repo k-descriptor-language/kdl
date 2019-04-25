@@ -724,6 +724,155 @@ def test_merge_model_and_variables_2var(my_setup):
     assert result == node
 
 
+def test_merge_model_and_variables_mul_var(my_setup):
+    node = kdlc.Node(
+        node_id=1,
+        name="Create File Name",
+        factory=(
+            "org.knime.base.node.flowvariable.create"
+            "filename.CreateFilenameNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node.port_count = 1
+    node.model = [
+        {
+            "FileExtension_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"FileExtension": ".csv"},
+        {
+            "FileName_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": False},
+            ]
+        },
+        {"FileName": ""},
+        {
+            "BaseDir_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {
+            "BaseDir": "C:\\temp\\knimeTemp\\knime_05_Wri"
+            "te_each_r56822\\knime_tc_ehw4ugyoy4ye"
+        },
+        {
+            "previewArea_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"previewArea": ""},
+        {
+            "OutputFlowVarName_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"OutputFlowVarName": "NewFileLocation"},
+        {
+            "OverwriteFlag_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"OverwriteFlag": False},
+    ]
+
+    variables = [
+        {
+            "BaseDir": [
+                {"used_variable": "temp_path"},
+                {"exposed_variable": "", "isnull": True},
+            ]
+        },
+        {
+            "FileName": [
+                {"used_variable": "RowID"},
+                {"exposed_variable": "", "isnull": True},
+            ]
+        },
+    ]
+
+    node.variables = variables
+    result = kdlc.Node(
+        node_id=1,
+        name="Create File Name",
+        factory=(
+            "org.knime.base.node.flowvariable.create"
+            "filename.CreateFilenameNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    result.port_count = 1
+    result.model = [
+        {
+            "FileExtension_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"FileExtension": ".csv"},
+        {
+            "FileName_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": False},
+            ]
+        },
+        {"FileName": "", "used_variable": "RowID"},
+        {
+            "BaseDir_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {
+            "BaseDir": "C:\\temp\\knimeTemp\\knime_05_Write"
+            "_each_r56822\\knime_tc_ehw4ugyoy4ye",
+            "used_variable": "temp_path",
+        },
+        {
+            "previewArea_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"previewArea": ""},
+        {
+            "OutputFlowVarName_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"OutputFlowVarName": "NewFileLocation"},
+        {
+            "OverwriteFlag_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"OverwriteFlag": False},
+    ]
+
+    result.variables = variables
+    node.merge_variables_into_model()
+    assert result == node
+
+
 def test_extract_variables_from_model_used_exposed(my_setup):
     node = kdlc.Node(
         node_id=1,
@@ -2010,6 +2159,7 @@ def test_metanode_kdl_str(my_setup):
         "    ]\n"
         "}"
     )
+    assert result == metanode.kdl_str()
     assert result == metanode.kdl_str()
 
 
