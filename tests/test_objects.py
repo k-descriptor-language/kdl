@@ -1885,6 +1885,43 @@ def test_node_kdl_str(my_setup):
     assert node.kdl_str() == result
 
 
+def test_node_kdl_str_factory_settings(my_setup):
+    node = kdlc.Node(
+        node_id=1,
+        name="JavaScript Bar Chart",
+        factory="org.knime.dynamic.js.v30.DynamicJSNodeFactory",
+        bundle_name="KNIME Dynamically Created JavaScript Nodes",
+        bundle_symbolic_name="org.knime.dynamic.js",
+        bundle_version="3.5.0.v201711021643",
+        feature_name="KNIME JavaScript Views",
+        feature_symbolic_name="org.knime.features.js.views.feature.group",
+        feature_version="3.5.0.v201711021643",
+    )
+    node.port_count = 1
+    node.factory_settings = [{"nodeDir": "org.knime.dynamic.js.base:nodes/:barChart"}]
+    node.model = []
+    result = (
+        "(n1): {\n"
+        '    "name": "JavaScript Bar Chart",\n'
+        '    "factory": "org.knime.dynamic.js.v30.DynamicJSNodeFactory",\n'
+        '    "bundle_name": "KNIME Dynamically Created JavaScript Nodes",\n'
+        '    "bundle_symbolic_name": "org.knime.dynamic.js",\n'
+        '    "bundle_version": "3.5.0.v201711021643",\n'
+        '    "feature_name": "KNIME JavaScript Views",\n'
+        '    "feature_symbolic_name": "org.knime.features.js.views.feature.group",\n'
+        '    "feature_version": "3.5.0.v201711021643",\n'
+        '    "factory_settings": [\n'
+        "        {\n"
+        '            "nodeDir": "org.knime.dynamic.js.base:nodes/:barChart"\n'
+        "        }\n"
+        "    ],\n"
+        '    "model": [],\n'
+        '    "port_count": 1\n'
+        "}"
+    )
+    assert result == node.kdl_str()
+
+
 def test_metanode_kdl_str(my_setup):
     node1 = kdlc.Node(
         node_id="1",
