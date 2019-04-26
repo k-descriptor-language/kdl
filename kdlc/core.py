@@ -170,6 +170,16 @@ def extract_node_from_settings_xml(node_id: str, input_file: str) -> Node:
 
 
 def extract_entry_value(tree: ET.Element, element_key: str) -> str:
+    """
+    Extracts the value attribute from entry matching element_key
+
+    Args:
+        tree (Element): The tree to extract entry value from
+        element_key (str): The key of the value being extracted
+
+    Returns:
+        str: String containing entry value
+    """
     element = tree.find(f"./knime:entry[@key='{element_key}']", NS)
     if element is not None:
         value = element.attrib["value"]
