@@ -2,7 +2,14 @@ from .cli import prompt
 
 from .commands import kdl_to_workflow, workflow_to_kdl, build_knwf
 
-from .objects import Node, Connection, MetaNode, Workflow, VariableConnection
+from .objects import (
+    Node,
+    Connection,
+    MetaNode,
+    WrappedMetaNode,
+    Workflow,
+    VariableConnection,
+)
 
 from .KDLLoader import KDLLoader
 
@@ -49,6 +56,7 @@ __all__ = [
     "Connection",
     "Workflow",
     "MetaNode",
+    "WrappedMetaNode",
     "VariableConnection",
     "KDLLoader",
     "TMP_INPUT_DIR",

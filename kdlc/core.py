@@ -9,6 +9,7 @@ from kdlc.objects import (
     Node,
     Connection,
     MetaNode,
+    WrappedMetaNode,
     AbstractNode,
     Workflow,
     AbstractConnection,
@@ -301,6 +302,55 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
                 if index and object_class:
                     meta_out_ports.append({index: object_class})
             node["meta_out_ports"] = meta_out_ports
+        elif node["node_type"] == "SubNode":
+            base_tree = ET.parse(f"{input_path}/{node['filename']}")
+            root = base_tree.getroot()
+
+            meta_in_ports = list()
+            for port in root.findall(
+                "./knime:config[@key='inports']" "/knime:config", NS
+            ):
+                index_ele = port.find("./knime:entry[@key='index']", NS)
+                if index_ele is not None:
+                    index = str(int(index_ele.attrib["value"]) + 1)
+                object_class_ele = port.find(
+                    "./knime:config[@key='type']/knime:entry[@key='object_class']", NS
+                )
+                if object_class_ele is not None:
+                    object_class = object_class_ele.attrib["value"]
+
+                if index and object_class:
+                    meta_in_ports.append({index: object_class})
+            node["meta_in_ports"] = meta_in_ports
+
+            meta_out_ports = list()
+            for port in root.findall(
+                "./knime:config[@key='outports']" "/knime:config", NS
+            ):
+                index_ele = port.find("./knime:entry[@key='index']", NS)
+                if index_ele is not None:
+                    index = str(int(index_ele.attrib["value"]) + 1)
+                object_class_ele = port.find(
+                    "./knime:config[@key='type']/knime:entry[@key='object_class']", NS
+                )
+                if object_class_ele is not None:
+                    object_class = object_class_ele.attrib["value"]
+
+                if index and object_class:
+                    meta_out_ports.append({index: object_class})
+            node["meta_out_ports"] = meta_out_ports
+
+            workflow_path = (
+                f"{input_path}/{os.path.dirname(node['filename'])}/workflow.knime"
+            )
+
+            wf_tree = ET.parse(workflow_path)
+            root = wf_tree.getroot()
+
+            name_ele = root.find("./knime:entry[@key='name']", NS)
+            if name_ele is not None:
+                node["name"] = name_ele.attrib["value"]
+            node["children"] = extract_node_filenames(workflow_path)
 
         node_list.append(node)
     return node_list
@@ -344,6 +394,23 @@ def extract_nodes_from_filenames(
                 meta_out_ports=curr["meta_out_ports"],
             )
             input_node_list.append(metanode)
+        elif curr["node_type"] == "SubNode":
+            children = extract_nodes_from_filenames(
+                workflow_path=os.path.dirname(infile),
+                node_filenames=curr["children"],
+                parent_id=curr["node_id"],
+            )
+            infile = f"{os.path.dirname(infile)}/workflow.knime"
+            connections = extract_connections(infile, children)
+            wrapped_metanode = WrappedMetaNode(
+                node_id=curr["node_id"],
+                name=curr["name"],
+                children=children,
+                connections=connections,
+                meta_in_ports=curr["meta_in_ports"],
+                meta_out_ports=curr["meta_out_ports"],
+            )
+            input_node_list.append(wrapped_metanode)
 
     return input_node_list
 
@@ -362,7 +429,7 @@ def flatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
     flattened_list = list()
     for node in node_list:
         flattened_list.append(node)
-        if type(node) is MetaNode:
+        if type(node) is MetaNode or type(node) is WrappedMetaNode:
             flattened_list += flatten_node_list(cast(MetaNode, node).children)
     return flattened_list
 

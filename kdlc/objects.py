@@ -228,6 +228,7 @@ class MetaNode(AbstractNode):
         self.connections = connections
         self.meta_in_ports = meta_in_ports
         self.meta_out_ports = meta_out_ports
+        self.type = "MetaNode"
 
     def kdl_str(self) -> str:
         indent = "    "
@@ -252,7 +253,7 @@ class MetaNode(AbstractNode):
             f"(n{self.node_id}): "
             "{\n"
             f'{indent}"name": "{self.name}",\n'
-            f'{indent}"type": "MetaNode",\n'
+            f'{indent}"type": "{self.type}",\n'
             f'{indent}"connections": {{\n'
             f"{output_connections}\n"
             f"{indent}}},\n"
@@ -263,6 +264,27 @@ class MetaNode(AbstractNode):
 
     def get_filename(self) -> str:
         return f"{self.name} (#{self.get_base_id()})/workflow.knime"
+
+
+class WrappedMetaNode(MetaNode):
+    def __init__(
+        self,
+        node_id: str,
+        name: str,
+        children: List[AbstractNode],
+        connections: List[AbstractConnection],
+        meta_in_ports: List[Dict[str, Any]],
+        meta_out_ports: List[Dict[str, Any]],
+    ):
+        super().__init__(
+            node_id=node_id,
+            name=name,
+            children=children,
+            connections=connections,
+            meta_in_ports=meta_in_ports,
+            meta_out_ports=meta_out_ports,
+        )
+        self.type = "WrappedMetaNode"
 
 
 class Connection(AbstractConnection):

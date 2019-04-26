@@ -1,0 +1,1397 @@
+Nodes {
+    (n1): {
+        "name": "File Reader",
+        "factory": "org.knime.base.node.io.filereader.FileReaderNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "DataURL": "knime://LOCAL/Example%20Workflows/TheData/Basics/adult.csv"
+            },
+            {
+                "Delimiters": [
+                    {
+                        "Delim0": [
+                            {
+                                "pattern": "%%00010"
+                            },
+                            {
+                                "combineMultiple": true
+                            },
+                            {
+                                "includeInToken": false
+                            },
+                            {
+                                "returnAsToken": true
+                            }
+                        ]
+                    },
+                    {
+                        "Delim1": [
+                            {
+                                "pattern": "%%00013"
+                            },
+                            {
+                                "combineMultiple": true
+                            },
+                            {
+                                "includeInToken": false
+                            },
+                            {
+                                "returnAsToken": true
+                            }
+                        ]
+                    },
+                    {
+                        "Delim2": [
+                            {
+                                "pattern": ","
+                            },
+                            {
+                                "combineMultiple": false
+                            },
+                            {
+                                "includeInToken": false
+                            },
+                            {
+                                "returnAsToken": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "Quotes": [
+                    {
+                        "Quote0": [
+                            {
+                                "left": "\""
+                            },
+                            {
+                                "right": "\""
+                            },
+                            {
+                                "EscChar": "\\",
+                                "data_type": "xchar"
+                            },
+                            {
+                                "DontRem": false
+                            }
+                        ]
+                    },
+                    {
+                        "Quote1": [
+                            {
+                                "left": "'"
+                            },
+                            {
+                                "right": "'"
+                            },
+                            {
+                                "EscChar": "\\",
+                                "data_type": "xchar"
+                            },
+                            {
+                                "DontRem": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "Comments": []
+            },
+            {
+                "WhiteSpaces": [
+                    {
+                        "WhiteSpace0": " "
+                    },
+                    {
+                        "WhiteSpace1": "%%00009"
+                    }
+                ]
+            },
+            {
+                "CombineMultDelims": false
+            },
+            {
+                "SkipFirstLines": 0,
+                "data_type": "xlong"
+            },
+            {
+                "NewLineInQuotes": false
+            },
+            {
+                "hasColHdr": true
+            },
+            {
+                "hasRowHdr": false
+            },
+            {
+                "ignoreEmptyLines": true
+            },
+            {
+                "rowPrefix": "Row"
+            },
+            {
+                "RowDelims": [
+                    {
+                        "RDelim0": "%%00010"
+                    },
+                    {
+                        "SkipEmptyLine0": true
+                    },
+                    {
+                        "RDelim1": "%%00013"
+                    },
+                    {
+                        "SkipEmptyLine1": true
+                    }
+                ]
+            },
+            {
+                "MissingPatterns": []
+            },
+            {
+                "FormatParameter": []
+            },
+            {
+                "globalMissPattern": "",
+                "isnull": true
+            },
+            {
+                "DecimalSeparator": ".",
+                "data_type": "xchar"
+            },
+            {
+                "ThrousandsSeparator": "%%00000",
+                "data_type": "xchar"
+            },
+            {
+                "ignEmtpyTokensAtEOR": false
+            },
+            {
+                "acceptShortLines": false
+            },
+            {
+                "uniquifyRowID": false
+            },
+            {
+                "MaxNumOfRows": -1,
+                "data_type": "xlong"
+            },
+            {
+                "ColNumDetermLine": -1
+            },
+            {
+                "CharsetName": "",
+                "isnull": true
+            },
+            {
+                "ConnectTimeoutInSeconds": 1
+            },
+            {
+                "delimsAtEOLuserVal": false
+            },
+            {
+                "numOfColumns": 15
+            },
+            {
+                "ColumnProperties": [
+                    {
+                        "0": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "age"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "1": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "workclass"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "2": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "fnlwgt"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "3": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "education"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "4": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "education-num"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "5": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "marital-status"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "6": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "occupation"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "7": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "relationship"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "8": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "race"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "9": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "sex"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "10": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "capital-gain"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "11": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "capital-loss"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "12": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "",
+                                "isnull": true
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "hours-per-week"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.IntCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "13": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "native-country"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "14": [
+                            {
+                                "UserSetValues": false
+                            },
+                            {
+                                "MissValuePattern": "?"
+                            },
+                            {
+                                "FormatParameter": "",
+                                "isnull": true
+                            },
+                            {
+                                "ReadPossValsFromFile": false
+                            },
+                            {
+                                "SkipThisColumn": false
+                            },
+                            {
+                                "ColumnName": "income"
+                            },
+                            {
+                                "ColumnClass": [
+                                    {
+                                        "cell_class": "org.knime.core.data.def.StringCell"
+                                    },
+                                    {
+                                        "is_null": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n7): {
+        "name": "CSV Writer",
+        "factory": "org.knime.base.node.io.csvwriter.CSVWriterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "colSeparator": ","
+            },
+            {
+                "missing": ""
+            },
+            {
+                "quoteBegin": "\""
+            },
+            {
+                "quoteEnd": "\""
+            },
+            {
+                "quoteMode": "STRINGS"
+            },
+            {
+                "quoteReplacement": ""
+            },
+            {
+                "sepReplacePattern": ""
+            },
+            {
+                "ReplSepInStrings": false
+            },
+            {
+                "writeColHeader": true
+            },
+            {
+                "writeRowHeader": false
+            },
+            {
+                "decimalSeparator": ".",
+                "data_type": "xchar"
+            },
+            {
+                "lineEndingMode": "SYST"
+            },
+            {
+                "charSet": "",
+                "isnull": true
+            },
+            {
+                "filename": "/Users/jared/repos/k-descriptor-language/kdl/demo_output_2.csv"
+            },
+            {
+                "fileOverwritePolicy": "Overwrite"
+            },
+            {
+                "skipWriteColHeaderOnAppend": false
+            },
+            {
+                "commentBegin": ""
+            },
+            {
+                "commentEnd": ""
+            },
+            {
+                "addTime": false
+            },
+            {
+                "addUser": false
+            },
+            {
+                "addTablename": false
+            },
+            {
+                "userCommentLine": ""
+            },
+            {
+                "gzip": false
+            }
+        ],
+        "port_count": 0
+    },
+    (n8): {
+        "name": "Metanode",
+        "type": "MetaNode",
+        "connections": {
+            (META_IN:1)-->(n4:1),
+            (n4:1)-->(n5:1),
+            (n5:1)-->(META_OUT:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n8.4): {
+        "name": "Row Filter",
+        "factory": "org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "rowFilter": [
+                    {
+                        "RowFilter_TypeID": "RangeVal_RowFilter"
+                    },
+                    {
+                        "ColumnName": "age"
+                    },
+                    {
+                        "include": true
+                    },
+                    {
+                        "deepFiltering": false
+                    },
+                    {
+                        "lowerBound": [
+                            {
+                                "datacell": "org.knime.core.data.def.IntCell"
+                            },
+                            {
+                                "org.knime.core.data.def.IntCell": [
+                                    {
+                                        "IntCell": 20
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "upperBound": [
+                            {
+                                "datacell": "org.knime.core.data.def.IntCell"
+                            },
+                            {
+                                "org.knime.core.data.def.IntCell": [
+                                    {
+                                        "IntCell": 40
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n8.5): {
+        "name": "Row Filter",
+        "factory": "org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "rowFilter": [
+                    {
+                        "RowFilter_TypeID": "StringComp_RowFilter"
+                    },
+                    {
+                        "ColumnName": "workclass"
+                    },
+                    {
+                        "include": true
+                    },
+                    {
+                        "deepFiltering": false
+                    },
+                    {
+                        "CaseSensitive": false
+                    },
+                    {
+                        "Pattern": "Private*"
+                    },
+                    {
+                        "hasWildCards": true
+                    },
+                    {
+                        "isRegExpr": false
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n10): {
+        "name": "WrappedMetanode",
+        "type": "WrappedMetaNode",
+        "connections": {
+            (n2:1)-->(n3:1),
+            (n3:1)-->(n5:1),
+            (n4:1)-->(n2:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n10.2): {
+        "name": "Row Filter",
+        "factory": "org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "rowFilter": [
+                    {
+                        "RowFilter_TypeID": "RangeVal_RowFilter"
+                    },
+                    {
+                        "ColumnName": "age"
+                    },
+                    {
+                        "include": true
+                    },
+                    {
+                        "deepFiltering": false
+                    },
+                    {
+                        "lowerBound": [
+                            {
+                                "datacell": "org.knime.core.data.def.IntCell"
+                            },
+                            {
+                                "org.knime.core.data.def.IntCell": [
+                                    {
+                                        "IntCell": 20
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "upperBound": [
+                            {
+                                "datacell": "org.knime.core.data.def.IntCell"
+                            },
+                            {
+                                "org.knime.core.data.def.IntCell": [
+                                    {
+                                        "IntCell": 40
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n10.3): {
+        "name": "Row Filter",
+        "factory": "org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "rowFilter": [
+                    {
+                        "RowFilter_TypeID": "StringComp_RowFilter"
+                    },
+                    {
+                        "ColumnName": "workclass"
+                    },
+                    {
+                        "include": true
+                    },
+                    {
+                        "deepFiltering": false
+                    },
+                    {
+                        "CaseSensitive": false
+                    },
+                    {
+                        "Pattern": "*gov"
+                    },
+                    {
+                        "hasWildCards": true
+                    },
+                    {
+                        "isRegExpr": false
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n10.4): {
+        "name": "WrappedNode Input",
+        "factory": "org.knime.core.node.workflow.virtual.subnode.VirtualSubNodeInputNodeFactory",
+        "bundle_name": "KNIME Core API",
+        "bundle_symbolic_name": "org.knime.core",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "variable-filter": [
+                    {
+                        "filter-type": "STANDARD"
+                    },
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "excluded_names": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "enforce_option": "EnforceInclusion"
+                    },
+                    {
+                        "name_pattern": [
+                            {
+                                "pattern": ""
+                            },
+                            {
+                                "type": "Wildcard"
+                            },
+                            {
+                                "caseSensitive": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "variable-prefix": "",
+                "isnull": true
+            },
+            {
+                "sub-node-description": ""
+            },
+            {
+                "port-names": [
+                    {
+                        "array-size": 1
+                    },
+                    {
+                        "0": "Port 1"
+                    }
+                ]
+            },
+            {
+                "port-descriptions": [
+                    {
+                        "array-size": 1
+                    },
+                    {
+                        "0": ""
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    },
+    (n10.5): {
+        "name": "WrappedNode Output",
+        "factory": "org.knime.core.node.workflow.virtual.subnode.VirtualSubNodeOutputNodeFactory",
+        "bundle_name": "KNIME Core API",
+        "bundle_symbolic_name": "org.knime.core",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "variable-filter": [
+                    {
+                        "filter-type": "STANDARD"
+                    },
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "excluded_names": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "enforce_option": "EnforceInclusion"
+                    },
+                    {
+                        "name_pattern": [
+                            {
+                                "pattern": ""
+                            },
+                            {
+                                "type": "Wildcard"
+                            },
+                            {
+                                "caseSensitive": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "variable-prefix": "",
+                "isnull": true
+            },
+            {
+                "port-names": [
+                    {
+                        "array-size": 1
+                    },
+                    {
+                        "0": "Port 1"
+                    }
+                ]
+            },
+            {
+                "port-descriptions": [
+                    {
+                        "array-size": 1
+                    },
+                    {
+                        "0": ""
+                    }
+                ]
+            }
+        ],
+        "port_count": 0
+    },
+    (n11): {
+        "name": "WrappedMetanode2",
+        "type": "WrappedMetaNode",
+        "connections": {
+            (n6:1)-->(n8:1),
+            (n7:1)-->(n6:2),
+            (n7:2)-->(n6:1)
+        },
+        "meta_in_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            },
+            {
+                "2": "org.knime.core.node.BufferedDataTable"
+            }
+        ],
+        "meta_out_ports": [
+            {
+                "1": "org.knime.core.node.BufferedDataTable"
+            }
+        ]
+    },
+    (n11.6): {
+        "name": "Concatenate",
+        "factory": "org.knime.base.node.preproc.append.row.AppendedRowsNodeFactory",
+        "bundle_name": "KNIME Base Nodes",
+        "bundle_symbolic_name": "org.knime.base",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "fail_on_duplicates": false
+            },
+            {
+                "append_suffix": true
+            },
+            {
+                "intersection_of_columns": false
+            },
+            {
+                "suffix": "_dup"
+            },
+            {
+                "enable_hiliting": false
+            }
+        ],
+        "port_count": 1
+    },
+    (n11.7): {
+        "name": "WrappedNode Input",
+        "factory": "org.knime.core.node.workflow.virtual.subnode.VirtualSubNodeInputNodeFactory",
+        "bundle_name": "KNIME Core API",
+        "bundle_symbolic_name": "org.knime.core",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "variable-filter": [
+                    {
+                        "filter-type": "STANDARD"
+                    },
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "excluded_names": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "enforce_option": "EnforceInclusion"
+                    },
+                    {
+                        "name_pattern": [
+                            {
+                                "pattern": ""
+                            },
+                            {
+                                "type": "Wildcard"
+                            },
+                            {
+                                "caseSensitive": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "variable-prefix": "",
+                "isnull": true
+            },
+            {
+                "sub-node-description": ""
+            },
+            {
+                "port-names": [
+                    {
+                        "array-size": 2
+                    },
+                    {
+                        "0": "Port 1"
+                    },
+                    {
+                        "1": "Port 2"
+                    }
+                ]
+            },
+            {
+                "port-descriptions": [
+                    {
+                        "array-size": 2
+                    },
+                    {
+                        "0": ""
+                    },
+                    {
+                        "1": ""
+                    }
+                ]
+            }
+        ],
+        "port_count": 2
+    },
+    (n11.8): {
+        "name": "WrappedNode Output",
+        "factory": "org.knime.core.node.workflow.virtual.subnode.VirtualSubNodeOutputNodeFactory",
+        "bundle_name": "KNIME Core API",
+        "bundle_symbolic_name": "org.knime.core",
+        "bundle_version": "3.7.2.v201904170949",
+        "feature_name": "KNIME Core",
+        "feature_symbolic_name": "org.knime.features.base.feature.group",
+        "feature_version": "3.7.2.v201904171038",
+        "model": [
+            {
+                "variable-filter": [
+                    {
+                        "filter-type": "STANDARD"
+                    },
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "excluded_names": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "enforce_option": "EnforceInclusion"
+                    },
+                    {
+                        "name_pattern": [
+                            {
+                                "pattern": ""
+                            },
+                            {
+                                "type": "Wildcard"
+                            },
+                            {
+                                "caseSensitive": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "variable-prefix": "",
+                "isnull": true
+            },
+            {
+                "port-names": [
+                    {
+                        "array-size": 1
+                    },
+                    {
+                        "0": "Port 1"
+                    }
+                ]
+            },
+            {
+                "port-descriptions": [
+                    {
+                        "array-size": 1
+                    },
+                    {
+                        "0": ""
+                    }
+                ]
+            }
+        ],
+        "port_count": 0
+    }
+}
+
+Workflow {
+    "connections": {
+        (n1:1)-->(n8:1),
+        (n1:1)-->(n10:1),
+        (n8:1)-->(n11:1),
+        (n10:1)-->(n11:2),
+        (n11:1)-->(n7:1)
+    }
+}
