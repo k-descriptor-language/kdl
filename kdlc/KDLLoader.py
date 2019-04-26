@@ -1,14 +1,21 @@
 import json
 from kdlc.parser.KDLListener import KDLListener
 from kdlc.parser.KDLParser import KDLParser
-from kdlc.objects import Connection, Node, MetaNode, VariableConnection
+from kdlc.objects import (
+    Connection,
+    Node,
+    MetaNode,
+    VariableConnection,
+    TemplateCatalogue,
+)
 
 
 class KDLLoader(KDLListener):
-    def __init__(self):
+    def __init__(self, template_catalogue: TemplateCatalogue):
         self.nodes = []
         self.connections = []
         self.global_variables = []
+        self.template_catalogue = template_catalogue
 
     def exitNode_settings(
         self: KDLListener, ctx: KDLParser.Node_settingsContext
@@ -19,10 +26,13 @@ class KDLLoader(KDLListener):
         json_tokens = [i.getText() for i in ctx.json().children]
         json_string = "".join(json_tokens)
         node_settings = json.loads(json_string)
-        # print(node_settings)
 
-        # TODO: does this name even matter? if it does, we need to be defensive here
+        # NB: this name is important, it references the template node name
         node_name = node_settings["name"]
+        template = self.template_catalogue.find_template(node_name)
+        if template is not None:
+            node_settings = TemplateCatalogue.merge_settings(template, node_settings)
+
         node = Node(
             node_id=node_number,
             name=node_name,
