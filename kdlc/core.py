@@ -82,6 +82,16 @@ def extract_node_from_settings_xml(node_id: str, input_file: str) -> Node:
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()
 
+    name = extract_entry_value(root, "name")
+    factory = extract_entry_value(root, "factory")
+    bundle_name = extract_entry_value(root, "node-bundle-name")
+    bundle_symbolic_name = extract_entry_value(root, "node-bundle-symbolic-name")
+    bundle_version = extract_entry_value(root, "node-bundle-version")
+    feature_name = extract_entry_value(root, "node-feature-name")
+    feature_symbolic_name = extract_entry_value(root, "node-feature-symbolic-name")
+    feature_version = extract_entry_value(root, "node-feature-version")
+
+    """
     name_ele = root.find("./knime:entry[@key='name']", NS)
     if name_ele is not None:
         name = name_ele.attrib["value"]
@@ -117,6 +127,7 @@ def extract_node_from_settings_xml(node_id: str, input_file: str) -> Node:
     feature_version_ele = root.find("./knime:entry[@key='node-feature-version']", NS)
     if feature_version_ele is not None:
         feature_version = feature_version_ele.attrib["value"]
+    """
 
     node = Node(
         node_id=node_id,
@@ -156,6 +167,13 @@ def extract_node_from_settings_xml(node_id: str, input_file: str) -> Node:
             raise ex
     node.merge_variables_into_model()
     return node
+
+
+def extract_entry_value(tree: ET.Element, element_key: str) -> str:
+    element = tree.find(f"./knime:entry[@key='{element_key}']", NS)
+    if element is not None:
+        value = element.attrib["value"]
+    return value
 
 
 def extract_entry_tag(tree: ET.Element) -> Dict[str, Any]:
@@ -242,25 +260,15 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
     root = base_tree.getroot()
     for child in root.findall("./knime:config[@key='nodes']/knime:config", NS):
         node: Dict[str, Any] = dict()
-        node_id_ele = child.find("./knime:entry[@key='id']", NS)
-        if node_id_ele is not None:
-            node["node_id"] = node_id_ele.attrib["value"]
 
-        settings_file_ele = child.find("./knime:entry[@key='node_settings_file']", NS)
-        if settings_file_ele is not None:
-            node["filename"] = settings_file_ele.attrib["value"]
-
-        node_type_ele = child.find("./knime:entry[@key='node_type']", NS)
-        if node_type_ele is not None:
-            node["node_type"] = node_type_ele.attrib["value"]
+        node["node_id"] = extract_entry_value(child, "id")
+        node["filename"] = extract_entry_value(child, "node_settings_file")
+        node["node_type"] = extract_entry_value(child, "node_type")
 
         if node["node_type"] == "MetaNode":
             base_tree = ET.parse(f"{input_path}/{node['filename']}")
             root = base_tree.getroot()
-
-            name_ele = root.find("./knime:entry[@key='name']", NS)
-            if name_ele is not None:
-                node["name"] = name_ele.attrib["value"]
+            node["name"] = extract_entry_value(root, "name")
             node["children"] = extract_node_filenames(
                 f"{input_path}/{node['filename']}"
             )
@@ -271,14 +279,10 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
                 "/knime:config[@key='port_enum']/knime:config",
                 NS,
             ):
-                index_ele = port.find("./knime:entry[@key='index']", NS)
-                if index_ele is not None:
-                    index = str(int(index_ele.attrib["value"]) + 1)
-                object_class_ele = port.find(
-                    "./knime:config[@key='type']/knime:entry[@key='object_class']", NS
-                )
-                if object_class_ele is not None:
-                    object_class = object_class_ele.attrib["value"]
+                index = str(int(extract_entry_value(port, "index")) + 1)
+                port_type = port.find("./knime:config[@key='type']", NS)
+                if port_type is not None:
+                    object_class = extract_entry_value(port_type, "object_class")
 
                 if index and object_class:
                     meta_in_ports.append({index: object_class})
@@ -290,14 +294,10 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
                 "/knime:config[@key='port_enum']/knime:config",
                 NS,
             ):
-                index_ele = port.find("./knime:entry[@key='index']", NS)
-                if index_ele is not None:
-                    index = str(int(index_ele.attrib["value"]) + 1)
-                object_class_ele = port.find(
-                    "./knime:config[@key='type']/knime:entry[@key='object_class']", NS
-                )
-                if object_class_ele is not None:
-                    object_class = object_class_ele.attrib["value"]
+                index = str(int(extract_entry_value(port, "index")) + 1)
+                port_type = port.find("./knime:config[@key='type']", NS)
+                if port_type is not None:
+                    object_class = extract_entry_value(port_type, "object_class")
 
                 if index and object_class:
                     meta_out_ports.append({index: object_class})
@@ -312,14 +312,10 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
             for port in root.findall(
                 "./knime:config[@key='inports']" "/knime:config", NS
             ):
-                index_ele = port.find("./knime:entry[@key='index']", NS)
-                if index_ele is not None:
-                    index = str(int(index_ele.attrib["value"]) + 1)
-                object_class_ele = port.find(
-                    "./knime:config[@key='type']/knime:entry[@key='object_class']", NS
-                )
-                if object_class_ele is not None:
-                    object_class = object_class_ele.attrib["value"]
+                index = str(int(extract_entry_value(port, "index")) + 1)
+                port_type = port.find("./knime:config[@key='type']", NS)
+                if port_type is not None:
+                    object_class = extract_entry_value(port_type, "object_class")
 
                 if index and object_class:
                     meta_in_ports.append({index: object_class})
@@ -330,14 +326,10 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
             for port in root.findall(
                 "./knime:config[@key='outports']" "/knime:config", NS
             ):
-                index_ele = port.find("./knime:entry[@key='index']", NS)
-                if index_ele is not None:
-                    index = str(int(index_ele.attrib["value"]) + 1)
-                object_class_ele = port.find(
-                    "./knime:config[@key='type']/knime:entry[@key='object_class']", NS
-                )
-                if object_class_ele is not None:
-                    object_class = object_class_ele.attrib["value"]
+                index = str(int(extract_entry_value(port, "index")) + 1)
+                port_type = port.find("./knime:config[@key='type']", NS)
+                if port_type is not None:
+                    object_class = extract_entry_value(port_type, "object_class")
 
                 if index and object_class:
                     meta_out_ports.append({index: object_class})
@@ -529,23 +521,14 @@ def extract_connections(
     for i, child in enumerate(
         root.findall("./knime:config[@key='connections']/knime:config", NS)
     ):
-        source_id_ele = child.find("./knime:entry[@key='sourceID']", NS)
-        if source_id_ele is not None:
-            source_id = source_id_ele.attrib["value"]
-            source_node = META_IN if source_id == "-1" else node_dict[source_id]
+        source_id = extract_entry_value(child, "sourceID")
+        source_node = META_IN if source_id == "-1" else node_dict[source_id]
 
-        dest_id_ele = child.find("./knime:entry[@key='destID']", NS)
-        if dest_id_ele is not None:
-            dest_id = dest_id_ele.attrib["value"]
-            dest_node = META_OUT if dest_id == "-1" else node_dict[dest_id]
+        dest_id = extract_entry_value(child, "destID")
+        dest_node = META_OUT if dest_id == "-1" else node_dict[dest_id]
 
-        source_port_ele = child.find("./knime:entry[@key='sourcePort']", NS)
-        if source_port_ele is not None:
-            source_port = source_port_ele.attrib["value"]
-
-        dest_port_ele = child.find("./knime:entry[@key='destPort']", NS)
-        if dest_port_ele is not None:
-            dest_port = dest_port_ele.attrib["value"]
+        source_port = extract_entry_value(child, "sourcePort")
+        dest_port = extract_entry_value(child, "destPort")
 
         is_var_connection = False
 
@@ -621,22 +604,17 @@ def extract_global_wf_variables(input_file: str) -> List[Dict[str, Any]]:
         "./knime:config[@key='workflow_variables']/knime:config", NS
     ):
         variable: Dict[str, Any] = dict()
-        variable_name_ele = child.find("./knime:entry[@key='name']", NS)
-        if variable_name_ele is not None:
-            variable_name = variable_name_ele.attrib["value"]
+        variable_name = extract_entry_value(child, "name")
+        variable_class = extract_entry_value(child, "class")
+        variable_value = extract_entry_value(child, "value")
 
-        variable_class_ele = child.find("./knime:entry[@key='class']", NS)
-        if variable_class_ele is not None:
-            variable_class = variable_class_ele.attrib["value"]
-
-        variable_value_ele = child.find("./knime:entry[@key='value']", NS)
-        if variable_value_ele is not None and variable_class is not None:
+        if variable_value is not None and variable_class is not None:
             if variable_class == "STRING":
-                variable[variable_name] = variable_value_ele.attrib["value"]
+                variable[variable_name] = variable_value
             elif variable_class == "DOUBLE":
-                variable[variable_name] = float(variable_value_ele.attrib["value"])
+                variable[variable_name] = float(variable_value)
             elif variable_class == "INTEGER":
-                variable[variable_name] = int(variable_value_ele.attrib["value"])
+                variable[variable_name] = int(variable_value)
         global_variable_list.append(variable)
     return global_variable_list
 
