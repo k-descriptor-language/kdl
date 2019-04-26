@@ -90,7 +90,7 @@
 <entry key="node-feature-version" type="xstring" value="{{ node.feature_version }}"/>
 {% if node.factory_settings %}
 <config key="factory_settings">
-s    {% for item in node.factory_settings recursive %}
+    {% for item in node.factory_settings recursive %}
     {% if item.data_type=="config" %}
         {% set config_items = {} %}
         {% for key, value in item.items() %}
