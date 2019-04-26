@@ -547,6 +547,7 @@ def test_exitMeta_settings_connection(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections) == 1
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
@@ -650,6 +651,7 @@ def test_exitMeta_settings_connection_wrapped(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections) == 1
+    assert type(listener.nodes[0]) is kdlc.WrappedMetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
@@ -745,6 +747,7 @@ def test_exitMeta_settings_var_connection(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections) == 1
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
@@ -846,6 +849,7 @@ def test_exitMeta_settings_metaconnection_in(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
@@ -947,6 +951,7 @@ def test_exitMeta_settings_metaconnection_out(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
@@ -1048,6 +1053,7 @@ def test_exitMeta_settings_metaconnection_in_var(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
@@ -1149,4 +1155,5 @@ def test_exitMeta_settings_metaconnection_out_var(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
