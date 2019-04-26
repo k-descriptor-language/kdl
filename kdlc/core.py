@@ -303,9 +303,11 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
                     meta_out_ports.append({index: object_class})
             node["meta_out_ports"] = meta_out_ports
         elif node["node_type"] == "SubNode":
+
             base_tree = ET.parse(f"{input_path}/{node['filename']}")
             root = base_tree.getroot()
 
+            # Extract inports from settings.xml
             meta_in_ports = list()
             for port in root.findall(
                 "./knime:config[@key='inports']" "/knime:config", NS
@@ -323,6 +325,7 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
                     meta_in_ports.append({index: object_class})
             node["meta_in_ports"] = meta_in_ports
 
+            # Extract outports from settings.xml
             meta_out_ports = list()
             for port in root.findall(
                 "./knime:config[@key='outports']" "/knime:config", NS
@@ -340,17 +343,18 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
                     meta_out_ports.append({index: object_class})
             node["meta_out_ports"] = meta_out_ports
 
-            workflow_path = (
+            # Extract name and children from workflow.knime
+            workflow_file_path = (
                 f"{input_path}/{os.path.dirname(node['filename'])}/workflow.knime"
             )
 
-            wf_tree = ET.parse(workflow_path)
+            wf_tree = ET.parse(workflow_file_path)
             root = wf_tree.getroot()
 
             name_ele = root.find("./knime:entry[@key='name']", NS)
             if name_ele is not None:
                 node["name"] = name_ele.attrib["value"]
-            node["children"] = extract_node_filenames(workflow_path)
+            node["children"] = extract_node_filenames(workflow_file_path)
 
         node_list.append(node)
     return node_list
