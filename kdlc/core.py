@@ -756,10 +756,10 @@ def create_wrapped_metanode_workflow_knime_from_template(
     Creates an ElementTree with the provided node list and connection list
 
     Args:
-        metanode (MetaNode): metanode definition
+        metanode (WrappedMetaNode): Wrapped Metanode definition
 
     Returns:
-        ElementTree: ElementTree populated with metanode and  associated
+        ElementTree: ElementTree populated with Wrapped Metanode and associated
         connections
     """
 
@@ -788,11 +788,10 @@ def create_wrapped_metanode_settings_from_template(
     Creates an ElementTree with the provided node list and connection list
 
     Args:
-        metanode (MetaNode): metanode definition
+        metanode (WrappedMetaNode): Wrapped Metanode definition
 
     Returns:
-        ElementTree: ElementTree populated with metanode and  associated
-        connections
+        ElementTree: ElementTree populated with Wrapped Metanode ports
     """
 
     template = jinja_env.get_template("wrapped_settings_template.xml")
