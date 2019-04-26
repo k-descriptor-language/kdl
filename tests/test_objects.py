@@ -727,6 +727,155 @@ def test_merge_model_and_variables_2var(my_setup):
     assert result == node
 
 
+def test_merge_model_and_variables_mul_var(my_setup):
+    node = kdlc.Node(
+        node_id=1,
+        name="Create File Name",
+        factory=(
+            "org.knime.base.node.flowvariable.create"
+            "filename.CreateFilenameNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node.port_count = 1
+    node.model = [
+        {
+            "FileExtension_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"FileExtension": ".csv"},
+        {
+            "FileName_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": False},
+            ]
+        },
+        {"FileName": ""},
+        {
+            "BaseDir_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {
+            "BaseDir": "C:\\temp\\knimeTemp\\knime_05_Wri"
+            "te_each_r56822\\knime_tc_ehw4ugyoy4ye"
+        },
+        {
+            "previewArea_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"previewArea": ""},
+        {
+            "OutputFlowVarName_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"OutputFlowVarName": "NewFileLocation"},
+        {
+            "OverwriteFlag_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"OverwriteFlag": False},
+    ]
+
+    variables = [
+        {
+            "BaseDir": [
+                {"used_variable": "temp_path"},
+                {"exposed_variable": "", "isnull": True},
+            ]
+        },
+        {
+            "FileName": [
+                {"used_variable": "RowID"},
+                {"exposed_variable": "", "isnull": True},
+            ]
+        },
+    ]
+
+    node.variables = variables
+    result = kdlc.Node(
+        node_id=1,
+        name="Create File Name",
+        factory=(
+            "org.knime.base.node.flowvariable.create"
+            "filename.CreateFilenameNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    result.port_count = 1
+    result.model = [
+        {
+            "FileExtension_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"FileExtension": ".csv"},
+        {
+            "FileName_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": False},
+            ]
+        },
+        {"FileName": "", "used_variable": "RowID"},
+        {
+            "BaseDir_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {
+            "BaseDir": "C:\\temp\\knimeTemp\\knime_05_Write"
+            "_each_r56822\\knime_tc_ehw4ugyoy4ye",
+            "used_variable": "temp_path",
+        },
+        {
+            "previewArea_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"previewArea": ""},
+        {
+            "OutputFlowVarName_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"OutputFlowVarName": "NewFileLocation"},
+        {
+            "OverwriteFlag_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"OverwriteFlag": False},
+    ]
+
+    result.variables = variables
+    node.merge_variables_into_model()
+    assert result == node
+
+
 def test_extract_variables_from_model_used_exposed(my_setup):
     node = kdlc.Node(
         node_id=1,
@@ -1739,6 +1888,43 @@ def test_node_kdl_str(my_setup):
     assert node.kdl_str() == result
 
 
+def test_node_kdl_str_factory_settings(my_setup):
+    node = kdlc.Node(
+        node_id=1,
+        name="JavaScript Bar Chart",
+        factory="org.knime.dynamic.js.v30.DynamicJSNodeFactory",
+        bundle_name="KNIME Dynamically Created JavaScript Nodes",
+        bundle_symbolic_name="org.knime.dynamic.js",
+        bundle_version="3.5.0.v201711021643",
+        feature_name="KNIME JavaScript Views",
+        feature_symbolic_name="org.knime.features.js.views.feature.group",
+        feature_version="3.5.0.v201711021643",
+    )
+    node.port_count = 1
+    node.factory_settings = [{"nodeDir": "org.knime.dynamic.js.base:nodes/:barChart"}]
+    node.model = []
+    result = (
+        "(n1): {\n"
+        '    "name": "JavaScript Bar Chart",\n'
+        '    "factory": "org.knime.dynamic.js.v30.DynamicJSNodeFactory",\n'
+        '    "bundle_name": "KNIME Dynamically Created JavaScript Nodes",\n'
+        '    "bundle_symbolic_name": "org.knime.dynamic.js",\n'
+        '    "bundle_version": "3.5.0.v201711021643",\n'
+        '    "feature_name": "KNIME JavaScript Views",\n'
+        '    "feature_symbolic_name": "org.knime.features.js.views.feature.group",\n'
+        '    "feature_version": "3.5.0.v201711021643",\n'
+        '    "factory_settings": [\n'
+        "        {\n"
+        '            "nodeDir": "org.knime.dynamic.js.base:nodes/:barChart"\n'
+        "        }\n"
+        "    ],\n"
+        '    "model": [],\n'
+        '    "port_count": 1\n'
+        "}"
+    )
+    assert result == node.kdl_str()
+
+
 def test_metanode_kdl_str(my_setup):
     node1 = kdlc.Node(
         node_id="1",
@@ -2013,6 +2199,7 @@ def test_metanode_kdl_str(my_setup):
         "    ]\n"
         "}"
     )
+    assert result == metanode.kdl_str()
     assert result == metanode.kdl_str()
 
 
@@ -2299,6 +2486,205 @@ def test_var_connection_kdl_str():
         dest_port="0",
     )
     result = "(n1)~~>(n2)"
+    assert result == connection.kdl_str()
+
+
+def test_var_connection_kdl_str_2():
+    node1 = kdlc.Node(
+        node_id="1",
+        name="Create Temp Dir",
+        factory="org.knime.base.node.util.createtempdir.CreateTempDirectoryNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.3.1.v201612190931",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.3.1.v201612192115",
+    )
+    node1.port_count = 1
+    node1.model = [
+        {"baseName": "knime_colloop_data"},
+        {"variableName": "temp_path"},
+        {"deleteOnReset": True},
+        {"variable_name_pairs": []},
+    ]
+
+    node2 = kdlc.Node(
+        node_id="2",
+        name="Column List Loop Start",
+        factory="org.knime.base.node.meta.looper.column"
+        "list2.ColumnListLoopStartNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.3.1.v201612190931",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.3.1.v201612192115",
+    )
+    node2.port_count = 1
+    node2.model = [
+        {
+            "column-filter": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 5},
+                        {"0": "Universe_0_0"},
+                        {"1": "Universe_0_1"},
+                        {"2": "Universe_0_2"},
+                        {"3": "Universe_0_3"},
+                        {"4": "Universe_0_4"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {"datatype": [{"typelist": []}]},
+            ]
+        },
+        {
+            "no_columns_policy_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"no_columns_policy": True},
+    ]
+    connection = kdlc.VariableConnection(
+        connection_id=1,
+        source_id="1",
+        source_node=node1,
+        source_port="1",
+        dest_id="2",
+        dest_node=node2,
+        dest_port="0",
+    )
+    result = "(n1:1)~~>(n2)"
+    assert result == connection.kdl_str()
+
+
+def test_var_connection_kdl_str_3():
+    node2 = kdlc.Node(
+        node_id="2",
+        name="Create File Name",
+        factory="org.knime.base.node.flowvariable.create"
+        "filename.CreateFilenameNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.3.1.v201612190931",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.3.1.v201612192115",
+    )
+    node2.port_count = 1
+    node2.model = [
+        {
+            "BaseDir_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {
+            "BaseDir": "C:\\temp\\knimeTemp\\knime_06_Writing_"
+            "a_da56824\\knime_colloop_datadffftnllvw03",
+            "used_variable": "temp_path",
+        },
+        {
+            "FileName_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"FileName": "", "used_variable": "currentColumnName"},
+        {
+            "FileExtension_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"FileExtension": ".csv"},
+        {
+            "OutputFlowVarName_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"OutputFlowVarName": "csv_file_location"},
+        {
+            "previewArea_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {
+            "previewArea": "C:\\temp\\knimeTemp\\knime_06_Writing_a_"
+            "da56824\\knime_colloop_datadffftnllvw03\\Universe_0_0.csv"
+        },
+    ]
+
+    node1 = kdlc.Node(
+        node_id="1",
+        name="Column List Loop Start",
+        factory="org.knime.base.node.meta.looper.column"
+        "list2.ColumnListLoopStartNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.3.1.v201612190931",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.3.1.v201612192115",
+    )
+    node1.port_count = 1
+    node1.model = [
+        {
+            "column-filter": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 5},
+                        {"0": "Universe_0_0"},
+                        {"1": "Universe_0_1"},
+                        {"2": "Universe_0_2"},
+                        {"3": "Universe_0_3"},
+                        {"4": "Universe_0_4"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {"datatype": [{"typelist": []}]},
+            ]
+        },
+        {
+            "no_columns_policy_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"no_columns_policy": True},
+    ]
+    connection = kdlc.VariableConnection(
+        connection_id=1,
+        source_id="1",
+        source_node=node1,
+        source_port="0",
+        dest_id="2",
+        dest_node=node2,
+        dest_port="1",
+    )
+    result = "(n1)~~>(n2:1)"
     assert result == connection.kdl_str()
 
 

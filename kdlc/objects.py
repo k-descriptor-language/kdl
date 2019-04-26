@@ -108,9 +108,9 @@ class Node(AbstractNode):
             model_list (list): List of model configurations
             var_list (list): List of variables
         """
-        model_iter = iter(model_list)
-        curr_model = next(model_iter)
         for curr_variable in var_list:
+            model_iter = iter(model_list)
+            curr_model = next(model_iter)
             curr_model_key = list(curr_model.keys())[0]
             curr_model_val = curr_model[curr_model_key]
 
@@ -122,7 +122,12 @@ class Node(AbstractNode):
                 curr_model_key = list(curr_model.keys())[0]
                 curr_model_val = curr_model[curr_model_key]
 
-            if type(curr_model_val) is list and type(curr_variable_val) is list:
+            if (
+                type(curr_model_val) is list
+                and curr_model_val
+                and type(curr_variable_val) is list
+                and curr_variable_val
+            ):
                 self.__merge_variables_helper(curr_model_val, curr_variable_val)
             else:
                 for curr in curr_variable_val:
@@ -160,33 +165,22 @@ class Node(AbstractNode):
                 temp_list = list()
                 if "used_variable" in curr.keys():
                     temp_list.append(
-                        {
-                            "used_variable": curr["used_variable"],
-                            "data_type": curr["data_type"],
-                        }
+                        {"used_variable": curr["used_variable"], "data_type": "xstring"}
                     )
                 else:
                     temp_list.append(
-                        {
-                            "isnull": True,
-                            "used_variable": "",
-                            "data_type": curr["data_type"],
-                        }
+                        {"isnull": True, "used_variable": "", "data_type": "xstring"}
                     )
                 if "exposed_variable" in curr.keys():
                     temp_list.append(
                         {
                             "exposed_variable": curr["exposed_variable"],
-                            "data_type": curr["data_type"],
+                            "data_type": "xstring",
                         }
                     )
                 else:
                     temp_list.append(
-                        {
-                            "isnull": True,
-                            "exposed_variable": "",
-                            "data_type": curr["data_type"],
-                        }
+                        {"isnull": True, "exposed_variable": "", "data_type": "xstring"}
                     )
                 variables.append({curr_model_key: temp_list, "data_type": "config"})
 

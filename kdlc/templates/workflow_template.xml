@@ -9,9 +9,9 @@
 <entry key="name" type="xstring" isnull="true" value=""/>
 {% endif %}
 <config key="authorInformation">
-<entry key="authored-by" type="xstring" value="jared"/>
+<entry key="authored-by" type="xstring" value="k-descriptor-language"/>
 <entry key="authored-when" type="xstring" value="2019-03-02 13:43:23 -0500"/>
-<entry key="lastEdited-by" type="xstring" value="jared"/>
+<entry key="lastEdited-by" type="xstring" value="k-descriptor-language"/>
 <entry key="lastEdited-when" type="xstring" value="2019-03-02 23:15:32 -0500"/>
 </config>
 <entry key="customDescription" type="xstring" isnull="true" value=""/>
