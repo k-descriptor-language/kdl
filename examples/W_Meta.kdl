@@ -911,7 +911,7 @@ Nodes {
     },
     (n10): {
         "name": "WrappedMetanode",
-        "type": "WrappedMetaNode",
+        "type": "SubNode",
         "connections": {
             (n2:1)-->(n3:1),
             (n3:1)-->(n5:1),
@@ -1035,6 +1035,22 @@ Nodes {
         "feature_name": "KNIME Core",
         "feature_symbolic_name": "org.knime.features.base.feature.group",
         "feature_version": "3.7.2.v201904171038",
+        "factory_settings": [
+            {
+                "port_0": [
+                    {
+                        "index": 0
+                    },
+                    {
+                        "type": [
+                            {
+                                "object_class": "org.knime.core.node.BufferedDataTable"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
         "model": [
             {
                 "variable-filter": [
@@ -1112,6 +1128,22 @@ Nodes {
         "feature_name": "KNIME Core",
         "feature_symbolic_name": "org.knime.features.base.feature.group",
         "feature_version": "3.7.2.v201904171038",
+        "factory_settings": [
+            {
+                "port_0": [
+                    {
+                        "index": 0
+                    },
+                    {
+                        "type": [
+                            {
+                                "object_class": "org.knime.core.node.BufferedDataTable"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
         "model": [
             {
                 "variable-filter": [
@@ -1179,7 +1211,7 @@ Nodes {
     },
     (n11): {
         "name": "WrappedMetanode2",
-        "type": "WrappedMetaNode",
+        "type": "SubNode",
         "connections": {
             (n6:1)-->(n8:1),
             (n7:1)-->(n6:2),
@@ -1236,6 +1268,36 @@ Nodes {
         "feature_name": "KNIME Core",
         "feature_symbolic_name": "org.knime.features.base.feature.group",
         "feature_version": "3.7.2.v201904171038",
+        "factory_settings": [
+            {
+                "port_0": [
+                    {
+                        "index": 0
+                    },
+                    {
+                        "type": [
+                            {
+                                "object_class": "org.knime.core.node.BufferedDataTable"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "port_1": [
+                    {
+                        "index": 1
+                    },
+                    {
+                        "type": [
+                            {
+                                "object_class": "org.knime.core.node.BufferedDataTable"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
         "model": [
             {
                 "variable-filter": [
@@ -1319,6 +1381,22 @@ Nodes {
         "feature_name": "KNIME Core",
         "feature_symbolic_name": "org.knime.features.base.feature.group",
         "feature_version": "3.7.2.v201904171038",
+        "factory_settings": [
+            {
+                "port_0": [
+                    {
+                        "index": 0
+                    },
+                    {
+                        "type": [
+                            {
+                                "object_class": "org.knime.core.node.BufferedDataTable"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
         "model": [
             {
                 "variable-filter": [

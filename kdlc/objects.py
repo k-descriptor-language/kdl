@@ -284,7 +284,10 @@ class WrappedMetaNode(MetaNode):
             meta_in_ports=meta_in_ports,
             meta_out_ports=meta_out_ports,
         )
-        self.type = "WrappedMetaNode"
+        self.type = "SubNode"
+
+    def get_filename(self) -> str:
+        return f"{self.name} (#{self.get_base_id()})/settings.xml"
 
 
 class Connection(AbstractConnection):

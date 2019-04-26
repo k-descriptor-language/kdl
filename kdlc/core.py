@@ -6,14 +6,14 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
 from typing import List, Any, Dict, cast
 from kdlc.objects import (
+    AbstractNode,
+    AbstractConnection,
     Node,
     Connection,
+    VariableConnection,
     MetaNode,
     WrappedMetaNode,
-    AbstractNode,
     Workflow,
-    AbstractConnection,
-    VariableConnection,
 )
 
 jinja_env = Environment(
@@ -117,6 +117,12 @@ def extract_node_from_settings_xml(node_id: str, input_file: str) -> Node:
         if child.tag == ENTRY_TAG:
             entry = extract_entry_tag(child)
             node.factory_settings.append(entry)
+        elif child.tag == CONFIG_TAG:
+            config = extract_config_tag(child)
+            node.factory_settings.append(config)
+        else:
+            ex = ValueError("Invalid settings tag")
+            raise ex
 
     node.port_count = len(root.findall("./knime:config[@key='ports']/*", NS))
 
@@ -284,9 +290,7 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
 
             # Extract inports from settings.xml
             meta_in_ports = list()
-            for port in root.findall(
-                "./knime:config[@key='inports']" "/knime:config", NS
-            ):
+            for port in root.findall("./knime:config[@key='inports']/knime:config", NS):
                 index = str(int(extract_entry_value(port, "index")) + 1)
                 port_type = port.find("./knime:config[@key='type']", NS)
                 if port_type is not None:
@@ -299,7 +303,7 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
             # Extract outports from settings.xml
             meta_out_ports = list()
             for port in root.findall(
-                "./knime:config[@key='outports']" "/knime:config", NS
+                "./knime:config[@key='outports']/knime:config", NS
             ):
                 index = str(int(extract_entry_value(port, "index")) + 1)
                 port_type = port.find("./knime:config[@key='type']", NS)
@@ -414,7 +418,11 @@ def unflatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
     Returns:
         List[AbstractNode]: unflattened list of Nodes
     """
-    metanode_list = [node for node in node_list if type(node) is MetaNode]
+    metanode_list = [
+        node
+        for node in node_list
+        if type(node) is MetaNode or type(node) is WrappedMetaNode
+    ]
 
     for metanode in metanode_list:
         dot_count = metanode.node_id.count(".")
@@ -458,7 +466,11 @@ def normalize_connections(
         if type(connection.dest_node) is MetaNode:
             connection.dest_port = str(int(connection.dest_port) - 1)
 
-    metanodes = [node for node in node_list if type(node) is MetaNode]
+    metanodes = [
+        node
+        for node in node_list
+        if type(node) is MetaNode or type(node) is WrappedMetaNode
+    ]
     for metanode in metanodes:
         metanode = cast(MetaNode, metanode)
         meta_in_ports = list()
@@ -627,6 +639,18 @@ def create_node_files(output_workflow_path: str, nodes: List[AbstractNode]) -> N
             )
             save_workflow_knime(tree, metanode_path)
             create_node_files(metanode_path, node.children)
+        elif type(node) is WrappedMetaNode:
+            node = cast(WrappedMetaNode, node)
+            wf_tree = create_wrapped_metanode_workflow_knime_from_template(node)
+            settings_tree = create_wrapped_metanode_settings_from_template(node)
+            metanode_path = (
+                f"{output_workflow_path}/{os.path.dirname(node.get_filename())}"
+            )
+            save_workflow_knime(wf_tree, metanode_path)
+            save_node_settings_xml(
+                settings_tree, f"{output_workflow_path}/{node.get_filename()}"
+            )
+            create_node_files(metanode_path, node.children)
 
 
 def create_node_settings_from_template(node: Node) -> ET.ElementTree:
@@ -649,7 +673,12 @@ def create_node_settings_from_template(node: Node) -> ET.ElementTree:
             set_entry_element_type(value)
 
     for value in node.factory_settings:
-        set_entry_element_type(value)
+        k = list(value.keys())[0]
+        v = value[k]
+        if type(v) is list:
+            set_config_element_type(value)
+        else:
+            set_entry_element_type(value)
 
     node.extract_variables_from_model()
     template_root = ET.fromstring(template.render(node=node))
@@ -674,7 +703,11 @@ def create_workflow_knime_from_template(
         set_class_for_global_variables(workflow.variables)
     template = jinja_env.get_template("workflow_template.xml")
     nodes = [node for node in node_list if type(node) is Node]
-    metanodes = [node for node in node_list if type(node) is MetaNode]
+    metanodes = [
+        node
+        for node in node_list
+        if type(node) is MetaNode or type(node) is WrappedMetaNode
+    ]
     data = {
         "nodes": nodes,
         "metanodes": metanodes,
@@ -698,7 +731,11 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
 
     template = jinja_env.get_template("workflow_template.xml")
     nodes = [node for node in metanode.children if type(node) is Node]
-    metanodes = [node for node in metanode.children if type(node) is MetaNode]
+    metanodes = [
+        node
+        for node in metanode.children
+        if type(node) is MetaNode or type(node) is WrappedMetaNode
+    ]
 
     data = {
         "name": metanode.name,
@@ -706,6 +743,69 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
         "metanodes": metanodes,
         "connections": metanode.connections,
         "meta_in_ports": metanode.meta_in_ports,
+        "meta_out_ports": metanode.meta_out_ports,
+    }
+
+    return ET.ElementTree(ET.fromstring(template.render(data)))
+
+
+def create_wrapped_metanode_workflow_knime_from_template(
+    metanode: WrappedMetaNode
+) -> ET.ElementTree:
+    """
+    Creates an ElementTree with the provided node list and connection list
+
+    Args:
+        metanode (MetaNode): metanode definition
+
+    Returns:
+        ElementTree: ElementTree populated with metanode and  associated
+        connections
+    """
+
+    template = jinja_env.get_template("workflow_template.xml")
+    nodes = [node for node in metanode.children if type(node) is Node]
+    metanodes = [
+        node
+        for node in metanode.children
+        if type(node) is MetaNode or type(node) is WrappedMetaNode
+    ]
+
+    data = {
+        "name": metanode.name,
+        "nodes": nodes,
+        "metanodes": metanodes,
+        "connections": metanode.connections,
+    }
+
+    return ET.ElementTree(ET.fromstring(template.render(data)))
+
+
+def create_wrapped_metanode_settings_from_template(
+    metanode: WrappedMetaNode
+) -> ET.ElementTree:
+    """
+    Creates an ElementTree with the provided node list and connection list
+
+    Args:
+        metanode (MetaNode): metanode definition
+
+    Returns:
+        ElementTree: ElementTree populated with metanode and  associated
+        connections
+    """
+
+    template = jinja_env.get_template("wrapped_settings_template.xml")
+    virtual_in = [
+        node for node in metanode.children if node.name == "WrappedNode Input"
+    ].pop()
+    virtual_out = [
+        node for node in metanode.children if node.name == "WrappedNode Output"
+    ].pop()
+    data = {
+        "virtual_in_id": virtual_in.get_base_id(),
+        "meta_in_ports": metanode.meta_in_ports,
+        "virtual_out_id": virtual_out.get_base_id(),
         "meta_out_ports": metanode.meta_out_ports,
     }
 

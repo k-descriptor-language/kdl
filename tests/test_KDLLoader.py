@@ -450,6 +450,19 @@ def test_exitGlobal_variables(mocker):
 def test_exitMeta_settings_connection(mocker):
     ctx = mocker.MagicMock()
 
+    ctx.node.return_value.node_id.return_value.getText.return_value = "1"
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
+
     connection = mocker.MagicMock()
     ctx.connection.return_value = [connection]
 
@@ -540,6 +553,17 @@ def test_exitMeta_settings_connection(mocker):
 def test_exitMeta_settings_var_connection(mocker):
     ctx = mocker.MagicMock()
 
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
+
     var_connection = mocker.MagicMock()
     ctx.var_connection.return_value = [var_connection]
 
@@ -623,6 +647,17 @@ def test_exitMeta_settings_var_connection(mocker):
 
 def test_exitMeta_settings_metaconnection_in(mocker):
     ctx = mocker.MagicMock()
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     connection = mocker.MagicMock()
 
@@ -714,6 +749,17 @@ def test_exitMeta_settings_metaconnection_in(mocker):
 def test_exitMeta_settings_metaconnection_out(mocker):
     ctx = mocker.MagicMock()
 
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
+
     connection = mocker.MagicMock()
 
     ctx.meta_connection.return_value = [connection]
@@ -804,6 +850,17 @@ def test_exitMeta_settings_metaconnection_out(mocker):
 def test_exitMeta_settings_metaconnection_in_var(mocker):
     ctx = mocker.MagicMock()
 
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
+
     connection = mocker.MagicMock()
 
     ctx.meta_var_connection.return_value = [connection]
@@ -893,6 +950,17 @@ def test_exitMeta_settings_metaconnection_in_var(mocker):
 
 def test_exitMeta_settings_metaconnection_out_var(mocker):
     ctx = mocker.MagicMock()
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     connection = mocker.MagicMock()
 

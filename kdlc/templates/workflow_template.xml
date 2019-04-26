@@ -57,7 +57,7 @@
         <entry key="id" type="xint" value="{{metanode.get_base_id()}}" />
         <entry key="node_settings_file" type="xstring" value="{{metanode.get_filename()}}" />
         <entry key="node_is_meta" type="xboolean" value="true" />
-        <entry key="node_type" type="xstring" value="MetaNode" />
+        <entry key="node_type" type="xstring" value="{{metanode.type}}" />
         <entry key="ui_classname" type="xstring" value="org.knime.core.node.workflow.NodeUIInformation" />
         <config key="ui_settings">
             <config key="extrainfo.node.bounds">
