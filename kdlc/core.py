@@ -145,6 +145,9 @@ def extract_entry_value(tree: ET.Element, element_key: str) -> str:
     element = tree.find(f"./knime:entry[@key='{element_key}']", NS)
     if element is not None:
         value = element.attrib["value"]
+    else:
+        ex = ValueError(f"Value not found for element_key: {element_key}")
+        raise ex
     return value
 
 

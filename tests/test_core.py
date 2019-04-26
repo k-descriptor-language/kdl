@@ -555,6 +555,30 @@ def test_extract_node_from_settings_xml_fail_var(my_setup):
         )
 
 
+def test_extract_entry_value(my_setup):
+    tree = ET.fromstring(
+        '<config xmlns="http://www.knime.org/2008/09/XMLConfig" '
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+        'xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig '
+        'http://www.knime.org/XMLConfig_2008_09.xsd" key="settings.xml">'
+        '<entry key="node-name" type="xstring" value="CSV Reader"/></config>'
+    )
+    result = "CSV Reader"
+    assert kdlc.extract_entry_value(tree, "node-name") == result
+
+
+def test_extract_entry_value_none(my_setup):
+    tree = ET.fromstring(
+        '<config xmlns="http://www.knime.org/2008/09/XMLConfig" '
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+        'xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig '
+        'http://www.knime.org/XMLConfig_2008_09.xsd" key="settings.xml">'
+        '<entry key="node-name" type="xstring" value="CSV Reader"/></config>'
+    )
+    with pytest.raises(Exception):
+        kdlc.extract_entry_value(tree, "test")
+
+
 def test_extract_entry_tag_string(my_setup):
     tree = ET.fromstring('<entry key="node-name" type="xstring" value="CSV Reader"/>')
 
