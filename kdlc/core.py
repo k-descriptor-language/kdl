@@ -91,44 +91,6 @@ def extract_node_from_settings_xml(node_id: str, input_file: str) -> Node:
     feature_symbolic_name = extract_entry_value(root, "node-feature-symbolic-name")
     feature_version = extract_entry_value(root, "node-feature-version")
 
-    """
-    name_ele = root.find("./knime:entry[@key='name']", NS)
-    if name_ele is not None:
-        name = name_ele.attrib["value"]
-
-    factory_ele = root.find("./knime:entry[@key='factory']", NS)
-    if factory_ele is not None:
-        factory = factory_ele.attrib["value"]
-
-    bundle_name_ele = root.find("./knime:entry[@key='node-bundle-name']", NS)
-    if bundle_name_ele is not None:
-        bundle_name = bundle_name_ele.attrib["value"]
-
-    bundle_symbolic_name_ele = root.find(
-        "./knime:entry[@key='node-bundle-symbolic-name']", NS
-    )
-    if bundle_symbolic_name_ele is not None:
-        bundle_symbolic_name = bundle_symbolic_name_ele.attrib["value"]
-
-    bundle_version_ele = root.find("./knime:entry[@key='node-bundle-version']", NS)
-    if bundle_version_ele is not None:
-        bundle_version = bundle_version_ele.attrib["value"]
-
-    feature_name_ele = root.find("./knime:entry[@key='node-feature-name']", NS)
-    if feature_name_ele is not None:
-        feature_name = feature_name_ele.attrib["value"]
-
-    feature_symbolic_name_ele = root.find(
-        "./knime:entry[@key='node-feature-symbolic-name']", NS
-    )
-    if feature_symbolic_name_ele is not None:
-        feature_symbolic_name = feature_symbolic_name_ele.attrib["value"]
-
-    feature_version_ele = root.find("./knime:entry[@key='node-feature-version']", NS)
-    if feature_version_ele is not None:
-        feature_version = feature_version_ele.attrib["value"]
-    """
-
     node = Node(
         node_id=node_id,
         name=name,
