@@ -1,5 +1,6 @@
 import kdlc
 import json
+import pprint
 from kdlc.objects import TemplateCatalogue
 
 
@@ -3309,6 +3310,9 @@ def test_node_settings_merge(my_setup):
                     },
                     {
                         "included_names": [
+                            {
+                                "array-size": 0
+                            }
                         ]
                     },
                     {
@@ -3394,41 +3398,41 @@ def test_node_settings_merge(my_setup):
     } 
     """
 
-    kdl_settings = """
+    kdl_settings = """ {
         "name": "Table to JSON",
         "factory": "org.knime.CustomFactory",
         "newField": "field to test",
         "model": [
-            {
-                "selectedColumns": [
                     {
-                        "nestedField": "",
-                        "included_names": [
+                        "selectedColumns": [
                             {
-                                "array-size": 2
-                            },
-                            {
-                                "0": "MaritalStatus"
-                            },
-                            {
-                                "1": "Gender"
+                                "included_names": [
+                                    {
+                                        "array-size": 2
+                                    },
+                                    {
+                                        "0": "MaritalStatus"
+                                    },
+                                    {
+                                        "1": "Gender"
+                                    }
+                                ]
                             }
                         ]
                     }
                 ]
-            }
-        
-        ]
+    }
     """
 
     template = json.loads(template_json)
     node_settings = json.loads(kdl_settings)
 
-    node_settings = TemplateCatalogue.merge_settings(template, node_settings)
+    merged = TemplateCatalogue.merge_settings(template, node_settings)
 
-    assert node_settings["name"] == "Table to JSON"
-    assert node_settings["factory"] == "org.knime.CustomFactory"
-    assert node_settings["newField"] == "field to test"
-    assert node_settings["model"][0]["selectedColumns"][0]["nestedField"] == ""
-    assert len(node_settings["model"][0]["selectedColumns"][0]["included_names"]) == 3
+    assert merged["name"] == "Table to JSON"
+    assert merged["factory"] == "org.knime.CustomFactory"
+    assert merged["newField"] == "field to test"
+    assert len(merged["model"][0]["selectedColumns"][1]["included_names"]) == 3
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(merged)
 
