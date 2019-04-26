@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://www.knime.org/2008/09/XMLConfig" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig http://www.knime.org/XMLConfig_2008_09.xsd" key="settings.xml">
+<?xml version='1.0' encoding='UTF-8'?>
+<config xmlns="http://www.knime.org/2008/09/XMLConfig" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" key="settings.xml" xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig http://www.knime.org/XMLConfig_2008_09.xsd">
     <entry key="node_file" type="xstring" value="settings.xml" />
     <config key="flow_stack" />
     <config key="internal_node_subsettings">
@@ -21,7 +21,7 @@
                 <entry key="caseSensitive" type="xboolean" value="true" />
             </config>
         </config>
-        <entry key="variable-prefix" type="xstring" isnull="true" value="" />
+        <entry isnull="true" key="variable-prefix" type="xstring" value="" />
         <entry key="sub-node-description" type="xstring" value="" />
         <config key="port-names">
             <entry key="array-size" type="xint" value="1" />
@@ -32,12 +32,8 @@
             <entry key="0" type="xstring" value="" />
         </config>
     </config>
-    <entry key="customDescription" type="xstring" isnull="true" value="" />
-    <entry key="state" type="xstring" value="IDLE" />
-    <config key="nodecontainer_message">
-        <entry key="type" type="xstring" value="WARNING" />
-        <entry key="message" type="xstring" value="Outer workflow does not have input data, execute it first" />
-    </config>
+    <entry isnull="true" key="customDescription" type="xstring" value="" />
+    <entry key="state" type="xstring" value="CONFIGURED" />
     <entry key="factory" type="xstring" value="org.knime.core.node.workflow.virtual.subnode.VirtualSubNodeInputNodeFactory" />
     <entry key="node-name" type="xstring" value="WrappedNode Input" />
     <entry key="node-bundle-name" type="xstring" value="KNIME Core API" />
@@ -57,16 +53,16 @@
         </config>
     </config>
     <entry key="name" type="xstring" value="WrappedNode Input" />
-    <entry key="hasContent" type="xboolean" value="false" />
+    <entry key="hasContent" type="xboolean" value="true" />
     <entry key="isInactive" type="xboolean" value="false" />
     <config key="ports">
         <config key="port_1">
             <entry key="index" type="xint" value="1" />
-            <entry key="port_dir_location" type="xstring" isnull="true" value="" />
+            <entry isnull="true" key="port_dir_location" type="xstring" value="" />
         </config>
     </config>
     <config key="filestores">
-        <entry key="file_store_location" type="xstring" isnull="true" value="" />
-        <entry key="file_store_id" type="xstring" isnull="true" value="" />
+        <entry isnull="true" key="file_store_location" type="xstring" value="" />
+        <entry isnull="true" key="file_store_id" type="xstring" value="" />
     </config>
 </config>
