@@ -107,9 +107,9 @@ class Node(AbstractNode):
             model_list (list): List of model configurations
             var_list (list): List of variables
         """
-        model_iter = iter(model_list)
-        curr_model = next(model_iter)
         for curr_variable in var_list:
+            model_iter = iter(model_list)
+            curr_model = next(model_iter)
             curr_model_key = list(curr_model.keys())[0]
             curr_model_val = curr_model[curr_model_key]
 
@@ -121,7 +121,12 @@ class Node(AbstractNode):
                 curr_model_key = list(curr_model.keys())[0]
                 curr_model_val = curr_model[curr_model_key]
 
-            if type(curr_model_val) is list and type(curr_variable_val) is list:
+            if (
+                type(curr_model_val) is list
+                and curr_model_val
+                and type(curr_variable_val) is list
+                and curr_variable_val
+            ):
                 self.__merge_variables_helper(curr_model_val, curr_variable_val)
             else:
                 for curr in curr_variable_val:
