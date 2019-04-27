@@ -14,10 +14,10 @@ section above ::
 
    (<source_node_id>:<source_port>)-->(<dest_node_id>:<dest_port>)
 
-All of the various connections are encapsulated within the ``"connections"`` section of a Workflow
-wrapper object. For example the following denotes a simple workflow where the output
-of node_1:port_1 is connected to the input of node_2:port_1, whose output is connected to
-node_3:port_1 ::
+All of the various connections are encapsulated within the ``"connections"`` section of
+the ``Workflow {...}`` wrapper. For example the following denotes a simple workflow where the
+output of node_1:port_1 is connected to the input of node_2:port_1, whose output is connected
+to node_3:port_1 ::
 
    Workflow {
        "connections": {
@@ -26,7 +26,7 @@ node_3:port_1 ::
        }
    }
 
-This example is the representation of the above KDL within KNIME
+This example is the representation of the above KDL within the KNIME GUI
 
 .. figure:: images/Workflow1.png
    :align:  center
@@ -44,7 +44,7 @@ following example, node_3 is a Joiner node which has multiple inports ::
        }
    }
 
-This example is the representation of the above KDL within KNIME
+This example is the representation of the above KDL within the KNIME GUI
 
 .. figure:: images/Workflow2.png
    :align:  center
