@@ -76,13 +76,41 @@ This example is the representation of the above KDL within the KNIME GUI
 .. figure:: images/Workflow2.png
    :align:  center
 
-Workflow Variables
+Flow Variables
 ------------------
-
+Flow variables are used in KNIME to parametrize workflows when node settings
+need to be determined dynamically.  KDL supports usage and creation of both Global
+Flow variables as well as variables exposed from a node settings attribute.
 
 Global Variables
 ++++++++++++++++
+Flow variables can be exposed at the workflow level, allowing those variables to referenced
+within any node.  This is accomplished within KDL by the addition of the ``"variables"``
+attribute within the ``Workflow {...}`` wrapper.  The value of the ``"variables"`` attribute
+is simple a JSON list representation of the global flow variables::
 
+   Workflow {
+       "variables": [
+           {
+               "input_file": "/Users/kdl/knime-workspace/Data/Demographics.csv"
+           },
+           {
+               "filter_int": 5
+           },
+           {
+               "filter_double": 1.5
+           }
+       ],
+       "connections": {
+           (n1:1)-->(n2:1),
+           (n2:1)-->(n3:1)
+       }
+   }
+
+This example is the representation of the variables in the above KDL within the KNIME GUI
+
+.. figure:: images/GlobalVar.png
+   :align:  center
 
 Variable Connections
 ++++++++++++++++++++
