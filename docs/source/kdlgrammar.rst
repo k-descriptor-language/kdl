@@ -114,11 +114,102 @@ This example is the representation of the variables in the above KDL within the 
 
 Variable Connections
 ++++++++++++++++++++
+Flow variables are carried along branches in a workflow via data links (black edges
+between nodes) and also via explicit variable links (red edges between nodes).  KDL provides
+a user-friendly syntactic sugar for exposing these explicit variable connections within the
+``"connections"`` section of the workflow using a tilde-arrow ``~~>`` in the connection
+definition. ::
+
+   Workflow {
+       "connections": {
+           (n1:1)-->(n2:1),
+           (n2:1)-->(n3:1),
+           (n2)~~>(n3)
+       }
+   }
+
+This example is the representation of the variable connection in the above KDL within the
+KNIME GUI
+
+.. figure:: images/VarConnection1.png
+   :align:  center
+
+The port does not need to be specified for variable connections to/from the upper corner of
+nodes but there are some nodes (e.g. Quickforms String Input) which allow variable connections
+that require a port to be specified. ::
+
+   Workflow {
+       "connections": {
+           (n1:1)~~>(n2),
+       }
+   }
+
+This example is the representation of the variable connection in the above KDL within the
+KNIME GUI
+
+.. figure:: images/VarConnection2.png
+   :align:  center
 
 
-used_variable and exposed_variable
+used_variable
 ++++++++++++++++++++++++++++++++++
+Flow variables are referenced within a node's settings definition by adding the ``"used_variable"``
+attribute to the setting that is referencing the variable. In this case the CSV Reader node is
+referencing the ``"input_file"`` global variable exposed in the example above. The value of the
+``"url"`` setting can be omitted as it will be dynamically populated by the variable. ::
 
+   Nodes {
+       (n1): {
+           "name": "CSV Reader",
+           "model": [
+            {
+                "url": "",
+                "used_variable": "input_file"
+            }
+       }
+   }
+
+This example is the representation of referencing a variable in the above KDL within the
+KNIME GUI
+
+.. figure:: images/UsedVar.png
+   :align:  center
+
+exposed_variable
+++++++++++++++++++++++++++++++++++
+As mentioned earlier, flow variables can also defined within a node by exposing a node's setting
+attribute as a variable, using the ``"exposed_variable"`` attribute.  In this case the Column Filter
+node is exposing the value of the ``"array-size"`` setting as a flow variable that may be
+referenced downstream in the workflow. ::
+
+   Nodes {
+       (n1): {
+           "name": "Column FIlter",
+           "model": [
+            {
+                "column-filter": [
+                    {
+                        "filter-type": "STANDARD"
+                    },
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 11,
+                                "exposed_variable": "array-size"
+                            },
+                            ...
+                        ]
+                    }
+                ]
+            }
+       }
+   }
+
+This example is the representation of exposing a variable in the above KDL within the
+KNIME GUI
+
+.. figure:: images/ExposedVar.png
+   :align:  center
 
 Meta Nodes
 ----------
@@ -184,6 +275,14 @@ of 1.
 
 Wrapped Meta Nodes
 ------------------
+<<<<<<< HEAD
+=======
+
+
+WrappedInput/WrappedOut
++++++++++++++++++++++++
+
+>>>>>>> 0a58895e325b842552c9707e2c38f9dd956679b6
 
 In comparison to meta nodes, which simply contain subworkflows, 
 `wrapped meta nodes <https://www.knime.com/blog/wrapped-metanodes-and-metanode-templates-in-knime-analytics-platform>`_ 
