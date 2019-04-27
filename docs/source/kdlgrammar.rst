@@ -92,23 +92,69 @@ used_variable and exposed_variable
 ++++++++++++++++++++++++++++++++++
 
 
-Metanodes
----------
+Meta Nodes
+----------
 
+Within KNIME, `meta nodes <https://www.knime.com/metanodes>`_ provide the capability 
+to organize a workflow by creating subworkflows of groupings of nodes.  KDL defines meta 
+nodes in a similar syntax as regular nodes.  Listed below illustrates the syntax for a 
+meta node containing two children nodes. ::
 
-Parent/Child IDs
-++++++++++++++++
+   Nodes {
+       (n1): {
+           "name": "Metanode",
+           "type": "MetaNode",
+           "connections": {
+               (META_IN:1)-->(n1:1),
+               (n1:1)-->(n2:1),
+               (n2:1)-->(META_OUT:1)
+           },
+           "meta_in_ports": [
+               {
+                   "1": "org.knime.core.node.BufferedDataTable"
+               }
+           ],
+           "meta_out_ports": [
+               {
+                   "1": "org.knime.core.node.BufferedDataTable"
+               }
+           ]
+       },
+       (n1.1): {
+          "name": "CSV Reader"
+       },
+       (n1.2): {
+          "name": "Table to JSON"
+       }
+   }
 
+Within the example above, the n1 node serves as the meta node and the n1.1 and n1.2 nodes serve 
+as the child nodes of the meta node.  
 
-Meta In/Out Ports
-+++++++++++++++++
+Meta Node Attributes
+++++++++++++++++++++
 
+The n1 meta node has five important attributes, which 
+consists of name, type, connections, meta_in_ports, and meta_out_ports.  The name attribute 
+serves as a unique name for defining the meta node at hand.  The type attribute signifies 
+that this node is a meta node.  The connections object defines the relationships incoming to 
+the meta node via the META_IN relationship, the internal relationships within the meta node, 
+and the outgoing relationships via the META_OUT relationship.  The meta_in_ports and 
+meta_out_ports define arrays of the types of incoming and outgoing connections to the meta 
+node.  The objects within these arrays define the port number as the key of the object and 
+the value as the associated type.  In the example above, port 1 has a type of 
+BufferedDataTable.
 
-Connections
+Child Nodes
 +++++++++++
 
+The child nodes are defined similarly to regular nodes, but differ with regards to their 
+node identifiers.  The identifiers use dot notation to establish a parent child relationship.  
+The root of the identifier signifies the parent and the identifier following the separating dot 
+signifies the child.  For example, n1.1 specifies a child node of the metanode n1 with an id 
+of 1.
 
-Wrapped Metanodes
+Wrapped Meta Nodes
 -----------------
 
 
