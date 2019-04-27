@@ -53,7 +53,7 @@ to node_3:port_1 ::
        }
    }
 
-This example is the representation of the above KDL within the KNIME GUI
+This example is the representation of the above KDL within the KNIME GUI.
 
 .. figure:: images/Workflow1.png
    :align:  center
@@ -71,19 +71,21 @@ following example, node_3 is a Joiner node which has multiple inports ::
        }
    }
 
-This example is the representation of the above KDL within the KNIME GUI
+This example is the representation of the above KDL within the KNIME GUI.
 
 .. figure:: images/Workflow2.png
    :align:  center
 
 Flow Variables
 ------------------
+
 Flow variables are used in KNIME to parametrize workflows when node settings
 need to be determined dynamically.  KDL supports usage and creation of both Global
 Flow variables as well as variables exposed from a node settings attribute.
 
 Global Variables
 ++++++++++++++++
+
 Flow variables can be exposed at the workflow level, allowing those variables to referenced
 within any node.  This is accomplished within KDL by the addition of the ``"variables"``
 attribute within the ``Workflow {...}`` wrapper.  The value of the ``"variables"`` attribute
@@ -114,6 +116,7 @@ This example is the representation of the variables in the above KDL within the 
 
 Variable Connections
 ++++++++++++++++++++
+
 Flow variables are carried along branches in a workflow via data links (black edges
 between nodes) and also via explicit variable links (red edges between nodes).  KDL provides
 a user-friendly syntactic sugar for exposing these explicit variable connections within the
@@ -129,7 +132,7 @@ definition. ::
    }
 
 This example is the representation of the variable connection in the above KDL within the
-KNIME GUI
+KNIME GUI.
 
 .. figure:: images/VarConnection1.png
    :align:  center
@@ -145,7 +148,7 @@ that require a port to be specified. ::
    }
 
 This example is the representation of the variable connection in the above KDL within the
-KNIME GUI
+KNIME GUI.
 
 .. figure:: images/VarConnection2.png
    :align:  center
@@ -153,6 +156,7 @@ KNIME GUI
 
 used_variable
 ++++++++++++++++++++++++++++++++++
+
 Flow variables are referenced within a node's settings definition by adding the ``"used_variable"``
 attribute to the setting that is referencing the variable. In this case the CSV Reader node is
 referencing the ``"input_file"`` global variable exposed in the example above. The value of the
@@ -170,13 +174,14 @@ referencing the ``"input_file"`` global variable exposed in the example above. T
    }
 
 This example is the representation of referencing a variable in the above KDL within the
-KNIME GUI
+KNIME GUI.
 
 .. figure:: images/UsedVar.png
    :align:  center
 
 exposed_variable
 ++++++++++++++++++++++++++++++++++
+
 As mentioned earlier, flow variables can also defined within a node by exposing a node's setting
 attribute as a variable, using the ``"exposed_variable"`` attribute.  In this case the Column Filter
 node is exposing the value of the ``"array-size"`` setting as a flow variable that may be
@@ -206,7 +211,7 @@ referenced downstream in the workflow. ::
    }
 
 This example is the representation of exposing a variable in the above KDL within the
-KNIME GUI
+KNIME GUI.
 
 .. figure:: images/ExposedVar.png
    :align:  center
@@ -240,15 +245,25 @@ meta node containing two children nodes. ::
            ]
        },
        (n1.1): {
-          "name": "CSV Reader"
+          "name": "Row Filter"
        },
        (n1.2): {
-          "name": "Table to JSON"
+          "name": "Row Filter"
        }
    }
 
 Within the example above, the n1 node serves as the meta node and the n1.1 and n1.2 nodes serve 
 as the child nodes of the meta node.  
+
+The image below shows a meta node within the KNIME GUI.
+
+.. figure:: images/MetaNode-outside.png
+   :align:  center
+
+The image below shows inside a meta node within the KNIME GUI.
+
+.. figure:: images/MetaNode-inside.png
+   :align:  center
 
 Meta Node Attributes
 ++++++++++++++++++++
@@ -276,8 +291,65 @@ of 1.
 Wrapped Meta Nodes
 ------------------
 
+In comparison to meta nodes, which simply contain subworkflows, 
+`wrapped meta nodes <https://www.knime.com/blog/wrapped-metanodes-and-metanode-templates-in-knime-analytics-platform>`_ 
+encapsulate complete functionality.  This essentially means the wrapped meta node defines a 
+workflow of nodes and does not let in or out flow variables by default.  Listed below 
+illustrates a syntactical example of constructing a wrapped meta node. ::
 
-WrappedInput/WrappedOut
-+++++++++++++++++++++++
+    Nodes {
+        (n1): {
+            "name": "WrappedMetanode",
+            "type": "SubNode",
+            "connections": {
+                (n1:1)-->(n2:1),
+                (n2:1)-->(n3:1),
+                (n3:1)-->(n4:1)
+            },
+            "meta_in_ports": [
+                {
+                    "1": "org.knime.core.node.BufferedDataTable"
+                }
+            ],
+            "meta_out_ports": [
+                {
+                    "1": "org.knime.core.node.BufferedDataTable"
+                }
+            ]
+        },
+        (n1.1): {
+           "name": "WrappedNode Input"
+        },
+        (n1.2): {
+           "name": "Row Filter"
+        },
+        (n1.3): {
+           "name": "Row Filter"
+        },
+        (n1.4): {
+           "name": "WrappedNode Output"
+        }
+    }
 
+Similar to a meta node, a wrapped meta node constructs a parent-child relationship.  The 
+example above illustrates a wrapped meta node with four children.  What differentiates a 
+wrapped meta node from a meta node are the connections and the incoming as well as 
+outgoing nodes.  A wrapped meta node does not have META_IN or META_OUT connection, but rather 
+has a WrappedNode Input and WrappedNode Output.  Within the example, the WrappedNode Input is 
+n1.1, which serves as the entry node of the wrapped meta node, and the WrappedNode Output is 
+n1.4, which serves as the exit node of the wrapped meta node.
 
+The image below shows a wrapped meta node within the KNIME GUI.
+
+.. figure:: images/MetaNode-outside.png
+   :align:  center
+
+The image below shows inside a wrapped meta node within the KNIME GUI.
+
+.. figure:: images/MetaNode-inside.png
+   :align:  center
+
+The example above only demonstrates syntax and does define a functional KNIME workflow.  To 
+explore a working example of a wrapped meta node, then review the W_Meta examples in the 
+`examples folder <https://github.com/k-descriptor-language/kdl/tree/master/examples>`_ 
+of the KDL repository. 
