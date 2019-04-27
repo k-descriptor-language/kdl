@@ -183,10 +183,57 @@ signifies the child.  For example, n1.1 specifies a child node of the metanode n
 of 1.
 
 Wrapped Meta Nodes
------------------
+------------------
 
+In comparison to meta nodes, which simply contain subworkflows, 
+`wrapped meta nodes <https://www.knime.com/blog/wrapped-metanodes-and-metanode-templates-in-knime-analytics-platform>`_ 
+encapsulate complete functionality.  This essentially means the wrapped meta node defines a 
+workflow of nodes and does not let in or out flow variables by default.  Listed below 
+illustrates a syntactical example of constructing a wrapped meta node. ::
 
-WrappedInput/WrappedOut
-+++++++++++++++++++++++
+    Nodes {
+        (n1): {
+            "name": "WrappedMetanode",
+            "type": "SubNode",
+            "connections": {
+                (n1:1)-->(n2:1),
+                (n2:1)-->(n3:1),
+                (n3:1)-->(n4:1)
+            },
+            "meta_in_ports": [
+                {
+                    "1": "org.knime.core.node.BufferedDataTable"
+                }
+            ],
+            "meta_out_ports": [
+                {
+                    "1": "org.knime.core.node.BufferedDataTable"
+                }
+            ]
+        },
+        (n1.1): {
+           "name": "WrappedNode Input"
+        },
+        (n1.2): {
+           "name": "Row Filter"
+        },
+        (n1.3): {
+           "name": "Row Filter"
+        },
+        (n1.4): {
+           "name": "WrappedNode Output"
+        }
+    }
 
+Similar to a meta node, a wrapped meta node constructs a parent-child relationship.  The 
+example above illustrates a wrapped meta node with four children.  What differentiates a 
+wrapped meta node from a meta node are the connections and the incoming as well as 
+outgoing nodes.  A wrapped meta node does not have META_IN or META_OUT connection, but rather 
+has a WrappedNode Input and WrappedNode Output.  Within the example, the WrappedNode Input is 
+n1.1, which serves as the entry node of the wrapped meta node, and the WrappedNode Output is 
+n1.4, which serves as the exit node of the wrapped meta node.
 
+The example above only demonstrates syntax and does define a functional KNIME workflow.  To 
+explore a working example of a wrapped meta node, then review the W_Meta examples in the 
+`examples folder <https://github.com/k-descriptor-language/kdl/tree/master/examples>`_ 
+of the KDL repository. 
