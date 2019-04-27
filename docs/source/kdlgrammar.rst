@@ -143,7 +143,7 @@ that require a port to be specified. ::
 
    Workflow {
        "connections": {
-           (n1:1)~~>(n2),
+           (n1:1)~~>(n2)
        }
    }
 
