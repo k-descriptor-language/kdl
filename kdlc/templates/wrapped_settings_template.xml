@@ -22,6 +22,8 @@
         {% endfor %}
         {% endfor %}
     </config>
+    {% else %}
+    <config key="inports"/>
     {% endif %}
     <entry key="virtual-out-ID" type="xint" value="{{virtual_out_id}}" />
     {% if meta_out_ports %}
@@ -37,6 +39,8 @@
         {% endfor %}
         {% endfor %}
     </config>
+    {% else %}
+    <config key="outports"/>
     {% endif %}
     <entry key="layoutJSON" type="xstring" value="" />
     <entry key="hideInWizard" type="xboolean" value="false" />

@@ -1064,7 +1064,8 @@ def test_extract_nodes_from_filenames_wrapped(my_setup):
     node1.port_count = 1
     node1.model = [
         {
-            "url": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv"
+            "url": "/Users/jared/knime-workspace/Example "
+            "Workflows/TheData/Misc/Demographics.csv"
         },
         {"colDelimiter": ","},
         {"rowDelimiter": "%%00010"},
@@ -1117,7 +1118,8 @@ def test_extract_nodes_from_filenames_wrapped(my_setup):
     node10_4 = kdlc.Node(
         node_id="10.4",
         name="WrappedNode Input",
-        factory="org.knime.core.node.workflow.virtual.subnode.VirtualSubNodeInputNodeFactory",
+        factory="org.knime.core.node.workflow.virtual."
+        "subnode.VirtualSubNodeInputNodeFactory",
         bundle_name="KNIME Core API",
         bundle_symbolic_name="org.knime.core",
         bundle_version="3.7.2.v201904170949",
@@ -1159,7 +1161,8 @@ def test_extract_nodes_from_filenames_wrapped(my_setup):
     node10_5 = kdlc.Node(
         node_id="10.5",
         name="WrappedNode Output",
-        factory="org.knime.core.node.workflow.virtual.subnode.VirtualSubNodeOutputNodeFactory",
+        factory="org.knime.core.node.workflow.virtual.subnode"
+        ".VirtualSubNodeOutputNodeFactory",
         bundle_name="KNIME Core API",
         bundle_symbolic_name="org.knime.core",
         bundle_version="3.7.2.v201904170949",
@@ -3036,7 +3039,8 @@ def test_create_node_files_wrapped(my_setup):
     node10_4 = kdlc.Node(
         node_id="10.4",
         name="WrappedNode Input",
-        factory="org.knime.core.node.workflow.virtual.subnode.VirtualSubNodeInputNodeFactory",
+        factory="org.knime.core.node.workflow.virtual.subnode."
+        "VirtualSubNodeInputNodeFactory",
         bundle_name="KNIME Core API",
         bundle_symbolic_name="org.knime.core",
         bundle_version="3.7.2.v201904170949",
@@ -3078,7 +3082,8 @@ def test_create_node_files_wrapped(my_setup):
     node10_5 = kdlc.Node(
         node_id="10.5",
         name="WrappedNode Output",
-        factory="org.knime.core.node.workflow.virtual.subnode.VirtualSubNodeOutputNodeFactory",
+        factory="org.knime.core.node.workflow.virtual.subnode."
+        "VirtualSubNodeOutputNodeFactory",
         bundle_name="KNIME Core API",
         bundle_symbolic_name="org.knime.core",
         bundle_version="3.7.2.v201904170949",
@@ -3164,21 +3169,24 @@ def test_create_node_files_wrapped(my_setup):
     expected_result_3 = ET.parse(f"{test_resources_dir}/wrapped/input_settings.xml")
     expected_result_flattened_3 = [i.tag for i in expected_result_3.iter()]
     result_3 = ET.parse(
-        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)/WrappedNode Input (#4)/settings.xml"
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)"
+        f"/WrappedNode Input (#4)/settings.xml"
     )
     result_flattened_3 = [i.tag for i in result_3.iter()]
 
     expected_result_4 = ET.parse(f"{test_resources_dir}/wrapped/output_settings.xml")
     expected_result_flattened_4 = [i.tag for i in expected_result_4.iter()]
     result_4 = ET.parse(
-        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)/WrappedNode Output (#5)/settings.xml"
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)"
+        f"/WrappedNode Output (#5)/settings.xml"
     )
     result_flattened_4 = [i.tag for i in result_4.iter()]
 
     expected_result_5 = ET.parse(f"{test_resources_dir}/wrapped/rf_settings.xml")
     expected_result_flattened_5 = [i.tag for i in expected_result_5.iter()]
     result_5 = ET.parse(
-        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)/Row Filter (#2)/settings.xml"
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)"
+        f"/Row Filter (#2)/settings.xml"
     )
     result_flattened_5 = [i.tag for i in result_5.iter()]
 
