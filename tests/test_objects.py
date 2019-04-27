@@ -1,4 +1,7 @@
 import kdlc
+import json
+import pprint
+from kdlc.objects import TemplateCatalogue
 
 
 def test_connection_equal(my_setup):
@@ -3672,3 +3675,149 @@ def test_workflow_kdl_str(my_setup):
         "}\n"
     )
     assert result == workflow.kdl_str()
+
+
+def test_node_settings_merge(my_setup):
+    template_json = """ 
+    {
+        "name": "Table to JSON",
+        "factory": "org.knime.json.node.fromtable.TableToJsonNodeFactory",
+        "bundle_name": "JSON related functionality for KNIME",
+        "bundle_symbolic_name": "org.knime.json",
+        "bundle_version": "3.7.1.v201901281201",
+        "feature_name": "KNIME JSON-Processing",
+        "feature_symbolic_name": "org.knime.features.json.feature.group",
+        "feature_version": "3.7.1.v201901281201",
+        "model": [
+            {
+                "selectedColumns": [
+                    {
+                        "filter-type": "STANDARD"
+                    },
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "excluded_names": [
+                            {
+                                "array-size": 0
+                            }
+                        ]
+                    },
+                    {
+                        "enforce_option": "EnforceExclusion"
+                    },
+                    {
+                        "name_pattern": [
+                            {
+                                "pattern": ""
+                            },
+                            {
+                                "type": "Wildcard"
+                            },
+                            {
+                                "caseSensitive": true
+                            }
+                        ]
+                    },
+                    {
+                        "datatype": [
+                            {
+                                "typelist": [
+                                    {
+                                        "org.knime.core.data.StringValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.IntValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.DoubleValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.BooleanValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.LongValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.date.DateAndTimeValue": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "rowkey.key": "key"
+            },
+            {
+                "direction": "KeepRows"
+            },
+            {
+                "column.name.separator": "."
+            },
+            {
+                "output.column.name": "JSON"
+            },
+            {
+                "row.key.option": "omit"
+            },
+            {
+                "column.names.as.path": false
+            },
+            {
+                "remove.source.columns": false
+            },
+            {
+                "output.boolean.asNumbers": false
+            },
+            {
+                "missing.values.are.omitted": true
+            }
+        ],
+        "port_count": 1
+    } 
+    """
+
+    kdl_settings = """ {
+        "name": "Table to JSON",
+        "factory": "org.knime.CustomFactory",
+        "newField": "field to test",
+        "model": [
+                    {
+                        "selectedColumns": [
+                            {
+                                "included_names": [
+                                    {
+                                        "array-size": 2
+                                    },
+                                    {
+                                        "0": "MaritalStatus"
+                                    },
+                                    {
+                                        "1": "Gender"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+    }
+    """
+
+    template = json.loads(template_json)
+    node_settings = json.loads(kdl_settings)
+
+    merged = TemplateCatalogue.merge_settings(template, node_settings)
+
+    assert merged["name"] == "Table to JSON"
+    assert merged["factory"] == "org.knime.CustomFactory"
+    assert merged["newField"] == "field to test"
+    assert len(merged["model"][0]["selectedColumns"][1]["included_names"]) == 3
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(merged)

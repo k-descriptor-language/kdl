@@ -5,6 +5,7 @@ install:
 - pip install -e '.[dev]'
 script:
 - ./scripts/quality-check.sh 
+- ./scripts/templates-e2e.sh 
 after_success:
 - codecov
 notifications:

@@ -7,6 +7,9 @@ def test_exitNode_settings(mocker):
     ctx.node.return_value.node_id.return_value = node_id
     node_id.getText.return_value = "42"
 
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
+
     token_l_paren = mocker.MagicMock()
     token_l_paren.getText.return_value = "{"
     token_r_paren = mocker.MagicMock()
@@ -284,7 +287,7 @@ def test_exitNode_settings(mocker):
     ]
     ctx.json.return_value.children = children
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
 
     listener.exitNode_settings(ctx)
 
@@ -313,6 +316,9 @@ def test_exitConnection(mocker):
     source_node = mocker.MagicMock()
     ctx.source_node.return_value.node.return_value = source_node
 
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
+
     # source_node_id
     source_node.node_id.return_value.getText.return_value = "1"
 
@@ -332,7 +338,7 @@ def test_exitConnection(mocker):
     destination_node.port.return_value.port_id = destination_port_id
     destination_port_id.return_value.NUMBER.return_value.getText.return_value = "4"
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
 
     listener.exitConnection(ctx)
 
@@ -349,6 +355,9 @@ def test_exitVar_connection(mocker):
 
     source_node = mocker.MagicMock()
     ctx.source_node.return_value.node.return_value = source_node
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     # source_node_id
     source_node.node_id.return_value.getText.return_value = "1"
@@ -369,7 +378,7 @@ def test_exitVar_connection(mocker):
     destination_node.port.return_value.port_id = destination_port_id
     destination_port_id.return_value.NUMBER.return_value.getText.return_value = "0"
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
 
     listener.exitVar_connection(ctx)
 
@@ -382,6 +391,9 @@ def test_exitVar_connection(mocker):
 
 def test_exitGlobal_variables(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     token_l_paren = mocker.MagicMock()
     token_l_paren.getText.return_value = "{"
@@ -438,7 +450,7 @@ def test_exitGlobal_variables(mocker):
     ]
 
     ctx.json.return_value.children = children
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
 
     listener.exitGlobal_variables(ctx)
 
@@ -449,6 +461,9 @@ def test_exitGlobal_variables(mocker):
 
 def test_exitMeta_settings_connection(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     ctx.node.return_value.node_id.return_value.getText.return_value = "1"
 
@@ -540,7 +555,7 @@ def test_exitMeta_settings_connection(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.KDLLoader()
+    listener = kdlc.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.Connection(
         connection_id=0, source_id="1", source_port="1", dest_id="2", dest_port="1"
@@ -553,6 +568,9 @@ def test_exitMeta_settings_connection(mocker):
 
 def test_exitMeta_settings_connection_wrapped(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     ctx.node.return_value.node_id.return_value.getText.return_value = "1"
 
@@ -644,7 +662,7 @@ def test_exitMeta_settings_connection_wrapped(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.KDLLoader()
+    listener = kdlc.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.Connection(
         connection_id=0, source_id="1", source_port="1", dest_id="2", dest_port="1"
@@ -657,6 +675,9 @@ def test_exitMeta_settings_connection_wrapped(mocker):
 
 def test_exitMeta_settings_var_connection(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     mock_name = mocker.MagicMock()
     mock_name.getText.return_value = '"TestName"'
@@ -740,7 +761,7 @@ def test_exitMeta_settings_var_connection(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.KDLLoader()
+    listener = kdlc.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.VariableConnection(
         connection_id=0, source_id="1", source_port="0", dest_id="2", dest_port="0"
@@ -753,6 +774,9 @@ def test_exitMeta_settings_var_connection(mocker):
 
 def test_exitMeta_settings_metaconnection_in(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     mock_name = mocker.MagicMock()
     mock_name.getText.return_value = '"TestName"'
@@ -842,7 +866,7 @@ def test_exitMeta_settings_metaconnection_in(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.Connection(
         connection_id=0, source_id="-1", source_port="1", dest_id="2", dest_port="1"
@@ -855,6 +879,9 @@ def test_exitMeta_settings_metaconnection_in(mocker):
 
 def test_exitMeta_settings_metaconnection_out(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     mock_name = mocker.MagicMock()
     mock_name.getText.return_value = '"TestName"'
@@ -944,7 +971,7 @@ def test_exitMeta_settings_metaconnection_out(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.Connection(
         connection_id=0, source_id="1", source_port="1", dest_id="-1", dest_port="1"
@@ -957,6 +984,9 @@ def test_exitMeta_settings_metaconnection_out(mocker):
 
 def test_exitMeta_settings_metaconnection_in_var(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     mock_name = mocker.MagicMock()
     mock_name.getText.return_value = '"TestName"'
@@ -1046,7 +1076,7 @@ def test_exitMeta_settings_metaconnection_in_var(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.VariableConnection(
         connection_id=0, source_id="-1", source_port="1", dest_id="2", dest_port="0"
@@ -1059,6 +1089,9 @@ def test_exitMeta_settings_metaconnection_in_var(mocker):
 
 def test_exitMeta_settings_metaconnection_out_var(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     mock_name = mocker.MagicMock()
     mock_name.getText.return_value = '"TestName"'
@@ -1148,7 +1181,7 @@ def test_exitMeta_settings_metaconnection_out_var(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.VariableConnection(
         connection_id=0, source_id="1", source_port="0", dest_id="-1", dest_port="1"

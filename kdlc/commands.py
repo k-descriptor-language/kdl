@@ -4,8 +4,9 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 from kdlc.parser.KDLLexer import KDLLexer
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.KDLLoader import KDLLoader
-from kdlc.objects import AbstractNode, Workflow
+from kdlc.objects import AbstractNode, Workflow, TemplateCatalogue
 from typing import List
+import os
 
 
 def kdl_to_workflow(input_file: str, output_file: str) -> None:
@@ -14,7 +15,9 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
     stream = CommonTokenStream(lexer)
     parser = KDLParser(stream)
 
-    listener = KDLLoader()
+    template_catalogue_path = f"{os.path.dirname(__file__)}/node_templates"
+    template_catalogue = TemplateCatalogue(template_catalogue_path)
+    listener = KDLLoader(template_catalogue)
     walker = ParseTreeWalker()
 
     nodes_tree = parser.nodes()
