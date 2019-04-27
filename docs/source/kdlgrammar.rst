@@ -114,6 +114,41 @@ This example is the representation of the variables in the above KDL within the 
 
 Variable Connections
 ++++++++++++++++++++
+Flow variables are carried along branches in a workflow via data links (black edges
+between nodes) and also via explicit variable links (red edges between nodes).  KDL provides
+a user-friendly syntactic sugar for exposing these explicit variable connections within the
+``"connections"`` section of the workflow using a tilde-arrow ``~~>`` in the connection
+definition. ::
+
+   Workflow {
+       "connections": {
+           (n1:1)-->(n2:1),
+           (n2:1)-->(n3:1),
+           (n2)~~>(n3)
+       }
+   }
+
+This example is the representation of the variable connection in the above KDL within the
+KNIME GUI
+
+.. figure:: images/VarConnection1.png
+   :align:  center
+
+The port does not need to be specified for variable connections to/from the upper corner of
+nodes but there are some nodes (e.g. Quickforms String Input) which allow variable connections
+that require a port to be specified. ::
+
+   Workflow {
+       "connections": {
+           (n1:1)~~>(n2),
+       }
+   }
+
+This example is the representation of the variable connection in the above KDL within the
+KNIME GUI
+
+.. figure:: images/VarConnection2.png
+   :align:  center
 
 
 used_variable and exposed_variable
