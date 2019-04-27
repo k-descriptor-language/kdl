@@ -78,12 +78,14 @@ This example is the representation of the above KDL within the KNIME GUI
 
 Flow Variables
 ------------------
+
 Flow variables are used in KNIME to parametrize workflows when node settings
 need to be determined dynamically.  KDL supports usage and creation of both Global
 Flow variables as well as variables exposed from a node settings attribute.
 
 Global Variables
 ++++++++++++++++
+
 Flow variables can be exposed at the workflow level, allowing those variables to referenced
 within any node.  This is accomplished within KDL by the addition of the ``"variables"``
 attribute within the ``Workflow {...}`` wrapper.  The value of the ``"variables"`` attribute
@@ -114,6 +116,7 @@ This example is the representation of the variables in the above KDL within the 
 
 Variable Connections
 ++++++++++++++++++++
+
 Flow variables are carried along branches in a workflow via data links (black edges
 between nodes) and also via explicit variable links (red edges between nodes).  KDL provides
 a user-friendly syntactic sugar for exposing these explicit variable connections within the
@@ -153,6 +156,7 @@ KNIME GUI
 
 used_variable
 ++++++++++++++++++++++++++++++++++
+
 Flow variables are referenced within a node's settings definition by adding the ``"used_variable"``
 attribute to the setting that is referencing the variable. In this case the CSV Reader node is
 referencing the ``"input_file"`` global variable exposed in the example above. The value of the
@@ -177,6 +181,7 @@ KNIME GUI
 
 exposed_variable
 ++++++++++++++++++++++++++++++++++
+
 As mentioned earlier, flow variables can also defined within a node by exposing a node's setting
 attribute as a variable, using the ``"exposed_variable"`` attribute.  In this case the Column Filter
 node is exposing the value of the ``"array-size"`` setting as a flow variable that may be
@@ -275,14 +280,6 @@ of 1.
 
 Wrapped Meta Nodes
 ------------------
-<<<<<<< HEAD
-=======
-
-
-WrappedInput/WrappedOut
-+++++++++++++++++++++++
-
->>>>>>> 0a58895e325b842552c9707e2c38f9dd956679b6
 
 In comparison to meta nodes, which simply contain subworkflows, 
 `wrapped meta nodes <https://www.knime.com/blog/wrapped-metanodes-and-metanode-templates-in-knime-analytics-platform>`_ 
