@@ -1,6 +1,10 @@
 KDL Grammar
 ===========
 
+KDL serves as a textual representation of KNIME workflows.  The workflows consist of a variety 
+of nodes with differing responsibilities, which connect with edges to form a graph.  This 
+domain language provides the capability to modify and author workflows to run within KNIME.
+
 Nodes
 -----
 
