@@ -2,7 +2,14 @@ from .cli import prompt
 
 from .commands import kdl_to_workflow, workflow_to_kdl, build_knwf
 
-from .objects import Node, Connection, MetaNode, Workflow, VariableConnection
+from .objects import (
+    Node,
+    Connection,
+    MetaNode,
+    WrappedMetaNode,
+    Workflow,
+    VariableConnection,
+)
 
 from .KDLLoader import KDLLoader
 
@@ -15,6 +22,7 @@ from .core import (
     META_OUT,
     unzip_workflow,
     extract_node_from_settings_xml,
+    extract_entry_value,
     extract_entry_tag,
     extract_config_tag,
     extract_node_filenames,
@@ -49,6 +57,7 @@ __all__ = [
     "Connection",
     "Workflow",
     "MetaNode",
+    "WrappedMetaNode",
     "VariableConnection",
     "KDLLoader",
     "TMP_INPUT_DIR",
@@ -59,6 +68,7 @@ __all__ = [
     "META_OUT",
     "unzip_workflow",
     "extract_node_from_settings_xml",
+    "extract_entry_value",
     "extract_entry_tag",
     "extract_config_tag",
     "extract_global_wf_variables",

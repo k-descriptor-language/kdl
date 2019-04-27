@@ -6,13 +6,14 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 import tempfile
 from typing import List, Any, Dict, cast
 from kdlc.objects import (
+    AbstractNode,
+    AbstractConnection,
     Node,
     Connection,
-    MetaNode,
-    AbstractNode,
-    Workflow,
-    AbstractConnection,
     VariableConnection,
+    MetaNode,
+    WrappedMetaNode,
+    Workflow,
 )
 
 jinja_env = Environment(
@@ -81,41 +82,14 @@ def extract_node_from_settings_xml(node_id: str, input_file: str) -> Node:
     base_tree = ET.parse(input_file)
     root = base_tree.getroot()
 
-    name_ele = root.find("./knime:entry[@key='name']", NS)
-    if name_ele is not None:
-        name = name_ele.attrib["value"]
-
-    factory_ele = root.find("./knime:entry[@key='factory']", NS)
-    if factory_ele is not None:
-        factory = factory_ele.attrib["value"]
-
-    bundle_name_ele = root.find("./knime:entry[@key='node-bundle-name']", NS)
-    if bundle_name_ele is not None:
-        bundle_name = bundle_name_ele.attrib["value"]
-
-    bundle_symbolic_name_ele = root.find(
-        "./knime:entry[@key='node-bundle-symbolic-name']", NS
-    )
-    if bundle_symbolic_name_ele is not None:
-        bundle_symbolic_name = bundle_symbolic_name_ele.attrib["value"]
-
-    bundle_version_ele = root.find("./knime:entry[@key='node-bundle-version']", NS)
-    if bundle_version_ele is not None:
-        bundle_version = bundle_version_ele.attrib["value"]
-
-    feature_name_ele = root.find("./knime:entry[@key='node-feature-name']", NS)
-    if feature_name_ele is not None:
-        feature_name = feature_name_ele.attrib["value"]
-
-    feature_symbolic_name_ele = root.find(
-        "./knime:entry[@key='node-feature-symbolic-name']", NS
-    )
-    if feature_symbolic_name_ele is not None:
-        feature_symbolic_name = feature_symbolic_name_ele.attrib["value"]
-
-    feature_version_ele = root.find("./knime:entry[@key='node-feature-version']", NS)
-    if feature_version_ele is not None:
-        feature_version = feature_version_ele.attrib["value"]
+    name = extract_entry_value(root, "name")
+    factory = extract_entry_value(root, "factory")
+    bundle_name = extract_entry_value(root, "node-bundle-name")
+    bundle_symbolic_name = extract_entry_value(root, "node-bundle-symbolic-name")
+    bundle_version = extract_entry_value(root, "node-bundle-version")
+    feature_name = extract_entry_value(root, "node-feature-name")
+    feature_symbolic_name = extract_entry_value(root, "node-feature-symbolic-name")
+    feature_version = extract_entry_value(root, "node-feature-version")
 
     node = Node(
         node_id=node_id,
@@ -143,6 +117,12 @@ def extract_node_from_settings_xml(node_id: str, input_file: str) -> Node:
         if child.tag == ENTRY_TAG:
             entry = extract_entry_tag(child)
             node.factory_settings.append(entry)
+        elif child.tag == CONFIG_TAG:
+            config = extract_config_tag(child)
+            node.factory_settings.append(config)
+        else:
+            ex = ValueError("Invalid settings tag")
+            raise ex
 
     node.port_count = len(root.findall("./knime:config[@key='ports']/*", NS))
 
@@ -155,6 +135,26 @@ def extract_node_from_settings_xml(node_id: str, input_file: str) -> Node:
             raise ex
     node.merge_variables_into_model()
     return node
+
+
+def extract_entry_value(tree: ET.Element, element_key: str) -> str:
+    """
+    Extracts the value attribute from entry matching element_key
+
+    Args:
+        tree (Element): The tree to extract entry value from
+        element_key (str): The key of the value being extracted
+
+    Returns:
+        str: String containing entry value
+    """
+    element = tree.find(f"./knime:entry[@key='{element_key}']", NS)
+    if element is not None:
+        value = element.attrib["value"]
+    else:
+        ex = ValueError(f"Value not found for element_key: {element_key}")
+        raise ex
+    return value
 
 
 def extract_entry_tag(tree: ET.Element) -> Dict[str, Any]:
@@ -241,25 +241,15 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
     root = base_tree.getroot()
     for child in root.findall("./knime:config[@key='nodes']/knime:config", NS):
         node: Dict[str, Any] = dict()
-        node_id_ele = child.find("./knime:entry[@key='id']", NS)
-        if node_id_ele is not None:
-            node["node_id"] = node_id_ele.attrib["value"]
 
-        settings_file_ele = child.find("./knime:entry[@key='node_settings_file']", NS)
-        if settings_file_ele is not None:
-            node["filename"] = settings_file_ele.attrib["value"]
-
-        node_type_ele = child.find("./knime:entry[@key='node_type']", NS)
-        if node_type_ele is not None:
-            node["node_type"] = node_type_ele.attrib["value"]
+        node["node_id"] = extract_entry_value(child, "id")
+        node["filename"] = extract_entry_value(child, "node_settings_file")
+        node["node_type"] = extract_entry_value(child, "node_type")
 
         if node["node_type"] == "MetaNode":
             base_tree = ET.parse(f"{input_path}/{node['filename']}")
             root = base_tree.getroot()
-
-            name_ele = root.find("./knime:entry[@key='name']", NS)
-            if name_ele is not None:
-                node["name"] = name_ele.attrib["value"]
+            node["name"] = extract_entry_value(root, "name")
             node["children"] = extract_node_filenames(
                 f"{input_path}/{node['filename']}"
             )
@@ -270,14 +260,10 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
                 "/knime:config[@key='port_enum']/knime:config",
                 NS,
             ):
-                index_ele = port.find("./knime:entry[@key='index']", NS)
-                if index_ele is not None:
-                    index = str(int(index_ele.attrib["value"]) + 1)
-                object_class_ele = port.find(
-                    "./knime:config[@key='type']/knime:entry[@key='object_class']", NS
-                )
-                if object_class_ele is not None:
-                    object_class = object_class_ele.attrib["value"]
+                index = str(int(extract_entry_value(port, "index")) + 1)
+                port_type = port.find("./knime:config[@key='type']", NS)
+                if port_type is not None:
+                    object_class = extract_entry_value(port_type, "object_class")
 
                 if index and object_class:
                     meta_in_ports.append({index: object_class})
@@ -289,18 +275,57 @@ def extract_node_filenames(input_file: str) -> List[Dict[str, Any]]:
                 "/knime:config[@key='port_enum']/knime:config",
                 NS,
             ):
-                index_ele = port.find("./knime:entry[@key='index']", NS)
-                if index_ele is not None:
-                    index = str(int(index_ele.attrib["value"]) + 1)
-                object_class_ele = port.find(
-                    "./knime:config[@key='type']/knime:entry[@key='object_class']", NS
-                )
-                if object_class_ele is not None:
-                    object_class = object_class_ele.attrib["value"]
+                index = str(int(extract_entry_value(port, "index")) + 1)
+                port_type = port.find("./knime:config[@key='type']", NS)
+                if port_type is not None:
+                    object_class = extract_entry_value(port_type, "object_class")
 
                 if index and object_class:
                     meta_out_ports.append({index: object_class})
             node["meta_out_ports"] = meta_out_ports
+        elif node["node_type"] == "SubNode":
+
+            base_tree = ET.parse(f"{input_path}/{node['filename']}")
+            root = base_tree.getroot()
+
+            # Extract inports from settings.xml
+            meta_in_ports = list()
+            for port in root.findall("./knime:config[@key='inports']/knime:config", NS):
+                index = str(int(extract_entry_value(port, "index")) + 1)
+                port_type = port.find("./knime:config[@key='type']", NS)
+                if port_type is not None:
+                    object_class = extract_entry_value(port_type, "object_class")
+
+                if index and object_class:
+                    meta_in_ports.append({index: object_class})
+            node["meta_in_ports"] = meta_in_ports
+
+            # Extract outports from settings.xml
+            meta_out_ports = list()
+            for port in root.findall(
+                "./knime:config[@key='outports']/knime:config", NS
+            ):
+                index = str(int(extract_entry_value(port, "index")) + 1)
+                port_type = port.find("./knime:config[@key='type']", NS)
+                if port_type is not None:
+                    object_class = extract_entry_value(port_type, "object_class")
+
+                if index and object_class:
+                    meta_out_ports.append({index: object_class})
+            node["meta_out_ports"] = meta_out_ports
+
+            # Extract name and children from workflow.knime
+            workflow_file_path = (
+                f"{input_path}/{os.path.dirname(node['filename'])}/workflow.knime"
+            )
+
+            wf_tree = ET.parse(workflow_file_path)
+            root = wf_tree.getroot()
+
+            name_ele = root.find("./knime:entry[@key='name']", NS)
+            if name_ele is not None:
+                node["name"] = name_ele.attrib["value"]
+            node["children"] = extract_node_filenames(workflow_file_path)
 
         node_list.append(node)
     return node_list
@@ -344,6 +369,23 @@ def extract_nodes_from_filenames(
                 meta_out_ports=curr["meta_out_ports"],
             )
             input_node_list.append(metanode)
+        elif curr["node_type"] == "SubNode":
+            children = extract_nodes_from_filenames(
+                workflow_path=os.path.dirname(infile),
+                node_filenames=curr["children"],
+                parent_id=curr["node_id"],
+            )
+            infile = f"{os.path.dirname(infile)}/workflow.knime"
+            connections = extract_connections(infile, children)
+            wrapped_metanode = WrappedMetaNode(
+                node_id=curr["node_id"],
+                name=curr["name"],
+                children=children,
+                connections=connections,
+                meta_in_ports=curr["meta_in_ports"],
+                meta_out_ports=curr["meta_out_ports"],
+            )
+            input_node_list.append(wrapped_metanode)
 
     return input_node_list
 
@@ -362,7 +404,7 @@ def flatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
     flattened_list = list()
     for node in node_list:
         flattened_list.append(node)
-        if type(node) is MetaNode:
+        if type(node) is MetaNode or type(node) is WrappedMetaNode:
             flattened_list += flatten_node_list(cast(MetaNode, node).children)
     return flattened_list
 
@@ -376,7 +418,11 @@ def unflatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
     Returns:
         List[AbstractNode]: unflattened list of Nodes
     """
-    metanode_list = [node for node in node_list if type(node) is MetaNode]
+    metanode_list = [
+        node
+        for node in node_list
+        if type(node) is MetaNode or type(node) is WrappedMetaNode
+    ]
 
     for metanode in metanode_list:
         dot_count = metanode.node_id.count(".")
@@ -415,12 +461,22 @@ def normalize_connections(
         else:
             connection.dest_node = node_dict[connection.dest_id]
 
-        if type(connection.source_node) is MetaNode:
+        if type(connection.source_node) is MetaNode or (
+            type(connection.source_node) is Node
+            and connection.source_node.name == "WrappedNode Input"
+        ):
             connection.source_port = str(int(connection.source_port) - 1)
-        if type(connection.dest_node) is MetaNode:
+        if type(connection.dest_node) is MetaNode or (
+            type(connection.dest_node) is Node
+            and connection.dest_node.name == "WrappedNode Ouput"
+        ):
             connection.dest_port = str(int(connection.dest_port) - 1)
 
-    metanodes = [node for node in node_list if type(node) is MetaNode]
+    metanodes = [
+        node
+        for node in node_list
+        if type(node) is MetaNode or type(node) is WrappedMetaNode
+    ]
     for metanode in metanodes:
         metanode = cast(MetaNode, metanode)
         meta_in_ports = list()
@@ -458,23 +514,14 @@ def extract_connections(
     for i, child in enumerate(
         root.findall("./knime:config[@key='connections']/knime:config", NS)
     ):
-        source_id_ele = child.find("./knime:entry[@key='sourceID']", NS)
-        if source_id_ele is not None:
-            source_id = source_id_ele.attrib["value"]
-            source_node = META_IN if source_id == "-1" else node_dict[source_id]
+        source_id = extract_entry_value(child, "sourceID")
+        source_node = META_IN if source_id == "-1" else node_dict[source_id]
 
-        dest_id_ele = child.find("./knime:entry[@key='destID']", NS)
-        if dest_id_ele is not None:
-            dest_id = dest_id_ele.attrib["value"]
-            dest_node = META_OUT if dest_id == "-1" else node_dict[dest_id]
+        dest_id = extract_entry_value(child, "destID")
+        dest_node = META_OUT if dest_id == "-1" else node_dict[dest_id]
 
-        source_port_ele = child.find("./knime:entry[@key='sourcePort']", NS)
-        if source_port_ele is not None:
-            source_port = source_port_ele.attrib["value"]
-
-        dest_port_ele = child.find("./knime:entry[@key='destPort']", NS)
-        if dest_port_ele is not None:
-            dest_port = dest_port_ele.attrib["value"]
+        source_port = extract_entry_value(child, "sourcePort")
+        dest_port = extract_entry_value(child, "destPort")
 
         is_var_connection = False
 
@@ -550,22 +597,17 @@ def extract_global_wf_variables(input_file: str) -> List[Dict[str, Any]]:
         "./knime:config[@key='workflow_variables']/knime:config", NS
     ):
         variable: Dict[str, Any] = dict()
-        variable_name_ele = child.find("./knime:entry[@key='name']", NS)
-        if variable_name_ele is not None:
-            variable_name = variable_name_ele.attrib["value"]
+        variable_name = extract_entry_value(child, "name")
+        variable_class = extract_entry_value(child, "class")
+        variable_value = extract_entry_value(child, "value")
 
-        variable_class_ele = child.find("./knime:entry[@key='class']", NS)
-        if variable_class_ele is not None:
-            variable_class = variable_class_ele.attrib["value"]
-
-        variable_value_ele = child.find("./knime:entry[@key='value']", NS)
-        if variable_value_ele is not None and variable_class is not None:
+        if variable_value is not None and variable_class is not None:
             if variable_class == "STRING":
-                variable[variable_name] = variable_value_ele.attrib["value"]
+                variable[variable_name] = variable_value
             elif variable_class == "DOUBLE":
-                variable[variable_name] = float(variable_value_ele.attrib["value"])
+                variable[variable_name] = float(variable_value)
             elif variable_class == "INTEGER":
-                variable[variable_name] = int(variable_value_ele.attrib["value"])
+                variable[variable_name] = int(variable_value)
         global_variable_list.append(variable)
     return global_variable_list
 
@@ -603,6 +645,18 @@ def create_node_files(output_workflow_path: str, nodes: List[AbstractNode]) -> N
             )
             save_workflow_knime(tree, metanode_path)
             create_node_files(metanode_path, node.children)
+        elif type(node) is WrappedMetaNode:
+            node = cast(WrappedMetaNode, node)
+            wf_tree = create_wrapped_metanode_workflow_knime_from_template(node)
+            settings_tree = create_wrapped_metanode_settings_from_template(node)
+            metanode_path = (
+                f"{output_workflow_path}/{os.path.dirname(node.get_filename())}"
+            )
+            save_workflow_knime(wf_tree, metanode_path)
+            save_node_settings_xml(
+                settings_tree, f"{output_workflow_path}/{node.get_filename()}"
+            )
+            create_node_files(metanode_path, node.children)
 
 
 def create_node_settings_from_template(node: Node) -> ET.ElementTree:
@@ -625,7 +679,12 @@ def create_node_settings_from_template(node: Node) -> ET.ElementTree:
             set_entry_element_type(value)
 
     for value in node.factory_settings:
-        set_entry_element_type(value)
+        k = list(value.keys())[0]
+        v = value[k]
+        if type(v) is list:
+            set_config_element_type(value)
+        else:
+            set_entry_element_type(value)
 
     node.extract_variables_from_model()
     template_root = ET.fromstring(template.render(node=node))
@@ -650,7 +709,11 @@ def create_workflow_knime_from_template(
         set_class_for_global_variables(workflow.variables)
     template = jinja_env.get_template("workflow_template.xml")
     nodes = [node for node in node_list if type(node) is Node]
-    metanodes = [node for node in node_list if type(node) is MetaNode]
+    metanodes = [
+        node
+        for node in node_list
+        if type(node) is MetaNode or type(node) is WrappedMetaNode
+    ]
     data = {
         "nodes": nodes,
         "metanodes": metanodes,
@@ -674,7 +737,11 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
 
     template = jinja_env.get_template("workflow_template.xml")
     nodes = [node for node in metanode.children if type(node) is Node]
-    metanodes = [node for node in metanode.children if type(node) is MetaNode]
+    metanodes = [
+        node
+        for node in metanode.children
+        if type(node) is MetaNode or type(node) is WrappedMetaNode
+    ]
 
     data = {
         "name": metanode.name,
@@ -682,6 +749,68 @@ def create_metanode_workflow_knime_from_template(metanode: MetaNode) -> ET.Eleme
         "metanodes": metanodes,
         "connections": metanode.connections,
         "meta_in_ports": metanode.meta_in_ports,
+        "meta_out_ports": metanode.meta_out_ports,
+    }
+
+    return ET.ElementTree(ET.fromstring(template.render(data)))
+
+
+def create_wrapped_metanode_workflow_knime_from_template(
+    metanode: WrappedMetaNode
+) -> ET.ElementTree:
+    """
+    Creates an ElementTree with the provided node list and connection list
+
+    Args:
+        metanode (WrappedMetaNode): Wrapped Metanode definition
+
+    Returns:
+        ElementTree: ElementTree populated with Wrapped Metanode and associated
+        connections
+    """
+
+    template = jinja_env.get_template("workflow_template.xml")
+    nodes = [node for node in metanode.children if type(node) is Node]
+    metanodes = [
+        node
+        for node in metanode.children
+        if type(node) is MetaNode or type(node) is WrappedMetaNode
+    ]
+
+    data = {
+        "name": metanode.name,
+        "nodes": nodes,
+        "metanodes": metanodes,
+        "connections": metanode.connections,
+    }
+
+    return ET.ElementTree(ET.fromstring(template.render(data)))
+
+
+def create_wrapped_metanode_settings_from_template(
+    metanode: WrappedMetaNode
+) -> ET.ElementTree:
+    """
+    Creates an ElementTree with the provided node list and connection list
+
+    Args:
+        metanode (WrappedMetaNode): Wrapped Metanode definition
+
+    Returns:
+        ElementTree: ElementTree populated with Wrapped Metanode ports
+    """
+
+    template = jinja_env.get_template("wrapped_settings_template.xml")
+    virtual_in = [
+        node for node in metanode.children if node.name == "WrappedNode Input"
+    ].pop()
+    virtual_out = [
+        node for node in metanode.children if node.name == "WrappedNode Output"
+    ].pop()
+    data = {
+        "virtual_in_id": virtual_in.get_base_id(),
+        "meta_in_ports": metanode.meta_in_ports,
+        "virtual_out_id": virtual_out.get_base_id(),
         "meta_out_ports": metanode.meta_out_ports,
     }
 

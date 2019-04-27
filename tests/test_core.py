@@ -555,6 +555,30 @@ def test_extract_node_from_settings_xml_fail_var(my_setup):
         )
 
 
+def test_extract_entry_value(my_setup):
+    tree = ET.fromstring(
+        '<config xmlns="http://www.knime.org/2008/09/XMLConfig" '
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+        'xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig '
+        'http://www.knime.org/XMLConfig_2008_09.xsd" key="settings.xml">'
+        '<entry key="node-name" type="xstring" value="CSV Reader"/></config>'
+    )
+    result = "CSV Reader"
+    assert kdlc.extract_entry_value(tree, "node-name") == result
+
+
+def test_extract_entry_value_none(my_setup):
+    tree = ET.fromstring(
+        '<config xmlns="http://www.knime.org/2008/09/XMLConfig" '
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+        'xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig '
+        'http://www.knime.org/XMLConfig_2008_09.xsd" key="settings.xml">'
+        '<entry key="node-name" type="xstring" value="CSV Reader"/></config>'
+    )
+    with pytest.raises(Exception):
+        kdlc.extract_entry_value(tree, "test")
+
+
 def test_extract_entry_tag_string(my_setup):
     tree = ET.fromstring('<entry key="node-name" type="xstring" value="CSV Reader"/>')
 
@@ -747,6 +771,50 @@ def test_extract_node_filenames_meta(my_setup):
 
     assert (
         kdlc.extract_node_filenames(f"{test_resources_dir}/workflow_meta.knime")
+        == result
+    )
+
+
+def test_extract_node_filenames_wrapped(my_setup):
+    result = [
+        {
+            "node_id": "1",
+            "filename": "File Reader (#1)/settings.xml",
+            "node_type": "NativeNode",
+        },
+        {
+            "node_id": "7",
+            "filename": "CSV Writer (#7)/settings.xml",
+            "node_type": "NativeNode",
+        },
+        {
+            "node_id": "10",
+            "filename": "wrapped/settings_wrapped.xml",
+            "node_type": "SubNode",
+            "meta_in_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
+            "meta_out_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
+            "name": "WrappedMetanode",
+            "children": [
+                {
+                    "node_id": "2",
+                    "filename": "rf_settings.xml",
+                    "node_type": "NativeNode",
+                },
+                {
+                    "node_id": "4",
+                    "filename": "input_settings.xml",
+                    "node_type": "NativeNode",
+                },
+                {
+                    "node_id": "5",
+                    "filename": "output_settings.xml",
+                    "node_type": "NativeNode",
+                },
+            ],
+        },
+    ]
+    assert (
+        kdlc.extract_node_filenames(f"{test_resources_dir}/workflow_wrapped.knime")
         == result
     )
 
@@ -948,6 +1016,220 @@ def test_extract_nodes_from_filenames(my_setup):
     )
 
     result = [node1, metanode8]
+    assert result == kdlc.extract_nodes_from_filenames(
+        test_resources_dir, node_filename_list
+    )
+
+
+def test_extract_nodes_from_filenames_wrapped(my_setup):
+    node_filename_list = [
+        {"node_id": "1", "filename": "csv_settings.xml", "node_type": "NativeNode"},
+        {
+            "node_id": "10",
+            "filename": "wrapped/settings_wrapped.xml",
+            "node_type": "SubNode",
+            "meta_in_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
+            "meta_out_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
+            "name": "WrappedMetanode",
+            "children": [
+                {
+                    "node_id": "2",
+                    "filename": "rf_settings.xml",
+                    "node_type": "NativeNode",
+                },
+                {
+                    "node_id": "4",
+                    "filename": "input_settings.xml",
+                    "node_type": "NativeNode",
+                },
+                {
+                    "node_id": "5",
+                    "filename": "output_settings.xml",
+                    "node_type": "NativeNode",
+                },
+            ],
+        },
+    ]
+    node1 = kdlc.Node(
+        node_id="1",
+        name="CSV Reader",
+        factory=("org.knime.base.node.io.csvreader.CSVReaderNodeFactory"),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node1.port_count = 1
+    node1.model = [
+        {
+            "url": "/Users/jared/knime-workspace/Example "
+            "Workflows/TheData/Misc/Demographics.csv"
+        },
+        {"colDelimiter": ","},
+        {"rowDelimiter": "%%00010"},
+        {"quote": '"'},
+        {"commentStart": "#"},
+        {"hasRowHeader": True},
+        {"hasColHeader": True},
+        {"supportShortLines": False},
+        {"limitRowsCount": -1, "data_type": "xlong"},
+        {"skipFirstLinesCount": -1},
+        {"characterSetName": "", "isnull": True},
+        {"limitAnalysisCount": -1},
+    ]
+
+    node10_2 = kdlc.Node(
+        node_id="10.2",
+        name="Row Filter",
+        factory="org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_2.port_count = 1
+    node10_2.model = [
+        {
+            "rowFilter": [
+                {"RowFilter_TypeID": "RangeVal_RowFilter"},
+                {"ColumnName": "age"},
+                {"include": True},
+                {"deepFiltering": False},
+                {
+                    "lowerBound": [
+                        {"datacell": "org.knime.core.data.def.IntCell"},
+                        {"org.knime.core.data.def.IntCell": [{"IntCell": 20}]},
+                    ]
+                },
+                {
+                    "upperBound": [
+                        {"datacell": "org.knime.core.data.def.IntCell"},
+                        {"org.knime.core.data.def.IntCell": [{"IntCell": 40}]},
+                    ]
+                },
+            ]
+        }
+    ]
+
+    node10_4 = kdlc.Node(
+        node_id="10.4",
+        name="WrappedNode Input",
+        factory="org.knime.core.node.workflow.virtual."
+        "subnode.VirtualSubNodeInputNodeFactory",
+        bundle_name="KNIME Core API",
+        bundle_symbolic_name="org.knime.core",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_4.port_count = 1
+    node10_4.factory_settings = [
+        {
+            "port_0": [
+                {"index": 0},
+                {"type": [{"object_class": "org.knime.core.node.BufferedDataTable"}]},
+            ]
+        }
+    ]
+    node10_4.model = [
+        {
+            "variable-filter": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 0}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceInclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+            ]
+        },
+        {"variable-prefix": "", "isnull": True},
+        {"sub-node-description": ""},
+        {"port-names": [{"array-size": 1}, {"0": "Port 1"}]},
+        {"port-descriptions": [{"array-size": 1}, {"0": ""}]},
+    ]
+
+    node10_5 = kdlc.Node(
+        node_id="10.5",
+        name="WrappedNode Output",
+        factory="org.knime.core.node.workflow.virtual.subnode"
+        ".VirtualSubNodeOutputNodeFactory",
+        bundle_name="KNIME Core API",
+        bundle_symbolic_name="org.knime.core",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_5.port_count = 0
+    node10_5.factory_settings = [
+        {
+            "port_0": [
+                {"index": 0},
+                {"type": [{"object_class": "org.knime.core.node.BufferedDataTable"}]},
+            ]
+        }
+    ]
+    node10_5.model = [
+        {
+            "variable-filter": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 0}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceInclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+            ]
+        },
+        {"variable-prefix": "", "isnull": True},
+        {"port-names": [{"array-size": 1}, {"0": "Port 1"}]},
+        {"port-descriptions": [{"array-size": 1}, {"0": ""}]},
+    ]
+    connection2_5 = kdlc.Connection(
+        connection_id=0,
+        source_id="2",
+        source_port="1",
+        source_node=node10_2,
+        dest_id="5",
+        dest_port="1",
+        dest_node=node10_5,
+    )
+
+    connection4_2 = kdlc.Connection(
+        connection_id=1,
+        source_id="4",
+        source_port="1",
+        source_node=node10_4,
+        dest_id="2",
+        dest_port="1",
+        dest_node=node10_2,
+    )
+
+    metanode = kdlc.WrappedMetaNode(
+        node_id="10",
+        name="WrappedMetanode",
+        children=[node10_2, node10_4, node10_5],
+        connections=[connection2_5, connection4_2],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+    )
+
+    result = [node1, metanode]
+
     assert result == kdlc.extract_nodes_from_filenames(
         test_resources_dir, node_filename_list
     )
@@ -2716,6 +2998,203 @@ def test_create_node_files(my_setup):
     assert result_flattened_1 == expected_result_flattened_1
     assert result_flattened_2 == expected_result_flattened_2
     assert result_flattened_3 == expected_result_flattened_3
+
+
+def test_create_node_files_wrapped(my_setup):
+    node10_2 = kdlc.Node(
+        node_id="10.2",
+        name="Row Filter",
+        factory="org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_2.port_count = 1
+    node10_2.model = [
+        {
+            "rowFilter": [
+                {"RowFilter_TypeID": "RangeVal_RowFilter"},
+                {"ColumnName": "age"},
+                {"include": True},
+                {"deepFiltering": False},
+                {
+                    "lowerBound": [
+                        {"datacell": "org.knime.core.data.def.IntCell"},
+                        {"org.knime.core.data.def.IntCell": [{"IntCell": 20}]},
+                    ]
+                },
+                {
+                    "upperBound": [
+                        {"datacell": "org.knime.core.data.def.IntCell"},
+                        {"org.knime.core.data.def.IntCell": [{"IntCell": 40}]},
+                    ]
+                },
+            ]
+        }
+    ]
+
+    node10_4 = kdlc.Node(
+        node_id="10.4",
+        name="WrappedNode Input",
+        factory="org.knime.core.node.workflow.virtual.subnode."
+        "VirtualSubNodeInputNodeFactory",
+        bundle_name="KNIME Core API",
+        bundle_symbolic_name="org.knime.core",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_4.port_count = 1
+    node10_4.factory_settings = [
+        {
+            "port_0": [
+                {"index": 0},
+                {"type": [{"object_class": "org.knime.core.node.BufferedDataTable"}]},
+            ]
+        }
+    ]
+    node10_4.model = [
+        {
+            "variable-filter": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 0}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceInclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+            ]
+        },
+        {"variable-prefix": "", "isnull": True},
+        {"sub-node-description": ""},
+        {"port-names": [{"array-size": 1}, {"0": "Port 1"}]},
+        {"port-descriptions": [{"array-size": 1}, {"0": ""}]},
+    ]
+
+    node10_5 = kdlc.Node(
+        node_id="10.5",
+        name="WrappedNode Output",
+        factory="org.knime.core.node.workflow.virtual.subnode."
+        "VirtualSubNodeOutputNodeFactory",
+        bundle_name="KNIME Core API",
+        bundle_symbolic_name="org.knime.core",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_5.port_count = 0
+    node10_5.factory_settings = [
+        {
+            "port_0": [
+                {"index": 0},
+                {"type": [{"object_class": "org.knime.core.node.BufferedDataTable"}]},
+            ]
+        }
+    ]
+    node10_5.model = [
+        {
+            "variable-filter": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 0}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceInclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+            ]
+        },
+        {"variable-prefix": "", "isnull": True},
+        {"port-names": [{"array-size": 1}, {"0": "Port 1"}]},
+        {"port-descriptions": [{"array-size": 1}, {"0": ""}]},
+    ]
+    connection2_5 = kdlc.Connection(
+        connection_id=0,
+        source_id="2",
+        source_port="1",
+        source_node=node10_2,
+        dest_id="5",
+        dest_port="1",
+        dest_node=node10_5,
+    )
+
+    connection4_2 = kdlc.Connection(
+        connection_id=1,
+        source_id="4",
+        source_port="1",
+        source_node=node10_4,
+        dest_id="2",
+        dest_port="1",
+        dest_node=node10_2,
+    )
+
+    metanode = kdlc.WrappedMetaNode(
+        node_id="10",
+        name="WrappedMetanode",
+        children=[node10_2, node10_4, node10_5],
+        connections=[connection2_5, connection4_2],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+    )
+
+    node_list = [metanode]
+    kdlc.create_node_files(f"{test_generated_dir}/wrapped", node_list)
+
+    expected_result_1 = ET.parse(f"{test_resources_dir}/wrapped/settings_wrapped.xml")
+    expected_result_flattened_1 = [i.tag for i in expected_result_1.iter()]
+    result_1 = ET.parse(
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)/settings.xml"
+    )
+    result_flattened_1 = [i.tag for i in result_1.iter()]
+
+    expected_result_2 = ET.parse(f"{test_resources_dir}/wrapped/workflow.knime")
+    expected_result_flattened_2 = [i.tag for i in expected_result_2.iter()]
+    result_2 = ET.parse(
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)/workflow.knime"
+    )
+    result_flattened_2 = [i.tag for i in result_2.iter()]
+
+    expected_result_3 = ET.parse(f"{test_resources_dir}/wrapped/input_settings.xml")
+    expected_result_flattened_3 = [i.tag for i in expected_result_3.iter()]
+    result_3 = ET.parse(
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)"
+        f"/WrappedNode Input (#4)/settings.xml"
+    )
+    result_flattened_3 = [i.tag for i in result_3.iter()]
+
+    expected_result_4 = ET.parse(f"{test_resources_dir}/wrapped/output_settings.xml")
+    expected_result_flattened_4 = [i.tag for i in expected_result_4.iter()]
+    result_4 = ET.parse(
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)"
+        f"/WrappedNode Output (#5)/settings.xml"
+    )
+    result_flattened_4 = [i.tag for i in result_4.iter()]
+
+    expected_result_5 = ET.parse(f"{test_resources_dir}/wrapped/rf_settings.xml")
+    expected_result_flattened_5 = [i.tag for i in expected_result_5.iter()]
+    result_5 = ET.parse(
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)"
+        f"/Row Filter (#2)/settings.xml"
+    )
+    result_flattened_5 = [i.tag for i in result_5.iter()]
+
+    assert expected_result_flattened_1 == result_flattened_1
+    assert expected_result_flattened_2 == result_flattened_2
+    assert expected_result_flattened_3 == result_flattened_3
+    assert expected_result_flattened_4 == result_flattened_4
+    assert expected_result_flattened_5 == result_flattened_5
 
 
 def test_set_class_for_global_variables_str(my_setup):
