@@ -80,7 +80,7 @@ Flow Variables
 ------------------
 Flow variables are used in KNIME to parametrize workflows when node settings
 need to be determined dynamically.  KDL supports usage and creation of both Global
-Flow Variables as well as Flow Variables exposed from a node settings attribute.
+Flow variables as well as variables exposed from a node settings attribute.
 
 Global Variables
 ++++++++++++++++
@@ -93,12 +93,17 @@ is simple a JSON list representation of the global flow variables::
        "variables": [
            {
                "input_file": "/Users/kdl/knime-workspace/Data/Demographics.csv"
+           },
+           {
+               "filter_int": 5
+           },
+           {
+               "filter_double": 1.5
            }
        ],
        "connections": {
-           (n1:1)-->(n3:1),
-           (n3:1)-->(n2:1),
-           (n3)~~>(n2)
+           (n1:1)-->(n2:1),
+           (n2:1)-->(n3:1)
        }
    }
 
