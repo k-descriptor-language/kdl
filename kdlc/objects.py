@@ -405,13 +405,13 @@ class TemplateCatalogue(ABC):
 
     @staticmethod
     def get_supported_templates(path: str):
-        #print(f"path = {path}")
+        # print(f"path = {path}")
         templates = [
             os.path.splitext(f)[0].lower()
             for f in os.listdir(path)
             if f.endswith(".json")
         ]
-        #print(f"templates list = {templates}")
+        # print(f"templates list = {templates}")
         return templates
 
     def find_template(self, node_name: str):
@@ -420,7 +420,7 @@ class TemplateCatalogue(ABC):
             return node_template
         elif node_name.lower() in self.template_names:
             template_file = f"{self.path}/{node_name}.json"
-            #print(f"template_file = {template_file}")
+            # print(f"template_file = {template_file}")
             with open(template_file) as template:
                 self.catalogue[node_name.lower()] = json.load(template)
             return self.catalogue[node_name.lower()]
@@ -445,7 +445,7 @@ class TemplateCatalogue(ABC):
         for sd in settings_list:
             template_dct = next(
                 (td for td in template_list if set(sd.keys()).issubset(set(td.keys()))),
-                None
+                None,
             )
             if template_dct is None:
                 result_list.append(sd)

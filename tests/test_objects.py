@@ -3821,4 +3821,3 @@ def test_node_settings_merge(my_setup):
     assert len(merged["model"][0]["selectedColumns"][1]["included_names"]) == 3
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(merged)
-
