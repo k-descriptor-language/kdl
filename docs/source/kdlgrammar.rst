@@ -53,7 +53,7 @@ to node_3:port_1 ::
        }
    }
 
-This example is the representation of the above KDL within the KNIME GUI
+This example is the representation of the above KDL within the KNIME GUI.
 
 .. figure:: images/Workflow1.png
    :align:  center
@@ -71,7 +71,7 @@ following example, node_3 is a Joiner node which has multiple inports ::
        }
    }
 
-This example is the representation of the above KDL within the KNIME GUI
+This example is the representation of the above KDL within the KNIME GUI.
 
 .. figure:: images/Workflow2.png
    :align:  center
@@ -132,7 +132,7 @@ definition. ::
    }
 
 This example is the representation of the variable connection in the above KDL within the
-KNIME GUI
+KNIME GUI.
 
 .. figure:: images/VarConnection1.png
    :align:  center
@@ -148,7 +148,7 @@ that require a port to be specified. ::
    }
 
 This example is the representation of the variable connection in the above KDL within the
-KNIME GUI
+KNIME GUI.
 
 .. figure:: images/VarConnection2.png
    :align:  center
@@ -174,7 +174,7 @@ referencing the ``"input_file"`` global variable exposed in the example above. T
    }
 
 This example is the representation of referencing a variable in the above KDL within the
-KNIME GUI
+KNIME GUI.
 
 .. figure:: images/UsedVar.png
    :align:  center
@@ -211,7 +211,7 @@ referenced downstream in the workflow. ::
    }
 
 This example is the representation of exposing a variable in the above KDL within the
-KNIME GUI
+KNIME GUI.
 
 .. figure:: images/ExposedVar.png
    :align:  center
@@ -245,15 +245,25 @@ meta node containing two children nodes. ::
            ]
        },
        (n1.1): {
-          "name": "CSV Reader"
+          "name": "Row Filter"
        },
        (n1.2): {
-          "name": "Table to JSON"
+          "name": "Row Filter"
        }
    }
 
 Within the example above, the n1 node serves as the meta node and the n1.1 and n1.2 nodes serve 
 as the child nodes of the meta node.  
+
+The image below shows a meta node within the KNIME GUI.
+
+.. figure:: images/MetaNode-outside.png
+   :align:  center
+
+The image below shows inside a meta node within the KNIME GUI.
+
+.. figure:: images/MetaNode-inside.png
+   :align:  center
 
 Meta Node Attributes
 ++++++++++++++++++++
@@ -328,6 +338,16 @@ outgoing nodes.  A wrapped meta node does not have META_IN or META_OUT connectio
 has a WrappedNode Input and WrappedNode Output.  Within the example, the WrappedNode Input is 
 n1.1, which serves as the entry node of the wrapped meta node, and the WrappedNode Output is 
 n1.4, which serves as the exit node of the wrapped meta node.
+
+The image below shows a wrapped meta node within the KNIME GUI.
+
+.. figure:: images/MetaNode-outside.png
+   :align:  center
+
+The image below shows inside a wrapped meta node within the KNIME GUI.
+
+.. figure:: images/MetaNode-inside.png
+   :align:  center
 
 The example above only demonstrates syntax and does define a functional KNIME workflow.  To 
 explore a working example of a wrapped meta node, then review the W_Meta examples in the 
