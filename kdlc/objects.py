@@ -453,12 +453,12 @@ class TemplateCatalogue(ABC):
             return None
 
     @staticmethod
-    def merge_settings(template: Dict, settings: Dict):
+    def merge_settings(template: Dict[str, Any], settings: Dict[str, Any]):
         dct = template.copy()
         for k, v in settings.items():
-            if isinstance(dct.get(k), dict) and isinstance(v, collections.Mapping):
+            if isinstance(dct.get(k), dict):
                 dct[k] = TemplateCatalogue.merge_settings(dct[k], v)
-            elif isinstance(dct.get(k), list) and isinstance(v, collections.Sequence):
+            elif isinstance(dct.get(k), list):
                 dct[k] = TemplateCatalogue.merge_lists(dct[k], v)
             else:
                 dct[k] = v
