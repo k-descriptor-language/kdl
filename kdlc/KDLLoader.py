@@ -36,6 +36,7 @@ class KDLLoader(KDLListener):
         )
         node.port_count = node_settings["port_count"]
         node.model = node_settings["model"]
+        node.extract_variables_from_model()
         if "factory_settings" in node_settings:
             node.factory_settings += node_settings["factory_settings"]
 
