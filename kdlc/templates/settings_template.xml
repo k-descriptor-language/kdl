@@ -90,13 +90,27 @@
 <entry key="node-feature-version" type="xstring" value="{{ node.feature_version }}"/>
 {% if node.factory_settings %}
 <config key="factory_settings">
-    {% for setting in node.factory_settings %}
+    {% for item in node.factory_settings recursive %}
+    {% if item.data_type=="config" %}
+        {% set config_items = {} %}
+        {% for key, value in item.items() %}
+            {% if key=="data_type" %}
+            {% else %}
+                {% do config_items.update({"key": key}) %}
+                {% do config_items.update({"value": value}) %}
+            {% endif %}
+        {% endfor %}
+        <config key="{{config_items['key']}}">
+        {{ loop (config_items['value']) }}
+        </config>
+    {% else %}
         {% set entry_items = {} %}
-        {% for key, value in setting.items() %}
+        {% for key, value in item.items() %}
             {% if key=="data_type" %}
                 {% do entry_items.update({"type": value}) %}
             {% elif key=="isnull" %}
                 {% do entry_items.update({"isnull": "true"}) %}
+            {% elif key=="exposed_variable" or key=="used_variable" %}
             {% else %}
                 {% do entry_items.update({"key": key}) %}
                 {% do entry_items.update({"value": value}) %}
@@ -107,6 +121,7 @@
         {% else %}
             <entry key="{{entry_items['key']}}" type="{{entry_items['type']}}" value="{{entry_items['value']}}" />
         {% endif %}
+    {% endif %}
     {% endfor %}
 </config>
 {% else %}

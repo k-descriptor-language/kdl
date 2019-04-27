@@ -465,6 +465,19 @@ def test_exitMeta_settings_connection(mocker):
     template_catalogue = mocker.MagicMock()
     template_catalogue.find_template.return_value = None
 
+    ctx.node.return_value.node_id.return_value.getText.return_value = "1"
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
+
     connection = mocker.MagicMock()
     ctx.connection.return_value = [connection]
 
@@ -549,6 +562,114 @@ def test_exitMeta_settings_connection(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections) == 1
+    assert type(listener.nodes[0]) is kdlc.MetaNode
+    assert listener.nodes[0].connections[0] == expected_connection
+
+
+def test_exitMeta_settings_connection_wrapped(mocker):
+    ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
+
+    ctx.node.return_value.node_id.return_value.getText.return_value = "1"
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"SubNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
+
+    connection = mocker.MagicMock()
+    ctx.connection.return_value = [connection]
+
+    source_node = mocker.MagicMock()
+    source_node.node_id.return_value.getText.return_value = "1"
+
+    source_port = mocker.MagicMock()
+    source_node.port.return_value = source_port
+    source_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    dest_node = mocker.MagicMock()
+    dest_node.node_id.return_value.getText.return_value = "2"
+
+    dest_port = mocker.MagicMock()
+    dest_node.port.return_value = dest_port
+    dest_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    connection.source_node.return_value.node.return_value = source_node
+    connection.destination_node.return_value.node.return_value = dest_node
+
+    token_l_paren = mocker.MagicMock()
+    token_l_paren.getText.return_value = "{"
+    token_r_paren = mocker.MagicMock()
+    token_r_paren.getText.return_value = "}"
+    token_d_quote = mocker.MagicMock()
+    token_d_quote.getText.return_value = '"'
+    token_l_bracket = mocker.MagicMock()
+    token_l_bracket.getText.return_value = "["
+    token_r_bracket = mocker.MagicMock()
+    token_r_bracket.getText.return_value = "]"
+    token_colon = mocker.MagicMock()
+    token_colon.getText.return_value = ":"
+    token_comma = mocker.MagicMock()
+    token_comma.getText.return_value = ","
+
+    token_t = mocker.MagicMock()
+    token_t.getText.return_value = "t"
+    token_one = mocker.MagicMock()
+    token_one.getText.return_value = "1"
+    token_dot = mocker.MagicMock()
+    token_dot.getText.return_value = "."
+
+    children = [
+        token_l_bracket,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_dot,
+        token_one,
+        token_r_paren,
+        token_r_bracket,
+    ]
+
+    ctx.meta_in_ports.return_value.json.return_value.children = children
+    ctx.meta_out_ports.return_value.json.return_value.children = children
+
+    listener = kdlc.KDLLoader(template_catalogue)
+    listener.exitMeta_settings(ctx)
+    expected_connection = kdlc.Connection(
+        connection_id=0, source_id="1", source_port="1", dest_id="2", dest_port="1"
+    )
+    assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections) == 1
+    assert type(listener.nodes[0]) is kdlc.WrappedMetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
@@ -557,6 +678,17 @@ def test_exitMeta_settings_var_connection(mocker):
 
     template_catalogue = mocker.MagicMock()
     template_catalogue.find_template.return_value = None
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     var_connection = mocker.MagicMock()
     ctx.var_connection.return_value = [var_connection]
@@ -636,6 +768,7 @@ def test_exitMeta_settings_var_connection(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections) == 1
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
@@ -644,6 +777,17 @@ def test_exitMeta_settings_metaconnection_in(mocker):
 
     template_catalogue = mocker.MagicMock()
     template_catalogue.find_template.return_value = None
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     connection = mocker.MagicMock()
 
@@ -729,6 +873,7 @@ def test_exitMeta_settings_metaconnection_in(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
@@ -737,6 +882,17 @@ def test_exitMeta_settings_metaconnection_out(mocker):
 
     template_catalogue = mocker.MagicMock()
     template_catalogue.find_template.return_value = None
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     connection = mocker.MagicMock()
 
@@ -822,6 +978,7 @@ def test_exitMeta_settings_metaconnection_out(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
@@ -830,6 +987,17 @@ def test_exitMeta_settings_metaconnection_in_var(mocker):
 
     template_catalogue = mocker.MagicMock()
     template_catalogue.find_template.return_value = None
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     connection = mocker.MagicMock()
 
@@ -915,6 +1083,7 @@ def test_exitMeta_settings_metaconnection_in_var(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
@@ -923,6 +1092,17 @@ def test_exitMeta_settings_metaconnection_out_var(mocker):
 
     template_catalogue = mocker.MagicMock()
     template_catalogue.find_template.return_value = None
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     connection = mocker.MagicMock()
 
@@ -1008,4 +1188,5 @@ def test_exitMeta_settings_metaconnection_out_var(mocker):
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection

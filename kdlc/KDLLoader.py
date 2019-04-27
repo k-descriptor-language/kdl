@@ -7,6 +7,7 @@ from kdlc.objects import (
     MetaNode,
     VariableConnection,
     TemplateCatalogue,
+    WrappedMetaNode,
 )
 
 
@@ -54,6 +55,7 @@ class KDLLoader(KDLListener):
     def exitMeta_settings(self, ctx: KDLParser.Meta_settingsContext):
         node_number = ctx.node().node_id().getText()
         name = ctx.STRING(1).getText()[1:-1]
+        type = ctx.STRING(3).getText()[1:-1]
 
         json_tokens = [i.getText() for i in ctx.meta_in_ports().json().children]
         json_string = "".join(json_tokens)
@@ -63,14 +65,24 @@ class KDLLoader(KDLListener):
         json_string = "".join(json_tokens)
         meta_out_ports = json.loads(json_string)
 
-        metanode = MetaNode(
-            node_id=node_number,
-            name=name,
-            children=[],
-            connections=[],
-            meta_in_ports=meta_in_ports,
-            meta_out_ports=meta_out_ports,
-        )
+        if type == "MetaNode":
+            metanode = MetaNode(
+                node_id=node_number,
+                name=name,
+                children=[],
+                connections=[],
+                meta_in_ports=meta_in_ports,
+                meta_out_ports=meta_out_ports,
+            )
+        elif type == "SubNode":
+            metanode = WrappedMetaNode(
+                node_id=node_number,
+                name=name,
+                children=[],
+                connections=[],
+                meta_in_ports=meta_in_ports,
+                meta_out_ports=meta_out_ports,
+            )
         for connection in ctx.connection():
             source_node = connection.source_node().node()
             source_node_id = source_node.node_id().getText()
