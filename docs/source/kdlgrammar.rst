@@ -8,6 +8,29 @@ domain language provides the capability to modify and author workflows to run wi
 Nodes
 -----
 
+Listed below demonstrates a simple node definition within KDL. ::
+
+   Nodes {
+       (n1): {
+           "name": "CSV Reader"
+       },
+       (n2): {
+           "name": "Table to JSON"
+       },
+       (n3): {
+           "name": "Column Reader"
+       }
+   }
+
+The individual node definitions reside within the ``Nodes { ... }`` section.  Each node 
+identifies itself with a unique number prefixed with the letter 'n'.  The example above 
+consists of node definitions for n1, n2, and n3.  The properties of each node are defined 
+to the right of the colon beside each node id.  KDL uses `JSON <https://www.json.org/>`_ 
+for writing node properties.  A functional node definition would consist of more properties, 
+but the example above illustrates the syntax required for defining nodes.
+
+Explore the `examples folder <https://github.com/k-descriptor-language/kdl/tree/master/examples>`_ 
+of the KDL repository to see fully defined nodes. 
 
 Workflow
 --------
