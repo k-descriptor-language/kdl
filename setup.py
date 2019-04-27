@@ -46,6 +46,8 @@ setup(
             "sphinx_rtd_theme",
         ]
     },
-    package_data={"kdlc": ["templates/*.xml", "json_schemas/*.json"]},
+    package_data={
+        "kdlc": ["templates/*.xml", "json_schemas/*.json", "node_templates/*.json"]
+    },
     include_package_data=True,
 )

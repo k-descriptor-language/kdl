@@ -458,7 +458,7 @@ class TemplateCatalogue(ABC):
         for k, v in settings.items():
             if isinstance(dct.get(k), dict) and isinstance(v, collections.Mapping):
                 dct[k] = TemplateCatalogue.merge_settings(dct[k], v)
-            if isinstance(dct.get(k), list) and isinstance(v, collections.Sequence):
+            elif isinstance(dct.get(k), list) and isinstance(v, collections.Sequence):
                 dct[k] = TemplateCatalogue.merge_lists(dct[k], v)
             else:
                 dct[k] = v
