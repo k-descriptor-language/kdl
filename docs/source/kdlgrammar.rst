@@ -341,12 +341,12 @@ n1.4, which serves as the exit node of the wrapped meta node.
 
 The image below shows a wrapped meta node within the KNIME GUI.
 
-.. figure:: images/MetaNode-outside.png
+.. figure:: images/WrappedMetaNode-outside.png
    :align:  center
 
 The image below shows inside a wrapped meta node within the KNIME GUI.
 
-.. figure:: images/MetaNode-inside.png
+.. figure:: images/WrappedMetaNode-inside.png
    :align:  center
 
 The example above only demonstrates syntax and does define a functional KNIME workflow.  To 
