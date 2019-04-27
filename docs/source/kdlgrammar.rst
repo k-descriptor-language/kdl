@@ -151,9 +151,65 @@ KNIME GUI
    :align:  center
 
 
-used_variable and exposed_variable
+used_variable
 ++++++++++++++++++++++++++++++++++
+Flow variables are referenced within a node's settings definition by adding the ``"used_variable"``
+attribute to the setting that is referencing the variable. In this case the CSV Reader node is
+referencing the ``"input_file"`` global variable exposed in the example above. The value of the
+``"url"`` setting can be omitted as it will be dynamically populated by the variable. ::
 
+   Nodes {
+       (n1): {
+           "name": "CSV Reader",
+           "model": [
+            {
+                "url": "",
+                "used_variable": "input_file"
+            }
+       }
+   }
+
+This example is the representation of referencing a variable in the above KDL within the
+KNIME GUI
+
+.. figure:: images/UsedVar.png
+   :align:  center
+
+exposed_variable
+++++++++++++++++++++++++++++++++++
+As mentioned earlier, flow variables can also defined within a node by exposing a node's setting
+attribute as a variable, using the ``"exposed_variable"`` attribute.  In this case the Column Filter
+node is exposing the value of the ``"array-size"`` setting as a flow variable that may be
+referenced downstream in the workflow. ::
+
+   Nodes {
+       (n1): {
+           "name": "Column FIlter",
+           "model": [
+            {
+                "column-filter": [
+                    {
+                        "filter-type": "STANDARD"
+                    },
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 11,
+                                "exposed_variable": "array-size"
+                            },
+                            ...
+                        ]
+                    }
+                ]
+            }
+       }
+   }
+
+This example is the representation of exposing a variable in the above KDL within the
+KNIME GUI
+
+.. figure:: images/ExposedVar.png
+   :align:  center
 
 Metanodes
 ---------
