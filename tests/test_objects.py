@@ -3744,7 +3744,8 @@ def test_node_settings_merge(my_setup):
                                         "org.knime.core.data.LongValue": false
                                     },
                                     {
-                                        "org.knime.core.data.date.DateAndTimeValue": false
+                                        "org.knime.core.data.date.\
+                                        DateAndTimeValue": false
                                     }
                                 ]
                             }
