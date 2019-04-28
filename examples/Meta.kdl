@@ -894,8 +894,8 @@ Nodes {
         "name": "Metanode",
         "type": "MetaNode",
         "connections": {
-            (META_IN:1)-->(n4:1),
             (n4:1)-->(n6:1),
+            (META_IN:1)-->(n4:1),
             (n6:1)-->(META_OUT:1)
         },
         "meta_in_ports": [

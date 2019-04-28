@@ -7,11 +7,11 @@ which can be found within the scripts folder. ::
    ❯ tree scripts
    scripts
    ├── build-docs.sh
+   ├── e2e.sh
    ├── format.sh
    ├── generate-parser.sh
    ├── perf-test.py
-   ├── quality-check.sh
-   └── templates-e2e.sh
+   └── quality-check.sh
 
 Before executing any of the scripts download the development dependencies by 
 executing the following command. ::
@@ -31,6 +31,16 @@ from the root directory of the project.
 
 To view the generated documentation, then open ``docs/build/html/index.html`` from the 
 root directory into a web browser.
+
+e2e.sh
+----------------
+
+The end-to-end script provides a deterministic test for validating the 
+kdlc application by compiling kdl and decompiling knwf archives.
+
+To run the script, firstly install ``kdlc`` by following the kdlc 
+`installation instructions <kdlc.html>`_.  Then execute ``scripts/e2e.sh`` 
+from the root directory of the project.
 
 format.sh
 ---------
@@ -89,13 +99,3 @@ It runs the following tooling and will exit on failure.
 
 To run the quality check script, then execute ``scripts/quality-check.sh`` from the 
 root directory of the project.
-
-templates-e2e.sh
-----------------
-
-The templates end-to-end script provides a deterministic test for validating the 
-templating implementation.
-
-To run the script, firstly install ``kdlc`` by following the kdlc 
-`installation instructions <kdlc.html>`_.  Then execute ``scripts/templates-e2e.sh`` 
-from the root directory of the project.
