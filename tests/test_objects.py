@@ -3678,7 +3678,7 @@ def test_workflow_kdl_str(my_setup):
 
 
 def test_node_settings_merge(my_setup):
-    template_json = """ 
+    template_json = """
     {
         "name": "Table to JSON",
         "factory": "org.knime.json.node.fromtable.TableToJsonNodeFactory",
@@ -3744,7 +3744,8 @@ def test_node_settings_merge(my_setup):
                                         "org.knime.core.data.LongValue": false
                                     },
                                     {
-                                        "org.knime.core.data.date.DateAndTimeValue": false
+                                        "org.knime.core.data.date.\
+                                        DateAndTimeValue": false
                                     }
                                 ]
                             }
@@ -3781,7 +3782,7 @@ def test_node_settings_merge(my_setup):
             }
         ],
         "port_count": 1
-    } 
+    }
     """
 
     kdl_settings = """ {

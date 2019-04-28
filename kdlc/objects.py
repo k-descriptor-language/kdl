@@ -1,7 +1,6 @@
 import os
 import json
 import jsonschema
-import collections
 from typing import Any, List, Dict
 from abc import ABC, abstractmethod
 
@@ -424,7 +423,7 @@ class Workflow(AbstractWorkflow):
 
 class TemplateCatalogue(ABC):
     def __init__(self, path: str):
-        self.catalogue = {}
+        self.catalogue: Dict = dict()
         self.path = path
         self.template_names = TemplateCatalogue.get_supported_templates(path)
 
