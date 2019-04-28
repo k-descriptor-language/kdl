@@ -25,6 +25,11 @@ e2e() {
 
   rm output.knwf
   rm output.kdl
+
+  if [ $rc != 0 ] 
+  then 
+          exit "$rc" 
+  fi
 }
 
 e2e TestWorkflow.kdl TestWorkflow.kdl basic
