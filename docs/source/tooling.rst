@@ -9,7 +9,9 @@ which can be found within the scripts folder. ::
    ├── build-docs.sh
    ├── format.sh
    ├── generate-parser.sh
-   └── quality-check.sh
+   ├── perf-test.py
+   ├── quality-check.sh
+   └── templates-e2e.sh
 
 Before executing any of the scripts download the development dependencies by 
 executing the following command. ::
@@ -56,6 +58,20 @@ jar within the ``/usr/local/lib`` directory.
 To run the generate parser shell script after installing ANTLR, then execute 
 ``scripts/generate-parser.sh`` from the root directory of the project.
 
+perf-test.py
+------------
+
+To performance test ``kdlc`` with load, the performance test script constructs a KDL 
+document with a string of node connections, then compiles the document to a knwf archive 
+and subsequently decompiles the archive to a KDL document while capturing time metrics.  The 
+script helps identify performance degradation as a result of implementation decisions.
+
+To run the script, firstly install ``kdlc`` by following the kdlc 
+`installation instructions <kdlc.html>`_.  
+Then run ``python3 scripts/perf-test.py`` to run with 2 nodes by default or provide an 
+argument to run with a desired amount of nodes, such as 
+``python3 scripts/perf-test.py 10``.
+
 quality-check.sh
 ----------------
 
@@ -73,3 +89,13 @@ It runs the following tooling and will exit on failure.
 
 To run the quality check script, then execute ``scripts/quality-check.sh`` from the 
 root directory of the project.
+
+templates-e2e.sh
+----------------
+
+The templates end-to-end script provides a deterministic test for validating the 
+templating implementation.
+
+To run the script, firstly install ``kdlc`` by following the kdlc 
+`installation instructions <kdlc.html>`_.  Then execute ``scripts/templates-e2e.sh`` 
+from the root directory of the project.
