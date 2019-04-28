@@ -37,12 +37,6 @@ def prompt(input_file: str, output_file: str, debug_logging) -> None:
             level="DEBUG",
             format="<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>",
         )
-    else:
-        logger.add(
-            sys.stderr,
-            level="ERROR",
-            format="<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>",
-        )
 
     if Path(input_file).suffix == ".kdl" and Path(output_file).suffix == ".knwf":
         kdlc.kdl_to_workflow(input_file, output_file)

@@ -69,7 +69,18 @@ class AbstractConnection(ABC):
         pass
 
     def __str__(self):
-        return "ConnectionID: " + str(self.connection_id)
+        return (
+            "ConnectionID: "
+            + str(self.connection_id)
+            + " Source:"
+            + self.source_id
+            + "."
+            + self.source_port
+            + " Dest:"
+            + self.dest_id
+            + ":"
+            + self.dest_port
+        )
 
 
 class Node(AbstractNode):
