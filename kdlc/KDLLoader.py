@@ -1,7 +1,10 @@
 import json
+from typing import List, Dict, Any
 from kdlc.parser.KDLListener import KDLListener
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.objects import (
+    AbstractNode,
+    AbstractConnection,
     Connection,
     Node,
     MetaNode,
@@ -13,10 +16,10 @@ from kdlc.objects import (
 
 class KDLLoader(KDLListener):
     def __init__(self, template_catalogue: TemplateCatalogue):
-        self.nodes = []
-        self.connections = []
-        self.global_variables = []
-        self.template_catalogue = template_catalogue
+        self.nodes: List[AbstractNode] = list()
+        self.connections: List[AbstractConnection] = list()
+        self.global_variables: List[Dict[str, Any]] = list()
+        self.template_catalogue: TemplateCatalogue = template_catalogue
 
     def exitNode_settings(
         self: KDLListener, ctx: KDLParser.Node_settingsContext
