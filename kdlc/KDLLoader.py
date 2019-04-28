@@ -1,16 +1,24 @@
 import json
 from kdlc.parser.KDLListener import KDLListener
 from kdlc.parser.KDLParser import KDLParser
-from kdlc.objects import Connection, Node, MetaNode, VariableConnection
+from kdlc.objects import (
+    Connection,
+    Node,
+    MetaNode,
+    VariableConnection,
+    TemplateCatalogue,
+    WrappedMetaNode,
+)
 
 # from loguru import logger
 
 
 class KDLLoader(KDLListener):
-    def __init__(self):
+    def __init__(self, template_catalogue: TemplateCatalogue):
         self.nodes = []
         self.connections = []
         self.global_variables = []
+        self.template_catalogue = template_catalogue
 
     def exitNode_settings(
         self: KDLListener, ctx: KDLParser.Node_settingsContext
@@ -21,10 +29,15 @@ class KDLLoader(KDLListener):
         json_tokens = [i.getText() for i in ctx.json().children]
         json_string = "".join(json_tokens)
         node_settings = json.loads(json_string)
+
         # logger.debug(node_settings)
 
-        # TODO: does this name even matter? if it does, we need to be defensive here
+        # NB: this name is important, it references the template node name
         node_name = node_settings["name"]
+        template = self.template_catalogue.find_template(node_name)
+        if template is not None:
+            node_settings = TemplateCatalogue.merge_settings(template, node_settings)
+
         node = Node(
             node_id=node_number,
             name=node_name,
@@ -38,6 +51,7 @@ class KDLLoader(KDLListener):
         )
         node.port_count = node_settings["port_count"]
         node.model = node_settings["model"]
+        node.extract_variables_from_model()
         if "factory_settings" in node_settings:
             node.factory_settings += node_settings["factory_settings"]
 
@@ -46,6 +60,7 @@ class KDLLoader(KDLListener):
     def exitMeta_settings(self, ctx: KDLParser.Meta_settingsContext):
         node_number = ctx.node().node_id().getText()
         name = ctx.STRING(1).getText()[1:-1]
+        type = ctx.STRING(3).getText()[1:-1]
 
         json_tokens = [i.getText() for i in ctx.meta_in_ports().json().children]
         json_string = "".join(json_tokens)
@@ -55,14 +70,24 @@ class KDLLoader(KDLListener):
         json_string = "".join(json_tokens)
         meta_out_ports = json.loads(json_string)
 
-        metanode = MetaNode(
-            node_id=node_number,
-            name=name,
-            children=[],
-            connections=[],
-            meta_in_ports=meta_in_ports,
-            meta_out_ports=meta_out_ports,
-        )
+        if type == "MetaNode":
+            metanode = MetaNode(
+                node_id=node_number,
+                name=name,
+                children=[],
+                connections=[],
+                meta_in_ports=meta_in_ports,
+                meta_out_ports=meta_out_ports,
+            )
+        elif type == "SubNode":
+            metanode = WrappedMetaNode(
+                node_id=node_number,
+                name=name,
+                children=[],
+                connections=[],
+                meta_in_ports=meta_in_ports,
+                meta_out_ports=meta_out_ports,
+            )
         for connection in ctx.connection():
             source_node = connection.source_node().node()
             source_node_id = source_node.node_id().getText()

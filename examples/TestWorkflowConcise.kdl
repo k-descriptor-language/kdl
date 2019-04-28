@@ -1,0 +1,193 @@
+Nodes {
+    (n1): {
+        "name": "CSV Reader",
+        "model": [
+            {
+                "url": "/Users/jared/knime-workspace/Example Workflows/TheData/Misc/Demographics.csv"
+            },
+            {
+                "colDelimiter": ","
+            }
+        ]
+    },
+    (n2): {
+        "name": "Table to JSON",
+        "model": [
+            {
+                "selectedColumns": [
+                    {
+                        "filter-type": "STANDARD"
+                    },
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 12
+                            },
+                            {
+                                "0": "MaritalStatus"
+                            },
+                            {
+                                "1": "Gender"
+                            },
+                            {
+                                "2": "EstimatedYearlyIncome"
+                            },
+                            {
+                                "3": "SentimentRating"
+                            },
+                            {
+                                "4": "WebActivity"
+                            },
+                            {
+                                "5": "NumberOfContracts"
+                            },
+                            {
+                                "6": "Age"
+                            },
+                            {
+                                "7": "Target"
+                            },
+                            {
+                                "8": "Available401K"
+                            },
+                            {
+                                "9": "CustomerValueSegment"
+                            },
+                            {
+                                "10": "ChurnScore"
+                            },
+                            {
+                                "11": "CallActivity"
+                            }
+                        ]
+                    },
+                    {
+                        "enforce_option": "EnforceExclusion"
+                    },
+                    {
+                        "datatype": [
+                            {
+                                "typelist": [
+                                    {
+                                        "org.knime.core.data.StringValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.IntValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.DoubleValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.BooleanValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.LongValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.date.DateAndTimeValue": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    (n3): {
+        "name": "Column Filter",
+        "model": [
+            {
+                "column-filter": [
+                    {
+                        "included_names": [
+                            {
+                                "array-size": 11
+                            },
+                            {
+                                "0": "MaritalStatus"
+                            },
+                            {
+                                "1": "Gender"
+                            },
+                            {
+                                "2": "EstimatedYearlyIncome"
+                            },
+                            {
+                                "3": "SentimentRating"
+                            },
+                            {
+                                "4": "WebActivity"
+                            },
+                            {
+                                "5": "Age"
+                            },
+                            {
+                                "6": "Target"
+                            },
+                            {
+                                "7": "Available401K"
+                            },
+                            {
+                                "8": "CustomerValueSegment"
+                            },
+                            {
+                                "9": "ChurnScore"
+                            },
+                            {
+                                "10": "CallActivity"
+                            }
+                        ]
+                    },
+                    {
+                        "excluded_names": [
+                            {
+                                "array-size": 1
+                            },
+                            {
+                                "0": "NumberOfContracts"
+                            }
+                        ]
+                    },
+                    {
+                        "enforce_option": "EnforceExclusion"
+                    },
+                    {
+                        "datatype": [
+                            {
+                                "typelist": [
+                                    {
+                                        "org.knime.core.data.StringValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.IntValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.DoubleValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.BooleanValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.LongValue": false
+                                    },
+                                    {
+                                        "org.knime.core.data.date.DateAndTimeValue": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "port_count": 1
+    }
+}
+
+Workflow {
+    "connections": {
+        (n1:1)-->(n3:1),
+        (n3:1)-->(n2:1)
+    }
+}

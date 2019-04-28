@@ -9,9 +9,9 @@
 <entry key="name" type="xstring" isnull="true" value=""/>
 {% endif %}
 <config key="authorInformation">
-<entry key="authored-by" type="xstring" value="jared"/>
+<entry key="authored-by" type="xstring" value="k-descriptor-language"/>
 <entry key="authored-when" type="xstring" value="2019-03-02 13:43:23 -0500"/>
-<entry key="lastEdited-by" type="xstring" value="jared"/>
+<entry key="lastEdited-by" type="xstring" value="k-descriptor-language"/>
 <entry key="lastEdited-when" type="xstring" value="2019-03-02 23:15:32 -0500"/>
 </config>
 <entry key="customDescription" type="xstring" isnull="true" value=""/>
@@ -57,7 +57,7 @@
         <entry key="id" type="xint" value="{{metanode.get_base_id()}}" />
         <entry key="node_settings_file" type="xstring" value="{{metanode.get_filename()}}" />
         <entry key="node_is_meta" type="xboolean" value="true" />
-        <entry key="node_type" type="xstring" value="MetaNode" />
+        <entry key="node_type" type="xstring" value="{{metanode.type}}" />
         <entry key="ui_classname" type="xstring" value="org.knime.core.node.workflow.NodeUIInformation" />
         <config key="ui_settings">
             <config key="extrainfo.node.bounds">

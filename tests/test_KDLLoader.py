@@ -7,6 +7,9 @@ def test_exitNode_settings(mocker):
     ctx.node.return_value.node_id.return_value = node_id
     node_id.getText.return_value = "42"
 
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
+
     token_l_paren = mocker.MagicMock()
     token_l_paren.getText.return_value = "{"
     token_r_paren = mocker.MagicMock()
@@ -63,6 +66,9 @@ def test_exitNode_settings(mocker):
     token_one = mocker.MagicMock()
     token_one.getText.return_value = "1"
 
+    token_g = mocker.MagicMock()
+    token_g.getText.return_value = "g"
+
     token_l_bracket = mocker.MagicMock()
     token_l_bracket.getText.return_value = "["
     token_r_bracket = mocker.MagicMock()
@@ -231,6 +237,28 @@ def test_exitNode_settings(mocker):
         token_d_quote,
         token_comma,
         token_d_quote,
+        token_f,
+        token_a,
+        token_c,
+        token_t,
+        token_o,
+        token_r,
+        token_y,
+        token_us,
+        token_s,
+        token_e,
+        token_t,
+        token_t,
+        token_i,
+        token_n,
+        token_g,
+        token_s,
+        token_d_quote,
+        token_colon,
+        token_l_bracket,
+        token_r_bracket,
+        token_comma,
+        token_d_quote,
         token_p,
         token_o,
         token_r,
@@ -259,7 +287,7 @@ def test_exitNode_settings(mocker):
     ]
     ctx.json.return_value.children = children
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
 
     listener.exitNode_settings(ctx)
 
@@ -276,6 +304,7 @@ def test_exitNode_settings(mocker):
     )
     expected_node.port_count = 1
     expected_node.model = list()
+    expected_node.factory_settings = []
 
     assert len(listener.nodes) == 1
     assert listener.nodes[0] == expected_node
@@ -286,6 +315,9 @@ def test_exitConnection(mocker):
 
     source_node = mocker.MagicMock()
     ctx.source_node.return_value.node.return_value = source_node
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     # source_node_id
     source_node.node_id.return_value.getText.return_value = "1"
@@ -306,7 +338,7 @@ def test_exitConnection(mocker):
     destination_node.port.return_value.port_id = destination_port_id
     destination_port_id.return_value.NUMBER.return_value.getText.return_value = "4"
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
 
     listener.exitConnection(ctx)
 
@@ -323,6 +355,9 @@ def test_exitVar_connection(mocker):
 
     source_node = mocker.MagicMock()
     ctx.source_node.return_value.node.return_value = source_node
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     # source_node_id
     source_node.node_id.return_value.getText.return_value = "1"
@@ -343,7 +378,7 @@ def test_exitVar_connection(mocker):
     destination_node.port.return_value.port_id = destination_port_id
     destination_port_id.return_value.NUMBER.return_value.getText.return_value = "0"
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
 
     listener.exitVar_connection(ctx)
 
@@ -356,6 +391,9 @@ def test_exitVar_connection(mocker):
 
 def test_exitGlobal_variables(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
 
     token_l_paren = mocker.MagicMock()
     token_l_paren.getText.return_value = "{"
@@ -412,7 +450,7 @@ def test_exitGlobal_variables(mocker):
     ]
 
     ctx.json.return_value.children = children
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
 
     listener.exitGlobal_variables(ctx)
 
@@ -423,6 +461,22 @@ def test_exitGlobal_variables(mocker):
 
 def test_exitMeta_settings_connection(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
+
+    ctx.node.return_value.node_id.return_value.getText.return_value = "1"
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     connection = mocker.MagicMock()
     ctx.connection.return_value = [connection]
@@ -501,18 +555,140 @@ def test_exitMeta_settings_connection(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.KDLLoader()
+    listener = kdlc.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.Connection(
         connection_id=0, source_id="1", source_port="1", dest_id="2", dest_port="1"
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections) == 1
+    assert type(listener.nodes[0]) is kdlc.MetaNode
+    assert listener.nodes[0].connections[0] == expected_connection
+
+
+def test_exitMeta_settings_connection_wrapped(mocker):
+    ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
+
+    ctx.node.return_value.node_id.return_value.getText.return_value = "1"
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"SubNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
+
+    connection = mocker.MagicMock()
+    ctx.connection.return_value = [connection]
+
+    source_node = mocker.MagicMock()
+    source_node.node_id.return_value.getText.return_value = "1"
+
+    source_port = mocker.MagicMock()
+    source_node.port.return_value = source_port
+    source_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    dest_node = mocker.MagicMock()
+    dest_node.node_id.return_value.getText.return_value = "2"
+
+    dest_port = mocker.MagicMock()
+    dest_node.port.return_value = dest_port
+    dest_port.port_id.return_value.NUMBER.return_value.getText.return_value = "1"
+
+    connection.source_node.return_value.node.return_value = source_node
+    connection.destination_node.return_value.node.return_value = dest_node
+
+    token_l_paren = mocker.MagicMock()
+    token_l_paren.getText.return_value = "{"
+    token_r_paren = mocker.MagicMock()
+    token_r_paren.getText.return_value = "}"
+    token_d_quote = mocker.MagicMock()
+    token_d_quote.getText.return_value = '"'
+    token_l_bracket = mocker.MagicMock()
+    token_l_bracket.getText.return_value = "["
+    token_r_bracket = mocker.MagicMock()
+    token_r_bracket.getText.return_value = "]"
+    token_colon = mocker.MagicMock()
+    token_colon.getText.return_value = ":"
+    token_comma = mocker.MagicMock()
+    token_comma.getText.return_value = ","
+
+    token_t = mocker.MagicMock()
+    token_t.getText.return_value = "t"
+    token_one = mocker.MagicMock()
+    token_one.getText.return_value = "1"
+    token_dot = mocker.MagicMock()
+    token_dot.getText.return_value = "."
+
+    children = [
+        token_l_bracket,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_r_paren,
+        token_comma,
+        token_l_paren,
+        token_d_quote,
+        token_t,
+        token_d_quote,
+        token_colon,
+        token_one,
+        token_dot,
+        token_one,
+        token_r_paren,
+        token_r_bracket,
+    ]
+
+    ctx.meta_in_ports.return_value.json.return_value.children = children
+    ctx.meta_out_ports.return_value.json.return_value.children = children
+
+    listener = kdlc.KDLLoader(template_catalogue)
+    listener.exitMeta_settings(ctx)
+    expected_connection = kdlc.Connection(
+        connection_id=0, source_id="1", source_port="1", dest_id="2", dest_port="1"
+    )
+    assert len(listener.nodes) == 1
+    assert len(listener.nodes[0].connections) == 1
+    assert type(listener.nodes[0]) is kdlc.WrappedMetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
 def test_exitMeta_settings_var_connection(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     var_connection = mocker.MagicMock()
     ctx.var_connection.return_value = [var_connection]
@@ -585,18 +761,33 @@ def test_exitMeta_settings_var_connection(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.KDLLoader()
+    listener = kdlc.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.VariableConnection(
         connection_id=0, source_id="1", source_port="0", dest_id="2", dest_port="0"
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections) == 1
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
 def test_exitMeta_settings_metaconnection_in(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     connection = mocker.MagicMock()
 
@@ -675,18 +866,33 @@ def test_exitMeta_settings_metaconnection_in(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.Connection(
         connection_id=0, source_id="-1", source_port="1", dest_id="2", dest_port="1"
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
 def test_exitMeta_settings_metaconnection_out(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     connection = mocker.MagicMock()
 
@@ -765,18 +971,33 @@ def test_exitMeta_settings_metaconnection_out(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.Connection(
         connection_id=0, source_id="1", source_port="1", dest_id="-1", dest_port="1"
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
 def test_exitMeta_settings_metaconnection_in_var(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     connection = mocker.MagicMock()
 
@@ -855,18 +1076,33 @@ def test_exitMeta_settings_metaconnection_in_var(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.VariableConnection(
         connection_id=0, source_id="-1", source_port="1", dest_id="2", dest_port="0"
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection
 
 
 def test_exitMeta_settings_metaconnection_out_var(mocker):
     ctx = mocker.MagicMock()
+
+    template_catalogue = mocker.MagicMock()
+    template_catalogue.find_template.return_value = None
+
+    mock_name = mocker.MagicMock()
+    mock_name.getText.return_value = '"TestName"'
+
+    mock_type = mocker.MagicMock()
+    mock_type.getText.return_value = '"MetaNode"'
+
+    mock_str = mocker.MagicMock()
+    mock_str.side_effect = [mock_name, mock_type]
+
+    ctx.STRING = mock_str
 
     connection = mocker.MagicMock()
 
@@ -945,11 +1181,12 @@ def test_exitMeta_settings_metaconnection_out_var(mocker):
     ctx.meta_in_ports.return_value.json.return_value.children = children
     ctx.meta_out_ports.return_value.json.return_value.children = children
 
-    listener = kdlc.commands.KDLLoader()
+    listener = kdlc.commands.KDLLoader(template_catalogue)
     listener.exitMeta_settings(ctx)
     expected_connection = kdlc.VariableConnection(
         connection_id=0, source_id="1", source_port="0", dest_id="-1", dest_port="1"
     )
     assert len(listener.nodes) == 1
     assert len(listener.nodes[0].connections)
+    assert type(listener.nodes[0]) is kdlc.MetaNode
     assert listener.nodes[0].connections[0] == expected_connection

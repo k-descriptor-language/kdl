@@ -1,0 +1,76 @@
+{
+  "name": "Column Filter",
+  "factory": "org.knime.base.node.preproc.filter.column.DataColumnSpecFilterNodeFactory",
+  "bundle_name": "KNIME Base Nodes",
+  "bundle_symbolic_name": "org.knime.base",
+  "bundle_version": "3.7.1.v201901291053",
+  "feature_name": "KNIME Core",
+  "feature_symbolic_name": "org.knime.features.base.feature.group",
+  "feature_version": "3.7.1.v201901291053",
+  "model": [
+    {
+      "column-filter": [
+        {
+          "filter-type": "STANDARD"
+        },
+        {
+          "included_names": [
+            {
+              "array-size": 0
+            }
+          ]
+        },
+        {
+          "excluded_names": [
+            {
+              "array-size": 0
+            }
+          ]
+        },
+        {
+          "enforce_option": "EnforceExclusion"
+        },
+        {
+          "name_pattern": [
+            {
+              "pattern": ""
+            },
+            {
+              "type": "Wildcard"
+            },
+            {
+              "caseSensitive": true
+            }
+          ]
+        },
+        {
+          "datatype": [
+            {
+              "typelist": [
+                {
+                  "org.knime.core.data.StringValue": false
+                },
+                {
+                  "org.knime.core.data.IntValue": false
+                },
+                {
+                  "org.knime.core.data.DoubleValue": false
+                },
+                {
+                  "org.knime.core.data.BooleanValue": false
+                },
+                {
+                  "org.knime.core.data.LongValue": false
+                },
+                {
+                  "org.knime.core.data.date.DateAndTimeValue": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "port_count": 1
+}

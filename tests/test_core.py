@@ -263,6 +263,284 @@ def test_extract_node_from_settings_xml_ttj_var(my_setup):
     )
 
 
+def test_extract_node_from_settings_xml_factory_settings(my_setup):
+    res = kdlc.Node(
+        node_id="1",
+        name="Bar Chart (JavaScript)",
+        factory="org.knime.dynamic.js.v30.DynamicJSNodeFactory",
+        bundle_name="KNIME Dynamically Created JavaScript Nodes",
+        bundle_symbolic_name="org.knime.dynamic.js",
+        bundle_version="3.7.1.v201901281201",
+        feature_name="KNIME JavaScript Views",
+        feature_symbolic_name="org.knime.features.js.views.feature.group",
+        feature_version="3.7.2.v201904170930",
+    )
+    res.port_count = 1
+    res.model = [
+        {
+            "displayFullscreenButton_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"displayFullscreenButton": True},
+        {
+            "legend_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"legend": True},
+        {
+            "enableHorizontalToggle_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableHorizontalToggle": True},
+        {
+            "freq_Internals": [
+                {"SettingsModelID": "SMID_columnfilter"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {
+            "freq": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 1}, {"0": "Accuracy"}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {"typelist": [{"org.knime.core.data.DoubleValue": False}]}
+                    ]
+                },
+            ]
+        },
+        {
+            "tooltip_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"tooltip": True},
+        {
+            "title_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"title": "Bar Chart"},
+        {
+            "enableSwitchMissValCat_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableSwitchMissValCat": True},
+        {
+            "includeMissValCat_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"includeMissValCat": True},
+        {
+            "processInMemory_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"processInMemory": True},
+        {
+            "freqLabel_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"freqLabel": ""},
+        {
+            "cat_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"cat": "model"},
+        {
+            "showWarnings_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"showWarnings": True},
+        {
+            "enableSubtitleEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableSubtitleEdit": True},
+        {
+            "publishSelection_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"publishSelection": True},
+        {
+            "showMaximum_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"showMaximum": True},
+        {
+            "catLabel_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"catLabel": ""},
+        {
+            "orientation_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"orientation": False},
+        {
+            "displayClearSelectionButton_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"displayClearSelectionButton": True},
+        {"svg_Internals": [{"SettingsModelID": "SMID_svg"}, {"EnabledStatus": True}]},
+        {
+            "svg": [
+                {"width": 600},
+                {"height": 400},
+                {"fullscreen": True},
+                {"showFullscreen": True},
+            ]
+        },
+        {
+            "staggerLabels_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"staggerLabels": False},
+        {
+            "enableTitleEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableTitleEdit": True},
+        {
+            "enableSelection_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableSelection": True},
+        {
+            "sort_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"sort": False},
+        {
+            "enableStackedEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableStackedEdit": True},
+        {
+            "enableAxisEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableAxisEdit": True},
+        {
+            "reportOnMissingValues_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"reportOnMissingValues": True},
+        {
+            "subtitle_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"subtitle": ""},
+        {
+            "chartType_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"chartType": "Grouped"},
+        {
+            "enableStaggerToggle_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableStaggerToggle": True},
+        {
+            "enableViewControls_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableViewControls": True},
+        {
+            "aggr_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"aggr": "Sum"},
+        {
+            "subscribeToSelection_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"subscribeToSelection": True},
+        {
+            "enableMaximumValue_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableMaximumValue": True},
+        {"hideInWizard": False},
+        {"maxRows": 2500},
+        {"generateImage": True},
+        {"customCSS": ""},
+    ]
+    res.variables = []
+    res.factory_settings = [{"nodeDir": "org.knime.dynamic.js.base:nodes/:barChart"}]
+    assert res == kdlc.extract_node_from_settings_xml(
+        "1", f"{test_resources_dir}/js_factory_settings.xml"
+    )
+
+
 def test_extract_node_from_settings_xml_fail(my_setup):
     with pytest.raises(ValueError):
         kdlc.extract_node_from_settings_xml(
@@ -275,6 +553,30 @@ def test_extract_node_from_settings_xml_fail_var(my_setup):
         kdlc.extract_node_from_settings_xml(
             "1", f"{test_resources_dir}/fail_var_settings.xml"
         )
+
+
+def test_extract_entry_value(my_setup):
+    tree = ET.fromstring(
+        '<config xmlns="http://www.knime.org/2008/09/XMLConfig" '
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+        'xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig '
+        'http://www.knime.org/XMLConfig_2008_09.xsd" key="settings.xml">'
+        '<entry key="node-name" type="xstring" value="CSV Reader"/></config>'
+    )
+    result = "CSV Reader"
+    assert kdlc.extract_entry_value(tree, "node-name") == result
+
+
+def test_extract_entry_value_none(my_setup):
+    tree = ET.fromstring(
+        '<config xmlns="http://www.knime.org/2008/09/XMLConfig" '
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+        'xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig '
+        'http://www.knime.org/XMLConfig_2008_09.xsd" key="settings.xml">'
+        '<entry key="node-name" type="xstring" value="CSV Reader"/></config>'
+    )
+    with pytest.raises(Exception):
+        kdlc.extract_entry_value(tree, "test")
 
 
 def test_extract_entry_tag_string(my_setup):
@@ -469,6 +771,50 @@ def test_extract_node_filenames_meta(my_setup):
 
     assert (
         kdlc.extract_node_filenames(f"{test_resources_dir}/workflow_meta.knime")
+        == result
+    )
+
+
+def test_extract_node_filenames_wrapped(my_setup):
+    result = [
+        {
+            "node_id": "1",
+            "filename": "File Reader (#1)/settings.xml",
+            "node_type": "NativeNode",
+        },
+        {
+            "node_id": "7",
+            "filename": "CSV Writer (#7)/settings.xml",
+            "node_type": "NativeNode",
+        },
+        {
+            "node_id": "10",
+            "filename": "wrapped/settings_wrapped.xml",
+            "node_type": "SubNode",
+            "meta_in_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
+            "meta_out_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
+            "name": "WrappedMetanode",
+            "children": [
+                {
+                    "node_id": "2",
+                    "filename": "rf_settings.xml",
+                    "node_type": "NativeNode",
+                },
+                {
+                    "node_id": "4",
+                    "filename": "input_settings.xml",
+                    "node_type": "NativeNode",
+                },
+                {
+                    "node_id": "5",
+                    "filename": "output_settings.xml",
+                    "node_type": "NativeNode",
+                },
+            ],
+        },
+    ]
+    assert (
+        kdlc.extract_node_filenames(f"{test_resources_dir}/workflow_wrapped.knime")
         == result
     )
 
@@ -670,6 +1016,220 @@ def test_extract_nodes_from_filenames(my_setup):
     )
 
     result = [node1, metanode8]
+    assert result == kdlc.extract_nodes_from_filenames(
+        test_resources_dir, node_filename_list
+    )
+
+
+def test_extract_nodes_from_filenames_wrapped(my_setup):
+    node_filename_list = [
+        {"node_id": "1", "filename": "csv_settings.xml", "node_type": "NativeNode"},
+        {
+            "node_id": "10",
+            "filename": "wrapped/settings_wrapped.xml",
+            "node_type": "SubNode",
+            "meta_in_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
+            "meta_out_ports": [{"1": "org.knime.core.node.BufferedDataTable"}],
+            "name": "WrappedMetanode",
+            "children": [
+                {
+                    "node_id": "2",
+                    "filename": "rf_settings.xml",
+                    "node_type": "NativeNode",
+                },
+                {
+                    "node_id": "4",
+                    "filename": "input_settings.xml",
+                    "node_type": "NativeNode",
+                },
+                {
+                    "node_id": "5",
+                    "filename": "output_settings.xml",
+                    "node_type": "NativeNode",
+                },
+            ],
+        },
+    ]
+    node1 = kdlc.Node(
+        node_id="1",
+        name="CSV Reader",
+        factory=("org.knime.base.node.io.csvreader.CSVReaderNodeFactory"),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node1.port_count = 1
+    node1.model = [
+        {
+            "url": "/Users/jared/knime-workspace/Example "
+            "Workflows/TheData/Misc/Demographics.csv"
+        },
+        {"colDelimiter": ","},
+        {"rowDelimiter": "%%00010"},
+        {"quote": '"'},
+        {"commentStart": "#"},
+        {"hasRowHeader": True},
+        {"hasColHeader": True},
+        {"supportShortLines": False},
+        {"limitRowsCount": -1, "data_type": "xlong"},
+        {"skipFirstLinesCount": -1},
+        {"characterSetName": "", "isnull": True},
+        {"limitAnalysisCount": -1},
+    ]
+
+    node10_2 = kdlc.Node(
+        node_id="10.2",
+        name="Row Filter",
+        factory="org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_2.port_count = 1
+    node10_2.model = [
+        {
+            "rowFilter": [
+                {"RowFilter_TypeID": "RangeVal_RowFilter"},
+                {"ColumnName": "age"},
+                {"include": True},
+                {"deepFiltering": False},
+                {
+                    "lowerBound": [
+                        {"datacell": "org.knime.core.data.def.IntCell"},
+                        {"org.knime.core.data.def.IntCell": [{"IntCell": 20}]},
+                    ]
+                },
+                {
+                    "upperBound": [
+                        {"datacell": "org.knime.core.data.def.IntCell"},
+                        {"org.knime.core.data.def.IntCell": [{"IntCell": 40}]},
+                    ]
+                },
+            ]
+        }
+    ]
+
+    node10_4 = kdlc.Node(
+        node_id="10.4",
+        name="WrappedNode Input",
+        factory="org.knime.core.node.workflow.virtual."
+        "subnode.VirtualSubNodeInputNodeFactory",
+        bundle_name="KNIME Core API",
+        bundle_symbolic_name="org.knime.core",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_4.port_count = 1
+    node10_4.factory_settings = [
+        {
+            "port_0": [
+                {"index": 0},
+                {"type": [{"object_class": "org.knime.core.node.BufferedDataTable"}]},
+            ]
+        }
+    ]
+    node10_4.model = [
+        {
+            "variable-filter": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 0}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceInclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+            ]
+        },
+        {"variable-prefix": "", "isnull": True},
+        {"sub-node-description": ""},
+        {"port-names": [{"array-size": 1}, {"0": "Port 1"}]},
+        {"port-descriptions": [{"array-size": 1}, {"0": ""}]},
+    ]
+
+    node10_5 = kdlc.Node(
+        node_id="10.5",
+        name="WrappedNode Output",
+        factory="org.knime.core.node.workflow.virtual.subnode"
+        ".VirtualSubNodeOutputNodeFactory",
+        bundle_name="KNIME Core API",
+        bundle_symbolic_name="org.knime.core",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_5.port_count = 0
+    node10_5.factory_settings = [
+        {
+            "port_0": [
+                {"index": 0},
+                {"type": [{"object_class": "org.knime.core.node.BufferedDataTable"}]},
+            ]
+        }
+    ]
+    node10_5.model = [
+        {
+            "variable-filter": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 0}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceInclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+            ]
+        },
+        {"variable-prefix": "", "isnull": True},
+        {"port-names": [{"array-size": 1}, {"0": "Port 1"}]},
+        {"port-descriptions": [{"array-size": 1}, {"0": ""}]},
+    ]
+    connection2_5 = kdlc.Connection(
+        connection_id=0,
+        source_id="2",
+        source_port="1",
+        source_node=node10_2,
+        dest_id="5",
+        dest_port="1",
+        dest_node=node10_5,
+    )
+
+    connection4_2 = kdlc.Connection(
+        connection_id=1,
+        source_id="4",
+        source_port="1",
+        source_node=node10_4,
+        dest_id="2",
+        dest_port="1",
+        dest_node=node10_2,
+    )
+
+    metanode = kdlc.WrappedMetaNode(
+        node_id="10",
+        name="WrappedMetanode",
+        children=[node10_2, node10_4, node10_5],
+        connections=[connection2_5, connection4_2],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+    )
+
+    result = [node1, metanode]
+
     assert result == kdlc.extract_nodes_from_filenames(
         test_resources_dir, node_filename_list
     )
@@ -1509,6 +2069,289 @@ def test_create_node_settings_from_template_cf(my_setup):
     assert result_flattened == expected_result_flattened
 
 
+def test_create_node_settings_from_template_js(my_setup):
+    node = kdlc.Node(
+        node_id="1",
+        name="Bar Chart (JavaScript)",
+        factory="org.knime.dynamic.js.v30.DynamicJSNodeFactory",
+        bundle_name="KNIME Dynamically Created JavaScript Nodes",
+        bundle_symbolic_name="org.knime.dynamic.js",
+        bundle_version="3.7.1.v201901281201",
+        feature_name="KNIME JavaScript Views",
+        feature_symbolic_name="org.knime.features.js.views.feature.group",
+        feature_version="3.7.2.v201904170930",
+    )
+    node.port_count = 1
+    node.model = [
+        {
+            "displayFullscreenButton_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"displayFullscreenButton": True},
+        {
+            "legend_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"legend": True},
+        {
+            "enableHorizontalToggle_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableHorizontalToggle": True},
+        {
+            "freq_Internals": [
+                {"SettingsModelID": "SMID_columnfilter"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {
+            "freq": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 1}, {"0": "Accuracy"}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {"typelist": [{"org.knime.core.data.DoubleValue": False}]}
+                    ]
+                },
+            ]
+        },
+        {
+            "tooltip_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"tooltip": True},
+        {
+            "title_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"title": "Bar Chart"},
+        {
+            "enableSwitchMissValCat_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableSwitchMissValCat": True},
+        {
+            "includeMissValCat_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"includeMissValCat": True},
+        {
+            "processInMemory_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"processInMemory": True},
+        {
+            "freqLabel_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"freqLabel": ""},
+        {
+            "cat_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"cat": "model"},
+        {
+            "showWarnings_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"showWarnings": True},
+        {
+            "enableSubtitleEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableSubtitleEdit": True},
+        {
+            "publishSelection_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"publishSelection": True},
+        {
+            "showMaximum_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"showMaximum": True},
+        {
+            "catLabel_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"catLabel": ""},
+        {
+            "orientation_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"orientation": False},
+        {
+            "displayClearSelectionButton_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"displayClearSelectionButton": True},
+        {"svg_Internals": [{"SettingsModelID": "SMID_svg"}, {"EnabledStatus": True}]},
+        {
+            "svg": [
+                {"width": 600},
+                {"height": 400},
+                {"fullscreen": True},
+                {"showFullscreen": True},
+            ]
+        },
+        {
+            "staggerLabels_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"staggerLabels": False},
+        {
+            "enableTitleEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableTitleEdit": True},
+        {
+            "enableSelection_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableSelection": True},
+        {
+            "sort_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"sort": False},
+        {
+            "enableStackedEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableStackedEdit": True},
+        {
+            "enableAxisEdit_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableAxisEdit": True},
+        {
+            "reportOnMissingValues_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"reportOnMissingValues": True},
+        {
+            "subtitle_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"subtitle": ""},
+        {
+            "chartType_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"chartType": "Grouped"},
+        {
+            "enableStaggerToggle_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableStaggerToggle": True},
+        {
+            "enableViewControls_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableViewControls": True},
+        {
+            "aggr_Internals": [
+                {"SettingsModelID": "SMID_string"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"aggr": "Sum"},
+        {
+            "subscribeToSelection_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"subscribeToSelection": True},
+        {
+            "enableMaximumValue_Internals": [
+                {"SettingsModelID": "SMID_boolean"},
+                {"EnabledStatus": True},
+            ]
+        },
+        {"enableMaximumValue": True},
+        {"hideInWizard": False},
+        {"maxRows": 2500},
+        {"generateImage": True},
+        {"customCSS": ""},
+    ]
+    node.variables = []
+    node.factory_settings = [{"nodeDir": "org.knime.dynamic.js.base:nodes/:barChart"}]
+
+    expected_result = ET.parse(f"{test_resources_dir}/js_factory_settings.xml")
+    expected_result_flattened = [i.tag for i in expected_result.iter()]
+
+    result = kdlc.create_node_settings_from_template(node)
+    result_flattened = [i.tag for i in result.iter()]
+
+    assert result_flattened == expected_result_flattened
+
+
 def test_create_workflow_knime_from_template(my_setup):
     node1 = kdlc.Node(
         node_id="1",
@@ -1703,6 +2546,208 @@ def test_create_workflow_knime_from_template(my_setup):
         connections=connection_list, variables=global_variable_list
     )
     expected_result = ET.parse(f"{test_resources_dir}/workflow.knime")
+    expected_result_flattened = [i.tag for i in expected_result.iter()]
+
+    result = kdlc.create_workflow_knime_from_template(node_list, workflow)
+    result_flattened = [i.tag for i in result.iter()]
+
+    assert result_flattened == expected_result_flattened
+
+
+def test_create_workflow_knime_from_template_global_var(my_setup):
+    node1 = kdlc.Node(
+        node_id="1",
+        name="CSV Reader",
+        factory="org.knime.base.node.io.csvreader.CSVReaderNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node1.port_count = 1
+    node1.model = [
+        {
+            "url": (
+                "/Users/jared/knime-workspace/Example Workflows/"
+                "TheData/Misc/Demographics.csv"
+            )
+        },
+        {"colDelimiter": ","},
+        {"rowDelimiter": "%%00010"},
+        {"quote": '"'},
+        {"commentStart": "#"},
+        {"hasRowHeader": True},
+        {"hasColHeader": True},
+        {"supportShortLines": False},
+        {"limitRowsCount": -1, "data_type": "xlong"},
+        {"skipFirstLinesCount": -1},
+        {"characterSetName": "", "isnull": True},
+        {"limitAnalysisCount": -1},
+    ]
+    node2 = kdlc.Node(
+        node_id="2",
+        name="Column Filter",
+        factory=(
+            "org.knime.base.node.preproc.filter."
+            "column.DataColumnSpecFilterNodeFactory"
+        ),
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.1.v201901291053",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.1.v201901291053",
+    )
+    node2.port_count = 1
+    node2.model = [
+        {
+            "column-filter": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 11},
+                        {"0": "MaritalStatus"},
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 1}, {"0": "NumberOfContracts"}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {
+                                    (
+                                        "org.knime.core.data." "date.DateAndTimeValue"
+                                    ): False
+                                },
+                            ]
+                        }
+                    ]
+                },
+            ]
+        }
+    ]
+    node3 = kdlc.Node(
+        node_id="3",
+        name="Table to JSON",
+        factory="org.knime.json.node.fromtable.TableToJsonNodeFactory",
+        bundle_name="JSON related functionality for KNIME",
+        bundle_symbolic_name="org.knime.json",
+        bundle_version="3.7.1.v201901281201",
+        feature_name="KNIME JSON-Processing",
+        feature_symbolic_name="org.knime.features.json.feature.group",
+        feature_version="3.7.1.v201901281201",
+    )
+    node3.port_count = 1
+    node3.model = [
+        {
+            "selectedColumns": [
+                {"filter-type": "STANDARD"},
+                {
+                    "included_names": [
+                        {"array-size": 11},
+                        {"0": "MaritalStatus"},
+                        {"1": "Gender"},
+                        {"2": "EstimatedYearlyIncome"},
+                        {"3": "SentimentRating"},
+                        {"4": "WebActivity"},
+                        {"5": "Age"},
+                        {"6": "Target"},
+                        {"7": "Available401K"},
+                        {"8": "CustomerValueSegment"},
+                        {"9": "ChurnScore"},
+                        {"10": "CallActivity"},
+                    ]
+                },
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceExclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+                {
+                    "datatype": [
+                        {
+                            "typelist": [
+                                {"org.knime.core.data.StringValue": False},
+                                {"org.knime.core.data.IntValue": False},
+                                {"org.knime.core.data.DoubleValue": False},
+                                {"org.knime.core.data.BooleanValue": False},
+                                {"org.knime.core.data.LongValue": False},
+                                {
+                                    (
+                                        "org.knime.core.data" ".date.DateAndTimeValue"
+                                    ): False
+                                },
+                            ]
+                        }
+                    ]
+                },
+            ]
+        },
+        {"rowkey.key": "key"},
+        {"direction": "KeepRows"},
+        {"column.name.separator": "."},
+        {"output.column.name": "JSON"},
+        {"row.key.option": "omit"},
+        {"column.names.as.path": False},
+        {"remove.source.columns": False},
+        {"output.boolean.asNumbers": False},
+        {"missing.values.are.omitted": True},
+    ]
+    node_list = [node1, node2, node3]
+    connection_list = [
+        kdlc.Connection(
+            connection_id=0,
+            source_id="1",
+            source_port="1",
+            source_node=node1,
+            dest_id="3",
+            dest_port="1",
+            dest_node=node3,
+        ),
+        kdlc.Connection(
+            connection_id=1,
+            source_id="3",
+            source_port="1",
+            source_node=node3,
+            dest_id="2",
+            dest_port="1",
+            dest_node=node2,
+        ),
+    ]
+    global_variable_list = [{"test1": "test"}, {"test2": 1}, {"test3": 1.1}]
+    workflow = kdlc.Workflow(
+        connections=connection_list, variables=global_variable_list
+    )
+    expected_result = ET.parse(f"{test_resources_dir}/workflow_var.knime")
     expected_result_flattened = [i.tag for i in expected_result.iter()]
 
     result = kdlc.create_workflow_knime_from_template(node_list, workflow)
@@ -1953,6 +2998,203 @@ def test_create_node_files(my_setup):
     assert result_flattened_1 == expected_result_flattened_1
     assert result_flattened_2 == expected_result_flattened_2
     assert result_flattened_3 == expected_result_flattened_3
+
+
+def test_create_node_files_wrapped(my_setup):
+    node10_2 = kdlc.Node(
+        node_id="10.2",
+        name="Row Filter",
+        factory="org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_2.port_count = 1
+    node10_2.model = [
+        {
+            "rowFilter": [
+                {"RowFilter_TypeID": "RangeVal_RowFilter"},
+                {"ColumnName": "age"},
+                {"include": True},
+                {"deepFiltering": False},
+                {
+                    "lowerBound": [
+                        {"datacell": "org.knime.core.data.def.IntCell"},
+                        {"org.knime.core.data.def.IntCell": [{"IntCell": 20}]},
+                    ]
+                },
+                {
+                    "upperBound": [
+                        {"datacell": "org.knime.core.data.def.IntCell"},
+                        {"org.knime.core.data.def.IntCell": [{"IntCell": 40}]},
+                    ]
+                },
+            ]
+        }
+    ]
+
+    node10_4 = kdlc.Node(
+        node_id="10.4",
+        name="WrappedNode Input",
+        factory="org.knime.core.node.workflow.virtual.subnode."
+        "VirtualSubNodeInputNodeFactory",
+        bundle_name="KNIME Core API",
+        bundle_symbolic_name="org.knime.core",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_4.port_count = 1
+    node10_4.factory_settings = [
+        {
+            "port_0": [
+                {"index": 0},
+                {"type": [{"object_class": "org.knime.core.node.BufferedDataTable"}]},
+            ]
+        }
+    ]
+    node10_4.model = [
+        {
+            "variable-filter": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 0}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceInclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+            ]
+        },
+        {"variable-prefix": "", "isnull": True},
+        {"sub-node-description": ""},
+        {"port-names": [{"array-size": 1}, {"0": "Port 1"}]},
+        {"port-descriptions": [{"array-size": 1}, {"0": ""}]},
+    ]
+
+    node10_5 = kdlc.Node(
+        node_id="10.5",
+        name="WrappedNode Output",
+        factory="org.knime.core.node.workflow.virtual.subnode."
+        "VirtualSubNodeOutputNodeFactory",
+        bundle_name="KNIME Core API",
+        bundle_symbolic_name="org.knime.core",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node10_5.port_count = 0
+    node10_5.factory_settings = [
+        {
+            "port_0": [
+                {"index": 0},
+                {"type": [{"object_class": "org.knime.core.node.BufferedDataTable"}]},
+            ]
+        }
+    ]
+    node10_5.model = [
+        {
+            "variable-filter": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 0}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceInclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+            ]
+        },
+        {"variable-prefix": "", "isnull": True},
+        {"port-names": [{"array-size": 1}, {"0": "Port 1"}]},
+        {"port-descriptions": [{"array-size": 1}, {"0": ""}]},
+    ]
+    connection2_5 = kdlc.Connection(
+        connection_id=0,
+        source_id="2",
+        source_port="1",
+        source_node=node10_2,
+        dest_id="5",
+        dest_port="1",
+        dest_node=node10_5,
+    )
+
+    connection4_2 = kdlc.Connection(
+        connection_id=1,
+        source_id="4",
+        source_port="1",
+        source_node=node10_4,
+        dest_id="2",
+        dest_port="1",
+        dest_node=node10_2,
+    )
+
+    metanode = kdlc.WrappedMetaNode(
+        node_id="10",
+        name="WrappedMetanode",
+        children=[node10_2, node10_4, node10_5],
+        connections=[connection2_5, connection4_2],
+        meta_in_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+    )
+
+    node_list = [metanode]
+    kdlc.create_node_files(f"{test_generated_dir}/wrapped", node_list)
+
+    expected_result_1 = ET.parse(f"{test_resources_dir}/wrapped/settings_wrapped.xml")
+    expected_result_flattened_1 = [i.tag for i in expected_result_1.iter()]
+    result_1 = ET.parse(
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)/settings.xml"
+    )
+    result_flattened_1 = [i.tag for i in result_1.iter()]
+
+    expected_result_2 = ET.parse(f"{test_resources_dir}/wrapped/workflow.knime")
+    expected_result_flattened_2 = [i.tag for i in expected_result_2.iter()]
+    result_2 = ET.parse(
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)/workflow.knime"
+    )
+    result_flattened_2 = [i.tag for i in result_2.iter()]
+
+    expected_result_3 = ET.parse(f"{test_resources_dir}/wrapped/input_settings.xml")
+    expected_result_flattened_3 = [i.tag for i in expected_result_3.iter()]
+    result_3 = ET.parse(
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)"
+        f"/WrappedNode Input (#4)/settings.xml"
+    )
+    result_flattened_3 = [i.tag for i in result_3.iter()]
+
+    expected_result_4 = ET.parse(f"{test_resources_dir}/wrapped/output_settings.xml")
+    expected_result_flattened_4 = [i.tag for i in expected_result_4.iter()]
+    result_4 = ET.parse(
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)"
+        f"/WrappedNode Output (#5)/settings.xml"
+    )
+    result_flattened_4 = [i.tag for i in result_4.iter()]
+
+    expected_result_5 = ET.parse(f"{test_resources_dir}/wrapped/rf_settings.xml")
+    expected_result_flattened_5 = [i.tag for i in expected_result_5.iter()]
+    result_5 = ET.parse(
+        f"{test_generated_dir}/wrapped/WrappedMetanode (#10)"
+        f"/Row Filter (#2)/settings.xml"
+    )
+    result_flattened_5 = [i.tag for i in result_5.iter()]
+
+    assert expected_result_flattened_1 == result_flattened_1
+    assert expected_result_flattened_2 == result_flattened_2
+    assert expected_result_flattened_3 == result_flattened_3
+    assert expected_result_flattened_4 == result_flattened_4
+    assert expected_result_flattened_5 == result_flattened_5
 
 
 def test_set_class_for_global_variables_str(my_setup):

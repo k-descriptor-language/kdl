@@ -1,6 +1,7 @@
 import os
 import json
 import jsonschema
+import collections
 from typing import Any, List, Dict
 from abc import ABC, abstractmethod
 
@@ -113,9 +114,9 @@ class Node(AbstractNode):
             model_list (list): List of model configurations
             var_list (list): List of variables
         """
-        model_iter = iter(model_list)
-        curr_model = next(model_iter)
         for curr_variable in var_list:
+            model_iter = iter(model_list)
+            curr_model = next(model_iter)
             curr_model_key = list(curr_model.keys())[0]
             curr_model_val = curr_model[curr_model_key]
 
@@ -127,7 +128,12 @@ class Node(AbstractNode):
                 curr_model_key = list(curr_model.keys())[0]
                 curr_model_val = curr_model[curr_model_key]
 
-            if type(curr_model_val) is list and type(curr_variable_val) is list:
+            if (
+                type(curr_model_val) is list
+                and curr_model_val
+                and type(curr_variable_val) is list
+                and curr_variable_val
+            ):
                 self.__merge_variables_helper(curr_model_val, curr_variable_val)
             else:
                 for curr in curr_variable_val:
@@ -165,33 +171,22 @@ class Node(AbstractNode):
                 temp_list = list()
                 if "used_variable" in curr.keys():
                     temp_list.append(
-                        {
-                            "used_variable": curr["used_variable"],
-                            "data_type": curr["data_type"],
-                        }
+                        {"used_variable": curr["used_variable"], "data_type": "xstring"}
                     )
                 else:
                     temp_list.append(
-                        {
-                            "isnull": True,
-                            "used_variable": "",
-                            "data_type": curr["data_type"],
-                        }
+                        {"isnull": True, "used_variable": "", "data_type": "xstring"}
                     )
                 if "exposed_variable" in curr.keys():
                     temp_list.append(
                         {
                             "exposed_variable": curr["exposed_variable"],
-                            "data_type": curr["data_type"],
+                            "data_type": "xstring",
                         }
                     )
                 else:
                     temp_list.append(
-                        {
-                            "isnull": True,
-                            "exposed_variable": "",
-                            "data_type": curr["data_type"],
-                        }
+                        {"isnull": True, "exposed_variable": "", "data_type": "xstring"}
                     )
                 variables.append({curr_model_key: temp_list, "data_type": "config"})
 
@@ -240,6 +235,7 @@ class MetaNode(AbstractNode):
         self.connections = connections
         self.meta_in_ports = meta_in_ports
         self.meta_out_ports = meta_out_ports
+        self.type = "MetaNode"
 
     def kdl_str(self) -> str:
         indent = "    "
@@ -264,7 +260,7 @@ class MetaNode(AbstractNode):
             f"(n{self.node_id}): "
             "{\n"
             f'{indent}"name": "{self.name}",\n'
-            f'{indent}"type": "MetaNode",\n'
+            f'{indent}"type": "{self.type}",\n'
             f'{indent}"connections": {{\n'
             f"{output_connections}\n"
             f"{indent}}},\n"
@@ -275,6 +271,30 @@ class MetaNode(AbstractNode):
 
     def get_filename(self) -> str:
         return f"{self.name} (#{self.get_base_id()})/workflow.knime"
+
+
+class WrappedMetaNode(MetaNode):
+    def __init__(
+        self,
+        node_id: str,
+        name: str,
+        children: List[AbstractNode],
+        connections: List[AbstractConnection],
+        meta_in_ports: List[Dict[str, Any]],
+        meta_out_ports: List[Dict[str, Any]],
+    ):
+        super().__init__(
+            node_id=node_id,
+            name=name,
+            children=children,
+            connections=connections,
+            meta_in_ports=meta_in_ports,
+            meta_out_ports=meta_out_ports,
+        )
+        self.type = "SubNode"
+
+    def get_filename(self) -> str:
+        return f"{self.name} (#{self.get_base_id()})/settings.xml"
 
 
 class Connection(AbstractConnection):
@@ -406,3 +426,61 @@ class Workflow(AbstractWorkflow):
 
         output_text += "}\n"
         return output_text
+
+
+class TemplateCatalogue(ABC):
+    def __init__(self, path: str):
+        self.catalogue = {}
+        self.path = path
+        self.template_names = TemplateCatalogue.get_supported_templates(path)
+
+    @staticmethod
+    def get_supported_templates(path: str):
+        # print(f"path = {path}")
+        templates = [
+            os.path.splitext(f)[0].lower()
+            for f in os.listdir(path)
+            if f.endswith(".json")
+        ]
+        # print(f"templates list = {templates}")
+        return templates
+
+    def find_template(self, node_name: str):
+        node_template = self.catalogue.get(node_name.lower())
+        if node_template is not None:
+            return node_template
+        elif node_name.lower() in self.template_names:
+            template_file = f"{self.path}/{node_name}.json"
+            # print(f"template_file = {template_file}")
+            with open(template_file) as template:
+                self.catalogue[node_name.lower()] = json.load(template)
+            return self.catalogue[node_name.lower()]
+        else:
+            return None
+
+    @staticmethod
+    def merge_settings(template: Dict[str, Any], settings: Dict[str, Any]):
+        dct = template.copy()
+        for k, v in settings.items():
+            if isinstance(dct.get(k), dict):
+                dct[k] = TemplateCatalogue.merge_settings(dct[k], v)
+            elif isinstance(dct.get(k), list):
+                dct[k] = TemplateCatalogue.merge_lists(dct[k], v)
+            else:
+                dct[k] = v
+        return dct
+
+    @staticmethod
+    def merge_lists(template_list: List, settings_list: List):
+        result_list = template_list.copy()
+        for sd in settings_list:
+            template_dct = next(
+                (td for td in template_list if set(sd.keys()).issubset(set(td.keys()))),
+                None,
+            )
+            if template_dct is None:
+                result_list.append(sd)
+            else:
+                idx = result_list.index(template_dct)
+                result_list[idx] = TemplateCatalogue.merge_settings(template_dct, sd)
+        return result_list

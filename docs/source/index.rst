@@ -6,6 +6,22 @@
 Welcome to KDL's documentation!
 ===============================
 
+K Descriptor Language (KDL) serves as a domain specific language for authoring 
+and manipulating KNIME workflows.  The KDL Compiler (kdlc) accepts knwf archives, 
+which withhold exported KNIME workflows and outputs equivalent KDL documents.  
+Similarly, kdlc accepts KDL documents and outputs knwf archives.
+
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: K Descriptor Language:
+
+   kdlgrammar
+   kdlc
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Development:
+
+   tooling
+   futureenhancements
