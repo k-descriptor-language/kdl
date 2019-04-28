@@ -10,6 +10,8 @@ from loguru import logger
 
 
 def kdl_to_workflow(input_file: str, output_file: str) -> None:
+    logger.debug("======= BEGIN KDL to WORKFLOW =======")
+
     input_stream = FileStream(input_file)
     lexer = KDLLexer(input_stream)
     stream = CommonTokenStream(lexer)
@@ -24,14 +26,20 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
     workflow_tree = parser.workflow()
     walker.walk(listener, workflow_tree)
 
-    logger.debug("======= nodes =======")
-    logger.debug(listener.nodes)
+    logger.debug("======= Nodes from walker =======")
+    logger.debug([str(node) for node in listener.nodes])
     logger.debug("")
-    logger.debug("==== connections ====")
-    logger.debug(listener.nodes)
+    logger.debug("==== Connections from walker ====")
+    logger.debug([str(connection) for connection in listener.connections])
 
     listener.nodes = kdlc.unflatten_node_list(listener.nodes)
     kdlc.normalize_connections(listener.nodes, listener.connections)
+
+    logger.debug("======= Unflattened Nodes =======")
+    logger.debug([str(node) for node in listener.nodes])
+    logger.debug("")
+    logger.debug("==== Normalized Connections ====")
+    logger.debug([str(connection) for connection in listener.connections])
 
     workflow = Workflow(
         variables=listener.global_variables, connections=listener.connections
@@ -41,6 +49,8 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
 
 
 def workflow_to_kdl(input_file: str, output_file: str) -> None:
+    logger.debug("======= BEGIN WORKFLOW to KDL =======")
+
     # Extract workflow
     input_workflow_name = kdlc.unzip_workflow(input_file)
 
@@ -52,23 +62,27 @@ def workflow_to_kdl(input_file: str, output_file: str) -> None:
     input_global_variable_list = kdlc.extract_global_wf_variables(
         input_workflow_filename
     )
-    logger.debug(input_global_variable_list)
+    logger.debug("======= Global Variables from Workflow =======")
+    logger.debug([str(variable) for variable in input_global_variable_list])
 
     # Parse nodes filenames from workflow.knime
     node_filename_list = kdlc.extract_node_filenames(input_workflow_filename)
-    logger.debug(node_filename_list)
+    logger.debug("======= Raw Node Data from Workflow =======")
+    logger.debug([str(filename) for filename in node_filename_list])
 
     # Parse settings.xml for each node in workflow.knime
     input_node_list = kdlc.extract_nodes_from_filenames(
         input_workflow_path, node_filename_list
     )
-    logger.debug(input_node_list)
+    logger.debug("======= Node Objects from Workflow =======")
+    logger.debug([str(node) for node in input_node_list])
 
     # Parse connections from workflow.knime
     input_connection_list = kdlc.extract_connections(
         input_workflow_filename, input_node_list
     )
-    logger.debug(input_connection_list)
+    logger.debug("======= Connections from Workflow =======")
+    logger.debug([str(connection) for connection in input_connection_list])
 
     # Create workflow and save output KDL
     input_workflow = Workflow(input_connection_list, input_global_variable_list)
@@ -80,6 +94,8 @@ def workflow_to_kdl(input_file: str, output_file: str) -> None:
 def build_knwf(
     nodes: List[AbstractNode], workflow: Workflow, output_filename: str
 ) -> None:
+    logger.debug("======= BEGIN BUILD KNWF =======")
+
     output_wf_name = output_filename.replace(".knwf", "")
 
     # Generate and save workflow.knime in output directory

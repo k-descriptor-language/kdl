@@ -2,7 +2,8 @@ import json
 from kdlc.parser.KDLListener import KDLListener
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.objects import Connection, Node, MetaNode, VariableConnection
-from loguru import logger
+
+# from loguru import logger
 
 
 class KDLLoader(KDLListener):
@@ -15,12 +16,12 @@ class KDLLoader(KDLListener):
         self: KDLListener, ctx: KDLParser.Node_settingsContext
     ) -> None:
         node_number = ctx.node().node_id().getText()
-        logger.debug(f"nodeNumber: {node_number}")
+        # logger.debug(f"nodeNumber: {node_number}")
 
         json_tokens = [i.getText() for i in ctx.json().children]
         json_string = "".join(json_tokens)
         node_settings = json.loads(json_string)
-        logger.debug(node_settings)
+        # logger.debug(node_settings)
 
         # TODO: does this name even matter? if it does, we need to be defensive here
         node_name = node_settings["name"]
