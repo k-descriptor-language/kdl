@@ -10,8 +10,6 @@ from kdlc.objects import (
     WrappedMetaNode,
 )
 
-# from loguru import logger
-
 
 class KDLLoader(KDLListener):
     def __init__(self, template_catalogue: TemplateCatalogue):
@@ -24,13 +22,10 @@ class KDLLoader(KDLListener):
         self: KDLListener, ctx: KDLParser.Node_settingsContext
     ) -> None:
         node_number = ctx.node().node_id().getText()
-        # logger.debug(f"nodeNumber: {node_number}")
 
         json_tokens = [i.getText() for i in ctx.json().children]
         json_string = "".join(json_tokens)
         node_settings = json.loads(json_string)
-
-        # logger.debug(node_settings)
 
         # NB: this name is important, it references the template node name
         node_name = node_settings["name"]
