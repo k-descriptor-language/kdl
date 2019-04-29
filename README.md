@@ -22,6 +22,7 @@ Usage: kdlc [OPTIONS]
 Options:
   -o, --output TEXT  The output file, either .knwf or .kdl  [required]
   -i, --input PATH   The input file, either .knwf or .kdl  [required]
+  -d, --debug        Print debug logging to stdout
   --help             Show this message and exit.
 ```
 

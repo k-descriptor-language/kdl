@@ -25,7 +25,6 @@ class KDLLoader(KDLListener):
         self: KDLListener, ctx: KDLParser.Node_settingsContext
     ) -> None:
         node_number = ctx.node().node_id().getText()
-        # print(f"nodeNumber: {node_number}")
 
         json_tokens = [i.getText() for i in ctx.json().children]
         json_string = "".join(json_tokens)

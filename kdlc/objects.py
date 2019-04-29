@@ -31,6 +31,9 @@ class AbstractNode(ABC):
     def get_filename(self) -> str:
         pass
 
+    def __str__(self):
+        return "NodeID: " + self.node_id + " NodeName: " + self.name
+
 
 class AbstractConnection(ABC):
     def __init__(
@@ -63,6 +66,20 @@ class AbstractConnection(ABC):
     @abstractmethod
     def kdl_str(self) -> str:
         pass
+
+    def __str__(self):
+        return (
+            "ConnectionID: "
+            + str(self.connection_id)
+            + " Source:"
+            + self.source_id
+            + "."
+            + self.source_port
+            + " Dest:"
+            + self.dest_id
+            + ":"
+            + self.dest_port
+        )
 
 
 class Node(AbstractNode):
