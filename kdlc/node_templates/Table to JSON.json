@@ -15,6 +15,9 @@
         },
         {
           "included_names": [
+            {
+              "array-size": 0
+            }
           ]
         },
         {
