@@ -148,7 +148,7 @@ class KDLLoader(KDLListener):
                 dest_node_port = (
                     connection.meta_out_node().port().port_id().NUMBER().getText()
                 )
-            elif connection.dest_node():
+            elif connection.destination_node():
                 dest_node = connection.destination_node().node()
                 dest_node_id = dest_node.node_id().getText()
                 dest_node_port = dest_node.port().port_id().NUMBER().getText()
@@ -183,7 +183,7 @@ class KDLLoader(KDLListener):
                 dest_node_port_id = (
                     connection.meta_out_node().port().port_id().NUMBER().getText()
                 )
-            elif connection.dest_node():
+            elif connection.destination_node():
                 dest_node = connection.destination_node().node()
                 dest_node_id = dest_node.node_id().getText()
                 dest_node_port = dest_node.port()
