@@ -704,9 +704,9 @@ def create_workflow_knime_from_template(
         ElementTree: ElementTree populated with nodes and their associated
         connections
     """
+    template = jinja_env.get_template("workflow_template.xml")
     if workflow.variables:
         set_class_for_global_variables(workflow.variables)
-    template = jinja_env.get_template("workflow_template.xml")
     nodes = [node for node in node_list if type(node) is Node]
     metanodes = [
         node

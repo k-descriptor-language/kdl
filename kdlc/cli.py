@@ -29,13 +29,17 @@ import sys
     help="Print debug logging to stdout",
     is_flag=True,
 )
-def prompt(input_file: str, output_file: str, debug_logging) -> None:
+def prompt(input_file: str, output_file: str, debug_logging: bool = False) -> None:
     logger.remove()
     if debug_logging:
         logger.add(
             sys.stdout,
             level="DEBUG",
-            format="<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>",
+            format=(
+                "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+                "<cyan>{name}</cyan>:<cyan>{function}</cyan>:"
+                "<cyan>{line}</cyan> - <level>{message}</level>"
+            ),
         )
 
     if Path(input_file).suffix == ".kdl" and Path(output_file).suffix == ".knwf":
