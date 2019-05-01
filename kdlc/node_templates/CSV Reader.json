@@ -12,7 +12,7 @@
       "url": ""
     },
     {
-      "colDelimiter": ":"
+      "colDelimiter": ","
     },
     {
       "rowDelimiter": "%%00010"
