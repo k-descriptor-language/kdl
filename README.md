@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.com/k-descriptor-language/kdl.svg?branch=master)](https://travis-ci.com/k-descriptor-language/kdl)
 [![codecov](https://codecov.io/gh/k-descriptor-language/kdl/branch/master/graph/badge.svg)](https://codecov.io/gh/k-descriptor-language/kdl)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/40db07e223ed4d599a0a0567a243aafc)](https://www.codacy.com/app/qanitsyed/kdl?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=k-descriptor-language/kdl&amp;utm_campaign=Badge_Grade)
 [![Documentation Status](https://readthedocs.org/projects/kdl/badge/?version=latest)](https://kdl.readthedocs.io/en/latest/?badge=latest)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
