@@ -58,7 +58,7 @@ class KDLLoader(KDLListener):
     def exitMeta_settings(self, ctx: KDLParser.Meta_settingsContext):
         node_number = ctx.node().node_id().getText()
         name = ctx.STRING(1).getText()[1:-1]
-        type = ctx.STRING(3).getText()[1:-1]
+        node_type = ctx.STRING(3).getText()[1:-1]
 
         json_tokens = [i.getText() for i in ctx.meta_in_ports().json().children]
         json_string = "".join(json_tokens)
@@ -68,7 +68,7 @@ class KDLLoader(KDLListener):
         json_string = "".join(json_tokens)
         meta_out_ports = json.loads(json_string)
 
-        if type == "MetaNode":
+        if node_type == "MetaNode":
             metanode = MetaNode(
                 node_id=node_number,
                 name=name,
@@ -77,7 +77,7 @@ class KDLLoader(KDLListener):
                 meta_in_ports=meta_in_ports,
                 meta_out_ports=meta_out_ports,
             )
-        elif type == "SubNode":
+        elif node_type == "SubNode":
             metanode = WrappedMetaNode(
                 node_id=node_number,
                 name=name,
@@ -208,8 +208,7 @@ class KDLLoader(KDLListener):
         self.nodes.append(metanode)
 
     def exitConnection(self: KDLListener, ctx: KDLParser.ConnectionContext) -> None:
-        # TODO: is there a cleaner way to do this?
-        if type(ctx.parentCtx) is KDLParser.Meta_settingsContext:
+        if isinstance(ctx.parentCtx, KDLParser.Meta_settingsContext):
             return
         source_node = ctx.source_node().node()
         source_node_id = source_node.node_id().getText()
@@ -232,8 +231,7 @@ class KDLLoader(KDLListener):
         self.connections.append(connection)
 
     def exitVar_connection(self, ctx: KDLParser.Var_connectionContext):
-        # TODO: is there a cleaner way to do this?
-        if type(ctx.parentCtx) is KDLParser.Meta_settingsContext:
+        if isinstance(ctx.parentCtx, KDLParser.Meta_settingsContext):
             return
         source_node = ctx.source_node().node()
         source_node_id = source_node.node_id().getText()

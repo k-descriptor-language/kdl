@@ -29,7 +29,7 @@ import sys
     help="Print debug logging to stdout",
     is_flag=True,
 )
-def prompt(input_file: str, output_file: str, debug_logging: bool) -> None:
+def prompt(input_file: str, output_file: str, debug_logging) -> None:
     """
     CLI interface. Uses the click libraries. Offers two functions:
         knwf to kdl
@@ -38,7 +38,7 @@ def prompt(input_file: str, output_file: str, debug_logging: bool) -> None:
 
     :param input_file: Name of the input file
     :param output_file: Name of the output file
-    :param debug_logging: boolean to turn on debug mode
+    :param debug_logging: argument to turn on debug mode
     """
     logger.remove()
     if debug_logging:
