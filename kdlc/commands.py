@@ -100,7 +100,9 @@ def build_knwf(
     output_wf_name = output_filename.replace(".knwf", "")
 
     # Verify urls in Nodes and warn if needed
-    [node.verify_urls_and_warn() for node in nodes if isinstance(node, Node)]
+    for node in nodes:
+        if isinstance(node, Node):
+            node.verify_urls_and_warn()
 
     # Generate and save workflow.knime in output directory
     output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_wf_name}"
