@@ -134,57 +134,41 @@ class KDLLoader(KDLListener):
 
         for connection in ctx.meta_connection():
             if connection.meta_in_node():
+                source_node_id = "-1"
                 source_node_port = (
                     connection.meta_in_node().port().port_id().NUMBER().getText()
                 )
-                dest_node = connection.destination_node().node()
-                dest_node_id = dest_node.node_id().getText()
-                dest_node_port = dest_node.port().port_id().NUMBER().getText()
-                new_connection = Connection(
-                    connection_id=len(metanode.connections),
-                    source_id="-1",
-                    dest_id=dest_node_id,
-                    source_port=source_node_port,
-                    dest_port=dest_node_port,
-                )
-            elif connection.meta_out_node():
+            elif connection.source_node():
                 source_node = connection.source_node().node()
                 source_node_id = source_node.node_id().getText()
                 source_node_port = source_node.port().port_id().NUMBER().getText()
+
+            if connection.meta_out_node():
+                dest_node_id = "-1"
                 dest_node_port = (
                     connection.meta_out_node().port().port_id().NUMBER().getText()
                 )
-                new_connection = Connection(
-                    connection_id=len(metanode.connections),
-                    source_id=source_node_id,
-                    dest_id="-1",
-                    source_port=source_node_port,
-                    dest_port=dest_node_port,
-                )
+            elif connection.destination_node():
+                dest_node = connection.destination_node().node()
+                dest_node_id = dest_node.node_id().getText()
+                dest_node_port = dest_node.port().port_id().NUMBER().getText()
+
+            new_connection = Connection(
+                connection_id=len(metanode.connections),
+                source_id=source_node_id,
+                dest_id=dest_node_id,
+                source_port=source_node_port,
+                dest_port=dest_node_port,
+            )
             metanode.connections.append(new_connection)
 
         for connection in ctx.meta_var_connection():
             if connection.meta_in_node():
+                source_node_id = "-1"
                 source_node_port_id = (
                     connection.meta_in_node().port().port_id().NUMBER().getText()
                 )
-                dest_node = connection.destination_node().node()
-                dest_node_id = dest_node.node_id().getText()
-                dest_node_port = dest_node.port()
-                dest_node_port_id = (
-                    dest_node_port.port_id().NUMBER().getText()
-                    if dest_node_port
-                    else "0"
-                )
-
-                new_var_connection = VariableConnection(
-                    connection_id=len(metanode.connections),
-                    source_id="-1",
-                    source_port=source_node_port_id,
-                    dest_id=dest_node_id,
-                    dest_port=dest_node_port_id,
-                )
-            elif connection.meta_out_node():
+            elif connection.source_node():
                 source_node = connection.source_node().node()
                 source_node_id = source_node.node_id().getText()
                 source_node_port = source_node.port()
@@ -194,16 +178,28 @@ class KDLLoader(KDLListener):
                     else "0"
                 )
 
+            if connection.meta_out_node():
+                dest_node_id = "-1"
                 dest_node_port_id = (
                     connection.meta_out_node().port().port_id().NUMBER().getText()
                 )
-                new_var_connection = VariableConnection(
-                    connection_id=len(metanode.connections),
-                    source_id=source_node_id,
-                    source_port=source_node_port_id,
-                    dest_id="-1",
-                    dest_port=dest_node_port_id,
+            elif connection.destination_node():
+                dest_node = connection.destination_node().node()
+                dest_node_id = dest_node.node_id().getText()
+                dest_node_port = dest_node.port()
+                dest_node_port_id = (
+                    dest_node_port.port_id().NUMBER().getText()
+                    if dest_node_port
+                    else "0"
                 )
+
+            new_var_connection = VariableConnection(
+                connection_id=len(metanode.connections),
+                source_id=source_node_id,
+                source_port=source_node_port_id,
+                dest_id=dest_node_id,
+                dest_port=dest_node_port_id,
+            )
             metanode.connections.append(new_var_connection)
         self.nodes.append(metanode)
 

@@ -420,19 +420,21 @@ class Workflow(AbstractWorkflow):
         indent = "    "
         output_text = "Workflow {\n"
         if self.variables:
-            var_text = f'"variables": {json.dumps(self.variables, indent=4)},'
+            var_text = f'"variables": {json.dumps(self.variables, indent=4)}'
+            if self.connections:
+                var_text += ","
             for line in var_text.splitlines():
                 output_text += f"{indent}{line}\n"
-
-        output_connections = '"connections": {\n'
-        for i, connection in enumerate(self.connections):
-            output_connection = connection.kdl_str()
-            if i < len(self.connections) - 1:
-                output_connection += ","
-            output_connections += f"{indent}{output_connection}\n"
-        output_connections += "}\n"
-        for line in output_connections.splitlines():
-            output_text += f"{indent}{line}\n"
+        if self.connections:
+            output_connections = '"connections": {\n'
+            for i, connection in enumerate(self.connections):
+                output_connection = connection.kdl_str()
+                if i < len(self.connections) - 1:
+                    output_connection += ","
+                output_connections += f"{indent}{output_connection}\n"
+            output_connections += "}\n"
+            for line in output_connections.splitlines():
+                output_text += f"{indent}{line}\n"
 
         output_text += "}\n"
         return output_text
