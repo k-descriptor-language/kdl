@@ -230,7 +230,11 @@ class Node(AbstractNode):
             settings.pop("factory_settings")
         return f"(n{self.node_id}): {json.dumps(settings, indent=4)}"
 
-    def verify_urls_and_warn(self):
+    def verify_urls_and_warn(self) -> None:
+        """
+        Reviews all model settings in a Node and warns user of any relative paths
+
+        """
         settings = self.__dict__.copy()
         try:
             model_settings = [model_dict for model_dict in settings["model"]]
