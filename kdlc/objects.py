@@ -244,7 +244,7 @@ class Node(AbstractNode):
                 for value in setting_dict.values()
                 if "knime://" in str(value)
             ]
-        except:
+        except KeyError:
             return
         if len(urls) > 0:
             logger.warning("====== WARNING =======")
@@ -252,7 +252,8 @@ class Node(AbstractNode):
                 "Node " + self.name + " contains relative paths: NodeID:" + self.node_id
             )
             logger.warning(
-                "The following settings have relative workflow paths and must be manually adjusted in KNIME:"
+                "The following settings have relative workflow paths and "
+                + "must be manually adjusted in KNIME:"
             )
             for url in urls:
                 logger.warning(url)
