@@ -29,7 +29,6 @@ import sys
     help="Print debug logging to stdout",
     is_flag=True,
 )
-
 def prompt(input_file: str, output_file: str, debug_logging: bool = False) -> None:
     """
     CLI interface. Uses the click libraries. Offers two functions:

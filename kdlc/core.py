@@ -549,9 +549,8 @@ def extract_connections(
             ]
             if dest_in_connections:
                 dest_in_connection = dest_in_connections.pop()
-            if (
-                isinstance(source_out_connection, VariableConnection)
-                and isinstance(dest_in_connection, VariableConnection)
+            if isinstance(source_out_connection, VariableConnection) and isinstance(
+                dest_in_connection, VariableConnection
             ):
                 is_var_connection = True
 
