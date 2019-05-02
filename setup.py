@@ -37,7 +37,7 @@ setup(
         "click",
         "jinja2",
         "jsonschema",
-        "loguru",
+        "loguru"
     ],
     extras_require={
         "dev": [
