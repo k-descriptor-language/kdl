@@ -11,12 +11,11 @@ import os
 
 
 def kdl_to_workflow(input_file: str, output_file: str) -> None:
-    """"
-    Converts a KDL file (.kdl) to a KNIME workflow archive.
+    """
+        Converts a KDL file (.kdl) to a KNIME workflow archive.
 
-    Args:
-        input_file (str): Name of the KDL file
-        output_file (str): Name of the KNIME archive
+    :param input_file: Name of the KDL file
+    :param output_file: Name of the KNIME archive
     """
     logger.debug("======= BEGIN KDL to WORKFLOW =======")
 
@@ -57,12 +56,11 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
 
 
 def workflow_to_kdl(input_file: str, output_file: str) -> None:
-    """"
-    Converts a KNIME workflow archive to a kdl file.
+    """
+        Converts a KNIME workflow archive to a kdl file.
 
-    Args:
-        input_file (str): Name of the KNIME archive
-        output_file (str): Name of the KDL file
+    :param input_file:  Name of the KNIME archive
+    :param output_file: Name of the KDL file
     """
     logger.debug("======= BEGIN WORKFLOW to KDL =======")
 
@@ -110,15 +108,15 @@ def build_knwf(
     nodes: List[AbstractNode], workflow: Workflow, output_filename: str
 ) -> None:
     """
-    Builds the knwf archive in the file system:
+        Builds the knwf archive in the file system:
         write workflow.knime
         Write associated sxml
         zip the files into a .knwf archive
 
-    Args:
-        nodes (List): List of Nodes in the workflow
-        workflow (Workflow): Represents the workflow being built
-        output_filename (str): Name of the output archive file name
+    :param nodes: List of Nodes in the workflow
+    :param workflow: Represents the workflow being built
+    :param output_filename: Name of the output archive file name
+    :return:
     """
     logger.debug("======= BEGIN BUILD KNWF =======")
 
