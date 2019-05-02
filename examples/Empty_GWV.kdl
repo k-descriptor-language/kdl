@@ -1,0 +1,10 @@
+Nodes {
+}
+
+Workflow {
+    "variables": [
+        {
+            "test": "test"
+        }
+    ]
+}

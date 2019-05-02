@@ -152,6 +152,15 @@ class KDLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by KDLParser#node_list.
+    def enterNode_list(self, ctx:KDLParser.Node_listContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#node_list.
+    def exitNode_list(self, ctx:KDLParser.Node_listContext):
+        pass
+
+
     # Enter a parse tree produced by KDLParser#nodes.
     def enterNodes(self, ctx:KDLParser.NodesContext):
         pass
@@ -167,6 +176,15 @@ class KDLListener(ParseTreeListener):
 
     # Exit a parse tree produced by KDLParser#global_variables.
     def exitGlobal_variables(self, ctx:KDLParser.Global_variablesContext):
+        pass
+
+
+    # Enter a parse tree produced by KDLParser#workflow_connections.
+    def enterWorkflow_connections(self, ctx:KDLParser.Workflow_connectionsContext):
+        pass
+
+    # Exit a parse tree produced by KDLParser#workflow_connections.
+    def exitWorkflow_connections(self, ctx:KDLParser.Workflow_connectionsContext):
         pass
 
 

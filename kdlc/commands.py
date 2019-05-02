@@ -31,7 +31,6 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
 
     logger.debug("======= Nodes from walker =======")
     logger.debug([str(node) for node in listener.nodes])
-    logger.debug("")
     logger.debug("==== Connections from walker ====")
     logger.debug([str(connection) for connection in listener.connections])
 
@@ -40,7 +39,6 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
 
     logger.debug("======= Unflattened Nodes =======")
     logger.debug([str(node) for node in listener.nodes])
-    logger.debug("")
     logger.debug("==== Normalized Connections ====")
     logger.debug([str(connection) for connection in listener.connections])
 
