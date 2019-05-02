@@ -33,6 +33,7 @@
 </config>
 {% endif %}
 <config key="workflow_credentials"/>
+{% if nodes or metanodes %}
 <config key="nodes">
     {% for node in nodes %}
     <config key="node_{{node.get_base_id()}}">
@@ -71,6 +72,10 @@
     </config>
     {% endfor %}
 </config>
+{% else %}
+<config key="nodes"/>
+{% endif %}
+{% if connections %}
 <config key="connections">
     {% for connection in connections %}
     <config key="connection_{{connection.connection_id}}">
@@ -85,6 +90,9 @@
     </config>
     {% endfor %}
 </config>
+{% else %}
+<config key="connections"/>
+{% endif %}
 {% if meta_in_ports %}
 <config key="meta_in_ports">
     <entry key="ui_classname" type="xstring" isnull="true" value="" />
