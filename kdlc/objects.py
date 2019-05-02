@@ -226,7 +226,6 @@ class Node(AbstractNode):
         settings = self.__dict__.copy()
         settings.pop("node_id")
         settings.pop("variables")
-        self.verify_urls_and_warn()
         if not self.factory_settings:
             settings.pop("factory_settings")
         return f"(n{self.node_id}): {json.dumps(settings, indent=4)}"
@@ -235,16 +234,15 @@ class Node(AbstractNode):
         settings = self.__dict__.copy()
         try:
             model_settings = [model_dict for model_dict in settings["model"]]
-            urls = [setting_dict for setting_dict in model_settings if "url" in setting_dict.keys()]
-            affected_urls = [url_dict["url"] for url_dict in urls if str(url_dict["url"]).startswith("knime://")]
+            urls = [setting_dict for setting_dict in model_settings for value in setting_dict.values() if  "knime://" in str(value)]
         except:
             return
-        if len(affected_urls) > 0:
+        if len(urls) > 0:
             logger.warning("====== WARNING =======")
             logger.warning("Node " + self.name + " contains relative paths: NodeID:" + self.node_id)
-            logger.warning("The following URLs have relative workflow paths and must be manually adjusted in KNIME:")
-            for url in affected_urls:
-                logger.warning("\t" + url)
+            logger.warning("The following settings have relative workflow paths and must be manually adjusted in KNIME:")
+            for url in urls:
+                logger.warning(url)
 
 class MetaNode(AbstractNode):
     def __init__(
