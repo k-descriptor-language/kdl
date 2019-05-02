@@ -4,7 +4,7 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 from kdlc.parser.KDLLexer import KDLLexer
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.KDLLoader import KDLLoader
-from kdlc.objects import AbstractNode, Workflow, TemplateCatalogue
+from kdlc.objects import AbstractNode, Node, Workflow, TemplateCatalogue
 from typing import List
 from loguru import logger
 import os
@@ -100,7 +100,7 @@ def build_knwf(
     output_wf_name = output_filename.replace(".knwf", "")
 
     # Verify urls in Nodes and warn if needed
-    [node.verify_urls_and_warn() for node in nodes]
+    [node.verify_urls_and_warn() for node in nodes if isinstance(node, Node)]
 
     # Generate and save workflow.knime in output directory
     output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_wf_name}"
