@@ -1763,6 +1763,612 @@ def test_normalize_connections(my_setup):
     assert res_connections == in_connections
 
 
+def test_normalize_connections_wrapped(my_setup):
+
+    node1 = kdlc.Node(
+        node_id="1",
+        name="File Reader",
+        factory="org.knime.base.node.io.filereader.FileReaderNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node1.port_count = 1
+    node1.model = [
+        {"DataURL": "knime://LOCAL/Example%20Workflows/TheData/Basics/adult.csv"},
+        {
+            "Delimiters": [
+                {
+                    "Delim0": [
+                        {"pattern": "%%00010"},
+                        {"combineMultiple": True},
+                        {"includeInToken": False},
+                        {"returnAsToken": True},
+                    ]
+                },
+                {
+                    "Delim1": [
+                        {"pattern": "%%00013"},
+                        {"combineMultiple": True},
+                        {"includeInToken": False},
+                        {"returnAsToken": True},
+                    ]
+                },
+                {
+                    "Delim2": [
+                        {"pattern": ","},
+                        {"combineMultiple": False},
+                        {"includeInToken": False},
+                        {"returnAsToken": False},
+                    ]
+                },
+            ]
+        },
+        {
+            "Quotes": [
+                {
+                    "Quote0": [
+                        {"left": '"'},
+                        {"right": '"'},
+                        {"EscChar": "\\", "data_type": "xchar"},
+                        {"DontRem": False},
+                    ]
+                },
+                {
+                    "Quote1": [
+                        {"left": "'"},
+                        {"right": "'"},
+                        {"EscChar": "\\", "data_type": "xchar"},
+                        {"DontRem": False},
+                    ]
+                },
+            ]
+        },
+        {"Comments": []},
+        {"WhiteSpaces": [{"WhiteSpace0": " "}, {"WhiteSpace1": "%%00009"}]},
+        {"CombineMultDelims": False},
+        {"SkipFirstLines": 0, "data_type": "xlong"},
+        {"NewLineInQuotes": False},
+        {"hasColHdr": True},
+        {"hasRowHdr": False},
+        {"ignoreEmptyLines": True},
+        {"rowPrefix": "Row"},
+        {
+            "RowDelims": [
+                {"RDelim0": "%%00010"},
+                {"SkipEmptyLine0": True},
+                {"RDelim1": "%%00013"},
+                {"SkipEmptyLine1": True},
+            ]
+        },
+        {"MissingPatterns": []},
+        {"FormatParameter": []},
+        {"globalMissPattern": "", "isnull": True},
+        {"DecimalSeparator": ".", "data_type": "xchar"},
+        {"ThrousandsSeparator": "%%00000", "data_type": "xchar"},
+        {"ignEmtpyTokensAtEOR": False},
+        {"acceptShortLines": False},
+        {"uniquifyRowID": False},
+        {"MaxNumOfRows": -1, "data_type": "xlong"},
+        {"ColNumDetermLine": -1},
+        {"CharsetName": "", "isnull": True},
+        {"ConnectTimeoutInSeconds": 1},
+        {"delimsAtEOLuserVal": False},
+        {"numOfColumns": 15},
+        {
+            "ColumnProperties": [
+                {
+                    "0": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "", "isnull": True},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "age"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.IntCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "1": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "?"},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "workclass"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.StringCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "2": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "", "isnull": True},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "fnlwgt"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.IntCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "3": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "?"},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "education"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.StringCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "4": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "", "isnull": True},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "education-num"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.IntCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "5": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "?"},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "marital-status"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.StringCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "6": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "?"},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "occupation"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.StringCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "7": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "?"},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "relationship"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.StringCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "8": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "?"},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "race"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.StringCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "9": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "?"},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "sex"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.StringCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "10": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "", "isnull": True},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "capital-gain"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.IntCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "11": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "", "isnull": True},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "capital-loss"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.IntCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "12": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "", "isnull": True},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "hours-per-week"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.IntCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "13": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "?"},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "native-country"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.StringCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "14": [
+                        {"UserSetValues": False},
+                        {"MissValuePattern": "?"},
+                        {"FormatParameter": "", "isnull": True},
+                        {"ReadPossValsFromFile": False},
+                        {"SkipThisColumn": False},
+                        {"ColumnName": "income"},
+                        {
+                            "ColumnClass": [
+                                {"cell_class": "org.knime.core.data.def.StringCell"},
+                                {"is_null": False},
+                            ]
+                        },
+                    ]
+                },
+            ]
+        },
+    ]
+
+    node7 = kdlc.Node(
+        node_id="7",
+        name="CSV Writer",
+        factory="org.knime.base.node.io.csvwriter.CSVWriterNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node7.port_count = 1
+    node7.model = [
+        {"colSeparator": ","},
+        {"missing": ""},
+        {"quoteBegin": '"'},
+        {"quoteEnd": '"'},
+        {"quoteMode": "STRINGS"},
+        {"quoteReplacement": ""},
+        {"sepReplacePattern": ""},
+        {"ReplSepInStrings": False},
+        {"writeColHeader": True},
+        {"writeRowHeader": False},
+        {"decimalSeparator": ".", "data_type": "xchar"},
+        {"lineEndingMode": "SYST"},
+        {"charSet": "", "isnull": True},
+        {"filename": "/Users/jared/repos/k-descriptor-language/kdl/demo_output_2.csv"},
+        {"fileOverwritePolicy": "Overwrite"},
+        {"skipWriteColHeaderOnAppend": False},
+        {"commentBegin": ""},
+        {"commentEnd": ""},
+        {"addTime": False},
+        {"addUser": False},
+        {"addTablename": False},
+        {"userCommentLine": ""},
+        {"gzip": False},
+    ]
+
+    node11_6 = kdlc.Node(
+        node_id="11.6",
+        name="Concatenate",
+        factory="org.knime.base.node.preproc.append.row.AppendedRowsNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node11_6.port_count = 1
+    node11_6.model = [
+        {"fail_on_duplicates": False},
+        {"append_suffix": True},
+        {"intersection_of_columns": False},
+        {"suffix": "_dup"},
+        {"enable_hiliting": False},
+    ]
+
+    node11_7 = kdlc.Node(
+        node_id="11.7",
+        name="WrappedNode Input",
+        factory="org.knime.core.node.workflow.virtual."
+        "subnode.VirtualSubNodeInputNodeFactory",
+        bundle_name="KNIME Core API",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node11_7.factory_settings = [
+        {
+            "port_0": [
+                {"index": 0},
+                {"type": [{"object_class": "org.knime.core.node.BufferedDataTable"}]},
+            ]
+        },
+        {
+            "port_1": [
+                {"index": 1},
+                {"type": [{"object_class": "org.knime.core.node.BufferedDataTable"}]},
+            ]
+        },
+    ]
+    node11_7.model = [
+        {
+            "variable-filter": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 0}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceInclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+            ]
+        },
+        {"variable-prefix": "", "isnull": True},
+        {"sub-node-description": ""},
+        {"port-names": [{"array-size": 2}, {"0": "Port 1"}, {"1": "Port 2"}]},
+        {"port-descriptions": [{"array-size": 2}, {"0": ""}, {"1": ""}]},
+    ]
+    node11_7.port_count = 2
+
+    node11_8 = kdlc.Node(
+        node_id="11.8",
+        name="WrappedNode Output",
+        factory="org.knime.core.node.workflow.virtual."
+        "subnode.VirtualSubNodeOutputNodeFactory",
+        bundle_name="KNIME Base Nodes",
+        bundle_symbolic_name="org.knime.base",
+        bundle_version="3.7.2.v201904170949",
+        feature_name="KNIME Core",
+        feature_symbolic_name="org.knime.features.base.feature.group",
+        feature_version="3.7.2.v201904171038",
+    )
+    node11_8.factory_settings = [
+        {
+            "port_0": [
+                {"index": 0},
+                {"type": [{"object_class": "org.knime.core.node.BufferedDataTable"}]},
+            ]
+        }
+    ]
+    node11_8.model = [
+        {
+            "variable-filter": [
+                {"filter-type": "STANDARD"},
+                {"included_names": [{"array-size": 0}]},
+                {"excluded_names": [{"array-size": 0}]},
+                {"enforce_option": "EnforceInclusion"},
+                {
+                    "name_pattern": [
+                        {"pattern": ""},
+                        {"type": "Wildcard"},
+                        {"caseSensitive": True},
+                    ]
+                },
+            ]
+        },
+        {"variable-prefix": "", "isnull": True},
+        {"port-names": [{"array-size": 1}, {"0": "Port 1"}]},
+        {"port-descriptions": [{"array-size": 1}, {"0": ""}]},
+    ]
+    node11_8.port_count = 0
+
+    connection6_8 = kdlc.Connection(
+        connection_id=0, source_id="6", source_port="1", dest_id="8", dest_port="1"
+    )
+    connection7_6_1 = kdlc.Connection(
+        connection_id=1, source_id="7", source_port="1", dest_id="6", dest_port="2"
+    )
+    connection7_6_2 = kdlc.Connection(
+        connection_id=2, source_id="7", source_port="2", dest_id="6", dest_port="1"
+    )
+
+    node11 = kdlc.WrappedMetaNode(
+        node_id="11",
+        name="WrappedMetanode",
+        children=[node11_6, node11_7, node11_8],
+        connections=[connection6_8, connection7_6_1, connection7_6_2],
+        meta_in_ports=[
+            {"1": "org.knime.core.node.BufferedDataTable"},
+            {"2": "org.knime.core.node.BufferedDataTable"},
+        ],
+        meta_out_ports=[{"1": "org.knime.core.node.BufferedDataTable"}],
+    )
+
+    connection1_11_1 = kdlc.Connection(
+        connection_id=0, source_id="1", source_port="1", dest_id="11", dest_port="1"
+    )
+
+    connection1_11_2 = kdlc.Connection(
+        connection_id=1, source_id="1", source_port="1", dest_id="11", dest_port="2"
+    )
+
+    connection11_7 = kdlc.Connection(
+        connection_id=2, source_id="11", source_port="1", dest_id="7", dest_port="1"
+    )
+
+    res_connection6_8 = kdlc.Connection(
+        connection_id=0,
+        source_id="6",
+        source_port="1",
+        source_node=node11_6,
+        dest_id="8",
+        dest_port="1",
+        dest_node=node11_8,
+    )
+    res_connection7_6_1 = kdlc.Connection(
+        connection_id=1,
+        source_id="7",
+        source_port="1",
+        source_node=node11_7,
+        dest_id="6",
+        dest_port="2",
+        dest_node=node11_6,
+    )
+    res_connection7_6_2 = kdlc.Connection(
+        connection_id=2,
+        source_id="7",
+        source_port="2",
+        source_node=node11_7,
+        dest_id="6",
+        dest_port="1",
+        dest_node=node11_6,
+    )
+
+    res_connection1_11_1 = kdlc.Connection(
+        connection_id=0,
+        source_id="1",
+        source_port="1",
+        source_node=node1,
+        dest_id="11",
+        dest_port="1",
+        dest_node=node11,
+    )
+
+    res_connection1_11_2 = kdlc.Connection(
+        connection_id=1,
+        source_id="1",
+        source_port="1",
+        source_node=node1,
+        dest_id="11",
+        dest_port="2",
+        dest_node=node11,
+    )
+
+    res_connection11_7 = kdlc.Connection(
+        connection_id=2,
+        source_id="11",
+        source_port="1",
+        source_node=node11,
+        dest_id="7",
+        dest_port="1",
+        dest_node=node7,
+    )
+
+    res_node11 = kdlc.WrappedMetaNode(
+        node_id="11",
+        name="WrappedMetanode",
+        children=[node11_6, node11_7, node11_8],
+        connections=[res_connection6_8, res_connection7_6_1, res_connection7_6_2],
+        meta_in_ports=[
+            {"0": "org.knime.core.node.BufferedDataTable"},
+            {"1": "org.knime.core.node.BufferedDataTable"},
+        ],
+        meta_out_ports=[{"0": "org.knime.core.node.BufferedDataTable"}],
+    )
+
+    res_nodes = [node1, res_node11, node7]
+    res_connections = [res_connection1_11_1, res_connection1_11_2, res_connection11_7]
+
+    input_nodes = [node1, node11, node7]
+    input_connections = [connection1_11_1, connection1_11_2, connection11_7]
+
+    kdlc.normalize_connections(input_nodes, input_connections)
+
+    assert res_nodes == input_nodes
+    assert res_connections == input_connections
+
+
 def test_extract_connections(my_setup):
     node1 = kdlc.Node(
         node_id="1",
