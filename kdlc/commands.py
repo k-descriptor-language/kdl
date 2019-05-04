@@ -4,13 +4,19 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 from kdlc.parser.KDLLexer import KDLLexer
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.KDLLoader import KDLLoader
-from kdlc.objects import AbstractNode, Workflow, TemplateCatalogue
+from kdlc.objects import AbstractNode, Node, Workflow, TemplateCatalogue
 from typing import List
 from loguru import logger
 import os
 
 
 def kdl_to_workflow(input_file: str, output_file: str) -> None:
+    """
+        Converts a KDL file (.kdl) to a KNIME workflow archive.
+
+    :param input_file: Name of the KDL file
+    :param output_file: Name of the KNIME archive
+    """
     logger.debug("======= BEGIN KDL to WORKFLOW =======")
 
     input_stream = FileStream(input_file)
@@ -50,6 +56,12 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
 
 
 def workflow_to_kdl(input_file: str, output_file: str) -> None:
+    """
+        Converts a KNIME workflow archive to a kdl file.
+
+    :param input_file:  Name of the KNIME archive
+    :param output_file: Name of the KDL file
+    """
     logger.debug("======= BEGIN WORKFLOW to KDL =======")
 
     # Extract workflow
@@ -95,9 +107,25 @@ def workflow_to_kdl(input_file: str, output_file: str) -> None:
 def build_knwf(
     nodes: List[AbstractNode], workflow: Workflow, output_filename: str
 ) -> None:
+    """
+        Builds the knwf archive in the file system:
+        write workflow.knime
+        Write associated sxml
+        zip the files into a .knwf archive
+
+    :param nodes: List of Nodes in the workflow
+    :param workflow: Represents the workflow being built
+    :param output_filename: Name of the output archive file name
+    :return:
+    """
     logger.debug("======= BEGIN BUILD KNWF =======")
 
     output_wf_name = output_filename.replace(".knwf", "")
+
+    # Verify urls in Nodes and warn if needed
+    for node in nodes:
+        if isinstance(node, Node):
+            node.verify_urls_and_warn()
 
     # Generate and save workflow.knime in output directory
     output_workflow_path = f"{kdlc.OUTPUT_PATH}/{output_wf_name}"

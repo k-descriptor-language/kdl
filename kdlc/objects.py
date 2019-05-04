@@ -3,6 +3,7 @@ import json
 import jsonschema
 from typing import Any, List, Dict
 from abc import ABC, abstractmethod
+from loguru import logger
 
 
 class AbstractNode(ABC):
@@ -228,6 +229,34 @@ class Node(AbstractNode):
         if not self.factory_settings:
             settings.pop("factory_settings")
         return f"(n{self.node_id}): {json.dumps(settings, indent=4)}"
+
+    def verify_urls_and_warn(self) -> None:
+        """
+        Reviews all model settings in a Node and warns user of any relative paths
+
+        """
+        settings = self.__dict__.copy()
+        try:
+            model_settings = [model_dict for model_dict in settings["model"]]
+            urls = [
+                setting_dict
+                for setting_dict in model_settings
+                for value in setting_dict.values()
+                if "knime://" in str(value)
+            ]
+        except KeyError:
+            return
+        if len(urls) > 0:
+            logger.warning("====== WARNING =======")
+            logger.warning(
+                "Node " + self.name + " contains relative paths: NodeID:" + self.node_id
+            )
+            logger.warning(
+                "The following settings have relative workflow paths and "
+                + "must be manually adjusted in KNIME:"
+            )
+            for url in urls:
+                logger.warning(url)
 
 
 class MetaNode(AbstractNode):
