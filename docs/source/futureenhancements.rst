@@ -17,11 +17,13 @@ user experience for individuals authoring and editing workflows with KDL.
 ---------------------------------
 
 KNIME offers the ability to introduce relative links to local workflow 
-data within a user's KNIME workspace with the knime:// denotation prefixed 
+data within a user's KNIME workspace with the ``knime://`` denotation prefixed
 to the relative location.  Subsequently, KNIME bundles this data within KNIME
 archives when exporting a workflow.  When converting a knwf archive to KDL, 
 the produced knwf archive does not contain this bundled data and a user will 
-have to manually link to the path of the data.
+have to manually link to the path of the data. The KDL compiler currently alerts
+the user with a warning if such a path is detected within a node configuration
+when compiling KDL into a knwf archive.
 
 3. Merging Workflows
 --------------------
