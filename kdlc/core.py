@@ -461,8 +461,7 @@ def normalize_connections(
         else:
             connection.dest_node = node_dict[connection.dest_id]
 
-        #if isinstance(connection.source_node, MetaNode):
-        if type(connection.source_node) is MetaNode:
+        if isinstance(connection.source_node, MetaNode):
             connection.source_port = str(int(connection.source_port) - 1)
         if isinstance(connection.dest_node, MetaNode):
             connection.dest_port = str(int(connection.dest_port) - 1)
