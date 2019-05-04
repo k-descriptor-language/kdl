@@ -1,7 +1,7 @@
 Tooling
 =======
 
-The development established a handful of supporting development tools and scripts, 
+The development team established a handful of supporting development tools and scripts, 
 which can be found within the scripts folder. ::
 
    ❯ tree scripts
