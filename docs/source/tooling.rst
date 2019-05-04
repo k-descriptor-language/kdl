@@ -13,7 +13,7 @@ which can be found within the scripts folder. ::
    ├── perf-test.py
    └── quality-check.sh
 
-Before executing any of the scripts download the development dependencies by 
+Before executing any of the scripts, download the development dependencies by 
 executing the following command. ::
 
    pip install -e '.[dev]'
