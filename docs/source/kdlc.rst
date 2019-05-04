@@ -32,6 +32,7 @@ Execute ``kdlc --help`` within your terminal for an overview of available flags.
    Options:
      -o, --output TEXT  The output file, either .knwf or .kdl  [required]
      -i, --input PATH   The input file, either .knwf or .kdl  [required]
+     -d, --debug        Print debug logging to stdout
      --help             Show this message and exit.
 
 Compile KDL to knwf Archive
