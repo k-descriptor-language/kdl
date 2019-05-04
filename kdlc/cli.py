@@ -31,6 +31,7 @@ import sys
 )
 def prompt(input_file: str, output_file: str, debug_logging: bool = False) -> None:
     logger.remove()
+    logger.add(sys.stderr, level="WARNING", format="<level>{message}</level>")
     if debug_logging:
         logger.add(
             sys.stdout,
