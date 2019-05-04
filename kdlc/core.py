@@ -461,15 +461,9 @@ def normalize_connections(
         else:
             connection.dest_node = node_dict[connection.dest_id]
 
-        if type(connection.source_node) is MetaNode or (
-            type(connection.source_node) is Node
-            and connection.source_node.name == "WrappedNode Input"
-        ):
+        if type(connection.source_node) is MetaNode:
             connection.source_port = str(int(connection.source_port) - 1)
-        if type(connection.dest_node) is MetaNode or (
-            type(connection.dest_node) is Node
-            and connection.dest_node.name == "WrappedNode Ouput"
-        ):
+        if type(connection.dest_node) is MetaNode:
             connection.dest_port = str(int(connection.dest_port) - 1)
 
     metanodes = [
