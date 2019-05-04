@@ -404,7 +404,7 @@ def flatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
     flattened_list = list()
     for node in node_list:
         flattened_list.append(node)
-        if isinstance(node, MetaNode) or isinstance(node, WrappedMetaNode):
+        if isinstance(node, MetaNode):
             flattened_list += flatten_node_list(cast(MetaNode, node).children)
     return flattened_list
 
