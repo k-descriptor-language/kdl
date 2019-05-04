@@ -404,7 +404,7 @@ def flatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
     flattened_list = list()
     for node in node_list:
         flattened_list.append(node)
-        if type(node) is MetaNode or type(node) is WrappedMetaNode:
+        if isinstance(node, MetaNode) or isinstance(node, WrappedMetaNode):
             flattened_list += flatten_node_list(cast(MetaNode, node).children)
     return flattened_list
 
@@ -461,13 +461,13 @@ def normalize_connections(
         else:
             connection.dest_node = node_dict[connection.dest_id]
 
-        if type(connection.source_node) is MetaNode or (
-            type(connection.source_node) is Node
+        if isinstance(connection.source_node, MetaNode) or (
+            isinstance(connection.source_node, Node)
             and connection.source_node.name == "WrappedNode Input"
         ):
             connection.source_port = str(int(connection.source_port) - 1)
-        if type(connection.dest_node) is MetaNode or (
-            type(connection.dest_node) is Node
+        if isinstance(connection.dest_node, MetaNode) or (
+            isinstance(connection.dest_node, Node)
             and connection.dest_node.name == "WrappedNode Ouput"
         ):
             connection.dest_port = str(int(connection.dest_port) - 1)
@@ -525,14 +525,14 @@ def extract_connections(
 
         is_var_connection = False
 
-        if (type(source_node) is Node and source_port == "0") or (
-            type(dest_node) is Node and dest_port == "0"
+        if (isinstance(source_node, Node) and source_port == "0") or (
+            isinstance(dest_node, Node) and dest_port == "0"
         ):
             is_var_connection = True
         elif (
-            type(source_node) is MetaNode
+            isinstance(source_node, MetaNode)
             and source_node is not META_IN
-            and type(dest_node) is MetaNode
+            and isinstance(dest_node, MetaNode)
             and dest_node is not META_OUT
         ):
             source_out_connections = [
@@ -549,9 +549,8 @@ def extract_connections(
             ]
             if dest_in_connections:
                 dest_in_connection = dest_in_connections.pop()
-            if (
-                type(source_out_connection) is VariableConnection
-                and type(dest_in_connection) is VariableConnection
+            if isinstance(source_out_connection, VariableConnection) and isinstance(
+                dest_in_connection, VariableConnection
             ):
                 is_var_connection = True
 

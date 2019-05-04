@@ -1,5 +1,6 @@
 # KDL 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0edf700423a54508b146213f8e721a71)](https://app.codacy.com/app/k-descriptor-language/kdl?utm_source=github.com&utm_medium=referral&utm_content=k-descriptor-language/kdl&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.com/k-descriptor-language/kdl.svg?branch=master)](https://travis-ci.com/k-descriptor-language/kdl)
 [![codecov](https://codecov.io/gh/k-descriptor-language/kdl/branch/master/graph/badge.svg)](https://codecov.io/gh/k-descriptor-language/kdl)
 [![Documentation Status](https://readthedocs.org/projects/kdl/badge/?version=latest)](https://kdl.readthedocs.io/en/latest/?badge=latest)
