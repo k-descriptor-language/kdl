@@ -682,7 +682,7 @@ def create_node_settings_from_template(node: Node) -> ET.ElementTree:
     for value in node.factory_settings:
         k = list(value.keys())[0]
         v = value[k]
-        if type(v) is list:
+        if isinstance(v, list):
             set_config_element_type(value)
         else:
             set_entry_element_type(value)
@@ -766,12 +766,8 @@ def create_wrapped_metanode_workflow_knime_from_template(
     """
 
     template = jinja_env.get_template("workflow_template.xml")
-    nodes = [node for node in metanode.children if type(node) is Node]
-    metanodes = [
-        node
-        for node in metanode.children
-        if type(node) is MetaNode or type(node) is WrappedMetaNode
-    ]
+    nodes = [node for node in metanode.children if isinstance(node, Node)]
+    metanodes = [node for node in metanode.children if isinstance(node, MetaNode)]
 
     data = {
         "name": metanode.name,
