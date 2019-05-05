@@ -50,3 +50,12 @@ Execute kdlc with a knwf archive as the input argument and define a filename for
 the output KDL document. ::
 
    kdlc -i complex.knwf -o workflow.kdl
+
+Debug Mode
+++++++++++
+
+Execute kdlc in either direction with the debug flag for additional debug logging
+statements to be printed to stdout. ::
+
+   kdlc -i complex.knwf -o workflow.kdl -d
+   kdlc -i workflow.kdl -o workflow.knwf -d
