@@ -472,11 +472,7 @@ def normalize_connections(
         ):
             connection.dest_port = str(int(connection.dest_port) - 1)
 
-    metanodes = [
-        node
-        for node in node_list
-        if type(node) is MetaNode or type(node) is WrappedMetaNode
-    ]
+    metanodes = [node for node in node_list if isinstance(node, MetaNode)]
     for metanode in metanodes:
         metanode = cast(MetaNode, metanode)
         meta_in_ports = list()

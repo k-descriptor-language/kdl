@@ -358,7 +358,11 @@ class Connection(AbstractConnection):
         )
 
     def kdl_str(self) -> str:
-        if self.source_node and type(self.source_node) is MetaNode:
+        if (
+            self.source_node
+            and isinstance(self.source_node, MetaNode)
+            and not isinstance(self.source_node, WrappedMetaNode)
+        ):
             if self.source_node.node_id == "-1":
                 source_str = f"(META_IN:{int(self.source_port) + 1})"
             else:
@@ -366,7 +370,11 @@ class Connection(AbstractConnection):
         else:
             source_str = f"(n{self.source_id}:{self.source_port})"
 
-        if self.dest_node and type(self.dest_node) is MetaNode:
+        if (
+            self.dest_node
+            and isinstance(self.dest_node, MetaNode)
+            and not isinstance(self.dest_node, WrappedMetaNode)
+        ):
             if self.dest_node.node_id == "-1":
                 dest_str = f"(META_OUT:{int(self.dest_port) + 1})"
             else:
