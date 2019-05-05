@@ -642,6 +642,13 @@ def test_extract_entry_tag_ninfinity(my_setup):
     assert kdlc.extract_entry_tag(tree) == result
 
 
+def test_extract_entry_tag_scinot(my_setup):
+    tree = ET.fromstring('<entry key="epsilon" type="xdouble" value="1.0E-5" />')
+
+    result = {"epsilon": "1.0E-5", "data_type": "xdouble"}
+    assert kdlc.extract_entry_tag(tree) == result
+
+
 def test_extract_entry_tag_char(my_setup):
     tree = ET.fromstring('<entry key="someChar" type="xchar" value="A" />')
 

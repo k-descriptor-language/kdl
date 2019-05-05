@@ -185,6 +185,8 @@ def extract_entry_tag(tree: ET.Element) -> Dict[str, Any]:
     elif tree.attrib["type"] == "xdouble":
         if tree.attrib["value"] == "Infinity" or tree.attrib["value"] == "-Infinity":
             entry[tree.attrib["key"]] = tree.attrib["value"]
+        elif "E" in tree.attrib["value"] or "e" in tree.attrib["value"]:
+            entry[tree.attrib["key"]] = tree.attrib["value"]
         else:
             entry[tree.attrib["key"]] = float(tree.attrib["value"])
         entry["data_type"] = tree.attrib["type"]
@@ -529,8 +531,10 @@ def extract_connections(
             is_var_connection = True
         elif (
             isinstance(source_node, MetaNode)
+            and not isinstance(source_node, WrappedMetaNode)
             and source_node is not META_IN
             and isinstance(dest_node, MetaNode)
+            and not isinstance(dest_node, WrappedMetaNode)
             and dest_node is not META_OUT
         ):
             source_out_connections = [
