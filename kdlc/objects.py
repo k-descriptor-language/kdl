@@ -140,9 +140,9 @@ class Node(AbstractNode):
                 curr_model_val = curr_model[curr_model_key]
 
             if (
-                type(curr_model_val) is list
+                isinstance(curr_model_val, list)
                 and curr_model_val
-                and type(curr_variable_val) is list
+                and isinstance(curr_variable_val, list)
                 and curr_variable_val
             ):
                 self.__merge_variables_helper(curr_model_val, curr_variable_val)
@@ -174,7 +174,7 @@ class Node(AbstractNode):
         for curr in model_list:
             curr_model_key = list(curr.keys())[0]
             curr_model_val = curr[curr_model_key]
-            if type(curr_model_val) is list:
+            if isinstance(curr_model_val, list):
                 new_var = self.__extract_variables_from_model_helper(curr_model_val)
                 if new_var:
                     variables.append({curr_model_key: new_var, "data_type": "config"})
@@ -400,7 +400,11 @@ class VariableConnection(AbstractConnection):
         )
 
     def kdl_str(self) -> str:
-        if self.source_node and type(self.source_node) is MetaNode:
+        if (
+            self.source_node
+            and isinstance(self.source_node, MetaNode)
+            and not isinstance(self.source_node, WrappedMetaNode)
+        ):
             if self.source_node.node_id == "-1":
                 source_str = f"(META_IN:{int(self.source_port) + 1})"
             else:
@@ -410,7 +414,11 @@ class VariableConnection(AbstractConnection):
         else:
             source_str = f"(n{self.source_id}:{self.source_port})"
 
-        if self.dest_node and type(self.dest_node) is MetaNode:
+        if (
+            self.dest_node
+            and isinstance(self.dest_node, MetaNode)
+            and not isinstance(self.dest_node, WrappedMetaNode)
+        ):
             if self.dest_node.node_id == "-1":
                 dest_str = f"(META_OUT:{int(self.dest_port) + 1})"
             else:
