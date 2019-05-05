@@ -420,11 +420,7 @@ def unflatten_node_list(node_list: List[AbstractNode]) -> List[AbstractNode]:
     Returns:
         List[AbstractNode]: unflattened list of Nodes
     """
-    metanode_list = [
-        node
-        for node in node_list
-        if type(node) is MetaNode or type(node) is WrappedMetaNode
-    ]
+    metanode_list = [node for node in node_list if isinstance(node, MetaNode)]
 
     for metanode in metanode_list:
         dot_count = metanode.node_id.count(".")
