@@ -3,7 +3,12 @@
 e2e() {
   echo -n "$3-e2e test..."
 
-  kdlc -i "examples/$1" -o output.knwf
+  if [ -n "$4" ]
+  then
+      kdlc -i "examples/$1" -o output.knwf -tp "examples/$4" -d
+  else
+      kdlc -i "examples/$1" -o output.knwf
+  fi
 
   kdlc -i output.knwf -o output.kdl
 
@@ -35,3 +40,5 @@ e2e() {
 e2e TestWorkflow.kdl TestWorkflow.kdl basic
 e2e Meta.kdl Meta.kdl metanode
 e2e TestWorkflowConcise.kdl TestWorkflow.kdl concise
+# `diff` doesn't work because of fields reordering, only manual testing for now
+#e2e MetaConcise.kdl Meta.kdl metaconcise custom_templates/MetaTest

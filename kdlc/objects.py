@@ -493,15 +493,17 @@ class TemplateCatalogue(ABC):
     @staticmethod
     def get_supported_templates(default_path: str, custom_path: Optional[str]) -> Dict[str, str]:
         default_templates = TemplateCatalogue.get_templates(default_path)
-        if custom_path is not None:
+        # print(f"custom path = {custom_path}")
+        if custom_path is None:
+            return default_templates
+        else:
             custom_templates = TemplateCatalogue.get_templates(custom_path)
             return {**default_templates, **custom_templates}
-        else:
-            return default_templates
 
     @staticmethod
     def get_templates(path: str) -> Dict[str, str]:
         templates = {os.path.splitext(f)[0].lower(): path for f in os.listdir(path) if f.endswith(".json")}
+        # print(f"loaded templates [{templates}] for path {path}")
         return templates
 
     def find_template(self, node_name: str) -> Optional[Dict[str, Any]]:
@@ -512,7 +514,6 @@ class TemplateCatalogue(ABC):
         elif node_key in {*self.supported_templates}:
             path = self.supported_templates[node_key]
             template_file = f"{path}/{node_name}.json"
-            # print(f"template_file = {template_file}")
             with open(template_file) as template:
                 self.catalogue[node_key] = json.load(template)
             return self.catalogue[node_key]
