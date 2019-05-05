@@ -10,7 +10,9 @@ from loguru import logger
 import os
 
 
-def kdl_to_workflow(input_file: str, output_file: str, custom_path: Optional[str]) -> None:
+def kdl_to_workflow(
+    input_file: str, output_file: str, custom_path: Optional[str]
+) -> None:
     """
         Converts a KDL file (.kdl) to a KNIME workflow archive.
 

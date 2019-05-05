@@ -488,10 +488,14 @@ class Workflow(AbstractWorkflow):
 class TemplateCatalogue(ABC):
     def __init__(self, default_path: str, custom_path: Optional[str]):
         self.catalogue: Dict = dict()
-        self.supported_templates: Dict = TemplateCatalogue.get_supported_templates(default_path, custom_path)
+        self.supported_templates: Dict = TemplateCatalogue.get_supported_templates(
+            default_path, custom_path
+        )
 
     @staticmethod
-    def get_supported_templates(default_path: str, custom_path: Optional[str]) -> Dict[str, str]:
+    def get_supported_templates(
+        default_path: str, custom_path: Optional[str]
+    ) -> Dict[str, str]:
         default_templates = TemplateCatalogue.get_templates(default_path)
         # print(f"custom path = {custom_path}")
         if custom_path is None:
@@ -502,7 +506,11 @@ class TemplateCatalogue(ABC):
 
     @staticmethod
     def get_templates(path: str) -> Dict[str, str]:
-        templates = {os.path.splitext(f)[0].lower(): path for f in os.listdir(path) if f.endswith(".json")}
+        templates = {
+            os.path.splitext(f)[0].lower(): path
+            for f in os.listdir(path)
+            if f.endswith(".json")
+        }
         # print(f"loaded templates [{templates}] for path {path}")
         return templates
 
@@ -521,7 +529,9 @@ class TemplateCatalogue(ABC):
             return None
 
     @staticmethod
-    def merge_settings(template: Dict[str, Any], settings: Dict[str, Any]) -> Dict[str, Any]:
+    def merge_settings(
+        template: Dict[str, Any], settings: Dict[str, Any]
+    ) -> Dict[str, Any]:
         dct = template.copy()
         for k, v in settings.items():
             if isinstance(dct.get(k), dict):
