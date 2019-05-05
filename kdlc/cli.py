@@ -36,13 +36,14 @@ from typing import Optional
     "templates_path",
     required=False,
     help="Path to a custom templates catalogue",
+    default=None,
     type=click.Path(exists=True),
 )
 def prompt(
     input_file: str,
     output_file: str,
+    templates_path: Optional[str],
     debug_logging: bool = False,
-    templates_path: Optional[str] = None,
 ) -> None:
     """
     CLI interface. Uses the click libraries. Offers two functions:
@@ -69,12 +70,6 @@ def prompt(
         )
 
     if Path(input_file).suffix == ".kdl" and Path(output_file).suffix == ".knwf":
-        kdlc.kdl_to_workflow(input_file, output_file, None)
-    elif (
-        Path(input_file).suffix == ".kdl"
-        and Path(output_file).suffix == ".knwf"
-        and templates_path is not None
-    ):
         kdlc.kdl_to_workflow(input_file, output_file, templates_path)
     elif Path(input_file).suffix == ".knwf" and Path(output_file).suffix == ".kdl":
         kdlc.workflow_to_kdl(input_file, output_file)
