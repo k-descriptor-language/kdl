@@ -1,7 +1,7 @@
 import os
 import json
 import jsonschema
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Optional
 from abc import ABC, abstractmethod
 from loguru import logger
 
@@ -486,37 +486,41 @@ class Workflow(AbstractWorkflow):
 
 
 class TemplateCatalogue(ABC):
-    def __init__(self, path: str):
+    def __init__(self, default_path: str, custom_path: Optional[str]):
         self.catalogue: Dict = dict()
-        self.path = path
-        self.template_names = TemplateCatalogue.get_supported_templates(path)
+        self.supported_templates: Dict = TemplateCatalogue.get_supported_templates(default_path, custom_path)
 
     @staticmethod
-    def get_supported_templates(path: str):
-        # print(f"path = {path}")
-        templates = [
-            os.path.splitext(f)[0].lower()
-            for f in os.listdir(path)
-            if f.endswith(".json")
-        ]
-        # print(f"templates list = {templates}")
+    def get_supported_templates(default_path: str, custom_path: Optional[str]) -> Dict[str, str]:
+        default_templates = TemplateCatalogue.get_templates(default_path)
+        if custom_path is not None:
+            custom_templates = TemplateCatalogue.get_templates(custom_path)
+            return {**default_templates, **custom_templates}
+        else:
+            return default_templates
+
+    @staticmethod
+    def get_templates(path: str) -> Dict[str, str]:
+        templates = {os.path.splitext(f)[0].lower(): path for f in os.listdir(path) if f.endswith(".json")}
         return templates
 
-    def find_template(self, node_name: str):
-        node_template = self.catalogue.get(node_name.lower())
+    def find_template(self, node_name: str) -> Optional[Dict[str, Any]]:
+        node_key = node_name.lower()
+        node_template = self.catalogue.get(node_key)
         if node_template is not None:
             return node_template
-        elif node_name.lower() in self.template_names:
-            template_file = f"{self.path}/{node_name}.json"
+        elif node_key in {*self.supported_templates}:
+            path = self.supported_templates[node_key]
+            template_file = f"{path}/{node_name}.json"
             # print(f"template_file = {template_file}")
             with open(template_file) as template:
-                self.catalogue[node_name.lower()] = json.load(template)
-            return self.catalogue[node_name.lower()]
+                self.catalogue[node_key] = json.load(template)
+            return self.catalogue[node_key]
         else:
             return None
 
     @staticmethod
-    def merge_settings(template: Dict[str, Any], settings: Dict[str, Any]):
+    def merge_settings(template: Dict[str, Any], settings: Dict[str, Any]) -> Dict[str, Any]:
         dct = template.copy()
         for k, v in settings.items():
             if isinstance(dct.get(k), dict):
@@ -528,7 +532,7 @@ class TemplateCatalogue(ABC):
         return dct
 
     @staticmethod
-    def merge_lists(template_list: List, settings_list: List):
+    def merge_lists(template_list: List, settings_list: List) -> List:
         result_list = template_list.copy()
         for sd in settings_list:
             template_dct = next(
