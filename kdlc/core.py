@@ -622,7 +622,7 @@ def create_node_files(output_workflow_path: str, nodes: List[AbstractNode]) -> N
         nodes (List[AbstractNode]): List of input notes to be written
     """
     for node in nodes:
-        if type(node) is Node:
+        if isinstance(node, Node):
             # TODO: uncomment lines 63-72 and add tests
             # try:
             #     node.validate_node_from_schema()
@@ -638,15 +638,7 @@ def create_node_files(output_workflow_path: str, nodes: List[AbstractNode]) -> N
             save_node_settings_xml(
                 tree, f"{output_workflow_path}/{node.get_filename()}"
             )
-        elif type(node) is MetaNode:
-            node = cast(MetaNode, node)
-            tree = create_metanode_workflow_knime_from_template(node)
-            metanode_path = (
-                f"{output_workflow_path}/{os.path.dirname(node.get_filename())}"
-            )
-            save_workflow_knime(tree, metanode_path)
-            create_node_files(metanode_path, node.children)
-        elif type(node) is WrappedMetaNode:
+        elif isinstance(node, WrappedMetaNode):
             node = cast(WrappedMetaNode, node)
             wf_tree = create_wrapped_metanode_workflow_knime_from_template(node)
             settings_tree = create_wrapped_metanode_settings_from_template(node)
@@ -657,6 +649,14 @@ def create_node_files(output_workflow_path: str, nodes: List[AbstractNode]) -> N
             save_node_settings_xml(
                 settings_tree, f"{output_workflow_path}/{node.get_filename()}"
             )
+            create_node_files(metanode_path, node.children)
+        elif isinstance(node, MetaNode):
+            node = cast(MetaNode, node)
+            tree = create_metanode_workflow_knime_from_template(node)
+            metanode_path = (
+                f"{output_workflow_path}/{os.path.dirname(node.get_filename())}"
+            )
+            save_workflow_knime(tree, metanode_path)
             create_node_files(metanode_path, node.children)
 
 
@@ -708,12 +708,8 @@ def create_workflow_knime_from_template(
     template = jinja_env.get_template("workflow_template.xml")
     if workflow.variables:
         set_class_for_global_variables(workflow.variables)
-    nodes = [node for node in node_list if type(node) is Node]
-    metanodes = [
-        node
-        for node in node_list
-        if type(node) is MetaNode or type(node) is WrappedMetaNode
-    ]
+    nodes = [node for node in node_list if isinstance(node, Node)]
+    metanodes = [node for node in node_list if isinstance(node, MetaNode)]
     data = {
         "nodes": nodes,
         "metanodes": metanodes,
@@ -828,9 +824,9 @@ def set_class_for_global_variables(variable_list: list) -> None:
     for variable in variable_list:
         name = list(variable.keys())[0]
         value = variable[name]
-        if type(value) == int:
+        if isinstance(value, int):
             variable["var_class"] = "INTEGER"
-        elif type(value) == float:
+        elif isinstance(value, float):
             variable["var_class"] = "DOUBLE"
         else:
             variable["var_class"] = "STRING"
@@ -879,7 +875,7 @@ def set_config_element_type(config: dict) -> None:
     for value in config_values:
         k = list(value.keys())[0]
         v = value[k]
-        if type(v) is list:
+        if isinstance(v, list):
             set_config_element_type(value)
         else:
             set_entry_element_type(value)
