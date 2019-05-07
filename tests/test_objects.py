@@ -1,7 +1,7 @@
 import kdlc
 import json
 import pprint
-from kdlc.objects import TemplateCatalogue
+from kdlc.template_catalogue import TemplateCatalogue
 
 
 def test_connection_equal(my_setup):

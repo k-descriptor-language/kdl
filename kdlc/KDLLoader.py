@@ -9,9 +9,9 @@ from kdlc.objects import (
     Node,
     MetaNode,
     VariableConnection,
-    TemplateCatalogue,
     WrappedMetaNode,
 )
+from kdlc.template_catalogue import TemplateCatalogue
 
 
 class KDLLoader(KDLListener):

@@ -21,8 +21,9 @@ K Descriptor Language serves as a domain specific language for authoring and man
 Usage: kdlc [OPTIONS]
 
 Options:
-  -o, --output TEXT  The output file, either .knwf or .kdl  [required]
-  -i, --input PATH   The input file, either .knwf or .kdl  [required]
-  -d, --debug        Print debug logging to stdout
-  --help             Show this message and exit.
+  -o, --output TEXT            The output file, either .knwf or .kdl  [required]
+  -i, --input PATH             The input file, either .knwf or .kdl  [required]
+  -d, --debug                  Print debug logging to stdout
+  -tp, --templates_path PATH   Path to a custom templates catalogue
+  --help                       Show this message and exit.
 ```

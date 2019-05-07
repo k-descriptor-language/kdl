@@ -30,10 +30,11 @@ Execute ``kdlc --help`` within your terminal for an overview of available flags.
    Usage: kdlc [OPTIONS]
 
    Options:
-     -o, --output TEXT  The output file, either .knwf or .kdl  [required]
-     -i, --input PATH   The input file, either .knwf or .kdl  [required]
-     -d, --debug        Print debug logging to stdout
-     --help             Show this message and exit.
+     -o, --output TEXT            The output file, either .knwf or .kdl  [required]
+     -i, --input PATH             The input file, either .knwf or .kdl  [required]
+     -d, --debug                  Print debug logging to stdout
+     -tp, --templates_path PATH   Path to a custom templates catalogue
+     --help                       Show this message and exit.
 
 Compile KDL to knwf Archive
 +++++++++++++++++++++++++++
@@ -42,6 +43,14 @@ Execute kdlc with a KDL document as the input argument and define a filename for
 the output knwf archive. ::
 
    kdlc -i complex.kdl -o workflow.knwf
+
+Compile KDL to knwf Archive with a custom templates path
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Execute kdlc with a KDL document as the input argument and define a filename for
+the output knwf archive. ::
+
+   kdlc -i complex.kdl -o workflow.knwf -tp PATH_TO_CUSTOM_TEMPLATE_LIBRARY
 
 Decompile knwf Archive to KDL
 +++++++++++++++++++++++++++++
