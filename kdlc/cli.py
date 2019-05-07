@@ -3,6 +3,7 @@ from pathlib import Path
 import kdlc
 from loguru import logger
 import sys
+from typing import Optional
 
 
 @click.command()
@@ -29,7 +30,21 @@ import sys
     help="Print debug logging to stdout",
     is_flag=True,
 )
-def prompt(input_file: str, output_file: str, debug_logging: bool = False) -> None:
+@click.option(
+    "--templates_path",
+    "-tp",
+    "templates_path",
+    required=False,
+    help="Path to a custom templates catalogue",
+    default=None,
+    type=click.Path(exists=True),
+)
+def prompt(
+    input_file: str,
+    output_file: str,
+    templates_path: Optional[str],
+    debug_logging: bool = False,
+) -> None:
     """
     CLI interface. Uses the click libraries. Offers two functions:
         knwf to kdl
@@ -39,6 +54,7 @@ def prompt(input_file: str, output_file: str, debug_logging: bool = False) -> No
     :param input_file: Name of the input file
     :param output_file: Name of the output file
     :param debug_logging: argument to turn on debug mode
+    :param templates_path: Path to user specified templates catalogue
     """
     logger.remove()
     logger.add(sys.stderr, level="WARNING", format="<level>{message}</level>")
@@ -54,7 +70,7 @@ def prompt(input_file: str, output_file: str, debug_logging: bool = False) -> No
         )
 
     if Path(input_file).suffix == ".kdl" and Path(output_file).suffix == ".knwf":
-        kdlc.kdl_to_workflow(input_file, output_file)
+        kdlc.kdl_to_workflow(input_file, output_file, templates_path)
     elif Path(input_file).suffix == ".knwf" and Path(output_file).suffix == ".kdl":
         kdlc.workflow_to_kdl(input_file, output_file)
     else:

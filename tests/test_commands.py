@@ -51,7 +51,7 @@ def test_kdl_to_workflow(mocker):
     mock_build_knwf = mocker.MagicMock()
     mocker.patch("kdlc.commands.build_knwf", new=mock_build_knwf)
 
-    kdlc.kdl_to_workflow("fake.kdl", "fake.knwf")
+    kdlc.kdl_to_workflow("fake.kdl", "fake.knwf", None)
 
     # validate construction of parser
     mock_file_stream.assert_called_with("fake.kdl")

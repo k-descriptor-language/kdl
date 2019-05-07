@@ -1,0 +1,26 @@
+{
+    "name": "Row Filter",
+    "factory": "org.knime.base.node.preproc.filter.row.RowFilterNodeFactory",
+    "bundle_name": "KNIME Base Nodes",
+    "bundle_symbolic_name": "org.knime.base",
+    "bundle_version": "3.7.1.v201901291053",
+    "feature_name": "KNIME Core",
+    "feature_symbolic_name": "org.knime.features.base.feature.group",
+    "feature_version": "3.7.1.v201901291053",
+    "model": [
+        {
+            "rowFilter": [
+                {
+                    "RowFilter_TypeID": "RangeVal_RowFilter"
+                },
+                {
+                    "include": true
+                },
+                {
+                    "deepFiltering": false
+                }
+            ]
+        }
+    ],
+    "port_count": 1
+}

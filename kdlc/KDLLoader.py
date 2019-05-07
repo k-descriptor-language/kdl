@@ -9,9 +9,9 @@ from kdlc.objects import (
     Node,
     MetaNode,
     VariableConnection,
-    TemplateCatalogue,
     WrappedMetaNode,
 )
+from kdlc.template_catalogue import TemplateCatalogue
 
 
 class KDLLoader(KDLListener):
@@ -24,6 +24,7 @@ class KDLLoader(KDLListener):
     def exitNode_settings(
         self: KDLListener, ctx: KDLParser.Node_settingsContext
     ) -> None:
+
         node_number = ctx.node().node_id().getText()
 
         json_tokens = [i.getText() for i in ctx.json().children]

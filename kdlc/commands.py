@@ -4,18 +4,22 @@ from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
 from kdlc.parser.KDLLexer import KDLLexer
 from kdlc.parser.KDLParser import KDLParser
 from kdlc.KDLLoader import KDLLoader
-from kdlc.objects import AbstractNode, Node, Workflow, TemplateCatalogue
-from typing import List
+from kdlc.objects import AbstractNode, Node, Workflow
+from kdlc.template_catalogue import TemplateCatalogue
+from typing import List, Optional
 from loguru import logger
 import os
 
 
-def kdl_to_workflow(input_file: str, output_file: str) -> None:
+def kdl_to_workflow(
+    input_file: str, output_file: str, custom_path: Optional[str]
+) -> None:
     """
         Converts a KDL file (.kdl) to a KNIME workflow archive.
 
     :param input_file: Name of the KDL file
     :param output_file: Name of the KNIME archive
+    :param custom_path: Path to the user specified templates catalogue
     """
     logger.debug("======= BEGIN KDL to WORKFLOW =======")
 
@@ -25,7 +29,7 @@ def kdl_to_workflow(input_file: str, output_file: str) -> None:
     parser = KDLParser(stream)
 
     template_catalogue_path = f"{os.path.dirname(__file__)}/node_templates"
-    template_catalogue = TemplateCatalogue(template_catalogue_path)
+    template_catalogue = TemplateCatalogue(template_catalogue_path, custom_path)
     listener = KDLLoader(template_catalogue)
     walker = ParseTreeWalker()
 
