@@ -24,7 +24,7 @@ install it on Python {}.{}.
 
 setup(
     name="kdlc",
-    version="0.1",
+    version="1.0",
     python_requires=">={}.{}".format(*REQUIRED_PYTHON),
     description="K-Descriptor-Language Compiler",
     author="K-Descriptor-Language",
